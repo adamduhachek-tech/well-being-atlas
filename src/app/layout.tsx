@@ -23,14 +23,29 @@ const plexMono = IBM_Plex_Mono({
   adjustFontFallback: true,
 });
 
+const DESCRIPTION =
+  "An index of independent data-journalism readings on psychological well-being.";
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl()),
   title: {
     default: SITE_NAME,
     template: `%s — ${SITE_NAME}`,
   },
-  description:
-    "An index of independent data-journalism readings on psychological well-being.",
+  description: DESCRIPTION,
+  // og:image / twitter:image come from app/opengraph-image.tsx automatically.
+  openGraph: {
+    type: "website",
+    siteName: SITE_NAME,
+    title: SITE_NAME,
+    description: DESCRIPTION,
+    url: "/",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_NAME,
+    description: DESCRIPTION,
+  },
 };
 
 export default function RootLayout({

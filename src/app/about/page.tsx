@@ -2,10 +2,16 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_NAME } from "@/lib/site";
 
+const ABOUT_DESC =
+  "The Well-Being Atlas is maintained by Adam Duhachek and Vishal Singh — data visualizations on psychological well-being built from the GSS, Gallup, WVS, and ESS.";
+
+// Only the page title/description are set here; the openGraph/twitter card
+// (image included) is inherited from the root layout + app/opengraph-image so
+// sharing /about shows the site card. Overriding openGraph here would drop the
+// inherited file image.
 export const metadata: Metadata = {
   title: "About",
-  description:
-    "The Well-Being Atlas is maintained by Adam Duhachek and Vishal Singh — data visualizations on psychological well-being built from the GSS, Gallup, WVS, and ESS.",
+  description: ABOUT_DESC,
 };
 
 const DATASETS = [
