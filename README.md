@@ -24,14 +24,36 @@ source of truth — new articles appear in the gallery without a redeploy.
   curl -X POST "https://<site>/api/revalidate?secret=$REVALIDATE_SECRET"
   ```
 
+- **Card gallery** — the home page is a filterable, responsive card grid
+  (1 / 2 / 3 columns). Each card carries a captured chart thumbnail, number
+  badge, title, snippet, footer (date · read time · dataset), and topic chips.
+  A filter bar offers multi-select **topic** and **scope/source** facets
+  (derived dynamically from the tags actually present) plus a search box;
+  filtering is instant and client-side. See `/about` for the project credits.
+- **Tags & manifest** — a standalone, re-runnable script,
+  `npm run manifest` ([scripts/build-manifest.ts](scripts/build-manifest.ts)),
+  introspects the bucket, infers topic tags from the shared controlled
+  vocabulary ([src/lib/taxonomy.ts](src/lib/taxonomy.ts)), captures each
+  article's primary visualization with headless Chrome, and writes
+  [src/data/articles.json](src/data/articles.json). The gallery joins this
+  manifest onto the live listing by slug, so an article still appears (with
+  inferred tags and a generated *sparkmark* fallback) before the manifest is
+  re-run. Inferred tags are written to the manifest so they're easy to
+  hand-correct. Run `npm run manifest -- --no-thumbnails` for a fast
+  metadata-only refresh that preserves already-captured thumbnails.
+
+  > Thumbnails are written to `public/thumbnails/` (served by the host) rather
+  > than uploaded to the bucket's `thumbnails/` prefix, because the Tigris
+  > credentials are read-only — swap `saveThumbnail` for an S3 `PutObject` if
+  > write-capable keys become available.
+
 - **Article view** — `/articles/[slug]` renders the original file untouched in
   a sandboxed iframe served straight from the bucket, under a slim chrome bar
   with sharing controls. Known slugs are prerendered
   (`generateStaticParams`); new ones render on demand.
 - **Sharing** — per-article Open Graph metadata plus a generated 1200×630 OG
-  card (`next/og`). The card features the article's *sparkmark*: a
-  deterministic miniature chart glyph seeded by the slug and shaped by the
-  article's visualization type.
+  card (`next/og`), featuring the article's *sparkmark*: a deterministic
+  miniature chart glyph seeded by the slug and shaped by its visualization type.
 
 ## Environment variables
 

@@ -1,0 +1,357 @@
+{
+  "generatedAt": "2026-06-14T00:04:34.367Z",
+  "articles": [
+    {
+      "slug": "gender-gap-two-ways",
+      "title": "The Gender Well-Being Paradox, Measured Two Ways",
+      "snippet": "Across 155 countries, women rate their lives at least as high as men in nine of ten places — yet report more daily worry, sadness, and stress. Two gender gaps that point opposite ways, each with its own inequality gradient.",
+      "dataset": "Gallup World Poll",
+      "readMinutes": 10,
+      "date": "2026-06-13T06:32:19.000Z",
+      "thumbnail": "/thumbnails/gender-gap-two-ways.png",
+      "thumbnailSource": "captured",
+      "subtopics": [
+        "gender",
+        "health"
+      ],
+      "scope": [
+        "Global"
+      ],
+      "sources": [
+        "Gallup World Poll"
+      ]
+    },
+    {
+      "slug": "faith-where-its-normative",
+      "title": "Faith Pays Off Where Faith Is the Norm",
+      "snippet": "Across countries, being religious lifts your life rating only a little — and barely more in devout societies than secular ones. But the experiential dividend of faith, less daily distress and more felt support, swells sharply where religion is the social norm.",
+      "dataset": "Gallup World Poll",
+      "readMinutes": 3,
+      "date": "2026-06-13T06:32:18.000Z",
+      "thumbnail": "/thumbnails/faith-where-its-normative.png",
+      "thumbnailSource": "captured",
+      "subtopics": [
+        "religion",
+        "geography"
+      ],
+      "scope": [
+        "Global"
+      ],
+      "sources": [
+        "Gallup World Poll"
+      ]
+    },
+    {
+      "slug": "whose-america-is-thriving-whoever-just-won",
+      "title": "Whose America Is Thriving? Whoever Just Won.",
+      "snippet": "Ten years and 3.5 million interviews show partisans' life evaluations crossing twice — once when Barack Obama took office, and again, in the opposite direction, when Donald Trump did.",
+      "dataset": "Gallup US Daily",
+      "readMinutes": 3,
+      "date": "2026-06-12T23:44:18.000Z",
+      "thumbnail": "/thumbnails/whose-america-is-thriving-whoever-just-won.png",
+      "thumbnailSource": "captured",
+      "subtopics": [
+        "politics"
+      ],
+      "scope": [
+        "US"
+      ],
+      "sources": [
+        "Gallup US Daily"
+      ]
+    },
+    {
+      "slug": "plateau-in-the-tail",
+      "title": "The Plateau Is in the Tail, Not the Mean",
+      "snippet": "For more than a decade, social science fought over whether money stops buying happiness around $75,000. Re-run the question on 1.8 million Gallup interviews — the same survey the fight began on — and the answer is that everyone was staring at the wrong line.",
+      "dataset": "Gallup US Daily ('Motherlode' extract), 2009–2017 (affect items 2009–2012)",
+      "readMinutes": 13,
+      "date": "2026-06-12T21:32:58.000Z",
+      "thumbnail": "/thumbnails/plateau-in-the-tail.png",
+      "thumbnailSource": "captured",
+      "subtopics": [
+        "income"
+      ],
+      "scope": [
+        "US"
+      ],
+      "sources": [
+        "Gallup US Daily"
+      ]
+    },
+    {
+      "slug": "flip-counties",
+      "title": "The Flip Counties Felt It First",
+      "snippet": "In the places that voted for Barack Obama and then Donald Trump, people rated their lives about like everyone else's. What sagged, years before 2016, was where they thought their lives were headed.",
+      "dataset": "Gallup US Daily ('Motherlode' extract), 2008–2016 (2017 coda) + MIT/MEDSL county election join",
+      "readMinutes": 12,
+      "date": "2026-06-12T21:32:54.000Z",
+      "thumbnail": "/thumbnails/flip-counties.png",
+      "thumbnailSource": "captured",
+      "subtopics": [
+        "politics",
+        "geography"
+      ],
+      "scope": [
+        "US"
+      ],
+      "sources": [
+        "Gallup US Daily"
+      ]
+    },
+    {
+      "slug": "felt-despair",
+      "title": "Deaths of Despair vs. Felt Despair",
+      "snippet": "Case and Deaton mapped where Americans die of suicide, drugs, and alcohol. Gallup spent a decade asking Americans how yesterday felt. Lay the feelings over the deaths, and the measure that tracks the mortality map best is not sadness, not worry, not even life satisfaction. It is physical pain — followed closely by the belief that the future holds nothing better.",
+      "dataset": "Gallup US Daily, 2008–2017",
+      "readMinutes": 13,
+      "date": "2026-06-12T21:32:54.000Z",
+      "thumbnail": "/thumbnails/felt-despair.png",
+      "thumbnailSource": "captured",
+      "subtopics": [
+        "health",
+        "geography"
+      ],
+      "scope": [
+        "US"
+      ],
+      "sources": [
+        "Gallup US Daily"
+      ]
+    },
+    {
+      "slug": "community-compensation",
+      "title": "Does Community Substitute for Connection?",
+      "snippet": "Putnam's heirs promised that civic fabric lifts everyone. Three and a half million Gallup interviews ask the sharper question: does it lift the people who need it most?",
+      "dataset": "Gallup US Daily, 2008–2017",
+      "readMinutes": 14,
+      "date": "2026-06-12T21:32:54.000Z",
+      "thumbnail": "/thumbnails/community-compensation.png",
+      "thumbnailSource": "captured",
+      "subtopics": [
+        "community"
+      ],
+      "scope": [
+        "US"
+      ],
+      "sources": [
+        "Gallup US Daily"
+      ]
+    },
+    {
+      "slug": "american-evenings",
+      "title": "Fifty Years of American Evenings",
+      "snippet": "Since 1974 the GSS has asked the same four questions: how often do you spend an evening with relatives, with friends, with neighbors — or at a bar? The answers trace a half-century in which company grew rarer, screens grew brighter, and the evenings that survived began to matter more.",
+      "dataset": "General Social Survey",
+      "readMinutes": 12,
+      "date": "2026-06-12T21:32:54.000Z",
+      "thumbnail": "/thumbnails/american-evenings.png",
+      "thumbnailSource": "captured",
+      "subtopics": [
+        "community"
+      ],
+      "scope": [
+        "US"
+      ],
+      "sources": [
+        "GSS"
+      ]
+    },
+    {
+      "slug": "young-and-less-happy",
+      "title": "Young and Less Happy",
+      "snippet": "In the GSS, happiness has always risen gently with age. Over the past decade the youngest adults fell to a 50-year low — 1.80 in 2021, 1.91 in 2024 — pulling away from everyone else.",
+      "dataset": "General Social Survey, 1972–2024",
+      "readMinutes": 9,
+      "date": "2026-06-12T21:03:53.000Z",
+      "thumbnail": "/thumbnails/young-and-less-happy.png",
+      "thumbnailSource": "captured",
+      "subtopics": [
+        "age"
+      ],
+      "scope": [
+        "US"
+      ],
+      "sources": [
+        "GSS"
+      ]
+    },
+    {
+      "slug": "worst-year",
+      "title": "2020: The World’s Worst Year?",
+      "snippet": "In 2020 daily worry, sadness and stress hit fifteen-year records across 93 countries — yet the world’s rating of its own life didn’t fall: +0.22 ladder points with China, +0.04 without.",
+      "dataset": "Gallup World Poll, 2020 wave vs 2017–19 baseline (93-country fixed panel, ~409k interviews)",
+      "readMinutes": 9,
+      "date": "2026-06-12T21:03:53.000Z",
+      "thumbnail": "/thumbnails/worst-year.png",
+      "thumbnailSource": "captured",
+      "subtopics": [
+        "health"
+      ],
+      "scope": [
+        "Global"
+      ],
+      "sources": [
+        "Gallup World Poll"
+      ]
+    },
+    {
+      "slug": "u-curve-across-countries",
+      "title": "The U-Curve, Redrawn",
+      "snippet": "The famous midlife dip and old-age rebound in happiness is real but local: vivid in the wealthy Anglosphere (+0.53 ladder points recovered), absent or inverted across the post-Soviet world (−0.28). Only 34 of 156 countries show a genuine U.",
+      "dataset": "Gallup World Poll, 2005–2020 (156 countries, 2.24M interviews)",
+      "readMinutes": 11,
+      "date": "2026-06-12T21:03:53.000Z",
+      "thumbnail": "/thumbnails/u-curve-across-countries.png",
+      "thumbnailSource": "captured",
+      "subtopics": [
+        "age"
+      ],
+      "scope": [
+        "Global"
+      ],
+      "sources": [
+        "Gallup World Poll"
+      ]
+    },
+    {
+      "slug": "money-buys-calm-not-joy",
+      "title": "Money Buys Calm, Not Joy",
+      "snippet": "Across the income ladder, how people rate their lives climbs steeply while daily enjoyment plateaus above poverty and stress barely moves — what money most clearly buys is freedom from worry.",
+      "dataset": "Gallup US Daily ('Motherlode' extract), 2008–2012",
+      "readMinutes": 9,
+      "date": "2026-06-12T21:03:52.000Z",
+      "thumbnail": "/thumbnails/money-buys-calm-not-joy.png",
+      "thumbnailSource": "captured",
+      "subtopics": [
+        "income",
+        "health"
+      ],
+      "scope": [
+        "US"
+      ],
+      "sources": [
+        "Gallup US Daily"
+      ]
+    },
+    {
+      "slug": "long-retreat-of-trust",
+      "title": "The Long Retreat of Trust",
+      "snippet": "The share of Americans who say most people can be trusted has nearly halved since 1972 — 47% to 25% — while the durable happiness gap between trusters and the wary held firm.",
+      "dataset": "General Social Survey, 1972–2024",
+      "readMinutes": 10,
+      "date": "2026-06-12T21:03:52.000Z",
+      "thumbnail": "/thumbnails/long-retreat-of-trust.png",
+      "thumbnailSource": "captured",
+      "subtopics": [
+        "trust"
+      ],
+      "scope": [
+        "US"
+      ],
+      "sources": [
+        "GSS"
+      ]
+    },
+    {
+      "slug": "happiness-moved-inside-borders",
+      "title": "Happiness Moved Inside Borders",
+      "snippet": "From 2006 to 2019 the world grew happier and nations grew more alike — but inside 39 of 42 countries, the distance between the happiest and unhappiest citizens widened.",
+      "dataset": "Gallup World Poll, 2006–2019 (42-country balanced panel)",
+      "readMinutes": 8,
+      "date": "2026-06-12T21:03:52.000Z",
+      "thumbnail": "/thumbnails/happiness-moved-inside-borders.png",
+      "thumbnailSource": "captured",
+      "subtopics": [
+        "health"
+      ],
+      "scope": [
+        "Global"
+      ],
+      "sources": [
+        "Gallup World Poll"
+      ]
+    },
+    {
+      "slug": "global-ageing-and-happiness",
+      "title": "The Two Clocks of Growing Old",
+      "snippet": "As people age worldwide, the mind's agitations fall — stress peaks in midlife and anger hits a lifetime low by 65+ — while pain (18%→47%), sadness and health limits climb. Whether old-age worry eases or deepens is sorted by money: 0.31 in rich countries vs 0.47 in poor.",
+      "dataset": "Gallup World Poll, 2005–2020 (165 countries, 2.28M interviews)",
+      "readMinutes": 11,
+      "date": "2026-06-12T21:03:52.000Z",
+      "thumbnail": "/thumbnails/global-ageing-and-happiness.png",
+      "thumbnailSource": "captured",
+      "subtopics": [
+        "income",
+        "age",
+        "health"
+      ],
+      "scope": [
+        "Global"
+      ],
+      "sources": [
+        "Gallup World Poll"
+      ]
+    },
+    {
+      "slug": "geography-of-american-thriving",
+      "title": "The Geography of American Thriving",
+      "snippet": "Across 2.46 million interviews, the share of Americans 'thriving' in how they rate their lives spans about 19 points between states — and at the county level it tracks income, rurality, and deaths of despair.",
+      "dataset": "Gallup US Daily ('Motherlode' extract), 2008–2017",
+      "readMinutes": 10,
+      "date": "2026-06-12T21:03:52.000Z",
+      "thumbnail": "/thumbnails/geography-of-american-thriving.png",
+      "thumbnailSource": "captured",
+      "subtopics": [
+        "income",
+        "health",
+        "geography"
+      ],
+      "scope": [
+        "US"
+      ],
+      "sources": [
+        "Gallup US Daily"
+      ]
+    },
+    {
+      "slug": "feeling-rich-being-rich",
+      "title": "Feeling Rich Is Not the Same as Being Rich",
+      "snippet": "Money buys the feeling of enough everywhere and never stops — but Central Asia feels richer than its GDP, southern Africa poorer, and the countries that rate their lives best are not the ones that feel paid.",
+      "dataset": "Gallup World Poll, 2016–2020 (147–150 countries; enough_money coda 2013–15)",
+      "readMinutes": 11,
+      "date": "2026-06-12T21:03:52.000Z",
+      "thumbnail": "/thumbnails/feeling-rich-being-rich.png",
+      "thumbnailSource": "captured",
+      "subtopics": [
+        "income"
+      ],
+      "scope": [
+        "Global"
+      ],
+      "sources": [
+        "Gallup World Poll"
+      ]
+    },
+    {
+      "slug": "despair-felt-and-fatal",
+      "title": "Despair, Felt and Fatal",
+      "snippet": "Deaths of despair gave America a mortality map. Buried in 1,769,079 Gallup interviews is the question that map raises: which feeling lives in the places where people die? Not sadness. Not worry. Pain — and a future that looks shorter than the present.",
+      "dataset": "Gallup US Daily ('Motherlode' extract), 2008–2012 + county despair-mortality join (1,341 counties)",
+      "readMinutes": 10,
+      "date": "2026-06-12T21:03:52.000Z",
+      "thumbnail": "/thumbnails/despair-felt-and-fatal.png",
+      "thumbnailSource": "captured",
+      "subtopics": [
+        "health",
+        "geography"
+      ],
+      "scope": [
+        "US"
+      ],
+      "sources": [
+        "Gallup US Daily"
+      ]
+    }
+  ]
+}

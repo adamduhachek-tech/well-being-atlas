@@ -1,6 +1,14 @@
 import { Suspense } from "react";
-import { listArticles, getSiteIntro } from "@/lib/articles";
-import { GalleryIndex } from "@/components/GalleryIndex";
+import { getGalleryItems } from "@/lib/gallery";
+import { GalleryGrid } from "@/components/GalleryGrid";
+
+// Editorial framing for the masthead. Kept count-independent so the heading
+// never goes stale as articles are added to the bucket.
+const INTRO = {
+  title: "Readings in Well-Being",
+  description:
+    "An evolving index of independent, reproducible data essays on how people rate their lives — each hand-built from survey microdata: the GSS, Gallup (US Daily and World Poll), and the World and European value surveys.",
+};
 
 export default function Home() {
   return (
@@ -13,8 +21,8 @@ export default function Home() {
 }
 
 async function Gallery() {
-  const [articles, intro] = await Promise.all([listArticles(), getSiteIntro()]);
-  return <GalleryIndex articles={articles} intro={intro} />;
+  const items = await getGalleryItems();
+  return <GalleryGrid items={items} intro={INTRO} />;
 }
 
 function GallerySkeleton() {
@@ -24,15 +32,16 @@ function GallerySkeleton() {
       <div className="masthead-kicker">
         <span>The Well-Being Atlas</span>
       </div>
-      <div style={{ padding: "24px 0" }}>
+      <div className="card-grid" style={{ marginTop: 40 }}>
         {Array.from({ length: 6 }, (_, i) => (
-          <div className="skeleton-row" key={i}>
-            <div />
-            <div className="skeleton-block" />
-            <div className="skeleton-lines">
-              <div style={{ width: "55%", height: 22 }} />
-              <div style={{ width: "85%" }} />
-              <div style={{ width: "35%" }} />
+          <div className="card card--skeleton" key={i}>
+            <div className="card-thumb skeleton-block" />
+            <div className="card-body">
+              <div className="skeleton-lines">
+                <div style={{ width: "70%", height: 20 }} />
+                <div style={{ width: "95%" }} />
+                <div style={{ width: "40%" }} />
+              </div>
             </div>
           </div>
         ))}
