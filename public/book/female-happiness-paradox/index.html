@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Paradox That Didn't Hold</title>
+<style>
+  :root{
+    --bg:#f5efe4;
+    --bg-deep:#efe7d6;
+    --panel:#fbf7ee;
+    --ink:#23201a;
+    --ink-dim:#5e574a;
+    --ink-faint:#8d8576;
+    --hairline:rgba(35,32,26,.14);
+    --hairline-soft:rgba(35,32,26,.08);
+    /* two non-partisan diverging hues: women-higher = teal, men-higher = ochre/clay */
+    --teal:#1f8a7a;
+    --teal-soft:rgba(31,138,122,.16);
+    --teal-deep:#13564c;
+    --clay:#bf7d2c;
+    --clay-soft:rgba(191,125,44,.16);
+    --clay-deep:#8a560e;
+    --zero:#23201a;
+    --accent:#b1452f;
+    --rule:#9a9180;
+    --serif:Georgia, 'Iowan Old Style', 'Times New Roman', serif;
+    --sans:system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:var(--serif); font-size:18px; line-height:1.62;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--teal-deep); text-decoration:none; border-bottom:1px solid rgba(19,86,76,.4)}
+  a:hover,a:focus-visible{color:var(--accent); border-bottom-color:var(--accent)}
+  a:focus-visible,button:focus-visible,select:focus-visible{outline:2.5px solid var(--accent); outline-offset:2px; border-radius:3px}
+  .wrap{max-width:720px; margin:0 auto; padding:0 22px}
+  .wide{max-width:1000px; margin:0 auto; padding:0 22px}
+  header{padding:74px 0 26px; position:relative}
+  .kicker{font-family:var(--sans); font-size:12px; letter-spacing:.26em; text-transform:uppercase; color:var(--accent); margin:0 0 20px; font-weight:600}
+  h1{font-size:clamp(33px,5.8vw,57px); line-height:1.04; margin:0 0 22px; font-weight:700; letter-spacing:-.015em}
+  .dek{font-size:clamp(18px,2.5vw,22px); font-style:italic; color:var(--ink-dim); max-width:620px; margin:0 0 26px; line-height:1.48}
+  .byline{font-family:var(--sans); font-size:13px; color:var(--ink-faint); letter-spacing:.04em}
+  .byline b{color:var(--ink-dim); font-weight:600}
+  main p{margin:0 0 1.35em}
+  main{padding-bottom:10px}
+  h2{font-size:clamp(23px,3.4vw,31px); line-height:1.16; margin:2.1em 0 .6em; letter-spacing:-.008em; font-weight:700}
+  h3.eyebrow{font-family:var(--sans); font-size:14px; letter-spacing:.16em; text-transform:uppercase; color:var(--accent); margin:2.4em 0 .5em; font-weight:600}
+  .lead{font-size:clamp(19px,2.4vw,22px); line-height:1.5; color:var(--ink)}
+  .drop::first-letter{
+    float:left; font-size:3.5em; line-height:.82; padding:8px 11px 0 0; color:var(--accent);
+    font-weight:700; font-family:var(--serif);
+  }
+  strong{font-weight:700}
+  em{font-style:italic}
+  .figwrap{margin:38px auto 14px}
+  figure{margin:0; background:var(--panel); border:1px solid var(--hairline); border-radius:14px; padding:24px 22px 16px; box-shadow:0 1px 0 rgba(35,32,26,.04)}
+  figure h4{font-family:var(--sans); font-size:18px; margin:0 0 5px; font-weight:700; color:var(--ink); letter-spacing:-.01em}
+  figure .sub{font-family:var(--sans); font-size:13.5px; color:var(--ink-dim); margin:0 0 16px; line-height:1.5}
+  figcaption{font-family:var(--sans); font-size:12.5px; color:var(--ink-faint); line-height:1.55; margin-top:12px; border-top:1px solid var(--hairline-soft); padding-top:11px}
+  svg{width:100%; height:auto; display:block; overflow:visible}
+  text{font-family:var(--sans)}
+  .controls{display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center; margin:2px 0 16px; font-family:var(--sans)}
+  .seg{display:inline-flex; border:1px solid var(--hairline); border-radius:9px; overflow:hidden; background:var(--bg-deep)}
+  .seg button{font-family:var(--sans); font-size:13px; padding:7px 13px; border:0; background:transparent; color:var(--ink-dim); cursor:pointer; font-weight:500; letter-spacing:.01em}
+  .seg button[aria-pressed="true"]{background:var(--ink); color:var(--panel)}
+  .seg button:hover:not([aria-pressed="true"]){background:rgba(35,32,26,.07); color:var(--ink)}
+  .ctl-label{font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-faint); font-weight:600}
+  .legend{display:flex; flex-wrap:wrap; gap:7px 18px; font-family:var(--sans); font-size:13px; color:var(--ink-dim); margin:0 0 4px}
+  .legend span{display:inline-flex; align-items:center; gap:7px}
+  .swatch{width:16px; height:11px; border-radius:2px; display:inline-block}
+  .tip{position:absolute; pointer-events:none; opacity:0; background:var(--ink); color:var(--panel);
+    font-family:var(--sans); font-size:12.5px; line-height:1.45; padding:9px 11px; border-radius:8px;
+    max-width:230px; z-index:30; transition:opacity .08s; box-shadow:0 6px 22px rgba(35,32,26,.28)}
+  .tip b{color:#fff; font-weight:700}
+  .tip .tg{font-variant-numeric:tabular-nums}
+  .tip .pos{color:#86e6d4} .tip .neg{color:#f0c479}
+  .smcap{font-family:var(--sans); font-size:11px; letter-spacing:.04em; fill:var(--ink-faint)}
+  .statband{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin:30px 0 6px}
+  .stat{background:var(--bg-deep); border-radius:11px; padding:15px 16px}
+  .stat .v{font-family:var(--sans); font-size:25px; font-weight:700; letter-spacing:-.02em; line-height:1.05}
+  .stat .v.tealv{color:var(--teal-deep)} .stat .v.clayv{color:var(--clay-deep)}
+  .stat .l{font-family:var(--sans); font-size:12.5px; color:var(--ink-dim); margin-top:6px; line-height:1.4}
+  .pull{font-family:var(--sans); font-size:clamp(18px,2.3vw,21px); line-height:1.42; color:var(--ink);
+    border-left:3px solid var(--accent); padding:4px 0 4px 20px; margin:30px 0; font-weight:500}
+  .note{font-family:var(--sans); font-size:13px; color:var(--ink-dim); background:var(--bg-deep);
+    border-radius:10px; padding:13px 16px; margin:24px 0; line-height:1.55; border:1px solid var(--hairline-soft)}
+  .note b{color:var(--ink)}
+  footer{margin-top:54px; border-top:1px solid var(--hairline); background:var(--bg-deep)}
+  footer .wrap{padding-top:34px; padding-bottom:60px}
+  footer h3{font-family:var(--sans); font-size:13px; letter-spacing:.18em; text-transform:uppercase; color:var(--accent); margin:0 0 14px; font-weight:600}
+  footer p,footer li{font-family:var(--sans); font-size:13.5px; color:var(--ink-dim); line-height:1.6}
+  footer ul{padding-left:18px; margin:0 0 14px}
+  .refs li{margin-bottom:9px}
+  .modechip{display:inline-block; font-family:var(--sans); font-size:11px; letter-spacing:.02em; color:var(--clay-deep);
+    background:var(--clay-soft); border-radius:5px; padding:2px 7px; font-weight:600}
+  .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0}
+  @media (max-width:560px){
+    body{font-size:17px}
+    header{padding:54px 0 18px}
+    figure{padding:18px 14px 12px; border-radius:12px}
+    .wrap,.wide{padding:0 16px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none !important; animation:none !important}
+    html{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+<div class="tip" id="tip" role="status" aria-live="off"></div>
+
+<header>
+  <div class="wrap">
+    <p class="kicker">Gender &amp; well-being &middot; GSS 1972&ndash;2024</p>
+    <h1>The paradox that didn't hold</h1>
+    <p class="dek">In the 1970s American women called themselves happier than men. A famous study watched that lead vanish. Extend the data eighteen more years and the decline doesn't continue &mdash; it dissolves into noise.</p>
+    <p class="byline">By the well-being desk &middot; <b>General Social Survey</b>, weighted, 1972&ndash;2024</p>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+  <p class="lead drop">For three decades, one of the most cited findings in the economics of happiness had a clean, uncomfortable shape. American women had begun the 1970s rating their lives happier than men did. By the mid-2000s that lead was gone, and on some measures men had pulled ahead &mdash; even as women's wages, schooling, and freedoms climbed. Betsey Stevenson and Justin Wolfers gave it a name in 2009: <a href="https://www.aeaweb.org/articles?id=10.1257/app.1.2.190">the paradox of declining female happiness</a>.</p>
+
+  <p>Their data ran through 2006. The General Social Survey has kept asking the same plain question every couple of years since &mdash; <em>"Taken all together, how would you say things are these days?"</em> &mdash; and the answers now reach 2024. So we did the obvious thing: re-ran the gap, women minus men, through the whole half-century, and looked at what happened after the famous study stopped.</p>
+
+  <p>The decline does not continue. It doesn't reverse into a new female advantage either. The women-minus-men gap, which had narrowed so tidily for thirty years, stops trending around the early 2000s and starts wobbling across the zero line &mdash; positive in some years, negative in others, never far from nothing. The 1970s crossing was real. The continuation, the part that made the paradox feel like a trajectory, is the part that doesn't replicate once you give it more rope.</p>
+</div>
+
+<div class="wide figwrap">
+  <figure>
+    <h4>The crossing, and what came after</h4>
+    <p class="sub">Women&rsquo;s happiness minus men&rsquo;s, by multi-year bin. Above the line, women report more; below it, men do. The shaded band is a weighted bootstrap 95% interval &mdash; when it straddles zero, the gap is within noise.</p>
+    <div class="controls" id="ctl-main">
+      <span class="ctl-label">Measure</span>
+      <span class="seg" role="group" aria-label="Choose happiness measure">
+        <button data-metric="vh" aria-pressed="true">% very happy</button>
+        <button data-metric="mean" aria-pressed="false">1&ndash;3 mean</button>
+      </span>
+    </div>
+    <div class="legend" aria-hidden="true">
+      <span><span class="swatch" style="background:var(--teal)"></span>Women happier</span>
+      <span><span class="swatch" style="background:var(--clay)"></span>Men happier</span>
+      <span><span class="swatch" style="background:var(--rule);height:2px;border-radius:0"></span>Stevenson &amp; Wolfers endpoint (2006)</span>
+    </div>
+    <div id="chart-main" style="position:relative"></div>
+    <figcaption id="cap-main">GSS, weighted by <span style="font-variant:small-caps">wtssps</span>. Bins suppressed at effective N&nbsp;&lt;&nbsp;50; none were. The 2021&ndash;24 bin spans the push-to-web mode change.</figcaption>
+  </figure>
+</div>
+
+<div class="wrap">
+  <h2>A landmark result, extended</h2>
+  <p>Read the chart left to right. In the first bin, 1972&ndash;76, women lead men by about <strong>4.6 points</strong> in the share calling themselves &ldquo;very happy,&rdquo; and by about <strong>0.055</strong> on the three-point scale. That early lead is the genuine article, and it is exactly the starting point Stevenson and Wolfers worked from.</p>
+
+  <p>Then it erodes. By the late 1980s the mean-scale gap has slipped below zero; by the early 2000s the very-happy gap crosses too. On the 1&ndash;3 mean the sign first flips negative in the <strong>1988&ndash;93</strong> bin; on the very-happy share, in <strong>2002&ndash;06</strong> &mdash; right where the original analysis ends. If you stopped there, as the literature largely did, the story writes itself: a steady, generation-long decline in women's relative happiness.</p>
+
+  <div class="statband" id="statband"></div>
+
+  <p>But the survey didn't stop. And in the eighteen years past the 2006 endpoint, the line does not keep falling. It jitters. The year-to-year mean gap changes sign <strong id="flips-post">3</strong> times after 2006 and <strong id="flips-full">16</strong> times across the full run &mdash; the fingerprint of a quantity hovering at zero, not one moving through it. The 2008&ndash;12 bin actually swings back in women's favor, by about <strong>3.0 points</strong> on the very-happy share: the Great Recession landed harder on men's mood than on women's. The bins on either side sit close to nothing.</p>
+
+  <p class="pull">The honest summary isn't &ldquo;women kept falling.&rdquo; It's that a clean trend turned into a cloud of small, sign-switching differences &mdash; and a cloud is not a continuation.</p>
+
+  <h3 class="eyebrow">Does a continued decline survive a trend line?</h3>
+  <p>You can force a straight line through the year-by-year gap, and through 2006 it does slope gently down &mdash; about <strong>&minus;0.0021</strong> per year on the mean scale. Fit the same line from 2006 onward and the slope is <strong>&minus;0.0014</strong>: similar in size, but riding a series so noisy that the &ldquo;trend&rdquo; is mostly the 2002 reading, an unusually low year for women, doing the pulling. Over the entire half-century the slope is <strong>&minus;0.0009</strong> per year &mdash; statistically a whisper, practically a flat line that happens to tilt. Change the window and the story changes with it. That fragility is the result: the decline is not robust to being asked to keep going.</p>
+</div>
+
+<div class="wide figwrap">
+  <figure>
+    <h4>Which lives, which decades</h4>
+    <p class="sub">The same zero-centered gap, split by life stage and collapsed into three eras. Teal bars mean women in that group reported more happiness; clay bars mean men did. Hover any bar for the gap, both measures, and the sample.</p>
+    <div class="controls" id="ctl-grp">
+      <span class="ctl-label">Cut by</span>
+      <span class="seg" id="grpseg" role="group" aria-label="Choose a life-stage grouping"></span>
+    </div>
+    <div id="chart-grp" style="position:relative"></div>
+    <figcaption id="cap-grp">GSS, weighted by <span style="font-variant:small-caps">wtssps</span>, 1&ndash;3 mean. Eras: 1972&ndash;90, 1991&ndash;2006, 2008&ndash;24. Cells with effective N&nbsp;&lt;&nbsp;50 are suppressed and drawn hollow. &ldquo;Keeping house&rdquo; is overwhelmingly women, so the male cell is tiny &mdash; read that row as a survivorship contrast, not a clean gap.</figcaption>
+  </figure>
+</div>
+
+<div class="wrap">
+  <h2>Where the early reversal actually lived</h2>
+  <p>The narrowing wasn't spread evenly. Break the gap apart by life stage and a few groups carried most of it. Among <strong>married</strong> people, women's early lead of about <strong>0.044</strong> on the mean scale collapses toward <strong>0.028</strong> &mdash; a real compression in the largest group in the sample. Among <strong>parents</strong>, the gap goes from roughly zero in the first era to mildly <em>negative</em> in the middle and recent ones: mothers and fathers report nearly identical happiness now, with fathers a hair ahead. And in the oldest band, <strong>65 and over</strong>, men sit ahead of women in every era &mdash; the one place a gap has been consistent, and it points the other way.</p>
+
+  <p>The groups that resist the convergence are the unattached ones. People who <strong>never married</strong> and people with <strong>no children</strong> show a durable female advantage that barely budges across fifty years &mdash; childless women still lead childless men by about <strong>0.058</strong> in the most recent era. Whatever pulled married and parenting women's relative happiness down, it didn't touch the women who were outside those institutions.</p>
+
+  <p>Put the cuts together and the present looks less like a gap than its absence. Across most groups, in the most recent era, the bars are short and their bootstrap intervals cross zero. By education, the once-wide advantage among the college-educated has flattened to near nothing. By labor-force status, employed men and women report essentially the same happiness. &ldquo;No consistent gap in most groups today&rdquo; is not a hedge &mdash; it is the finding.</p>
+</div>
+
+<div class="wrap">
+  <h2>What this does, and doesn't, show</h2>
+  <p>Two cautions keep this honest. The first is size. These are differences of a few percentage points and a few hundredths of a point on a three-rung scale. A 4.6-point lead in 1974 is real but modest; a 0.6-point gap in the 2020s is, for practical purposes, zero. Most of what looks like movement in the raw series is sampling jitter around a small number, which is exactly why the bootstrap band matters: where it crosses the line, there is no gap to explain.</p>
+
+  <p>The second is the instrument. This whole article rides on one evaluative question &mdash; an overall judgment of how things are. That item is not the same as how people <em>feel</em> moment to moment, and on those experiential measures the picture is less flattering to the headline. In the GSS health modules, women report about <strong class="modechip">experiential</strong> <strong>1.2</strong> more bad-mental-health days a month than men &mdash; roughly <strong>4.3</strong> against <strong>3.1</strong> &mdash; a gap that has not vanished. Surveys of anxiety, depression, loneliness and disturbed sleep tend to find the same: women reporting worse, even in places where the happiness gap is flat or tips their way. A flat evaluative gap does not mean men and women are living the same emotional life. It means the global &ldquo;all things considered&rdquo; verdict has converged, which is a narrower and more specific claim.</p>
+
+  <p>None of this is a verdict on the women's movement, in either direction. The 1970s lead, the long narrowing, the recent flatness &mdash; these are associations in survey responses, read evenhandedly. What the extended record will not support is the tidy extrapolation. The paradox of declining female happiness described something true about the past. As a trajectory carried into the present, it simply doesn't hold.</p>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <h3>Notes &amp; data</h3>
+    <p><b>Source.</b> General Social Survey cumulative file, 1972&ndash;2024, U.S. adults. Outcome is <code style="font-family:var(--sans)">happy</code>, a three-point evaluative item recoded so higher is happier (1 = not too happy, 2 = pretty happy, 3 = very happy). Construct: <b>evaluative</b> well-being throughout; the bad-mental-health-days figure is labeled experiential and is module-limited.</p>
+    <p><b>Weighting &amp; samples.</b> Every statistic is weighted by <code style="font-family:var(--sans)">wtssps</code>, the post-stratification weight covering all years; no unweighted figures are reported. Roughly <b>70,740</b> respondents with a valid happiness answer enter the analysis, between about <b>5,700</b> and <b>11,400</b> per multi-year bin.</p>
+    <p><b>Binning &amp; suppression.</b> The main series pools years into nine bins keyed to the survey cadence; the group panels collapse to three broad eras (1972&ndash;90, 1991&ndash;2006, 2008&ndash;24) so subgroup cells stay stable. Effective N is computed as (&Sigma;w)&sup2;&thinsp;/&thinsp;&Sigma;w&sup2;; any cell below 50 is suppressed and drawn hollow. Bootstrap intervals resample respondents within sex (1,000 reps for the main series, 500 for the panels) and are 95% percentile bands.</p>
+    <p><b>Mode change.</b> <span class="modechip">2021&ndash;22</span> The 2021 and 2022 GSS waves moved to push-to-web after COVID, which shifted reported happiness levels downward partly for reasons of mode rather than mood. The 2021&ndash;24 bin is flagged on the chart; treat post-2021 levels as partly mode-affected and read the gap, not the level.</p>
+    <p><b>Method.</b> Descriptive. The trend slopes quoted are effective-N-weighted least-squares fits on the per-year gap, shown to illustrate specification sensitivity, not to assert a causal model. No covariate adjustment is performed; the piece stays in the descriptive lane.</p>
+    <h3 style="margin-top:24px">References</h3>
+    <ul class="refs">
+      <li>Stevenson, B. &amp; Wolfers, J. (2009). <a href="https://www.aeaweb.org/articles?id=10.1257/app.1.2.190">The Paradox of Declining Female Happiness</a>. <em>American Economic Journal: Applied Economics</em>, vol.&nbsp;1, no.&nbsp;2. Analysis of the GSS through 2006.</li>
+      <li>General Social Survey, NORC at the University of Chicago. <a href="https://gss.norc.org/">Cumulative data, 1972&ndash;2024</a>.</li>
+      <li>On the evaluative-versus-affective divergence in gendered well-being, see e.g. the affect and mental-health literatures summarized in the World Happiness Report&rsquo;s gender chapters, <a href="https://worldhappiness.report/">worldhappiness.report</a>.</li>
+    </ul>
+  </div>
+</footer>
+
+<script type="module">
+import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+
+const DATA = {"meta":{"slug":"female-happiness-paradox","dataset":"GSS 1972-2024","weight":"wtssps","construct":"evaluative","outcome":"happy (1=not too happy, 2=pretty happy, 3=very happy)","sw_endpoint":2006,"effn_min":50.0,"n_boot":1000,"n_total":70740,"n_range_lo":5692,"n_range_hi":11445,"n_range_lo_round":5700,"n_range_hi_round":11400,"n_boot_panel":500,"bin_labels":["1972-76","1977-82","1983-87","1988-93","1994-2000","2002-06","2008-12","2014-18","2021-24"],"eras":["1972-90","1991-2006","2008-24"]},"main":[{"bin":"1972-76","x":1974.0,"vh":{"gap":0.045830992282317795,"f":0.36045887342682065,"m":0.31462788114450285,"lo":0.022411294312238154,"hi":0.06995761439239642,"effn_f":3353.8295848206417,"effn_m":2902.5890999708117,"n_f":4042,"n_m":3528},"mean":{"gap":0.05528916648794402,"f":2.2290117064893247,"m":2.1737225400013807,"lo":0.022688658448675746,"hi":0.08749990364467589,"effn_f":3353.8295848206417,"effn_m":2902.5890999708117,"n_f":4042,"n_m":3528},"suppressed":false},{"bin":"1977-82","x":1979.5,"vh":{"gap":0.04639986147165781,"f":0.3647517011627496,"m":0.31835183969109176,"lo":0.01812178293477334,"hi":0.07409513410099779,"effn_f":2387.988327795945,"effn_m":1831.6401311583377,"n_f":3620,"n_m":2741},"mean":{"gap":0.05070708240953792,"f":2.2573105588123514,"m":2.2066034764028135,"lo":0.01236141093394596,"hi":0.09024973450289811,"effn_f":2387.988327795945,"effn_m":1831.6401311583377,"n_f":3620,"n_m":2741},"suppressed":false},{"bin":"1983-87","x":1985.0,"vh":{"gap":0.01826203490049305,"f":0.3328613410877968,"m":0.31459930618730375,"lo":-0.008471754747707356,"hi":0.0440749649111117,"effn_f":2987.6440076287836,"effn_m":2221.6814845196063,"n_f":4451,"n_m":3326},"mean":{"gap":0.028080546856533495,"f":2.2215836460971143,"m":2.193503099240581,"lo":-0.00593737301117293,"hi":0.06223376478869317,"effn_f":2987.6440076287836,"effn_m":2221.6814845196063,"n_f":4451,"n_m":3326},"suppressed":false},{"bin":"1988-93","x":1990.5,"vh":{"gap":0.007156836217532492,"f":0.3396152154301465,"m":0.332458379212614,"lo":-0.0175778463157604,"hi":0.030377803039822262,"effn_f":3336.320424766555,"effn_m":2559.661894951717,"n_f":4252,"n_m":3206},"mean":{"gap":-0.007405776356213867,"f":2.2405156545523224,"m":2.2479214309085362,"lo":-0.037989594819809014,"hi":0.022755132512496116,"effn_f":3336.320424766555,"effn_m":2559.661894951717,"n_f":4252,"n_m":3206},"suppressed":false},{"bin":"1994-2000","x":1997.0,"vh":{"gap":0.0034554829348732996,"f":0.3270384299208819,"m":0.3235829469860086,"lo":-0.015176109401618655,"hi":0.023028142829035446,"effn_f":5105.345441990084,"effn_m":3955.7328998298462,"n_f":6453,"n_m":4992},"mean":{"gap":-0.0017567891249803402,"f":2.2172698757727236,"m":2.219026664897704,"lo":-0.025592388540468414,"hi":0.02451348644915736,"effn_f":5105.345441990084,"effn_m":3955.7328998298462,"n_f":6453,"n_m":4992},"suppressed":false},{"bin":"2002-06","x":2004.0,"vh":{"gap":-0.0019199333810179797,"f":0.3222545913666348,"m":0.3241745247476528,"lo":-0.029969918112906675,"hi":0.027617323414424685,"effn_f":2246.869123006431,"effn_m":1818.2622113087564,"n_f":3128,"n_m":2564},"mean":{"gap":-0.00870808065524642,"f":2.198979761767661,"m":2.2076878424229074,"lo":-0.044520266500460134,"hi":0.033532987550613444,"effn_f":2246.869123006431,"effn_m":1818.2622113087564,"n_f":3128,"n_m":2564},"suppressed":false},{"bin":"2008-12","x":2010.0,"vh":{"gap":0.030409889209640883,"f":0.3167869186724261,"m":0.2863770294627852,"lo":0.0008044502022686996,"hi":0.06029240259138883,"effn_f":2280.022749310352,"effn_m":1787.6708336972176,"n_f":3320,"n_m":2698},"mean":{"gap":0.037073301940133696,"f":2.182146688179099,"m":2.1450733862389653,"lo":0.0014619046477827304,"hi":0.0764477224533733,"effn_f":2280.022749310352,"effn_m":1787.6708336972176,"n_f":3320,"n_m":2698},"suppressed":false},{"bin":"2014-18","x":2016.0,"vh":{"gap":0.006453153874225237,"f":0.3155656286890605,"m":0.3091124748148353,"lo":-0.01860534521865331,"hi":0.031750392313611056,"effn_f":2853.4105075013135,"effn_m":2350.403098207855,"n_f":4273,"n_m":3460},"mean":{"gap":0.006774426930109545,"f":2.182528287837366,"m":2.1757538609072564,"lo":-0.02654029226841783,"hi":0.041556137042068175,"effn_f":2853.4105075013135,"effn_m":2350.403098207855,"n_f":4273,"n_m":3460},"suppressed":false},{"bin":"2021-24","x":2022.5,"vh":{"gap":-0.005582004518013772,"f":0.22046066758054064,"m":0.22604267209855441,"lo":-0.028728783854685726,"hi":0.01641262083383658,"effn_f":2877.061660107678,"effn_m":2449.978594971155,"n_f":5883,"n_m":4803},"mean":{"gap":0.0012995018485995047,"f":2.005662204654019,"m":2.0043627028054196,"lo":-0.034668981748931835,"hi":0.036449941887901655,"effn_f":2877.061660107678,"effn_m":2449.978594971155,"n_f":5883,"n_m":4803},"suppressed":false}],"byyear":[{"year":1972,"gap_vh":0.05372081341674667,"gap_mean":0.08211362354453877,"n_f":801,"n_m":805,"effn_f":666.4707645281384,"effn_m":662.9597986201853},{"year":1973,"gap_vh":0.043462256132614396,"gap_mean":0.039863040455641485,"n_f":802,"n_m":698,"effn_f":675.4362007362399,"effn_m":582.2092230835261},{"year":1974,"gap_vh":0.07758762420398346,"gap_mean":0.10532566835855661,"n_f":790,"n_m":690,"effn_f":667.8740839893055,"effn_m":561.9231576289841},{"year":1975,"gap_vh":0.016442503605893888,"gap_mean":-0.0018249471344540247,"n_f":819,"n_m":666,"effn_f":667.6659375116254,"effn_m":553.7571574296601},{"year":1976,"gap_vh":0.037318986973959856,"gap_mean":0.048769786000748994,"n_f":830,"n_m":669,"effn_f":679.9122788312683,"effn_m":546.9955521407508},{"year":1977,"gap_vh":0.06548072228449997,"gap_mean":0.050855856476768935,"n_f":836,"n_m":691,"effn_f":670.6582526265339,"effn_m":558.5499674748069},{"year":1978,"gap_vh":0.007241115557877931,"gap_mean":0.012404325411644823,"n_f":880,"n_m":637,"effn_f":583.9374563957189,"effn_m":387.28868911746576},{"year":1980,"gap_vh":0.04098628779297314,"gap_mean":0.052282257490615436,"n_f":824,"n_m":638,"effn_f":526.5807273290089,"effn_m":444.7699051550132},{"year":1982,"gap_vh":0.06702846457868278,"gap_mean":0.08072365073772403,"n_f":1080,"n_m":775,"effn_f":629.4809275140394,"effn_m":480.4810281769952},{"year":1983,"gap_vh":0.012162796574163914,"gap_mean":0.014403947927647653,"n_f":897,"n_m":676,"effn_f":562.2279869356803,"effn_m":406.6754113848708},{"year":1984,"gap_vh":0.04817280239184074,"gap_mean":0.07056641533582342,"n_f":859,"n_m":586,"effn_f":575.3568727626708,"effn_m":380.03799904268004},{"year":1985,"gap_vh":-0.016872569183696118,"gap_mean":-0.033321323906382094,"n_f":842,"n_m":688,"effn_f":539.2548826544146,"effn_m":439.26591338041766},{"year":1986,"gap_vh":0.02053437119803503,"gap_mean":0.03762609308679998,"n_f":836,"n_m":613,"effn_f":669.0143309003374,"effn_m":510.6512596277814},{"year":1987,"gap_vh":0.02759585905647549,"gap_mean":0.0506420235962457,"n_f":1017,"n_m":763,"effn_f":669.4445471482203,"effn_m":508.98750847275835},{"year":1988,"gap_vh":-0.017494230170169378,"gap_mean":-0.04450847386912482,"n_f":834,"n_m":632,"effn_f":666.5471958223067,"effn_m":523.3407212488163},{"year":1989,"gap_vh":0.009340058679645158,"gap_mean":0.004198612926481271,"n_f":870,"n_m":656,"effn_f":676.6942636740711,"effn_m":531.1930004972179},{"year":1990,"gap_vh":-0.010901087094191964,"gap_mean":-0.004838262223981538,"n_f":760,"n_m":601,"effn_f":585.967702264052,"effn_m":482.6013580972447},{"year":1991,"gap_vh":-0.011688032388529612,"gap_mean":-0.04474601920549981,"n_f":871,"n_m":633,"effn_f":680.718099099504,"effn_m":487.3743307076689},{"year":1993,"gap_vh":0.060418768072986906,"gap_mean":0.04809642924294488,"n_f":917,"n_m":684,"effn_f":727.6906715344475,"effn_m":538.7235759575537},{"year":1994,"gap_vh":-0.013228802646734594,"gap_mean":-0.018295957322802092,"n_f":1695,"n_m":1282,"effn_f":1322.4914654626373,"effn_m":1030.2299222192112},{"year":1996,"gap_vh":-0.0033953307171942226,"gap_mean":-0.005033047823770342,"n_f":1607,"n_m":1278,"effn_f":1307.0279220299783,"effn_m":1023.0533359408183},{"year":1998,"gap_vh":0.021013628198998657,"gap_mean":0.005977437527393548,"n_f":1588,"n_m":1218,"effn_f":1243.4797577724607,"effn_m":934.9991198253283},{"year":2000,"gap_vh":0.010722743021239822,"gap_mean":0.011586752571584036,"n_f":1563,"n_m":1214,"effn_f":1232.9383358005152,"effn_m":969.5361927522412},{"year":2002,"gap_vh":-0.0513753461884045,"gap_mean":-0.0984962249445327,"n_f":720,"n_m":649,"effn_f":509.50825990170176,"effn_m":484.32440057466},{"year":2004,"gap_vh":0.031944381860551097,"gap_mean":0.07835359194168445,"n_f":715,"n_m":622,"effn_f":537.7627000877193,"effn_m":444.1385862187798},{"year":2006,"gap_vh":0.0059562157418511785,"gap_mean":-0.005780134759647559,"n_f":1693,"n_m":1293,"effn_f":1199.9920074748256,"effn_m":892.6022705733182},{"year":2008,"gap_vh":0.018057886463323125,"gap_mean":0.014781706820638174,"n_f":1088,"n_m":927,"effn_f":782.6135775665169,"effn_m":662.1717102233894},{"year":2010,"gap_vh":0.033128883865728986,"gap_mean":0.0646767396432435,"n_f":1149,"n_m":890,"effn_f":771.8137462172622,"effn_m":573.6987518981778},{"year":2012,"gap_vh":0.04036735885654824,"gap_mean":0.031446544516827935,"n_f":1083,"n_m":881,"effn_f":726.511955265462,"effn_m":560.4270120083066},{"year":2014,"gap_vh":0.02702268237346983,"gap_mean":0.05439486878512456,"n_f":1393,"n_m":1137,"effn_f":1021.9130427842011,"effn_m":871.3340333366294},{"year":2016,"gap_vh":-0.008782008893683746,"gap_mean":-0.0271944380077076,"n_f":1586,"n_m":1273,"effn_f":1042.2240134179033,"effn_m":871.0749776084618},{"year":2018,"gap_vh":0.002823733996034139,"gap_mean":-0.003214597337573011,"n_f":1294,"n_m":1050,"effn_f":801.8030055439264,"effn_m":631.0395799570716},{"year":2021,"gap_vh":-0.03199706079816139,"gap_mean":-0.035725700393147486,"n_f":2192,"n_m":1730,"effn_f":1456.4337667850643,"effn_m":1144.2307661691225},{"year":2022,"gap_vh":0.017224256161202628,"gap_mean":0.018752795391421273,"n_f":1881,"n_m":1620,"effn_f":707.795683326957,"effn_m":643.7395769007753},{"year":2024,"gap_vh":0.0010606639912238147,"gap_mean":0.02626738011357732,"n_f":1810,"n_m":1453,"effn_f":914.8431462733199,"effn_m":757.8563864994253}],"groups":[{"id":"marital","label":"Marital status","cats":["Married","Never married","Div/Sep","Widowed"],"rows":[{"cat":"Married","cells":[{"era":"1972-90","gap":0.04434103340195028,"gap_vh":0.03568767589605509,"lo":0.021751002046745394,"hi":0.06558614383115001,"n_f":8211,"n_m":7572,"effn_f":6596.813338966492,"effn_m":5919.6563799565,"suppressed":false},{"era":"1991-2006","gap":0.002359234393825904,"gap_vh":0.0053916372831318005,"lo":-0.02061294869075646,"hi":0.03045006871814511,"n_f":5200,"n_m":4679,"effn_f":4488.307773019096,"effn_m":3952.046216871576,"suppressed":false},{"era":"2008-24","gap":0.027629651827635993,"gap_vh":0.01776448495920202,"lo":-0.00392303871948761,"hi":0.05627576135175344,"n_f":5591,"n_m":5261,"effn_f":3671.741299016682,"effn_m":3476.324386586686,"suppressed":false}]},{"cat":"Never married","cells":[{"era":"1972-90","gap":0.07859815245585011,"gap_vh":0.059515987204425164,"lo":0.03451165944732217,"hi":0.1241318391501869,"n_f":2011,"n_m":2327,"effn_f":1260.7634289642156,"effn_m":1601.5383416940597,"suppressed":false},{"era":"1991-2006","gap":0.03681283694314974,"gap_vh":0.022701878749759763,"lo":-0.004449224099037774,"hi":0.07970344857772745,"n_f":2314,"n_m":2327,"effn_f":1563.7941130988347,"effn_m":1570.5206901761023,"suppressed":false},{"era":"2008-24","gap":0.027907204606486324,"gap_vh":0.013759670668226198,"lo":-0.010434415389434503,"hi":0.07035176110360275,"n_f":3542,"n_m":3290,"effn_f":1836.3583486785453,"effn_m":1733.6889565400663,"suppressed":false}]},{"cat":"Div/Sep","cells":[{"era":"1972-90","gap":0.07721457327420533,"gap_vh":0.02116577133276179,"lo":0.02242238110579794,"hi":0.14543316388781694,"n_f":2101,"n_m":1118,"effn_f":1459.8863426799467,"effn_m":658.4976679619854,"suppressed":false},{"era":"1991-2006","gap":0.01566203040272085,"gap_vh":0.026681128619124972,"lo":-0.033105782991352514,"hi":0.061067615346330914,"n_f":2296,"n_m":1488,"effn_f":1684.1492235799185,"effn_m":1111.923195528837,"suppressed":false},{"era":"2008-24","gap":0.040898744141435905,"gap_vh":0.020152170928041918,"lo":-0.0059682016120017525,"hi":0.08703249832608884,"n_f":2850,"n_m":1904,"effn_f":1566.562901217971,"effn_m":1112.1089534733221,"suppressed":false}]},{"cat":"Widowed","cells":[{"era":"1972-90","gap":0.07909718153725254,"gap_vh":0.04346250165296825,"lo":0.0028361783259976308,"hi":0.1594850003150832,"n_f":2251,"n_m":467,"effn_f":1559.2922953370746,"effn_m":299.44658328573223,"suppressed":false},{"era":"1991-2006","gap":0.022179953973149313,"gap_vh":0.003166049612589178,"lo":-0.06431402754376699,"hi":0.10619355146064435,"n_f":1558,"n_m":376,"effn_f":1170.3780826784616,"effn_m":308.63464916648445,"suppressed":false},{"era":"2008-24","gap":-0.008768065282129367,"gap_vh":-0.011135668547922833,"lo":-0.09676356590610619,"hi":0.0847201371714246,"n_f":1459,"n_m":491,"effn_f":837.3069620187366,"effn_m":286.0138345512524,"suppressed":false}]}]},{"id":"parent","label":"Parenthood","cats":["Parent","No children"],"rows":[{"cat":"Parent","cells":[{"era":"1972-90","gap":0.0022931448845349145,"gap_vh":0.007211707511943166,"lo":-0.01812607543150626,"hi":0.022272024688180143,"n_f":11189,"n_m":7891,"effn_f":8383.71940587336,"effn_m":5903.623767513299,"suppressed":false},{"era":"1991-2006","gap":-0.04774140405269778,"gap_vh":-0.02642905621956987,"lo":-0.07138333838550301,"hi":-0.0249313528167998,"n_f":8661,"n_m":5816,"effn_f":6799.264488779189,"effn_m":4641.70762166221,"suppressed":false},{"era":"2008-24","gap":-0.025133656910110158,"gap_vh":-0.015932097917229437,"lo":-0.05204535145623379,"hi":-0.0010063380736306676,"n_f":10146,"n_m":7182,"effn_f":6075.487334485779,"effn_m":4428.520607330522,"suppressed":false}]},{"cat":"No children","cells":[{"era":"1972-90","gap":0.09400089472331663,"gap_vh":0.06588956389741651,"lo":0.06266610092526806,"hi":0.12966486949494285,"n_f":3357,"n_m":3551,"effn_f":2275.506834469696,"effn_m":2478.646527521992,"suppressed":false},{"era":"1991-2006","gap":0.08357304304446744,"gap_vh":0.06054036439196114,"lo":0.043139942611977455,"hi":0.11698150114984439,"n_f":2680,"n_m":3028,"effn_f":1939.0662537111386,"effn_m":2139.568453604374,"suppressed":false},{"era":"2008-24","gap":0.05824065335327022,"gap_vh":0.03333495310887588,"lo":0.021232445939705615,"hi":0.09728024717901586,"n_f":3287,"n_m":3732,"effn_f":1757.9110591345664,"effn_m":2050.060404228935,"suppressed":false}]}]},{"id":"work","label":"Labor-force status","cats":["Employed","Keeping house","Retired","Unemployed"],"rows":[{"cat":"Employed","cells":[{"era":"1972-90","gap":0.02390597079867307,"gap_vh":0.021519203011084842,"lo":0.00012060490306224967,"hi":0.04633176498461328,"n_f":6678,"n_m":8042,"effn_f":4850.372501960507,"effn_m":5875.413708419092,"suppressed":false},{"era":"1991-2006","gap":-0.007076199304873132,"gap_vh":-0.00047470930117149424,"lo":-0.030244728131540343,"hi":0.014856029727545924,"n_f":6478,"n_m":6400,"effn_f":4980.024279264237,"effn_m":4885.284993373297,"suppressed":false},{"era":"2008-24","gap":0.010181223111291438,"gap_vh":0.0036769345310221913,"lo":-0.01694335967507552,"hi":0.04039637282219984,"n_f":7015,"n_m":6795,"effn_f":4058.6259669698547,"effn_m":4163.482486113976,"suppressed":false}]},{"cat":"Keeping house","cells":[{"era":"1972-90","gap":0.30602731337513145,"gap_vh":0.14160772115624076,"lo":0.14220254867903614,"hi":0.4587816049620187,"n_f":5684,"n_m":111,"effn_f":4305.346184516793,"effn_m":80.57640343876655,"suppressed":false},{"era":"1991-2006","gap":0.08827910260275962,"gap_vh":0.07693418311308525,"lo":-0.040685751796727856,"hi":0.23537911718857968,"n_f":2295,"n_m":105,"effn_f":1851.8178974760901,"effn_m":82.49920858724857,"suppressed":false},{"era":"2008-24","gap":0.23036756209195852,"gap_vh":0.1223020300356491,"lo":0.1208674086086965,"hi":0.3408470006198221,"n_f":2008,"n_m":309,"effn_f":1270.2665919242704,"effn_m":173.7479493010079,"suppressed":false}]},{"cat":"Retired","cells":[{"era":"1972-90","gap":-0.0390048141377215,"gap_vh":-0.04408261722195367,"lo":-0.09821992076753963,"hi":0.013361236432156582,"n_f":1159,"n_m":1868,"effn_f":827.426273123252,"effn_m":1381.78722637733,"suppressed":false},{"era":"1991-2006","gap":-0.1070404422657365,"gap_vh":-0.05711634069401339,"lo":-0.15118099633660784,"hi":-0.050389809384287734,"n_f":1526,"n_m":1391,"effn_f":1205.0512119223897,"effn_m":1156.2337707693202,"suppressed":false},{"era":"2008-24","gap":-0.02225897425423984,"gap_vh":-0.019732057764424382,"lo":-0.06126845463134793,"hi":0.020101946969696527,"n_f":2632,"n_m":2376,"effn_f":1599.410870497335,"effn_m":1515.2654393028683,"suppressed":false}]},{"cat":"Unemployed","cells":[{"era":"1972-90","gap":0.06222346609205842,"gap_vh":0.030425803786704786,"lo":-0.017754103452875855,"hi":0.16151501596598822,"n_f":478,"n_m":903,"effn_f":329.90656056194604,"effn_m":630.371835153567,"suppressed":false},{"era":"1991-2006","gap":0.17937972440747174,"gap_vh":0.10714732641371136,"lo":0.0855481951540176,"hi":0.28511555705537256,"n_f":478,"n_m":501,"effn_f":322.2271189995611,"effn_m":366.4726720819284,"suppressed":false},{"era":"2008-24","gap":0.07242746459544014,"gap_vh":-0.009725848506747348,"lo":-0.008408731845887083,"hi":0.15179462676455477,"n_f":929,"n_m":823,"effn_f":501.81053567113423,"effn_m":435.6981805685759,"suppressed":false}]}]},{"id":"educ","label":"Education","cats":["BA+","No BA"],"rows":[{"cat":"BA+","cells":[{"era":"1972-90","gap":0.08816897038877203,"gap_vh":0.08257451025998924,"lo":0.04801755038080433,"hi":0.1275250120622368,"n_f":1896,"n_m":2193,"effn_f":1356.9575005391055,"effn_m":1664.2992383242085,"suppressed":false},{"era":"1991-2006","gap":0.018034362718601482,"gap_vh":0.014945941950000763,"lo":-0.018635168607829298,"hi":0.060017100874236624,"n_f":2536,"n_m":2349,"effn_f":1964.9470025105195,"effn_m":1814.4218653927546,"suppressed":false},{"era":"2008-24","gap":0.005022528883345867,"gap_vh":0.0010872936342660733,"lo":-0.030639365598468693,"hi":0.037548015181981205,"n_f":4464,"n_m":3708,"effn_f":2629.105322628118,"effn_m":2268.1780557175975,"suppressed":false}]},{"cat":"No BA","cells":[{"era":"1972-90","gap":0.03129956330440331,"gap_vh":0.02296803709093459,"lo":0.011505614193164971,"hi":0.04931146044381041,"n_f":12634,"n_m":9249,"effn_f":9205.20636474796,"effn_m":6667.034372861472,"suppressed":false},{"era":"1991-2006","gap":-0.0018455694821621904,"gap_vh":0.007212192928791161,"lo":-0.024471568231117246,"hi":0.020613936724819457,"n_f":8802,"n_m":6500,"effn_f":6769.007003400239,"effn_m":4977.656161137068,"suppressed":false},{"era":"2008-24","gap":0.01628768528781066,"gap_vh":0.010275424422948792,"lo":-0.014586716017535351,"hi":0.04236797949776286,"n_f":8997,"n_m":7244,"effn_f":5247.154129831303,"effn_m":4272.406153173283,"suppressed":false}]}]},{"id":"age","label":"Age band","cats":["18-34","35-49","50-64","65+"],"rows":[{"cat":"18-34","cells":[{"era":"1972-90","gap":0.08308209090099927,"gap_vh":0.06754913457742379,"lo":0.05460293278822238,"hi":0.11295636883908686,"n_f":5151,"n_m":4199,"effn_f":3622.86858707557,"effn_m":3059.2327179019844,"suppressed":false},{"era":"1991-2006","gap":0.06745353188570702,"gap_vh":0.05119623810123386,"lo":0.032586839185821136,"hi":0.10472486447931023,"n_f":3344,"n_m":2745,"effn_f":2552.756959334591,"effn_m":2019.1860321903907,"suppressed":false},{"era":"2008-24","gap":0.060048223166165204,"gap_vh":0.03676441539875322,"lo":0.012830318670775942,"hi":0.10377016772111396,"n_f":3289,"n_m":2675,"effn_f":1846.84163762042,"effn_m":1557.7886887712007,"suppressed":false}]},{"cat":"35-49","cells":[{"era":"1972-90","gap":0.03957831326385142,"gap_vh":0.028774765496818233,"lo":0.0036712396783548213,"hi":0.07293305185836252,"n_f":3658,"n_m":3067,"effn_f":2735.4900194741103,"effn_m":2233.8290412478486,"suppressed":false},{"era":"1991-2006","gap":-0.008258217028121795,"gap_vh":0.004340308614564969,"lo":-0.03921692455991974,"hi":0.026347262576381862,"n_f":3597,"n_m":2948,"effn_f":2787.6549945258485,"effn_m":2311.614497321914,"suppressed":false},{"era":"2008-24","gap":0.02507939591658026,"gap_vh":0.011488826172820932,"lo":-0.01898532259147838,"hi":0.0670590758123805,"n_f":3424,"n_m":2755,"effn_f":2051.638889090122,"effn_m":1759.1958953622436,"suppressed":false}]},{"cat":"50-64","cells":[{"era":"1972-90","gap":0.0028850182383641787,"gap_vh":0.003842198674800845,"lo":-0.03928575714597516,"hi":0.040022509586945774,"n_f":2951,"n_m":2377,"effn_f":2234.3429494665,"effn_m":1767.1725145193711,"suppressed":false},{"era":"1991-2006","gap":-0.026822966259905545,"gap_vh":-0.016573404407396575,"lo":-0.06659692607300174,"hi":0.014477733721831833,"n_f":2246,"n_m":1823,"effn_f":1727.0171452863901,"effn_m":1429.2009970890372,"suppressed":false},{"era":"2008-24","gap":-0.0023389370011996924,"gap_vh":0.001272675744520002,"lo":-0.046399509201753515,"hi":0.041866890473452795,"n_f":3374,"n_m":2826,"effn_f":2077.32348312753,"effn_m":1660.1451721720757,"suppressed":false}]},{"cat":"65+","cells":[{"era":"1972-90","gap":-0.07105206547873122,"gap_vh":-0.0485060056074319,"lo":-0.11791858819870682,"hi":-0.025541706665308844,"n_f":2741,"n_m":1815,"effn_f":2067.1040616699415,"effn_m":1332.1597020183412,"suppressed":false},{"era":"1991-2006","gap":-0.12059944241032161,"gap_vh":-0.0711445146461952,"lo":-0.16508292697538074,"hi":-0.07605376794594199,"n_f":2149,"n_m":1342,"effn_f":1691.6978045901724,"effn_m":1102.5584498646654,"suppressed":false},{"era":"2008-24","gap":-0.05680287960424257,"gap_vh":-0.0309208443800576,"lo":-0.10618223942099368,"hi":-0.011803914813424184,"n_f":3057,"n_m":2457,"effn_f":1785.5886461071575,"effn_m":1524.2338801595508,"suppressed":false}]}]}],"mental":{"years":[2002,2004,2006,2010,2012,2014,2016,2018,2022],"f_days":4.32007054856082,"m_days":3.157067952020883,"gap":1.163002596539937,"n_f":6840,"n_m":6399},"stats":{"early_vh":0.045830992282317795,"early_mean":0.05528916648794402,"cross_vh_bin":"2002-06","cross_mean_bin":"1988-93","flips_post2006":3,"flips_full":16,"gap_1418_vh":0.006453153874225237,"gap_1418_mean":0.006774426930109545,"gap_2124_vh":-0.005582004518013772,"gap_2124_mean":0.0012995018485995047,"gap_0812_vh":0.030409889209640883,"gap_0812_mean":0.037073301940133696,"slope_full":-0.0008630161714410832,"slope_pre2006":-0.002090729081550507,"slope_post2006":-0.0013583635982355499}};
+
+const tip = document.getElementById("tip");
+const reduceMotion = window.matchMedia("(prefers-reduced-motion:reduce)").matches;
+const fmtGap = (g, metric) => metric === "vh"
+  ? (g >= 0 ? "+" : "−") + Math.abs(g * 100).toFixed(1) + " pp"
+  : (g >= 0 ? "+" : "−") + Math.abs(g).toFixed(3);
+const fmtN = n => n.toLocaleString("en-US");
+
+function showTip(html, ev){
+  tip.innerHTML = html;
+  tip.style.opacity = 1;
+  const pad = 14, w = tip.offsetWidth, h = tip.offsetHeight;
+  let x = ev.clientX + pad, y = ev.clientY + pad;
+  if(x + w > window.innerWidth - 8) x = ev.clientX - w - pad;
+  if(y + h > window.innerHeight - 8) y = ev.clientY - h - pad;
+  tip.style.left = (x + window.scrollX) + "px";
+  tip.style.top = (y + window.scrollY) + "px";
+}
+function hideTip(){ tip.style.opacity = 0; }
+
+const TEAL = getComputedStyle(document.documentElement).getPropertyValue("--teal").trim();
+const CLAY = getComputedStyle(document.documentElement).getPropertyValue("--clay").trim();
+const TEAL_SOFT = "rgba(31,138,122,.18)";
+const CLAY_SOFT = "rgba(191,125,44,.18)";
+const INK = getComputedStyle(document.documentElement).getPropertyValue("--ink").trim();
+const RULE = getComputedStyle(document.documentElement).getPropertyValue("--rule").trim();
+const FAINT = getComputedStyle(document.documentElement).getPropertyValue("--ink-faint").trim();
+const DIM = getComputedStyle(document.documentElement).getPropertyValue("--ink-dim").trim();
+
+/* ---------- stat band ---------- */
+function fillStats(){
+  const s = DATA.stats;
+  const cards = [
+    {v:"+4.6 pp", cls:"tealv", l:"Women&rsquo;s very-happy lead in 1972&ndash;76"},
+    {v:"2002&ndash;06", cls:"", l:"When the very-happy gap first crosses zero"},
+    {v:"+0.6 pp", cls:"tealv", l:"Gap in 2014&ndash;18 &mdash; within noise"},
+    {v:"−0.6 pp", cls:"clayv", l:"Gap in 2021&ndash;24 &mdash; men marginally ahead"},
+  ];
+  const host = document.getElementById("statband");
+  host.innerHTML = cards.map(c =>
+    `<div class="stat"><div class="v ${c.cls}">${c.v}</div><div class="l">${c.l}</div></div>`).join("");
+  document.getElementById("flips-post").textContent = s.flips_post2006;
+  document.getElementById("flips-full").textContent = s.flips_full;
+}
+
+/* ================= MAIN diverging gap chart ================= */
+const mainState = { metric: "vh" };
+const mainHost = d3.select("#chart-main");
+
+function drawMain(){
+  mainHost.selectAll("*").remove();
+  const rows = DATA.main.filter(d => !d.suppressed);
+  const W = Math.max(320, mainHost.node().clientWidth);
+  const H = W < 520 ? 360 : 440;
+  const m = { t: 26, r: 18, b: 46, l: W < 520 ? 46 : 56 };
+  const iw = W - m.l - m.r, ih = H - m.t - m.b;
+
+  const svg = mainHost.append("svg")
+    .attr("viewBox", `0 0 ${W} ${H}`)
+    .attr("role", "img")
+    .attr("aria-label", "Diverging area chart of the women-minus-men happiness gap by multi-year bin, 1972 to 2024. The gap starts clearly positive, narrows across three decades, crosses zero in the early 2000s, and then fluctuates within a bootstrap band that straddles zero.");
+
+  const g = svg.append("g").attr("transform", `translate(${m.l},${m.t})`);
+  const metric = mainState.metric;
+  const acc = d => d[metric];
+
+  const x = d3.scalePoint().domain(rows.map(d => d.bin)).range([0, iw]).padding(0.5);
+  const vals = [];
+  rows.forEach(d => { vals.push(acc(d).gap, acc(d).lo, acc(d).hi); });
+  let ext = d3.max(vals.map(Math.abs)) * 1.12;
+  const y = d3.scaleLinear().domain([-ext, ext]).range([ih, 0]);
+  const toPct = metric === "vh";
+
+  /* y gridlines */
+  const yticks = y.ticks(6);
+  g.selectAll(".gl").data(yticks).join("line")
+    .attr("x1", 0).attr("x2", iw)
+    .attr("y1", d => y(d)).attr("y2", d => y(d))
+    .attr("stroke", d => d === 0 ? INK : "rgba(35,32,26,.09)")
+    .attr("stroke-width", d => d === 0 ? 2.2 : 1);
+
+  g.selectAll(".yl").data(yticks).join("text")
+    .attr("x", -10).attr("y", d => y(d)).attr("dy", "0.32em")
+    .attr("text-anchor", "end").attr("font-size", 11).attr("fill", FAINT)
+    .text(d => toPct ? (d * 100).toFixed(0) : d.toFixed(2));
+
+  /* zero label */
+  g.append("text").attr("x", iw).attr("y", y(0) - 7).attr("text-anchor", "end")
+    .attr("font-size", 11).attr("font-weight", 600).attr("fill", DIM)
+    .attr("letter-spacing", ".04em").text("EQUAL");
+
+  /* axis side labels */
+  g.append("text").attr("x", -10).attr("y", y(ext) + 4).attr("text-anchor", "end")
+    .attr("font-size", 10.5).attr("font-weight", 600).attr("fill", TEAL)
+    .text("women +");
+  g.append("text").attr("x", -10).attr("y", y(-ext) - 2).attr("text-anchor", "end")
+    .attr("font-size", 10.5).attr("font-weight", 600).attr("fill", CLAY)
+    .text("men +");
+
+  const px = d => x(d.bin);
+  const lineGen = d3.line().x(px).y(d => y(acc(d).gap)).curve(d3.curveMonotoneX);
+  const area0 = d3.area().x(px).y0(y(0)).y1(d => y(acc(d).gap)).curve(d3.curveMonotoneX);
+
+  /* split fill above/below zero using two clipped areas */
+  const clipUp = "clipUp", clipDn = "clipDn";
+  const defs = svg.append("defs");
+  defs.append("clipPath").attr("id", clipUp).append("rect")
+    .attr("x", 0).attr("y", 0).attr("width", iw).attr("height", y(0));
+  defs.append("clipPath").attr("id", clipDn).append("rect")
+    .attr("x", 0).attr("y", y(0)).attr("width", iw).attr("height", ih - y(0));
+
+  g.append("path").datum(rows).attr("d", area0).attr("fill", TEAL_SOFT).attr("clip-path", `url(#${clipUp})`);
+  g.append("path").datum(rows).attr("d", area0).attr("fill", CLAY_SOFT).attr("clip-path", `url(#${clipDn})`);
+
+  /* bootstrap band */
+  const band = d3.area().x(px).y0(d => y(acc(d).lo)).y1(d => y(acc(d).hi)).curve(d3.curveMonotoneX);
+  g.append("path").datum(rows).attr("d", band)
+    .attr("fill", "rgba(35,32,26,.10)").attr("stroke", "none");
+
+  /* S&W 2006 endpoint rule — between 2002-06 and 2008-12 bins */
+  const swX = (x("2002-06") + x("2008-12")) / 2;
+  g.append("line").attr("x1", swX).attr("x2", swX).attr("y1", -6).attr("y2", ih)
+    .attr("stroke", RULE).attr("stroke-width", 1.4).attr("stroke-dasharray", "4 4");
+  const swLab = g.append("text").attr("x", swX - 7).attr("y", 6)
+    .attr("text-anchor", "end").attr("font-size", 11).attr("fill", DIM).attr("font-weight", 600);
+  swLab.append("tspan").attr("x", swX - 7).text("Stevenson & Wolfers");
+  swLab.append("tspan").attr("x", swX - 7).attr("dy", "1.2em").text("end here → our extension");
+
+  /* mode-change shade for 2021-24 */
+  const lastBin = rows[rows.length - 1];
+  if(lastBin.bin === "2021-24"){
+    const xa = (x("2014-18") + x("2021-24")) / 2;
+    g.append("rect").attr("x", xa).attr("y", 0).attr("width", iw - xa).attr("height", ih)
+      .attr("fill", "rgba(191,125,44,.06)");
+    g.append("text").attr("x", (xa + iw) / 2).attr("y", ih - 6)
+      .attr("text-anchor", "middle").attr("font-size", 9.5).attr("fill", CLAY)
+      .attr("font-weight", 600).attr("letter-spacing", ".03em").text("web-mode shift");
+  }
+
+  /* the protagonist line */
+  const path = g.append("path").datum(rows).attr("d", lineGen)
+    .attr("fill", "none").attr("stroke", INK).attr("stroke-width", 2.6)
+    .attr("stroke-linejoin", "round").attr("stroke-linecap", "round");
+
+  if(!reduceMotion){
+    const L = path.node().getTotalLength();
+    path.attr("stroke-dasharray", `${L} ${L}`).attr("stroke-dashoffset", L)
+      .transition().duration(900).ease(d3.easeCubicInOut).attr("stroke-dashoffset", 0);
+  }
+
+  /* x labels */
+  g.selectAll(".xl").data(rows).join("text")
+    .attr("x", px).attr("y", ih + 18).attr("text-anchor", "middle")
+    .attr("font-size", W < 520 ? 9.5 : 11).attr("fill", FAINT)
+    .text(d => d.bin);
+
+  /* dots + interaction */
+  g.selectAll(".dot").data(rows).join("circle")
+    .attr("cx", px).attr("cy", d => y(acc(d).gap)).attr("r", 4.6)
+    .attr("fill", d => acc(d).gap >= 0 ? TEAL : CLAY)
+    .attr("stroke", "var(--panel)").attr("stroke-width", 1.6)
+    .style("cursor", "pointer")
+    .on("pointerenter pointermove", function(ev, d){
+      d3.select(this).attr("r", 6.4);
+      const a = acc(d), other = metric === "vh" ? d.mean : d.vh;
+      const otherLab = metric === "vh" ? "1–3 mean" : "% very happy";
+      const sign = a.gap >= 0 ? "pos" : "neg";
+      const who = a.gap >= 0 ? "Women higher" : "Men higher";
+      showTip(
+        `<b>${d.bin}</b><br>`+
+        `<span class="${sign}">${who}</span> &middot; <span class="tg">${fmtGap(a.gap, metric)}</span><br>`+
+        `<span class="tg" style="color:#cfc8ba">${otherLab}: ${fmtGap(other.gap, metric === "vh" ? "mean" : "vh")}</span><br>`+
+        `<span class="tg" style="color:#cfc8ba">95% band ${fmtGap(a.lo, metric)} to ${fmtGap(a.hi, metric)}</span><br>`+
+        `<span class="tg" style="color:#cfc8ba">N = ${fmtN(a.n_f + a.n_m)} (${fmtN(a.n_f)} W, ${fmtN(a.n_m)} M)</span>`, ev);
+    })
+    .on("pointerleave", function(){ d3.select(this).attr("r", 4.6); hideTip(); });
+
+  /* caption note about crossing */
+  const capEl = document.getElementById("cap-main");
+}
+
+/* ================= GROUP small multiples ================= */
+const grpState = { id: DATA.groups[0].id };
+const grpHost = d3.select("#chart-grp");
+
+function buildGrpControls(){
+  const seg = document.getElementById("grpseg");
+  seg.innerHTML = DATA.groups.map((g,i) =>
+    `<button data-gid="${g.id}" aria-pressed="${i===0?'true':'false'}">${g.label}</button>`).join("");
+  seg.querySelectorAll("button").forEach(b => {
+    b.addEventListener("click", () => {
+      grpState.id = b.dataset.gid;
+      seg.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b ? "true" : "false"));
+      drawGrp();
+    });
+  });
+}
+
+function drawGrp(){
+  grpHost.selectAll("*").remove();
+  const grp = DATA.groups.find(g => g.id === grpState.id);
+  const eras = DATA.meta.eras;
+  const cats = grp.cats;
+
+  const W = Math.max(320, grpHost.node().clientWidth);
+  const cols = W < 560 ? 1 : Math.min(cats.length, W < 820 ? 2 : 4);
+  const rowsN = Math.ceil(cats.length / cols);
+  const gap = 16;
+  const cellW = (W - gap * (cols - 1)) / cols;
+  const cellH = 168;
+  const totalH = rowsN * cellH + (rowsN - 1) * gap + 8;
+
+  const svg = grpHost.append("svg")
+    .attr("viewBox", `0 0 ${W} ${totalH}`)
+    .attr("role", "img")
+    .attr("aria-label", `Small-multiple zero-centered gap charts for ${grp.label}, one panel per category, each showing the women-minus-men happiness gap across three eras.`);
+
+  /* shared y domain across the group's cells */
+  let maxAbs = 0;
+  grp.rows.forEach(r => r.cells.forEach(c => {
+    if(!c.suppressed){
+      maxAbs = Math.max(maxAbs, Math.abs(c.gap), Math.abs(c.lo||0), Math.abs(c.hi||0));
+    }
+  }));
+  maxAbs = (maxAbs || 0.1) * 1.14;
+
+  cats.forEach((cat, i) => {
+    const r = grp.rows.find(rr => rr.cat === cat);
+    const cx = (i % cols) * (cellW + gap);
+    const cy = Math.floor(i / cols) * (cellH + gap);
+    const cell = svg.append("g").attr("transform", `translate(${cx},${cy})`);
+
+    const pad = { t: 26, r: 10, b: 24, l: 30 };
+    const iw = cellW - pad.l - pad.r, ih = cellH - pad.t - pad.b;
+    const gg = cell.append("g").attr("transform", `translate(${pad.l},${pad.t})`);
+
+    const x = d3.scalePoint().domain(eras).range([0, iw]).padding(0.6);
+    const y = d3.scaleLinear().domain([-maxAbs, maxAbs]).range([ih, 0]);
+
+    /* panel title */
+    cell.append("text").attr("x", pad.l).attr("y", 15)
+      .attr("font-size", 13).attr("font-weight", 700).attr("fill", INK).text(cat);
+
+    /* zero line */
+    gg.append("line").attr("x1", 0).attr("x2", iw).attr("y1", y(0)).attr("y2", y(0))
+      .attr("stroke", INK).attr("stroke-width", 1.8);
+    /* faint top/bottom guides */
+    [maxAbs/2, -maxAbs/2].forEach(t => {
+      gg.append("line").attr("x1", 0).attr("x2", iw).attr("y1", y(t)).attr("y2", y(t))
+        .attr("stroke", "rgba(35,32,26,.08)").attr("stroke-width", 1);
+    });
+    /* y tick labels (mean scale) */
+    gg.append("text").attr("x", -6).attr("y", y(maxAbs/2)).attr("dy","0.32em")
+      .attr("text-anchor","end").attr("font-size",9).attr("fill",FAINT)
+      .text("+"+(maxAbs/2).toFixed(2));
+    gg.append("text").attr("x", -6).attr("y", y(-maxAbs/2)).attr("dy","0.32em")
+      .attr("text-anchor","end").attr("font-size",9).attr("fill",FAINT)
+      .text("−"+(maxAbs/2).toFixed(2));
+
+    const bw = Math.min(34, x.step() * 0.5);
+    r.cells.forEach(c => {
+      const xx = x(c.era);
+      if(c.suppressed){
+        gg.append("rect").attr("x", xx - bw/2).attr("y", y(0) - 14).attr("width", bw).attr("height", 28)
+          .attr("fill", "none").attr("stroke", "rgba(35,32,26,.22)").attr("stroke-dasharray","3 3").attr("rx",2);
+        gg.append("text").attr("x", xx).attr("y", y(0)+3).attr("text-anchor","middle")
+          .attr("font-size",8.5).attr("fill",FAINT).text("n/a");
+        return;
+      }
+      const pos = c.gap >= 0;
+      const yTop = pos ? y(c.gap) : y(0);
+      const hh = Math.abs(y(c.gap) - y(0));
+      /* bootstrap whisker */
+      if(c.lo != null && c.hi != null){
+        gg.append("line").attr("x1", xx).attr("x2", xx).attr("y1", y(c.lo)).attr("y2", y(c.hi))
+          .attr("stroke", pos ? "var(--teal-deep)" : "var(--clay-deep)").attr("stroke-width", 1.4).attr("opacity",.55);
+      }
+      gg.append("rect").attr("x", xx - bw/2).attr("y", yTop).attr("width", bw).attr("height", Math.max(1.2, hh))
+        .attr("fill", pos ? TEAL : CLAY).attr("rx", 2).style("cursor","pointer")
+        .on("pointerenter pointermove", function(ev){
+          d3.select(this).attr("opacity",.82);
+          const who = pos ? "Women higher" : "Men higher";
+          const sign = pos ? "pos" : "neg";
+          const band = (c.lo!=null) ? `<span class="tg" style="color:#cfc8ba">95% band ${fmtGap(c.lo,"mean")} to ${fmtGap(c.hi,"mean")}</span><br>` : "";
+          showTip(
+            `<b>${cat} &middot; ${c.era}</b><br>`+
+            `<span class="${sign}">${who}</span> &middot; <span class="tg">${fmtGap(c.gap,"mean")}</span> (mean)<br>`+
+            `<span class="tg" style="color:#cfc8ba">${fmtGap(c.gap_vh,"vh")} (very-happy)</span><br>`+
+            band+
+            `<span class="tg" style="color:#cfc8ba">N = ${fmtN(c.n_f + c.n_m)}</span>`, ev);
+        })
+        .on("pointerleave", function(){ d3.select(this).attr("opacity",1); hideTip(); });
+    });
+
+    /* era labels */
+    gg.selectAll(".el").data(eras).join("text")
+      .attr("x", d => x(d)).attr("y", ih + 16).attr("text-anchor","middle")
+      .attr("font-size", 9.5).attr("fill", FAINT).text(d => d);
+  });
+}
+
+/* ---------- wire main controls ---------- */
+document.querySelectorAll("#ctl-main .seg button").forEach(b => {
+  b.addEventListener("click", () => {
+    mainState.metric = b.dataset.metric;
+    document.querySelectorAll("#ctl-main .seg button").forEach(x =>
+      x.setAttribute("aria-pressed", x === b ? "true" : "false"));
+    drawMain();
+  });
+});
+
+/* ---------- init ---------- */
+fillStats();
+buildGrpControls();
+drawMain();
+drawGrp();
+
+let rAF;
+window.addEventListener("resize", () => {
+  cancelAnimationFrame(rAF);
+  rAF = requestAnimationFrame(() => { drawMain(); drawGrp(); });
+});
+</script>
+<!--SL_BOOKNAV_START-->
+<style>
+.slbn{font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;background:#0f1417;border-top:1px solid #27313a;color:#9fb0ba;padding:24px 20px 40px;margin:48px 0 0}
+.slbn-in{max-width:1080px;margin:0 auto;display:flex;align-items:stretch;gap:12px}
+.slbn a{flex:1 1 0;min-width:0;text-decoration:none;color:inherit;border:1px solid #27313a;border-radius:10px;padding:13px 15px;display:flex;flex-direction:column;gap:4px;background:#161d22;transition:border-color .15s,transform .15s}
+.slbn a:hover{border-color:#3fa9a0;transform:translateY(-2px)}
+.slbn a:focus-visible{outline:2px solid #3fa9a0;outline-offset:2px}
+.slbn a.slbn-next{text-align:right;align-items:flex-end}
+.slbn a.slbn-toc{flex:0 0 auto;min-width:120px;justify-content:center;align-items:center;text-align:center}
+.slbn .slbn-dir{font:700 10px/1 inherit;letter-spacing:.13em;text-transform:uppercase;color:#6b7c87}
+.slbn .slbn-ttl{font:700 14px/1.3 inherit;color:#eef2f4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.slbn a.slbn-disabled{opacity:.38;pointer-events:none}
+@media(max-width:640px){.slbn-in{flex-wrap:wrap}.slbn a{flex:1 1 100%}.slbn a.slbn-next{text-align:left;align-items:flex-start}.slbn a.slbn-toc{order:-1}}
+</style>
+<nav class="slbn" aria-label="Book navigation"><div class="slbn-in"><a class="slbn-prev" href="../read.html?ch=community-and-the-isolated" target="_top"><span class="slbn-dir">‹ Previous</span><span class="slbn-ttl">Does Community Substitute for Connection?</span></a><a class="slbn-toc" href="../index.html#book" target="_top"><span class="slbn-dir">The Scissors</span><span class="slbn-ttl">Appendix</span></a><a class="slbn-next" href="../read.html?ch=religion-conditional-dividend" target="_top"><span class="slbn-dir">Next ›</span><span class="slbn-ttl">Religion's Conditional Dividend</span></a></div></nav>
+<!--SL_BOOKNAV_END-->
+</body>
+</html>

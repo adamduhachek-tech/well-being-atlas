@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Feeling Rich Is Not the Same as Being Rich</title>
+<meta name="description" content="Across 147 countries, money reliably buys the feeling of financial sufficiency — and the feeling never tops out, across countries or within them. But whole regions feel far richer, or poorer, than their income says they should.">
+<style>
+  :root{
+    --paper:#f6f1e4;
+    --paper-deep:#efe8d5;
+    --card:#fcf9ef;
+    --ink:#26221a;
+    --soft:#665e4c;
+    --faint:#92886e;
+    --rule:#ded3b8;
+    --green:#0b6b54;
+    --green-bright:#0e8a6c;
+    --gold:#a3700a;
+    --gLow:#b45f92;
+    --gLM:#c98a00;
+    --gUM:#00855f;
+    --gHI:#0b66a3;
+    --serif:Georgia,"Iowan Old Style","Palatino Linotype","Times New Roman",serif;
+    --sans:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+    --maxw:730px;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:var(--serif);font-size:18.5px;line-height:1.68;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--green);text-decoration-color:rgba(11,107,84,.4);text-underline-offset:2px}
+  a:hover{text-decoration-color:var(--green)}
+  a:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--gold);outline-offset:2px;border-radius:2px}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+  .wide{max-width:1040px;margin:0 auto;padding:0 20px}
+
+  /* ---------- hero ---------- */
+  header.hero{
+    border-bottom:3px double var(--rule);
+    background:
+      repeating-linear-gradient(0deg, rgba(163,112,10,.035) 0 1px, transparent 1px 28px),
+      linear-gradient(180deg, var(--paper-deep), var(--paper) 78%);
+    padding:4.2rem 0 2.6rem;
+  }
+  .kicker{
+    font-family:var(--sans);font-size:.73rem;font-weight:600;letter-spacing:.26em;
+    text-transform:uppercase;color:var(--gold);margin:0 0 1.4rem;
+  }
+  .kicker span{color:var(--faint);font-weight:400}
+  h1{
+    font-size:clamp(2.2rem,6vw,3.8rem);line-height:1.04;margin:0 0 1.15rem;
+    font-weight:700;letter-spacing:-.018em;max-width:17ch;
+  }
+  h1 em{font-style:italic;color:var(--green)}
+  .dek{
+    font-size:clamp(1.05rem,2.5vw,1.3rem);line-height:1.56;color:var(--soft);
+    max-width:56ch;margin:0 0 1.6rem;
+  }
+  .byline{
+    font-family:var(--sans);font-size:.78rem;color:var(--faint);
+    display:flex;flex-wrap:wrap;gap:.3rem .6rem;align-items:center;
+  }
+  .byline .sep{color:var(--rule)}
+  .chips{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:2.3rem 0 0}
+  .chip{
+    background:var(--card);border:1px solid var(--rule);border-top:3px solid var(--green);
+    border-radius:8px;padding:.9rem 1rem .85rem;
+  }
+  .chip .num{
+    font-family:var(--sans);font-weight:700;font-size:clamp(1.2rem,2.6vw,1.62rem);
+    letter-spacing:-.02em;color:var(--green);display:block;font-variant-numeric:tabular-nums;
+  }
+  .chip .lbl{font-family:var(--sans);font-size:.71rem;line-height:1.45;color:var(--soft);display:block;margin-top:.3rem}
+  .chip.gold{border-top-color:var(--gold)} .chip.gold .num{color:var(--gold)}
+  @media (max-width:700px){.chips{grid-template-columns:repeat(2,1fr)}}
+
+  /* ---------- prose ---------- */
+  main{padding:2.7rem 0 1rem}
+  h2{
+    font-size:clamp(1.45rem,3.4vw,1.85rem);line-height:1.16;margin:3rem 0 1rem;letter-spacing:-.012em;
+  }
+  h2 .no{
+    font-family:var(--sans);font-weight:700;font-size:.72em;color:var(--gold);
+    border:1.5px solid var(--gold);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;
+    width:1.7em;height:1.7em;margin-right:.5rem;vertical-align:.08em;
+  }
+  p{margin:0 0 1.25rem}
+  .drop::first-letter{
+    float:left;font-size:3.45em;line-height:.85;padding:.04em .12em 0 0;font-weight:700;color:var(--green);
+  }
+  strong{color:#191510}
+  .constructs{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:1.8rem 0 2.1rem}
+  .construct{
+    background:var(--card);border:1px solid var(--rule);border-radius:10px;
+    padding:1.05rem 1.2rem;font-size:.88rem;line-height:1.58;color:var(--soft);
+  }
+  .construct h3{
+    font-family:var(--sans);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;
+    margin:0 0 .55rem;color:var(--green);
+  }
+  .construct.lad h3{color:var(--gold)}
+  .construct .q{font-style:italic;color:var(--ink)}
+  .construct .scale{font-family:var(--sans);font-size:.78rem;margin-top:.5rem;color:var(--faint)}
+  @media (max-width:580px){.constructs{grid-template-columns:1fr}}
+
+  /* ---------- figures ---------- */
+  figure{margin:2.2rem auto 2.5rem;padding:0}
+  .figcard{
+    background:var(--card);border:1px solid var(--rule);border-radius:12px;
+    padding:1.3rem 1.3rem 1rem;box-shadow:0 1px 0 rgba(38,34,26,.04);
+  }
+  .figtitle{
+    font-family:var(--sans);font-weight:700;font-size:1.02rem;letter-spacing:-.01em;
+    margin:0 0 .2rem;color:var(--ink);
+  }
+  .figsub{font-family:var(--sans);font-size:.8rem;color:var(--soft);margin:0 0 .9rem;line-height:1.5}
+  figcaption{
+    font-family:var(--sans);font-size:.76rem;line-height:1.55;color:var(--faint);
+    margin-top:.8rem;max-width:74ch;
+  }
+  svg{display:block;width:100%;height:auto}
+  svg text{font-family:var(--sans)}
+  .legend{display:flex;flex-wrap:wrap;gap:.45rem 1.1rem;font-family:var(--sans);font-size:.76rem;color:var(--soft);margin:0 0 .7rem}
+  .legend .key{display:inline-flex;align-items:center;gap:.4rem}
+  .legend .swatch{width:11px;height:11px;border-radius:50%;display:inline-block}
+  .panelgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  @media (max-width:760px){.panelgrid{grid-template-columns:repeat(2,1fr)}}
+  .panel h4{
+    font-family:var(--sans);font-size:.74rem;font-weight:700;letter-spacing:.02em;
+    margin:0 0 .15rem;color:var(--ink);
+  }
+  .panel .pn{font-weight:400;color:var(--faint)}
+  .tip{
+    position:absolute;pointer-events:none;z-index:50;background:#211c12;color:#f5efdf;
+    font-family:var(--sans);font-size:.76rem;line-height:1.5;padding:.55rem .7rem;border-radius:7px;
+    max-width:230px;box-shadow:0 4px 14px rgba(0,0,0,.25);opacity:0;transition:opacity .12s;
+  }
+  .tip b{color:#ffd978}
+  .strip-labels{display:flex;flex-wrap:wrap;gap:.4rem 1.1rem;font-family:var(--sans);font-size:.74rem;color:var(--soft);margin-top:.55rem}
+  .strip-labels .key{display:inline-flex;align-items:center;gap:.38rem}
+  .strip-labels .swatch{width:10px;height:10px;border-radius:2px;display:inline-block}
+
+  /* ---------- notes ---------- */
+  .notes{
+    border-top:3px double var(--rule);margin-top:3.2rem;padding:2.2rem 0 3.2rem;
+    background:var(--paper-deep);
+  }
+  .notes h2{font-size:1.15rem;margin:0 0 1.1rem}
+  .notes ul{margin:0;padding-left:1.15rem;font-size:.84rem;line-height:1.62;color:var(--soft)}
+  .notes li{margin-bottom:.55rem}
+  .notes li::marker{color:var(--gold)}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="kicker">Felt money, measured world <span>· Gallup World Poll · 2016–2020</span></p>
+    <h1>Feeling rich is not the same as <em>being</em> rich</h1>
+    <p class="dek">Across 147 countries, every doubling of national income is associated with about 0.20 extra points of felt financial comfort on Gallup's four-step scale — and the feeling never tops out, not across countries and not within them. But whole regions feel far richer, or far poorer, than their income says they should.</p>
+    <p class="byline">A data essay <span class="sep">|</span> 706,634 interviews, pooled 2016–2020 <span class="sep">|</span> felt adequacy is a perception of money, not a measure of happiness</p>
+    <div class="chips" role="list">
+      <div class="chip" role="listitem"><span class="num">17.8%</span><span class="lbl">of the world says it is “living comfortably” on present income (population-weighted, 148 countries)</span></div>
+      <div class="chip" role="listitem"><span class="num">+0.20</span><span class="lbl">felt-adequacy points per doubling of GNI per capita, across 147 countries</span></div>
+      <div class="chip" role="listitem"><span class="num">150 / 150</span><span class="lbl">countries where the richest fifth feels more comfortable than the fourth fifth — no saturation anywhere</span></div>
+      <div class="chip gold" role="listitem"><span class="num">0.50</span><span class="lbl">correlation between feeling richer than your income predicts and rating your life better than it predicts</span></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <p class="drop">Gallup asks almost everyone on earth a deceptively small question: which phrase comes closest to your <em>feelings</em> about your household income — living comfortably, getting by, finding it difficult, or finding it very difficult? Pool the answers from 2016 through 2020, weight each country’s sample the way Gallup intends, weight countries by population, and the world delivers its verdict on its own paycheck: in 148 surveyed countries, home to about 7.3 billion people, 17.8 percent say they live comfortably. Four in ten — 39.9 percent — find it difficult or very difficult. 15.3 percent choose the bleakest phrase on offer.</p>
+
+    <figure aria-label="Stacked bar of the world's answers about household income">
+      <div class="figcard">
+        <p class="figtitle">The world’s feelings about its paycheck</p>
+        <p class="figsub">Population-weighted shares of adults, 148 countries, pooled 2016–2020</p>
+        <div id="strip"></div>
+        <div class="strip-labels" id="strip-legend"></div>
+      </div>
+    </figure>
+
+    <p>That question is not a happiness question. It is a feeling about money — what researchers call a <strong>domain perception</strong> — and this essay keeps it strictly separate from the famous life-evaluation “ladder.” Treated on its own terms, felt financial adequacy turns out to behave in ways the happiness literature would not lead you to expect: it rises with income everywhere it can be measured, keeps rising at the very top of every income distribution, and yet sits so loosely on actual income that whole regions feel roughly half a point richer or poorer than the money says they should.</p>
+
+    <div class="constructs">
+      <div class="construct">
+        <h3>Felt adequacy — a perception of money</h3>
+        <span class="q">“Which one of these phrases comes closest to your own feelings about your household income these days?”</span>
+        <p class="scale">1 = finding it very difficult · 2 = finding it difficult · 3 = getting by · 4 = living comfortably. A feeling about the household budget — not a well-being outcome.</p>
+      </div>
+      <div class="construct lad">
+        <h3>The ladder — evaluative well-being</h3>
+        <span class="q">“On which step of the ladder would you say you personally stand at this time?”</span>
+        <p class="scale">0 = worst possible life · 10 = best possible life. Used here only as a contrast. The two are never treated as the same thing.</p>
+      </div>
+    </div>
+
+    <h2><span class="no">1</span>The going rate for “comfortable”</h2>
+    <p>Plot each country’s average answer against its income level and the relationship is about as clean as cross-national survey data gets. Log GNI per capita explains 66 percent of the cross-country variance in average felt adequacy, and the slope works out to <strong>+0.20 scale points per doubling</strong> of national income.</p>
+  </div>
+
+  <div class="wide">
+    <figure aria-label="Scatter of felt income adequacy versus GNI per capita across 147 countries">
+      <div class="figcard">
+        <p class="figtitle">Felt income adequacy vs. national income, 147 countries</p>
+        <p class="figsub">Vertical axis: wgt-weighted country mean of the four-step income-feelings item, pooled 2016–2020. Horizontal axis: GNI per capita (2011 PPP $, log scale, static ~2015–2018 join). Curve: log-linear OLS. Hover any dot for detail.</p>
+        <div class="legend" id="legend-scatter"></div>
+        <div id="chart-scatter"></div>
+      </div>
+      <figcaption>Each dot is one country (minimum 1,000 pooled interviews). Countries above the curve feel richer than their income predicts; below, poorer. Labeled countries are the largest residuals plus reference points. R² = 0.66.</figcaption>
+    </figure>
+  </div>
+
+  <div class="wrap">
+    <p>Two things about that line. First, <strong>it has no plateau</strong>. If anything it bends the other way: among the 97 countries below $20,000 GNI per capita, a doubling of national income is associated with +0.15 points; among the 50 countries at or above $20,000, with +0.37. Rich countries convert marginal national income into felt comfort at more than twice the rate poor countries do — the opposite of saturation. Second, the equivalent line for the Cantril ladder — the life-evaluation question behind the World Happiness Report — fits almost identically (R² = 0.64; +0.50 rungs per doubling). Money’s statistical grip on feeling paid is as strong as its famous grip on life evaluation. The interesting part is who slips that grip.</p>
+
+    <h2><span class="no">2</span>Countries that feel richer than they are</h2>
+    <p>The biggest over-performers sit in one neighborhood. Kyrgyzstan posts the largest positive residual on earth: +0.71 points above the curve on a four-point scale. Its neighbors follow — Uzbekistan (+0.70), Turkmenistan (+0.62), Tajikistan (+0.59) — along with Myanmar (+0.50) and Vietnam (+0.45). Kyrgyzstan, with a GNI per capita of $3,255, reports feeling about as comfortable on its income (3.01) as the typical high-income country — and decisively more comfortable than Greece (2.39), a country more than seven times richer.</p>
+    <p>Read Central Asia with some care: several of these surveys are conducted in tightly controlled political settings, and answer styles differ across cultures, so the precise size of any one country’s gap should be held loosely. But the rich-world over-performers are reassuringly familiar: Denmark (3.50, sitting +0.42 above the curve) and Norway (3.59, +0.42) post the two highest felt-adequacy averages measured anywhere.</p>
+    <p>The under-performers tell a sharper story. Venezuela sits 0.71 below the line — these are its collapse years, with the static income figure flattering an economy in free fall. Greece (−0.50) and Hungary (−0.42) carry the scar tissue of austerity and transition. And then a distinct cluster: <strong>Botswana (−0.52), Namibia (−0.42) and South Africa (−0.42)</strong> — middle-income on paper, and among the most unequal countries the World Bank has ever measured. The pattern generalizes: across the 137 countries with a Gini estimate, felt-adequacy residuals correlate −0.37 with inequality. National income that exists but visibly belongs to someone else does not feel like enough.</p>
+
+    <h2><span class="no">3</span>Inside countries, the feeling never tops out</h2>
+    <p>Across countries, no plateau. What about within them — does felt adequacy saturate as you climb your own country’s income ladder? The answer is no, nowhere. In <strong>every one of the 150 countries</strong> with full quintile coverage, the richest fifth feels more comfortable than the fourth fifth: 150 of 150. And in 82 of them — 55 percent — the step from the fourth quintile to the richest is the single <em>largest</em> of the four steps.</p>
+  </div>
+
+  <div class="wide">
+    <figure aria-label="Small multiples of felt adequacy by within-country income quintile, by World Bank income group">
+      <div class="figcard">
+        <p class="figtitle">Felt adequacy by within-country income quintile</p>
+        <p class="figsub">Each thin line is one country’s wgt-weighted quintile profile; the bold line is the unweighted average across countries in the group (“the typical country”). Quintile 1 = poorest fifth of that country, 5 = richest fifth.</p>
+        <div class="panelgrid" id="chart-grad"></div>
+      </div>
+      <figcaption>150 countries with at least 150 interviews in every quintile cell (148 shown — two lack a World Bank income-group code). The gradient steepens at the top in poorer groups and at the bottom in rich ones; it flattens nowhere.</figcaption>
+    </figure>
+  </div>
+
+  <div class="wrap">
+    <p>The shape differs by where you are. In the typical high-income country the steepest felt gap is at the <em>bottom</em>: moving from the poorest fifth to the second fifth is worth +0.27 points, the biggest single step. In the typical low-income country the gradient runs the other way: the bottom step is worth just +0.13 — the poorest 40 percent feel close to equally strapped — while the top step is worth +0.30. In poor countries, escaping the <em>feeling</em> of poverty is something that happens near the top of the national distribution, not the bottom.</p>
+    <p>And national context dominates personal rank. The poorest fifth in the typical high-income country (2.60) feels marginally more comfortable than the richest fifth in the typical low-income country (2.56). The blunter standard-of-living question agrees: in the typical low-income country the bottom two quintiles are indistinguishable — 41.3 versus 41.4 percent satisfied with their standard of living — and even its richest fifth (53 percent) trails the poorest fifth of the typical rich country (68 percent). Being rich where you live buys the feeling; living somewhere rich buys more of it.</p>
+    <p>One honest qualification: at the very top of the very richest countries, the scale itself runs out of room. In the United States the step from the fourth quintile to the richest is just +0.06 (3.54 to 3.60) — less a plateau of feeling than a ceiling on the answer sheet, since “living comfortably” is the highest phrase on offer. A four-step scale cannot tell the comfortable from the very comfortable. A companion piece in this collection, on US data, shows that with a finer instrument the top of the well-being distribution keeps rising with income; the same is likely true of felt comfort.</p>
+
+    <h2><span class="no">4</span>Feeling paid is not rating your life well</h2>
+    <p>If felt adequacy were just life evaluation wearing a money costume, countries that beat the income curve on one would beat it on the other. They mostly don’t. Fit the same log-income curve to the ladder, compare each country’s two residuals, and the correlation is 0.50 — real, but only about a quarter of shared variance. The disagreements are systematic, and they redraw the map.</p>
+    <p>Latin America rates its life far better than it feels paid. Costa Rica scores its life +1.42 rungs above what its income predicts — among the largest ladder residuals anywhere — yet its felt money adequacy is only +0.14 above its own curve. Guatemala, El Salvador, Honduras and Ecuador crowd the same quadrant. Israel rates its life at 7.19 while feeling slightly poorer than its income predicts (−0.18). The mirror quadrant belongs to South and Southeast Asia and East Africa: India feels roughly right for its income about money (−0.07) while rating its life a remarkable 1.41 rungs <em>below</em> its income line; Tanzania (−1.05 on the ladder, +0.15 on money), Rwanda, Sri Lanka, Indonesia and Myanmar follow the same pattern. Felt money and the evaluated life are different verdicts — conflate them and you would mistake Latin America for financially serene and Central Asia for miserable.</p>
+  </div>
+
+  <div class="wide">
+    <figure aria-label="Scatter comparing each country's felt-adequacy residual with its ladder residual">
+      <div class="figcard">
+        <p class="figtitle">Two ways to beat your income — and they disagree</p>
+        <p class="figsub">Horizontal: how far the country’s mean ladder sits above or below the income curve (rungs). Vertical: how far its felt adequacy sits above or below its curve (scale points). Same 147 countries, 2016–2020.</p>
+        <div class="legend" id="legend-div"></div>
+        <div id="chart-div"></div>
+      </div>
+      <figcaption>Highlighted dots are the eight largest divergers in each direction (standardized). Correlation between the two residuals: 0.50.</figcaption>
+    </figure>
+  </div>
+
+  <div class="wrap">
+    <h2><span class="no">5</span>“Enough money to do everything I want”</h2>
+    <p>For three years, 2013–2015, Gallup’s Sharecare module pushed a far more demanding version of the question on 135 countries: do you agree that you have <em>enough money to do everything you want to do</em>? By that maximalist standard, sufficiency is rare everywhere — and still rises with rank everywhere. In the typical high-income country, agreement climbs from 24 percent in the poorest fifth to 50 percent in the richest: even at the top of the rich world, only half feel fully sufficient. In the United States the richest fifth reaches 53 percent. The feeling of having enough, generously defined, is a minority condition even where the money is.</p>
+  </div>
+
+  <div class="wide">
+    <figure aria-label="Grouped bar chart of the share agreeing they have enough money, by quintile and income group">
+      <div class="figcard">
+        <p class="figtitle">“You have enough money to do everything you want to do” — share agreeing</p>
+        <p class="figsub">Share answering 4 or 5 on a five-point agree scale, by within-country income quintile; typical-country average within each World Bank income group, 2013–2015 (this item was fielded only in those years).</p>
+        <div id="chart-em"></div>
+      </div>
+      <figcaption>135 countries with at least 150 interviews per quintile cell. The gradient climbs in every group and saturates in none.</figcaption>
+    </figure>
+  </div>
+
+  <div class="wrap">
+    <h2><span class="no">6</span>What this does — and doesn’t — show</h2>
+    <p>Everything here is <strong>associational</strong>: countries and people differ in a thousand correlated ways, and a residual is a description, not a diagnosis. The income axis for countries is a static ~2015–2018-vintage join, which flatters collapsing economies (Venezuela) and lags fast growers. Cross-country comparisons of feelings ride on top of cross-cultural differences in how people use answer scales, so small gaps between countries should not be over-read — the patterns emphasized here are the half-point kind, not the decimal kind. Within countries, position is measured by income quintile rather than reported dollars, because per-capita dollar income in this dataset is heavily imputed; quintiles are the sturdier object.</p>
+    <p>And a boundary worth respecting: the famous income-and-happiness fights — the Easterlin paradox, Kahneman and Deaton’s $75,000 emotional-well-being plateau, Killingsworth’s no-plateau rebuttal and the 2023 adversarial collaboration that split the difference — are about <em>well-being</em>. This piece measures something humbler: the feeling that the money is sufficient. That humbler feeling shows no plateau anywhere we can see — not across countries, not within them, and not at the top of the rich world, where only the four-phrase answer scale itself runs out.</p>
+  </div>
+
+  <section class="notes" aria-label="Notes and data">
+    <div class="wrap">
+      <h2>Notes &amp; data</h2>
+      <ul>
+        <li><strong>Source.</strong> Gallup World Poll cleaned extract. Main window: pooled 2016–2020, 706,634 interviews across the 147 analysis countries; most countries were surveyed in 4 or 5 of those years (the panel is unbalanced; per-country survey-year counts are in the data file).</li>
+        <li><strong>Weights.</strong> Every per-country estimate uses Gallup’s within-country weight (<code>wgt</code>). The single global figure (shares of the four answers) weights wgt-weighted country shares by ~2018 population. All other cross-country statements treat each country as one observation — explicitly comparisons of countries, never a “world average.”</li>
+        <li><strong>Minimums.</strong> Curve and residual analysis: ≥ 1,000 pooled interviews per country → 147 usable countries (Trinidad and Tobago, Maldives, Burundi and Jamaica fell below the minimum; Taiwan, Somalia and Kosovo lack a GNI value in the static join). Quintile gradients additionally require ≥ 150 interviews in every quintile cell → 150 countries (148 with a World Bank income group). The kill threshold for this piece was 40 usable countries; coverage is nearly four times that.</li>
+        <li><strong>Constructs.</strong> <code>income_feel</code> (four-step feelings about household income, direction-fixed so higher = more comfortable), <code>stdliving_sat</code> (binary standard-of-living satisfaction) and <code>enough_money</code> (five-point Sharecare item, 2013–2015 only, 135 countries) are all <em>felt financial adequacy</em> — domain perceptions. <code>ladder</code> (Cantril, 0–10) is evaluative well-being. They are labeled and kept distinct throughout.</li>
+        <li><strong>Country context.</strong> GNI per capita (2011 PPP $), World Bank income group, population and Gini are a static ~2015–2018-vintage compilation joined on ISO3 — context, not time-varying data.</li>
+        <li><strong>Income position.</strong> Within-country rank uses Gallup’s <code>income_quintile</code>. Reported per-capita dollar income (<code>income_percap</code>) is heavily imputed in this extract and is not used anywhere in this article.</li>
+        <li><strong>Response styles.</strong> Cross-country gaps in feeling items partly reflect culture-specific answer styles; treat individual small gaps with caution.</li>
+        <li><strong>Citations.</strong> R. Easterlin (1974), “Does economic growth improve the human lot?”; D. Kahneman &amp; A. Deaton (2010), <a href="https://www.pnas.org/doi/10.1073/pnas.1011492107">PNAS 107(38)</a>; M. Killingsworth (2021), <a href="https://www.pnas.org/doi/10.1073/pnas.2016976118">PNAS 118(4)</a>; M. Killingsworth, D. Kahneman &amp; B. Mellers (2023), <a href="https://www.pnas.org/doi/10.1073/pnas.2208661120">PNAS 120(10)</a>. Those papers concern happiness and income; this piece concerns felt financial adequacy and income, and the two are related but distinct questions.</li>
+        <li><strong>Reproducibility.</strong> Every number above is computed by <code>analysis/feeling-rich-being-rich/build_data.py</code> and stored in <code>data.json</code> / <code>claims.json</code>.</li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<script type="module">
+/*DATA-START*/const DATA = {"meta":{"slug":"feeling-rich-being-rich","dataset":"Gallup World Poll (cleaned extract)","window":[2016,2020],"em_window":[2013,2015],"min_n":1000,"qmin":150,"n_scatter":147,"n_quintile":150,"n_quintile_grouped":148,"excluded_small_n":["Burundi","Jamaica","Maldives","Trinidad and Tobago"],"excluded_no_gni":["Kosovo","Somalia","Taiwan"],"fit_feel":{"intercept":-0.0384,"slope_per_ln":0.289,"per_doubling":0.2003,"r2":0.665},"fit_ladder":{"intercept":-1.1983,"slope_per_ln":0.7195,"per_doubling":0.4987,"r2":0.6372},"split_fit":{"threshold":20000,"below20k":{"per_doubling":0.1511,"n":97,"r2":0.3995},"above20k":{"per_doubling":0.3691,"n":50,"r2":0.4737}},"total_n_scatter":706634,"resid_corr":0.5005,"gini_corr":-0.3703,"n_gini":137,"q5_gt_q4":150,"top_step_largest":82,"top_step_largest_share":0.5467,"global":{"comfortable":0.1779,"getting_by":0.4228,"difficult":0.3993,"very_difficult":0.1531,"ncty":148,"pop_millions":7344.0,"pop_billions":7.344},"us":{"feel_q":[2.701,3.027,3.287,3.538,3.597],"top_step":0.059,"em_q5_agree":0.5261},"em_ncty":135,"feel_not_ladder":["Turkmenistan","Myanmar","Tanzania","Rwanda","India","Indonesia","Sri Lanka","Algeria"],"ladder_not_feel":["Israel","Guatemala","El Salvador","Mozambique","Venezuela","Honduras","Ecuador","Costa Rica"],"groups":["Low income","Lower middle income","Upper middle income","High income"]},"scatter":[{"c":"Afghanistan","iso3":"AFG","g":"Low income","reg":"South Asia","gni":1824,"feel":1.932,"lad":2.974,"res":-0.199,"resl":-1.229,"n":4029,"comf":0.043,"diff":0.777,"ny":4},{"c":"Albania","iso3":"ALB","g":"Upper middle income","reg":"Europe-Other","gni":11886,"feel":2.168,"lad":4.904,"res":-0.505,"resl":-0.648,"n":5067,"comf":0.091,"diff":0.594,"ny":5},{"c":"Algeria","iso3":"DZA","g":"Upper middle income","reg":"Middle East and North Africa","gni":13802,"feel":2.872,"lad":5.087,"res":0.156,"resl":-0.573,"n":4046,"comf":0.24,"diff":0.284,"ny":4},{"c":"Argentina","iso3":"ARG","g":"High income","reg":"Latin America and the Caribbean","gni":18461,"feel":2.595,"lad":6.049,"res":-0.206,"resl":0.18,"n":5032,"comf":0.13,"diff":0.399,"ny":5},{"c":"Armenia","iso3":"ARM","g":"Upper middle income","reg":"Commonwealth of Independent States","gni":9144,"feel":2.674,"lad":4.804,"res":0.077,"resl":-0.559,"n":4014,"comf":0.208,"diff":0.37,"ny":4},{"c":"Australia","iso3":"AUS","g":"High income","reg":"Australia-New Zealand","gni":43560,"feel":3.306,"lad":7.211,"res":0.258,"resl":0.724,"n":5025,"comf":0.484,"diff":0.143,"ny":5},{"c":"Austria","iso3":"AUT","g":"High income","reg":"European Union","gni":45415,"feel":3.16,"lad":7.229,"res":0.099,"resl":0.712,"n":4992,"comf":0.354,"diff":0.158,"ny":5},{"c":"Azerbaijan","iso3":"AZE","g":"Upper middle income","reg":"Commonwealth of Independent States","gni":15600,"feel":2.673,"lad":5.199,"res":-0.079,"resl":-0.549,"n":3977,"comf":0.119,"diff":0.373,"ny":4},{"c":"Bahrain","iso3":"BHR","g":"High income","reg":"Middle East and North Africa","gni":41580,"feel":2.949,"lad":6.421,"res":-0.086,"resl":-0.033,"n":4082,"comf":0.358,"diff":0.306,"ny":4},{"c":"Bangladesh","iso3":"BGD","g":"Lower middle income","reg":"South Asia","gni":3677,"feel":2.735,"lad":4.857,"res":0.401,"resl":0.149,"n":7052,"comf":0.215,"diff":0.324,"ny":5},{"c":"Belarus","iso3":"BLR","g":"Upper middle income","reg":"Commonwealth of Independent States","gni":16323,"feel":2.893,"lad":5.452,"res":0.128,"resl":-0.329,"n":4115,"comf":0.199,"diff":0.257,"ny":4},{"c":"Belgium","iso3":"BEL","g":"High income","reg":"European Union","gni":42156,"feel":2.992,"lad":6.876,"res":-0.047,"resl":0.412,"n":5004,"comf":0.339,"diff":0.27,"ny":5},{"c":"Benin","iso3":"BEN","g":"Low income","reg":"Sub-Saharan Africa","gni":2061,"feel":2.007,"lad":4.801,"res":-0.16,"resl":0.509,"n":4929,"comf":0.048,"diff":0.723,"ny":5},{"c":"Bolivia","iso3":"BOL","g":"Lower middle income","reg":"Latin America and the Caribbean","gni":6714,"feel":2.706,"lad":5.714,"res":0.198,"resl":0.572,"n":4933,"comf":0.172,"diff":0.365,"ny":4},{"c":"Bosnia Herzegovina","iso3":"BIH","g":"Upper middle income","reg":"Europe-Other","gni":11716,"feel":2.885,"lad":5.546,"res":0.216,"resl":0.004,"n":4973,"comf":0.186,"diff":0.227,"ny":5},{"c":"Botswana","iso3":"BWA","g":"Upper middle income","reg":"Sub-Saharan Africa","gni":15534,"feel":2.227,"lad":3.484,"res":-0.524,"resl":-2.261,"n":3928,"comf":0.172,"diff":0.627,"ny":4},{"c":"Brazil","iso3":"BRA","g":"Upper middle income","reg":"Latin America and the Caribbean","gni":13755,"feel":2.701,"lad":6.337,"res":-0.014,"resl":0.679,"n":6940,"comf":0.181,"diff":0.364,"ny":5},{"c":"Bulgaria","iso3":"BGR","g":"Upper middle income","reg":"European Union","gni":18740,"feel":2.452,"lad":5.148,"res":-0.353,"resl":-0.732,"n":5036,"comf":0.131,"diff":0.472,"ny":5},{"c":"Burkina Faso","iso3":"BFA","g":"Low income","reg":"Sub-Saharan Africa","gni":1650,"feel":2.21,"lad":4.624,"res":0.107,"resl":0.492,"n":3915,"comf":0.058,"diff":0.612,"ny":4},{"c":"Cambodia","iso3":"KHM","g":"Lower middle income","reg":"Southeast Asia","gni":3413,"feel":2.505,"lad":4.694,"res":0.193,"resl":0.039,"n":5478,"comf":0.148,"diff":0.486,"ny":5},{"c":"Cameroon","iso3":"CMR","g":"Lower middle income","reg":"Sub-Saharan Africa","gni":3315,"feel":2.182,"lad":5.063,"res":-0.122,"resl":0.429,"n":4903,"comf":0.089,"diff":0.65,"ny":5},{"c":"Canada","iso3":"CAN","g":"High income","reg":"Northern America","gni":43433,"feel":3.301,"lad":7.193,"res":0.253,"resl":0.709,"n":5020,"comf":0.504,"diff":0.154,"ny":5},{"c":"Central African Republic","iso3":"CAF","g":"Low income","reg":"Sub-Saharan Africa","gni":663,"feel":1.768,"lad":3.083,"res":-0.071,"resl":-0.393,"n":1965,"comf":0.041,"diff":0.772,"ny":2},{"c":"Chad","iso3":"TCD","g":"Low income","reg":"Sub-Saharan Africa","gni":1750,"feel":1.931,"lad":4.322,"res":-0.188,"resl":0.148,"n":3946,"comf":0.061,"diff":0.752,"ny":4},{"c":"Chile","iso3":"CHL","g":"High income","reg":"Latin America and the Caribbean","gni":21910,"feel":2.789,"lad":6.283,"res":-0.06,"resl":0.29,"n":5069,"comf":0.168,"diff":0.297,"ny":4},{"c":"China","iso3":"CHN","g":"Upper middle income","reg":"East Asia","gni":15270,"feel":2.697,"lad":5.285,"res":-0.049,"resl":-0.448,"n":19047,"comf":0.101,"diff":0.327,"ny":5},{"c":"Colombia","iso3":"COL","g":"Upper middle income","reg":"Latin America and the Caribbean","gni":12938,"feel":2.525,"lad":6.086,"res":-0.173,"resl":0.472,"n":4890,"comf":0.164,"diff":0.459,"ny":5},{"c":"Comoros","iso3":"COM","g":"Low income","reg":"Sub-Saharan Africa","gni":1399,"feel":2.446,"lad":4.289,"res":0.391,"resl":0.276,"n":1913,"comf":0.134,"diff":0.539,"ny":2},{"c":"Congo Brazzaville","iso3":"COG","g":"Lower middle income","reg":"Sub-Saharan Africa","gni":5694,"feel":2.062,"lad":4.92,"res":-0.398,"resl":-0.103,"n":3924,"comf":0.092,"diff":0.695,"ny":4},{"c":"Congo Kinshasa","iso3":"COD","g":"Low income","reg":"Sub-Saharan Africa","gni":796,"feel":2.039,"lad":4.418,"res":0.147,"resl":0.811,"n":1966,"comf":0.056,"diff":0.68,"ny":2},{"c":"Costa Rica","iso3":"CRI","g":"Upper middle income","reg":"Latin America and the Caribbean","gni":14636,"feel":2.875,"lad":7.125,"res":0.142,"resl":1.423,"n":3931,"comf":0.243,"diff":0.277,"ny":4},{"c":"Croatia","iso3":"HRV","g":"High income","reg":"European Union","gni":22162,"feel":2.706,"lad":5.684,"res":-0.147,"resl":-0.316,"n":4937,"comf":0.14,"diff":0.32,"ny":5},{"c":"Cyprus","iso3":"CYP","g":"High income","reg":"European Union","gni":31568,"feel":2.779,"lad":6.106,"res":-0.176,"resl":-0.149,"n":5065,"comf":0.234,"diff":0.33,"ny":5},{"c":"Czech Republic","iso3":"CZE","g":"High income","reg":"European Union","gni":30588,"feel":3.022,"lad":6.863,"res":0.076,"resl":0.631,"n":3897,"comf":0.273,"diff":0.209,"ny":4},{"c":"Denmark","iso3":"DNK","g":"High income","reg":"European Union","gni":47918,"feel":3.497,"lad":7.602,"res":0.421,"resl":1.047,"n":5011,"comf":0.582,"diff":0.065,"ny":5},{"c":"Dominican Republic","iso3":"DOM","g":"Upper middle income","reg":"Latin America and the Caribbean","gni":13921,"feel":2.353,"lad":5.496,"res":-0.365,"resl":-0.17,"n":4918,"comf":0.128,"diff":0.528,"ny":5},{"c":"Ecuador","iso3":"ECU","g":"Upper middle income","reg":"Latin America and the Caribbean","gni":10347,"feel":2.386,"lad":5.85,"res":-0.247,"resl":0.397,"n":4915,"comf":0.107,"diff":0.518,"ny":5},{"c":"Egypt","iso3":"EGY","g":"Lower middle income","reg":"Middle East and North Africa","gni":10355,"feel":2.336,"lad":4.271,"res":-0.297,"resl":-1.183,"n":6066,"comf":0.091,"diff":0.505,"ny":5},{"c":"El Salvador","iso3":"SLV","g":"Lower middle income","reg":"Latin America and the Caribbean","gni":6868,"feel":2.418,"lad":6.131,"res":-0.097,"resl":0.973,"n":4929,"comf":0.114,"diff":0.491,"ny":5},{"c":"Estonia","iso3":"EST","g":"High income","reg":"European Union","gni":28993,"feel":3.029,"lad":6.034,"res":0.099,"resl":-0.16,"n":5000,"comf":0.245,"diff":0.171,"ny":5},{"c":"Eswatini","iso3":"SWZ","g":"Lower middle income","reg":"Sub-Saharan Africa","gni":7620,"feel":2.413,"lad":4.308,"res":-0.131,"resl":-0.924,"n":2007,"comf":0.086,"diff":0.448,"ny":2},{"c":"Ethiopia","iso3":"ETH","g":"Low income","reg":"Sub-Saharan Africa","gni":1719,"feel":2.229,"lad":4.263,"res":0.114,"resl":0.102,"n":6156,"comf":0.075,"diff":0.575,"ny":5},{"c":"Finland","iso3":"FIN","g":"High income","reg":"European Union","gni":41002,"feel":3.283,"lad":7.795,"res":0.253,"resl":1.352,"n":5021,"comf":0.389,"diff":0.088,"ny":5},{"c":"France","iso3":"FRA","g":"High income","reg":"European Union","gni":39254,"feel":3.059,"lad":6.636,"res":0.041,"resl":0.224,"n":4987,"comf":0.342,"diff":0.231,"ny":5},{"c":"Gabon","iso3":"GAB","g":"Upper middle income","reg":"Sub-Saharan Africa","gni":16431,"feel":2.376,"lad":4.83,"res":-0.391,"resl":-0.955,"n":3983,"comf":0.116,"diff":0.52,"ny":4},{"c":"Gambia","iso3":"GMB","g":"Low income","reg":"Sub-Saharan Africa","gni":1516,"feel":2.448,"lad":4.751,"res":0.37,"resl":0.68,"n":3007,"comf":0.18,"diff":0.534,"ny":3},{"c":"Georgia","iso3":"GEO","g":"Lower middle income","reg":"Commonwealth of Independent States","gni":9186,"feel":2.489,"lad":4.717,"res":-0.109,"resl":-0.65,"n":5011,"comf":0.074,"diff":0.409,"ny":5},{"c":"Germany","iso3":"DEU","g":"High income","reg":"European Union","gni":46136,"feel":3.204,"lad":7.048,"res":0.14,"resl":0.52,"n":5973,"comf":0.393,"diff":0.153,"ny":5},{"c":"Ghana","iso3":"GHA","g":"Lower middle income","reg":"Sub-Saharan Africa","gni":4096,"feel":2.29,"lad":5.051,"res":-0.075,"resl":0.265,"n":4756,"comf":0.142,"diff":0.593,"ny":5},{"c":"Greece","iso3":"GRC","g":"High income","reg":"European Union","gni":24648,"feel":2.388,"lad":5.527,"res":-0.495,"resl":-0.55,"n":5066,"comf":0.09,"diff":0.51,"ny":5},{"c":"Guatemala","iso3":"GTM","g":"Upper middle income","reg":"Latin America and the Caribbean","gni":7278,"feel":2.486,"lad":6.389,"res":-0.045,"resl":1.19,"n":3785,"comf":0.194,"diff":0.477,"ny":4},{"c":"Guinea","iso3":"GIN","g":"Low income","reg":"Sub-Saharan Africa","gni":2067,"feel":2.064,"lad":4.6,"res":-0.104,"resl":0.306,"n":4020,"comf":0.053,"diff":0.671,"ny":4},{"c":"Haiti","iso3":"HTI","g":"Low income","reg":"Latin America and the Caribbean","gni":1665,"feel":2.105,"lad":3.597,"res":-0.0,"resl":-0.541,"n":1402,"comf":0.065,"diff":0.605,"ny":3},{"c":"Honduras","iso3":"HND","g":"Lower middle income","reg":"Latin America and the Caribbean","gni":4215,"feel":2.338,"lad":5.878,"res":-0.036,"resl":1.071,"n":3861,"comf":0.139,"diff":0.535,"ny":4},{"c":"Hong Kong","iso3":"HKG","g":"High income","reg":"East Asia","gni":58420,"feel":2.994,"lad":5.454,"res":-0.139,"resl":-1.244,"n":3986,"comf":0.176,"diff":0.151,"ny":4},{"c":"Hungary","iso3":"HUN","g":"High income","reg":"European Union","gni":25393,"feel":2.475,"lad":5.9,"res":-0.417,"resl":-0.199,"n":4930,"comf":0.09,"diff":0.464,"ny":5},{"c":"Iceland","iso3":"ISL","g":"High income","reg":"Europe-Other","gni":45810,"feel":3.45,"lad":7.518,"res":0.388,"resl":0.995,"n":2606,"comf":0.597,"diff":0.113,"ny":4},{"c":"India","iso3":"IND","g":"Lower middle income","reg":"South Asia","gni":6353,"feel":2.423,"lad":3.691,"res":-0.069,"resl":-1.411,"n":15339,"comf":0.152,"diff":0.51,"ny":4},{"c":"Indonesia","iso3":"IDN","g":"Lower middle income","reg":"Southeast Asia","gni":10846,"feel":2.964,"lad":5.257,"res":0.318,"resl":-0.23,"n":5111,"comf":0.278,"diff":0.236,"ny":4},{"c":"Iran","iso3":"IRN","g":"Upper middle income","reg":"Middle East and North Africa","gni":19130,"feel":2.366,"lad":4.707,"res":-0.444,"resl":-1.188,"n":5024,"comf":0.095,"diff":0.504,"ny":5},{"c":"Iraq","iso3":"IRQ","g":"Upper middle income","reg":"Middle East and North Africa","gni":17789,"feel":2.418,"lad":4.691,"res":-0.372,"resl":-1.151,"n":5063,"comf":0.159,"diff":0.508,"ny":4},{"c":"Ireland","iso3":"IRL","g":"High income","reg":"European Union","gni":53754,"feel":3.201,"lad":7.071,"res":0.092,"resl":0.433,"n":4966,"comf":0.421,"diff":0.171,"ny":5},{"c":"Israel","iso3":"ISR","g":"High income","reg":"Middle East and North Africa","gni":32711,"feel":2.784,"lad":7.191,"res":-0.182,"resl":0.91,"n":5107,"comf":0.187,"diff":0.322,"ny":4},{"c":"Italy","iso3":"ITA","g":"High income","reg":"European Union","gni":35299,"feel":2.847,"lad":6.321,"res":-0.141,"resl":-0.014,"n":5006,"comf":0.261,"diff":0.293,"ny":5},{"c":"Ivory Coast","iso3":"CIV","g":"Lower middle income","reg":"Sub-Saharan Africa","gni":3481,"feel":2.152,"lad":5.099,"res":-0.166,"resl":0.43,"n":4908,"comf":0.07,"diff":0.677,"ny":5},{"c":"Japan","iso3":"JPN","g":"High income","reg":"East Asia","gni":38986,"feel":3.155,"lad":5.937,"res":0.139,"resl":-0.47,"n":4997,"comf":0.277,"diff":0.098,"ny":5},{"c":"Jordan","iso3":"JOR","g":"Upper middle income","reg":"Middle East and North Africa","gni":8288,"feel":2.209,"lad":4.652,"res":-0.36,"resl":-0.641,"n":5009,"comf":0.105,"diff":0.581,"ny":5},{"c":"Kazakhstan","iso3":"KAZ","g":"Upper middle income","reg":"Commonwealth of Independent States","gni":22626,"feel":3.178,"lad":5.977,"res":0.32,"resl":-0.039,"n":4820,"comf":0.389,"diff":0.179,"ny":5},{"c":"Kenya","iso3":"KEN","g":"Lower middle income","reg":"Sub-Saharan Africa","gni":2961,"feel":2.195,"lad":4.538,"res":-0.077,"resl":-0.014,"n":4972,"comf":0.113,"diff":0.668,"ny":5},{"c":"Kuwait","iso3":"KWT","g":"High income","reg":"Middle East and North Africa","gni":70524,"feel":3.115,"lad":6.064,"res":-0.072,"resl":-0.77,"n":3990,"comf":0.394,"diff":0.218,"ny":3},{"c":"Kyrgyzstan","iso3":"KGZ","g":"Lower middle income","reg":"Commonwealth of Independent States","gni":3255,"feel":3.01,"lad":5.545,"res":0.712,"resl":0.924,"n":4997,"comf":0.364,"diff":0.312,"ny":5},{"c":"Laos","iso3":"LAO","g":"Lower middle income","reg":"Southeast Asia","gni":6070,"feel":2.71,"lad":4.962,"res":0.231,"resl":-0.107,"n":5433,"comf":0.061,"diff":0.262,"ny":4},{"c":"Latvia","iso3":"LVA","g":"High income","reg":"European Union","gni":25002,"feel":2.633,"lad":6.003,"res":-0.255,"resl":-0.084,"n":4861,"comf":0.221,"diff":0.511,"ny":5},{"c":"Lebanon","iso3":"LBN","g":"Upper middle income","reg":"Middle East and North Africa","gni":13378,"feel":2.505,"lad":4.895,"res":-0.202,"resl":-0.742,"n":4036,"comf":0.082,"diff":0.418,"ny":4},{"c":"Lesotho","iso3":"LSO","g":"Lower middle income","reg":"Sub-Saharan Africa","gni":3255,"feel":2.05,"lad":3.706,"res":-0.249,"resl":-0.915,"n":2726,"comf":0.054,"diff":0.617,"ny":3},{"c":"Liberia","iso3":"LBR","g":"Low income","reg":"Sub-Saharan Africa","gni":667,"feel":2.057,"lad":4.26,"res":0.216,"resl":0.78,"n":3766,"comf":0.112,"diff":0.713,"ny":4},{"c":"Libya","iso3":"LBY","g":"Upper middle income","reg":"Middle East and North Africa","gni":11100,"feel":2.754,"lad":5.475,"res":0.101,"resl":-0.028,"n":4000,"comf":0.284,"diff":0.378,"ny":4},{"c":"Lithuania","iso3":"LTU","g":"High income","reg":"European Union","gni":28314,"feel":3.171,"lad":6.181,"res":0.248,"resl":0.004,"n":4709,"comf":0.374,"diff":0.167,"ny":5},{"c":"Luxembourg","iso3":"LUX","g":"High income","reg":"European Union","gni":65016,"feel":3.417,"lad":7.17,"res":0.253,"resl":0.395,"n":4004,"comf":0.539,"diff":0.104,"ny":4},{"c":"Madagascar","iso3":"MDG","g":"Low income","reg":"Sub-Saharan Africa","gni":1358,"feel":1.979,"lad":4.037,"res":-0.067,"resl":0.045,"n":3963,"comf":0.097,"diff":0.781,"ny":4},{"c":"Malawi","iso3":"MWI","g":"Low income","reg":"Sub-Saharan Africa","gni":1064,"feel":2.048,"lad":3.522,"res":0.072,"resl":-0.294,"n":3950,"comf":0.052,"diff":0.689,"ny":4},{"c":"Malaysia","iso3":"MYS","g":"Upper middle income","reg":"Southeast Asia","gni":26107,"feel":2.946,"lad":5.384,"res":0.045,"resl":-0.734,"n":2032,"comf":0.202,"diff":0.206,"ny":2},{"c":"Mali","iso3":"MLI","g":"Low income","reg":"Sub-Saharan Africa","gni":1953,"feel":2.403,"lad":4.558,"res":0.252,"resl":0.305,"n":4010,"comf":0.078,"diff":0.503,"ny":4},{"c":"Malta","iso3":"MLT","g":"High income","reg":"European Union","gni":34396,"feel":3.249,"lad":6.614,"res":0.269,"resl":0.298,"n":5035,"comf":0.415,"diff":0.139,"ny":5},{"c":"Mauritania","iso3":"MRT","g":"Lower middle income","reg":"Sub-Saharan Africa","gni":3592,"feel":2.309,"lad":4.399,"res":-0.018,"resl":-0.292,"n":3738,"comf":0.128,"diff":0.556,"ny":4},{"c":"Mauritius","iso3":"MUS","g":"Upper middle income","reg":"Sub-Saharan Africa","gni":20189,"feel":2.82,"lad":5.986,"res":-0.006,"resl":0.053,"n":4890,"comf":0.359,"diff":0.396,"ny":5},{"c":"Mexico","iso3":"MEX","g":"Upper middle income","reg":"Latin America and the Caribbean","gni":16944,"feel":2.625,"lad":6.437,"res":-0.15,"resl":0.629,"n":4939,"comf":0.165,"diff":0.406,"ny":5},{"c":"Moldova","iso3":"MDA","g":"Lower middle income","reg":"Commonwealth of Independent States","gni":5554,"feel":2.499,"lad":5.642,"res":0.046,"resl":0.637,"n":4928,"comf":0.13,"diff":0.45,"ny":5},{"c":"Mongolia","iso3":"MNG","g":"Lower middle income","reg":"East Asia","gni":10103,"feel":2.49,"lad":5.487,"res":-0.136,"resl":0.052,"n":5052,"comf":0.053,"diff":0.467,"ny":5},{"c":"Montenegro","iso3":"MNE","g":"Upper middle income","reg":"Europe-Other","gni":16779,"feel":2.787,"lad":5.533,"res":0.014,"resl":-0.268,"n":5010,"comf":0.204,"diff":0.287,"ny":5},{"c":"Morocco","iso3":"MAR","g":"Lower middle income","reg":"Middle East and North Africa","gni":7340,"feel":2.629,"lad":5.096,"res":0.095,"resl":-0.11,"n":4967,"comf":0.206,"diff":0.4,"ny":5},{"c":"Mozambique","iso3":"MOZ","g":"Low income","reg":"Sub-Saharan Africa","gni":1093,"feel":1.83,"lad":4.624,"res":-0.153,"resl":0.788,"n":2838,"comf":0.084,"diff":0.795,"ny":3},{"c":"Myanmar","iso3":"MMR","g":"Lower middle income","reg":"Southeast Asia","gni":5567,"feel":2.957,"lad":4.387,"res":0.503,"resl":-0.619,"n":5701,"comf":0.214,"diff":0.222,"ny":5},{"c":"Namibia","iso3":"NAM","g":"Upper middle income","reg":"Sub-Saharan Africa","gni":9387,"feel":2.184,"lad":4.541,"res":-0.42,"resl":-0.841,"n":3928,"comf":0.146,"diff":0.652,"ny":4},{"c":"Nepal","iso3":"NPL","g":"Low income","reg":"South Asia","gni":2471,"feel":2.49,"lad":5.13,"res":0.27,"resl":0.708,"n":5054,"comf":0.167,"diff":0.464,"ny":4},{"c":"Netherlands","iso3":"NLD","g":"High income","reg":"European Union","gni":47900,"feel":3.348,"lad":7.478,"res":0.272,"resl":0.923,"n":5008,"comf":0.478,"diff":0.106,"ny":5},{"c":"New Zealand","iso3":"NZL","g":"High income","reg":"Australia-New Zealand","gni":33970,"feel":3.338,"lad":7.276,"res":0.362,"resl":0.969,"n":5023,"comf":0.501,"diff":0.131,"ny":5},{"c":"Nicaragua","iso3":"NIC","g":"Lower middle income","reg":"Latin America and the Caribbean","gni":5157,"feel":2.539,"lad":6.107,"res":0.107,"resl":1.155,"n":3974,"comf":0.119,"diff":0.424,"ny":4},{"c":"Niger","iso3":"NER","g":"Low income","reg":"Sub-Saharan Africa","gni":906,"feel":1.999,"lad":4.726,"res":0.07,"resl":1.025,"n":3842,"comf":0.058,"diff":0.719,"ny":4},{"c":"Nigeria","iso3":"NGA","g":"Lower middle income","reg":"Sub-Saharan Africa","gni":5231,"feel":2.179,"lad":4.906,"res":-0.257,"resl":-0.056,"n":6900,"comf":0.096,"diff":0.634,"ny":5},{"c":"North Macedonia","iso3":"MKD","g":"Upper middle income","reg":"Europe-Other","gni":12505,"feel":2.655,"lad":5.176,"res":-0.032,"resl":-0.412,"n":5055,"comf":0.195,"diff":0.382,"ny":5},{"c":"Northern Cyprus","iso3":"CYP","g":"High income","reg":"Europe-Other","gni":31568,"feel":2.795,"lad":5.631,"res":-0.161,"resl":-0.624,"n":3004,"comf":0.15,"diff":0.274,"ny":3},{"c":"Norway","iso3":"NOR","g":"High income","reg":"Europe-Other","gni":68012,"feel":3.592,"lad":7.491,"res":0.415,"resl":0.684,"n":6011,"comf":0.671,"diff":0.062,"ny":5},{"c":"Pakistan","iso3":"PAK","g":"Lower middle income","reg":"South Asia","gni":5311,"feel":2.449,"lad":5.372,"res":0.009,"resl":0.399,"n":4671,"comf":0.156,"diff":0.471,"ny":4},{"c":"Palestine","iso3":"PSE","g":"Lower middle income","reg":"Middle East and North Africa","gni":5055,"feel":2.206,"lad":4.639,"res":-0.22,"resl":-0.298,"n":4035,"comf":0.124,"diff":0.562,"ny":4},{"c":"Panama","iso3":"PAN","g":"High income","reg":"Latin America and the Caribbean","gni":19178,"feel":2.681,"lad":6.259,"res":-0.13,"resl":0.362,"n":3942,"comf":0.192,"diff":0.366,"ny":4},{"c":"Paraguay","iso3":"PRY","g":"Upper middle income","reg":"Latin America and the Caribbean","gni":8380,"feel":2.663,"lad":5.719,"res":0.091,"resl":0.418,"n":4054,"comf":0.119,"diff":0.347,"ny":3},{"c":"Peru","iso3":"PER","g":"Upper middle income","reg":"Latin America and the Caribbean","gni":11789,"feel":2.501,"lad":5.773,"res":-0.17,"resl":0.226,"n":3882,"comf":0.149,"diff":0.474,"ny":4},{"c":"Philippines","iso3":"PHL","g":"Lower middle income","reg":"Southeast Asia","gni":9154,"feel":2.499,"lad":5.759,"res":-0.099,"resl":0.395,"n":6082,"comf":0.131,"diff":0.461,"ny":5},{"c":"Poland","iso3":"POL","g":"High income","reg":"European Union","gni":26150,"feel":2.888,"lad":6.172,"res":-0.013,"resl":0.053,"n":4979,"comf":0.167,"diff":0.228,"ny":5},{"c":"Portugal","iso3":"PRT","g":"High income","reg":"European Union","gni":27315,"feel":2.822,"lad":5.789,"res":-0.091,"resl":-0.362,"n":5003,"comf":0.22,"diff":0.279,"ny":5},{"c":"Romania","iso3":"ROU","g":"Upper middle income","reg":"European Union","gni":22646,"feel":2.602,"lad":6.086,"res":-0.257,"resl":0.069,"n":4038,"comf":0.118,"diff":0.379,"ny":4},{"c":"Russia","iso3":"RUS","g":"Upper middle income","reg":"Commonwealth of Independent States","gni":24233,"feel":2.968,"lad":5.563,"res":0.09,"resl":-0.502,"n":10603,"comf":0.286,"diff":0.272,"ny":4},{"c":"Rwanda","iso3":"RWA","g":"Low income","reg":"Sub-Saharan Africa","gni":1811,"feel":2.329,"lad":3.318,"res":0.2,"resl":-0.881,"n":3929,"comf":0.044,"diff":0.5,"ny":4},{"c":"Saudi Arabia","iso3":"SAU","g":"High income","reg":"Middle East and North Africa","gni":49680,"feel":3.03,"lad":6.451,"res":-0.056,"resl":-0.13,"n":5037,"comf":0.335,"diff":0.226,"ny":5},{"c":"Senegal","iso3":"SEN","g":"Low income","reg":"Sub-Saharan Africa","gni":2384,"feel":2.32,"lad":4.882,"res":0.111,"resl":0.486,"n":3865,"comf":0.09,"diff":0.551,"ny":4},{"c":"Serbia","iso3":"SRB","g":"Upper middle income","reg":"Europe-Other","gni":13019,"feel":2.727,"lad":5.825,"res":0.028,"resl":0.207,"n":4977,"comf":0.178,"diff":0.327,"ny":5},{"c":"Sierra Leone","iso3":"SLE","g":"Low income","reg":"Sub-Saharan Africa","gni":1240,"feel":2.006,"lad":4.12,"res":-0.014,"resl":0.193,"n":3986,"comf":0.055,"diff":0.677,"ny":4},{"c":"Singapore","iso3":"SGP","g":"High income","reg":"Southeast Asia","gni":82503,"feel":3.239,"lad":6.292,"res":0.006,"resl":-0.654,"n":3979,"comf":0.378,"diff":0.122,"ny":4},{"c":"Slovakia","iso3":"SVK","g":"High income","reg":"European Union","gni":29467,"feel":2.825,"lad":6.271,"res":-0.11,"resl":0.065,"n":5004,"comf":0.192,"diff":0.288,"ny":5},{"c":"Slovenia","iso3":"SVN","g":"High income","reg":"European Union","gni":30594,"feel":3.196,"lad":6.298,"res":0.25,"resl":0.065,"n":4989,"comf":0.352,"diff":0.123,"ny":5},{"c":"South Africa","iso3":"ZAF","g":"Upper middle income","reg":"Sub-Saharan Africa","gni":11923,"feel":2.258,"lad":4.832,"res":-0.416,"resl":-0.722,"n":4920,"comf":0.151,"diff":0.584,"ny":5},{"c":"South Korea","iso3":"KOR","g":"High income","reg":"East Asia","gni":35945,"feel":2.843,"lad":5.876,"res":-0.15,"resl":-0.473,"n":5008,"comf":0.145,"diff":0.249,"ny":5},{"c":"South Sudan","iso3":"SSD","g":"Low income","reg":"Sub-Saharan Africa","gni":963,"feel":1.873,"lad":2.853,"res":-0.073,"resl":-0.892,"n":1858,"comf":0.102,"diff":0.769,"ny":2},{"c":"Spain","iso3":"ESP","g":"High income","reg":"European Union","gni":34258,"feel":2.97,"lad":6.405,"res":-0.009,"resl":0.091,"n":5004,"comf":0.327,"diff":0.261,"ny":5},{"c":"Sri Lanka","iso3":"LKA","g":"Lower middle income","reg":"South Asia","gni":11326,"feel":2.61,"lad":4.327,"res":-0.049,"resl":-1.191,"n":3260,"comf":0.177,"diff":0.392,"ny":3},{"c":"Sweden","iso3":"SWE","g":"High income","reg":"European Union","gni":47766,"feel":3.442,"lad":7.349,"res":0.367,"resl":0.796,"n":5013,"comf":0.526,"diff":0.066,"ny":5},{"c":"Switzerland","iso3":"CHE","g":"High income","reg":"Europe-Other","gni":57625,"feel":3.419,"lad":7.53,"res":0.29,"resl":0.841,"n":4978,"comf":0.536,"diff":0.089,"ny":5},{"c":"Tajikistan","iso3":"TJK","g":"Low income","reg":"Commonwealth of Independent States","gni":3317,"feel":2.895,"lad":5.467,"res":0.591,"resl":0.832,"n":6992,"comf":0.341,"diff":0.338,"ny":5},{"c":"Tanzania","iso3":"TZA","g":"Low income","reg":"Sub-Saharan Africa","gni":2655,"feel":2.394,"lad":3.422,"res":0.154,"resl":-1.052,"n":4942,"comf":0.116,"diff":0.473,"ny":5},{"c":"Thailand","iso3":"THA","g":"Upper middle income","reg":"Southeast Asia","gni":15516,"feel":2.611,"lad":5.992,"res":-0.139,"resl":0.248,"n":5960,"comf":0.107,"diff":0.404,"ny":5},{"c":"Togo","iso3":"TGO","g":"Low income","reg":"Sub-Saharan Africa","gni":1453,"feel":1.963,"lad":4.111,"res":-0.102,"resl":0.071,"n":4026,"comf":0.037,"diff":0.743,"ny":4},{"c":"Tunisia","iso3":"TUN","g":"Lower middle income","reg":"Middle East and North Africa","gni":10275,"feel":2.491,"lad":4.486,"res":-0.14,"resl":-0.962,"n":4936,"comf":0.187,"diff":0.466,"ny":5},{"c":"Turkey","iso3":"TUR","g":"Upper middle income","reg":"Middle East and North Africa","gni":24804,"feel":2.647,"lad":5.119,"res":-0.239,"resl":-0.962,"n":6006,"comf":0.134,"diff":0.361,"ny":5},{"c":"Turkmenistan","iso3":"TKM","g":"Upper middle income","reg":"Commonwealth of Independent States","gni":15594,"feel":3.367,"lad":5.307,"res":0.615,"resl":-0.44,"n":4010,"comf":0.483,"diff":0.113,"ny":4},{"c":"Uganda","iso3":"UGA","g":"Low income","reg":"Sub-Saharan Africa","gni":1658,"feel":1.936,"lad":4.434,"res":-0.168,"resl":0.299,"n":4806,"comf":0.106,"diff":0.747,"ny":5},{"c":"Ukraine","iso3":"UKR","g":"Lower middle income","reg":"Commonwealth of Independent States","gni":8130,"feel":2.63,"lad":4.596,"res":0.067,"resl":-0.683,"n":4967,"comf":0.142,"diff":0.401,"ny":5},{"c":"United Arab Emirates","iso3":"ARE","g":"High income","reg":"Middle East and North Africa","gni":67805,"feel":3.15,"lad":6.702,"res":-0.026,"resl":-0.104,"n":9696,"comf":0.473,"diff":0.25,"ny":5},{"c":"United Kingdom","iso3":"GBR","g":"High income","reg":"European Union","gni":39116,"feel":3.21,"lad":7.024,"res":0.193,"resl":0.614,"n":4985,"comf":0.438,"diff":0.176,"ny":5},{"c":"United States","iso3":"USA","g":"High income","reg":"Northern America","gni":54941,"feel":3.233,"lad":6.93,"res":0.118,"resl":0.276,"n":4996,"comf":0.469,"diff":0.169,"ny":5},{"c":"Uruguay","iso3":"URY","g":"High income","reg":"Latin America and the Caribbean","gni":19930,"feel":2.799,"lad":6.362,"res":-0.023,"resl":0.437,"n":5046,"comf":0.166,"diff":0.296,"ny":4},{"c":"Uzbekistan","iso3":"UZB","g":"Lower middle income","reg":"Commonwealth of Independent States","gni":6470,"feel":3.2,"lad":6.169,"res":0.702,"resl":1.054,"n":4048,"comf":0.569,"diff":0.32,"ny":4},{"c":"Venezuela","iso3":"VEN","g":"Upper middle income","reg":"Latin America and the Caribbean","gni":10672,"feel":1.928,"lad":4.76,"res":-0.714,"resl":-0.715,"n":5023,"comf":0.039,"diff":0.74,"ny":5},{"c":"Vietnam","iso3":"VNM","g":"Lower middle income","reg":"Southeast Asia","gni":5859,"feel":2.916,"lad":5.292,"res":0.448,"resl":0.249,"n":5011,"comf":0.153,"diff":0.201,"ny":4},{"c":"Yemen","iso3":"YEM","g":"Low income","reg":"Middle East and North Africa","gni":1239,"feel":2.016,"lad":3.6,"res":-0.004,"resl":-0.325,"n":4115,"comf":0.054,"diff":0.661,"ny":4},{"c":"Zambia","iso3":"ZMB","g":"Lower middle income","reg":"Sub-Saharan Africa","gni":3557,"feel":2.115,"lad":4.099,"res":-0.209,"resl":-0.585,"n":4779,"comf":0.109,"diff":0.679,"ny":5},{"c":"Zimbabwe","iso3":"ZWE","g":"Low income","reg":"Sub-Saharan Africa","gni":1683,"feel":1.808,"lad":3.357,"res":-0.3,"resl":-0.789,"n":5062,"comf":0.039,"diff":0.813,"ny":5}],"grad":{"Low income":{"ncty":29,"feel":[1.805,1.936,2.086,2.261,2.563],"sl":[0.413,0.414,0.434,0.467,0.528],"lad":[3.784,3.909,4.071,4.299,4.686],"steps_feel":[0.13,0.15,0.175,0.302],"steps_sl":[0.001,0.02,0.033,0.06],"rise_feel":0.757},"Lower middle income":{"ncty":34,"feel":[2.069,2.285,2.472,2.67,2.954],"sl":[0.557,0.591,0.627,0.661,0.71],"lad":[4.402,4.718,4.966,5.145,5.547],"steps_feel":[0.215,0.188,0.197,0.285],"steps_sl":[0.035,0.036,0.034,0.049],"rise_feel":0.885},"Upper middle income":{"ncty":38,"feel":[2.143,2.376,2.582,2.798,3.1],"sl":[0.515,0.56,0.608,0.659,0.722],"lad":[4.82,5.117,5.4,5.645,5.976],"steps_feel":[0.234,0.206,0.216,0.302],"steps_sl":[0.045,0.048,0.051,0.063],"rise_feel":0.958},"High income":{"ncty":47,"feel":[2.6,2.867,3.055,3.243,3.474],"sl":[0.682,0.746,0.794,0.835,0.882],"lad":[6.03,6.378,6.603,6.811,7.09],"steps_feel":[0.267,0.188,0.187,0.231],"steps_sl":[0.064,0.047,0.041,0.047],"rise_feel":0.874}},"grad_countries":[{"c":"Afghanistan","g":"Low income","v":[1.603,1.686,1.859,2.084,2.416]},{"c":"Albania","g":"Upper middle income","v":[1.537,1.808,2.063,2.456,2.969]},{"c":"Algeria","g":"Upper middle income","v":[2.474,2.571,2.874,3.12,3.302]},{"c":"Argentina","g":"High income","v":[2.172,2.406,2.593,2.716,3.078]},{"c":"Armenia","g":"Upper middle income","v":[2.173,2.49,2.669,2.818,3.213]},{"c":"Australia","g":"High income","v":[2.864,3.124,3.297,3.539,3.696]},{"c":"Austria","g":"High income","v":[2.64,2.939,3.267,3.382,3.556]},{"c":"Azerbaijan","g":"Upper middle income","v":[2.157,2.498,2.676,2.86,3.168]},{"c":"Bahrain","g":"High income","v":[2.613,2.789,2.859,3.112,3.362]},{"c":"Bangladesh","g":"Lower middle income","v":[2.272,2.561,2.697,2.937,3.201]},{"c":"Belarus","g":"Upper middle income","v":[2.567,2.722,2.842,3.049,3.284]},{"c":"Belgium","g":"High income","v":[2.525,2.88,2.883,3.194,3.465]},{"c":"Benin","g":"Low income","v":[1.704,1.793,1.992,2.129,2.406]},{"c":"Bolivia","g":"Lower middle income","v":[2.38,2.531,2.638,2.85,3.117]},{"c":"Bosnia Herzegovina","g":"Upper middle income","v":[2.3,2.689,2.946,3.104,3.366]},{"c":"Botswana","g":"Upper middle income","v":[1.814,1.955,2.189,2.469,2.685]},{"c":"Brazil","g":"Upper middle income","v":[2.143,2.485,2.739,2.893,3.26]},{"c":"Bulgaria","g":"Upper middle income","v":[1.683,2.068,2.492,2.785,3.22]},{"c":"Burkina Faso","g":"Low income","v":[1.887,2.013,2.176,2.355,2.611]},{"c":"Cambodia","g":"Lower middle income","v":[2.16,2.406,2.486,2.676,2.789]},{"c":"Cameroon","g":"Lower middle income","v":[1.789,2.095,2.134,2.311,2.583]},{"c":"Canada","g":"High income","v":[2.9,2.989,3.373,3.538,3.69]},{"c":"Central African Republic","g":"Low income","v":[1.393,1.356,1.702,1.897,2.482]},{"c":"Chad","g":"Low income","v":[1.621,1.707,1.898,2.087,2.338]},{"c":"Chile","g":"High income","v":[2.388,2.561,2.798,2.94,3.249]},{"c":"China","g":"Upper middle income","v":[2.203,2.554,2.73,2.922,3.061]},{"c":"Colombia","g":"Upper middle income","v":[2.022,2.301,2.547,2.727,3.028]},{"c":"Comoros","g":"Low income","v":[2.173,2.267,2.424,2.559,2.791]},{"c":"Congo Brazzaville","g":"Lower middle income","v":[1.824,1.923,1.951,2.106,2.484]},{"c":"Congo Kinshasa","g":"Low income","v":[1.545,1.802,2.104,2.204,2.545]},{"c":"Costa Rica","g":"Upper middle income","v":[2.417,2.727,2.831,3.107,3.282]},{"c":"Croatia","g":"High income","v":[2.269,2.499,2.618,2.885,3.233]},{"c":"Cyprus","g":"High income","v":[2.153,2.447,2.794,3.054,3.438]},{"c":"Czech Republic","g":"High income","v":[2.615,2.828,3.061,3.161,3.42]},{"c":"Denmark","g":"High income","v":[3.182,3.326,3.51,3.696,3.769]},{"c":"Dominican Republic","g":"Upper middle income","v":[2.04,2.123,2.295,2.448,2.862]},{"c":"Ecuador","g":"Upper middle income","v":[1.953,2.189,2.354,2.566,2.847]},{"c":"Egypt","g":"Lower middle income","v":[1.734,2.05,2.364,2.546,2.979]},{"c":"El Salvador","g":"Lower middle income","v":[2.146,2.267,2.373,2.511,2.794]},{"c":"Estonia","g":"High income","v":[2.631,2.818,3.037,3.195,3.45]},{"c":"Eswatini","g":"Lower middle income","v":[1.838,2.223,2.525,2.604,2.832]},{"c":"Ethiopia","g":"Low income","v":[1.947,2.044,2.252,2.352,2.541]},{"c":"Finland","g":"High income","v":[2.94,3.145,3.283,3.415,3.631]},{"c":"France","g":"High income","v":[2.532,2.841,3.086,3.299,3.52]},{"c":"Gabon","g":"Upper middle income","v":[1.943,2.158,2.312,2.575,2.882]},{"c":"Gambia","g":"Low income","v":[2.211,2.215,2.348,2.604,2.845]},{"c":"Georgia","g":"Lower middle income","v":[2.045,2.202,2.416,2.695,3.084]},{"c":"Germany","g":"High income","v":[2.613,3.03,3.315,3.424,3.622]},{"c":"Ghana","g":"Lower middle income","v":[1.964,2.09,2.239,2.424,2.71]},{"c":"Greece","g":"High income","v":[1.731,2.189,2.397,2.607,3.009]},{"c":"Guatemala","g":"Upper middle income","v":[2.128,2.209,2.427,2.608,3.015]},{"c":"Guinea","g":"Low income","v":[1.911,1.896,2.03,2.155,2.329]},{"c":"Haiti","g":"Low income","v":[1.887,1.906,1.923,2.156,2.592]},{"c":"Honduras","g":"Lower middle income","v":[1.949,2.189,2.309,2.467,2.745]},{"c":"Hong Kong","g":"High income","v":[2.687,2.829,3.037,3.145,3.264]},{"c":"Hungary","g":"High income","v":[1.888,2.294,2.444,2.716,3.011]},{"c":"Iceland","g":"High income","v":[3.031,3.292,3.461,3.697,3.757]},{"c":"India","g":"Lower middle income","v":[2.115,2.147,2.339,2.558,2.94]},{"c":"Indonesia","g":"Lower middle income","v":[2.514,2.808,2.982,3.151,3.352]},{"c":"Iran","g":"Upper middle income","v":[1.879,2.123,2.341,2.549,2.931]},{"c":"Iraq","g":"Upper middle income","v":[1.943,2.207,2.423,2.614,2.896]},{"c":"Ireland","g":"High income","v":[2.666,3.021,3.207,3.44,3.649]},{"c":"Israel","g":"High income","v":[2.284,2.601,2.761,3.02,3.247]},{"c":"Italy","g":"High income","v":[2.245,2.551,2.922,3.045,3.473]},{"c":"Ivory Coast","g":"Lower middle income","v":[1.932,1.947,2.093,2.252,2.527]},{"c":"Japan","g":"High income","v":[2.858,3.048,3.126,3.277,3.459]},{"c":"Jordan","g":"Upper middle income","v":[1.59,1.994,2.201,2.41,2.842]},{"c":"Kazakhstan","g":"Upper middle income","v":[2.857,3.007,3.193,3.309,3.518]},{"c":"Kenya","g":"Lower middle income","v":[1.841,1.934,2.133,2.384,2.676]},{"c":"Kuwait","g":"High income","v":[2.757,2.964,3.06,3.261,3.534]},{"c":"Kyrgyzstan","g":"Lower middle income","v":[2.424,2.864,3.002,3.257,3.494]},{"c":"Laos","g":"Lower middle income","v":[2.327,2.6,2.764,2.839,2.995]},{"c":"Latvia","g":"High income","v":[2.188,2.453,2.57,2.81,3.149]},{"c":"Lebanon","g":"Upper middle income","v":[1.99,2.296,2.486,2.734,3.017]},{"c":"Lesotho","g":"Lower middle income","v":[1.449,1.787,2.033,2.239,2.606]},{"c":"Liberia","g":"Low income","v":[1.725,1.96,2.029,2.187,2.354]},{"c":"Libya","g":"Upper middle income","v":[2.246,2.469,2.792,2.948,3.297]},{"c":"Lithuania","g":"High income","v":[2.769,2.935,3.125,3.327,3.63]},{"c":"Luxembourg","g":"High income","v":[2.961,3.309,3.491,3.569,3.744]},{"c":"Madagascar","g":"Low income","v":[1.781,1.8,1.912,2.018,2.384]},{"c":"Malawi","g":"Low income","v":[1.693,1.873,2.021,2.175,2.476]},{"c":"Malaysia","g":"Upper middle income","v":[2.5,2.828,2.934,3.16,3.292]},{"c":"Mali","g":"Low income","v":[2.161,2.298,2.396,2.479,2.674]},{"c":"Malta","g":"High income","v":[2.925,3.114,3.203,3.397,3.602]},{"c":"Mauritania","g":"Lower middle income","v":[2.264,2.092,2.13,2.636,2.783]},{"c":"Mauritius","g":"Upper middle income","v":[2.443,2.49,2.763,2.959,3.422]},{"c":"Mexico","g":"Upper middle income","v":[2.303,2.434,2.532,2.769,3.065]},{"c":"Moldova","g":"Lower middle income","v":[2.08,2.36,2.467,2.606,2.968]},{"c":"Mongolia","g":"Lower middle income","v":[2.047,2.378,2.541,2.628,2.849]},{"c":"Montenegro","g":"Upper middle income","v":[2.016,2.597,2.828,3.124,3.354]},{"c":"Morocco","g":"Lower middle income","v":[2.121,2.273,2.608,2.892,3.232]},{"c":"Mozambique","g":"Low income","v":[1.534,1.691,1.814,1.917,2.185]},{"c":"Myanmar","g":"Lower middle income","v":[2.713,2.836,2.964,3.075,3.197]},{"c":"Namibia","g":"Upper middle income","v":[1.773,1.912,2.097,2.332,2.785]},{"c":"Nepal","g":"Low income","v":[2.097,2.327,2.467,2.617,2.936]},{"c":"Netherlands","g":"High income","v":[2.978,3.171,3.303,3.531,3.748]},{"c":"New Zealand","g":"High income","v":[2.878,3.145,3.361,3.561,3.731]},{"c":"Nicaragua","g":"Lower middle income","v":[2.112,2.324,2.534,2.706,2.994]},{"c":"Niger","g":"Low income","v":[1.686,1.879,1.889,2.028,2.488]},{"c":"Nigeria","g":"Lower middle income","v":[1.834,1.969,2.134,2.307,2.641]},{"c":"North Macedonia","g":"Upper middle income","v":[2.043,2.315,2.702,2.926,3.271]},{"c":"Northern Cyprus","g":"High income","v":[2.446,2.721,2.789,2.919,3.09]},{"c":"Norway","g":"High income","v":[3.28,3.471,3.643,3.752,3.815]},{"c":"Pakistan","g":"Lower middle income","v":[2.015,2.232,2.501,2.587,2.906]},{"c":"Palestine","g":"Lower middle income","v":[1.29,1.741,2.256,2.609,3.102]},{"c":"Panama","g":"High income","v":[2.159,2.439,2.721,2.893,3.148]},{"c":"Paraguay","g":"Upper middle income","v":[2.127,2.479,2.641,2.911,3.148]},{"c":"Peru","g":"Upper middle income","v":[2.08,2.262,2.45,2.703,2.963]},{"c":"Philippines","g":"Lower middle income","v":[2.014,2.286,2.45,2.694,3.06]},{"c":"Poland","g":"High income","v":[2.529,2.735,2.857,3.01,3.296]},{"c":"Portugal","g":"High income","v":[2.344,2.538,2.785,3.047,3.391]},{"c":"Romania","g":"Upper middle income","v":[2.036,2.379,2.618,2.842,3.125]},{"c":"Russia","g":"Upper middle income","v":[2.615,2.733,2.928,3.132,3.42]},{"c":"Rwanda","g":"Low income","v":[1.805,2.145,2.316,2.549,2.807]},{"c":"Saudi Arabia","g":"High income","v":[2.687,2.833,3.036,3.163,3.426]},{"c":"Senegal","g":"Low income","v":[1.921,2.157,2.168,2.469,2.887]},{"c":"Serbia","g":"Upper middle income","v":[2.163,2.488,2.685,2.951,3.337]},{"c":"Sierra Leone","g":"Low income","v":[1.857,1.721,1.937,2.086,2.425]},{"c":"Singapore","g":"High income","v":[2.735,3.064,3.201,3.439,3.72]},{"c":"Slovakia","g":"High income","v":[2.222,2.635,2.785,3.116,3.344]},{"c":"Slovenia","g":"High income","v":[2.822,3.023,3.179,3.375,3.574]},{"c":"Somalia","g":"Low income","v":[1.638,2.019,2.268,2.555,3.088]},{"c":"South Africa","g":"Upper middle income","v":[1.898,1.948,2.146,2.443,2.824]},{"c":"South Korea","g":"High income","v":[2.383,2.706,2.903,3.024,3.19]},{"c":"South Sudan","g":"Low income","v":[1.68,1.775,1.778,1.987,2.103]},{"c":"Spain","g":"High income","v":[2.281,2.695,3.025,3.264,3.611]},{"c":"Sri Lanka","g":"Lower middle income","v":[2.136,2.445,2.654,2.776,3.021]},{"c":"Sweden","g":"High income","v":[3.063,3.294,3.484,3.622,3.742]},{"c":"Switzerland","g":"High income","v":[3.015,3.371,3.465,3.539,3.693]},{"c":"Tajikistan","g":"Low income","v":[2.489,2.69,2.864,3.081,3.339]},{"c":"Tanzania","g":"Low income","v":[2.053,2.27,2.378,2.578,2.682]},{"c":"Thailand","g":"Upper middle income","v":[2.224,2.451,2.576,2.775,3.021]},{"c":"Togo","g":"Low income","v":[1.624,1.794,1.911,2.124,2.358]},{"c":"Tunisia","g":"Lower middle income","v":[1.693,2.147,2.561,2.821,3.23]},{"c":"Turkey","g":"Upper middle income","v":[2.173,2.408,2.694,2.85,3.102]},{"c":"Turkmenistan","g":"Upper middle income","v":[3.265,3.236,3.302,3.448,3.576]},{"c":"Uganda","g":"Low income","v":[1.765,1.699,1.874,2.001,2.333]},{"c":"Ukraine","g":"Lower middle income","v":[2.298,2.324,2.532,2.821,3.171]},{"c":"United Arab Emirates","g":"High income","v":[2.802,2.993,3.12,3.303,3.521]},{"c":"United Kingdom","g":"High income","v":[2.643,3.024,3.245,3.476,3.65]},{"c":"United States","g":"High income","v":[2.701,3.027,3.287,3.538,3.597]},{"c":"Uruguay","g":"High income","v":[2.211,2.627,2.83,2.974,3.293]},{"c":"Uzbekistan","g":"Lower middle income","v":[2.781,3.043,3.244,3.411,3.514]},{"c":"Venezuela","g":"Upper middle income","v":[1.703,1.696,1.812,1.943,2.159]},{"c":"Vietnam","g":"Lower middle income","v":[2.518,2.78,2.966,3.075,3.234]},{"c":"Yemen","g":"Low income","v":[1.539,1.72,1.976,2.174,2.668]},{"c":"Zambia","g":"Lower middle income","v":[1.739,1.819,2.03,2.316,2.635]},{"c":"Zimbabwe","g":"Low income","v":[1.426,1.632,1.784,1.948,2.24]}],"em":{"Low income":{"agree":[0.11,0.107,0.117,0.152,0.202],"ncty":22},"Lower middle income":{"agree":[0.156,0.181,0.207,0.236,0.309],"ncty":31},"Upper middle income":{"agree":[0.176,0.194,0.216,0.253,0.333],"ncty":36},"High income":{"agree":[0.236,0.28,0.333,0.393,0.498],"ncty":46}}};/*DATA-END*/
+import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+
+const GC = {"Low income":"#b45f92","Lower middle income":"#c98a00","Upper middle income":"#00855f","High income":"#0b66a3"};
+const GORDER = ["Low income","Lower middle income","Upper middle income","High income"];
+const GSHORT = {"Low income":"Low income","Lower middle income":"Lower-middle","Upper middle income":"Upper-middle","High income":"High income"};
+const INK = "#26221a", SOFT = "#665e4c", FAINT = "#92886e", RULE = "#ded3b8";
+const fmt$ = d3.format(","), fmt2 = d3.format("+.2f"), fmtP = d3.format(".0%");
+
+const tip = d3.select("body").append("div").attr("class","tip").attr("aria-hidden","true");
+function showTip(html, ev){
+  tip.html(html).style("opacity",1);
+  const bw = document.documentElement.clientWidth;
+  const x = Math.min(ev.pageX + 14, bw - 250), y = ev.pageY - 12;
+  tip.style("left", x + "px").style("top", y + "px");
+}
+function hideTip(){ tip.style("opacity",0); }
+
+function svgIn(sel, w, h, label){
+  return d3.select(sel).append("svg")
+    .attr("viewBox",`0 0 ${w} ${h}`).attr("role","img").attr("aria-label",label);
+}
+function cw(sel, min, max){
+  const node = document.querySelector(sel);
+  return Math.max(min, Math.min(max, node.getBoundingClientRect().width || max));
+}
+
+/* ============ 0. global strip ============ */
+function drawStrip(){
+  d3.select("#strip").selectAll("svg").remove();
+  d3.select("#strip-legend").selectAll("*").remove();
+  const g = DATA.meta.global;
+  const cats = [
+    {k:"Living comfortably", v:g.comfortable, c:"#0b6b54", tc:"#f5efdf"},
+    {k:"Getting by", v:g.getting_by, c:"#7fae72", tc:"#23301d"},
+    {k:"Finding it difficult", v:g.difficult - g.very_difficult, c:"#dca74f", tc:"#3d2c08"},
+    {k:"Finding it very difficult", v:g.very_difficult, c:"#9c4a78", tc:"#f5efdf"},
+  ];
+  const W = cw("#strip", 320, 980), H = 64;
+  const svg = svgIn("#strip", W, H, "Stacked bar: world shares of the four income-feeling answers, population-weighted");
+  const x = d3.scaleLinear().domain([0,1]).range([0,W]);
+  let acc = 0;
+  for(const c of cats){
+    const x0 = x(acc), wseg = x(c.v);
+    svg.append("rect").attr("x",x0).attr("y",10).attr("width",Math.max(0,wseg-1.5)).attr("height",40)
+      .attr("rx",3).attr("fill",c.c);
+    if(wseg > 52){
+      svg.append("text").attr("x",x0+wseg/2).attr("y",34).attr("text-anchor","middle")
+        .attr("font-size",13).attr("font-weight",700).attr("fill",c.tc)
+        .text(d3.format(".1%")(c.v));
+    }
+    acc += c.v;
+  }
+  const lg = d3.select("#strip-legend");
+  for(const c of cats){
+    const k = lg.append("span").attr("class","key");
+    k.append("span").attr("class","swatch").style("background",c.c);
+    k.append("span").text(c.k);
+  }
+}
+
+/* ============ 1. hero scatter ============ */
+const SCATTER_LABELS = {
+  "Kyrgyzstan":      {dx:-8,  dy:-10, a:"end",   pri:1},
+  "Uzbekistan":      {dx:2,   dy:-12, a:"middle",pri:1},
+  "Turkmenistan":    {dx:0,   dy:-12, a:"middle",pri:1},
+  "Tajikistan":      {dx:10,  dy:12,  a:"start", pri:1},
+  "Myanmar":         {dx:-10, dy:4,   a:"end",   pri:2},
+  "Vietnam":         {dx:11,  dy:8,   a:"start", pri:2},
+  "Denmark":         {dx:-10, dy:-8,  a:"end",   pri:1},
+  "Norway":          {dx:2,   dy:-12, a:"middle",pri:1},
+  "Venezuela":       {dx:0,   dy:20,  a:"middle",pri:1},
+  "Botswana":        {dx:0,   dy:20,  a:"middle",pri:1},
+  "Greece":          {dx:6,   dy:20,  a:"middle",pri:1},
+  "Hungary":         {dx:12,  dy:6,   a:"start", pri:3},
+  "Iran":            {dx:-12, dy:8,   a:"end",   pri:2},
+  "South Africa":    {dx:-12, dy:6,   a:"end",   pri:2},
+  "United States":   {dx:-9,  dy:13,  a:"end",   pri:1},
+  "Costa Rica":      {dx:10,  dy:-7,  a:"start", pri:3},
+  "Israel":          {dx:10,  dy:12,  a:"start", pri:3},
+  "Singapore":       {dx:6,   dy:20,  a:"end",   pri:2},
+  "Central African Republic": {dx:-6, dy:17, a:"start", pri:2},
+  "Afghanistan":     {dx:-10, dy:10,  a:"end",   pri:3},
+};
+function drawScatter(){
+  d3.select("#chart-scatter").selectAll("svg").remove();
+  const W = cw("#chart-scatter", 340, 1000), narrow = W < 560;
+  const H = narrow ? W*1.05 : W*0.62;
+  const m = {t:18, r:26, b:44, l:46};
+  const svg = svgIn("#chart-scatter", W, H,
+    "Scatter plot of mean felt income adequacy against GNI per capita on a log scale for 147 countries, with a fitted rising curve and labeled outliers");
+  const x = d3.scaleLog().domain([580, 100000]).range([m.l, W-m.r]);
+  const y = d3.scaleLinear().domain([1.6, 3.85]).range([H-m.b, m.t]);
+
+  // gridlines + y ticks
+  for(const t of [2, 2.5, 3, 3.5]){
+    svg.append("line").attr("x1",m.l).attr("x2",W-m.r).attr("y1",y(t)).attr("y2",y(t))
+      .attr("stroke",RULE).attr("stroke-width",1).attr("stroke-dasharray",t%1?null:"none");
+    svg.append("text").attr("x",m.l-7).attr("y",y(t)+4).attr("text-anchor","end")
+      .attr("font-size",11).attr("fill",FAINT).text(t);
+  }
+  // scale-meaning anchors inside the plot, above their gridline, in empty corners (wide only)
+  if(!narrow){
+    svg.append("text").attr("x",m.l+6).attr("y",y(3)-5).attr("font-size",10.5)
+      .attr("fill",FAINT).attr("font-style","italic").text("3 = “getting by”");
+    svg.append("text").attr("x",W-m.r-6).attr("y",y(2)-5).attr("text-anchor","end")
+      .attr("font-size",10.5).attr("fill",FAINT).attr("font-style","italic")
+      .text("2 = “finding it difficult”");
+  }
+  // x ticks
+  const xt = narrow ? [1000,5000,20000,80000] : [1000,2000,5000,10000,20000,50000];
+  for(const t of xt){
+    svg.append("line").attr("x1",x(t)).attr("x2",x(t)).attr("y1",H-m.b).attr("y2",H-m.b+5)
+      .attr("stroke",FAINT);
+    svg.append("text").attr("x",x(t)).attr("y",H-m.b+18).attr("text-anchor","middle")
+      .attr("font-size",11).attr("fill",SOFT).text("$"+(t>=1000?(t/1000)+"k":t));
+  }
+  svg.append("text").attr("x",(m.l+W-m.r)/2).attr("y",H-6).attr("text-anchor","middle")
+    .attr("font-size",11.5).attr("fill",SOFT).text("GNI per capita, 2011 PPP $ (log scale)");
+  svg.append("text").attr("transform",`translate(13,${(m.t+H-m.b)/2}) rotate(-90)`)
+    .attr("text-anchor","middle").attr("font-size",11.5).attr("fill",SOFT)
+    .text("mean felt adequacy (1–4)");
+
+  // fitted curve
+  const f = DATA.meta.fit_feel;
+  const line = d3.line().x(d=>x(d)).y(d=>y(f.intercept + f.slope_per_ln*Math.log(d)));
+  const xs = d3.range(Math.log(640), Math.log(95000), 0.05).map(Math.exp);
+  svg.append("path").attr("d",line(xs)).attr("fill","none")
+    .attr("stroke",INK).attr("stroke-width",2).attr("stroke-dasharray","6 4").attr("opacity",.65);
+  // annotation rotated to the true on-screen slope of the fitted line
+  const ax = 1500;
+  const slopePx = (y(f.intercept+f.slope_per_ln*Math.log(ax*2)) - y(f.intercept+f.slope_per_ln*Math.log(ax)))
+                / (x(ax*2) - x(ax));
+  const ang = Math.atan(slopePx)*180/Math.PI;
+  const ay = y(f.intercept+f.slope_per_ln*Math.log(ax)) - 13;
+  if(!narrow){
+    svg.append("text").attr("x",x(ax)).attr("y",ay)
+      .attr("font-size",11).attr("fill",SOFT).attr("font-style","italic")
+      .attr("transform",`rotate(${ang} ${x(ax)} ${ay})`)
+      .text("+0.20 per doubling of income");
+  }
+
+  // dots
+  const dots = svg.append("g");
+  for(const dpt of DATA.scatter){
+    dots.append("circle")
+      .attr("cx",x(dpt.gni)).attr("cy",y(dpt.feel)).attr("r",narrow?3.4:4.6)
+      .attr("fill",GC[dpt.g]||"#8a8068")
+      .attr("stroke","#fcf9ef").attr("stroke-width",1).attr("opacity",.88)
+      .on("mousemove",(ev)=>{
+        showTip(`<b>${dpt.c}</b> · ${dpt.g||"—"}<br>
+          GNI per capita: $${fmt$(dpt.gni)}<br>
+          Felt adequacy: ${dpt.feel.toFixed(2)} (curve gap ${fmt2(dpt.res)})<br>
+          Ladder: ${dpt.lad.toFixed(2)} · “comfortable”: ${fmtP(dpt.comf)}<br>
+          N = ${fmt$(dpt.n)}, ${dpt.ny} survey year${dpt.ny>1?"s":""}`, ev);
+      })
+      .on("mouseleave",hideTip)
+      .append("title").text(`${dpt.c}: felt adequacy ${dpt.feel.toFixed(2)} at $${fmt$(dpt.gni)} GNI per capita`);
+  }
+  // labels with leader stubs
+  const maxPri = narrow ? 1 : 3;
+  for(const dpt of DATA.scatter){
+    const L = SCATTER_LABELS[dpt.c];
+    if(!L || L.pri > maxPri) continue;
+    const px = x(dpt.gni), py = y(dpt.feel);
+    svg.append("text").attr("x",px+L.dx).attr("y",py+L.dy)
+      .attr("text-anchor",L.a).attr("font-size",narrow?9.5:11).attr("font-weight",600)
+      .attr("fill",INK).attr("paint-order","stroke").attr("stroke","#fcf9ef").attr("stroke-width",3)
+      .text(dpt.c);
+  }
+  // legend
+  const lg = d3.select("#legend-scatter"); lg.selectAll("*").remove();
+  for(const gname of GORDER){
+    const k = lg.append("span").attr("class","key");
+    k.append("span").attr("class","swatch").style("background",GC[gname]);
+    k.append("span").text(GSHORT[gname]);
+  }
+  lg.append("span").attr("class","key").html(`<span style="border-top:2px dashed ${INK};width:18px;display:inline-block;opacity:.65"></span><span>log-linear fit</span>`);
+}
+
+/* ============ 2. quintile small multiples ============ */
+function drawGrad(){
+  const grid = d3.select("#chart-grad"); grid.selectAll("*").remove();
+  for(const gname of GORDER){
+    const gg = DATA.grad[gname];
+    const panel = grid.append("div").attr("class","panel");
+    panel.append("h4").html(`<span style="color:${GC[gname]}">▮</span> ${GSHORT[gname]} <span class="pn">· ${gg.ncty} countries</span>`);
+    const W = 236, H = 268, m = {t:16, r:14, b:30, l:30};
+    const svg = panel.append("svg").attr("viewBox",`0 0 ${W} ${H}`).attr("role","img")
+      .attr("aria-label",`Felt adequacy by income quintile in ${gname} countries: rises from ${gg.feel[0]} in the poorest fifth to ${gg.feel[4]} in the richest, with no flattening at the top`);
+    const x = d3.scalePoint().domain([1,2,3,4,5]).range([m.l, W-m.r]).padding(0.25);
+    const y = d3.scaleLinear().domain([1.4, 3.9]).range([H-m.b, m.t]);
+    for(const t of [2,3]){
+      svg.append("line").attr("x1",m.l).attr("x2",W-m.r).attr("y1",y(t)).attr("y2",y(t))
+        .attr("stroke",RULE).attr("stroke-width",1);
+      svg.append("text").attr("x",m.l-5).attr("y",y(t)+3.5).attr("text-anchor","end")
+        .attr("font-size",9.5).attr("fill",FAINT).text(t);
+    }
+    svg.append("text").attr("x",m.l-5).attr("y",y(3.9)+8).attr("text-anchor","end")
+      .attr("font-size",9.5).attr("fill",FAINT).text("4");
+    const mkline = d3.line().x((v,i)=>x(i+1)).y(v=>y(v));
+    for(const c of DATA.grad_countries){
+      if(c.g !== gname) continue;
+      svg.append("path").attr("d",mkline(c.v)).attr("fill","none")
+        .attr("stroke",INK).attr("stroke-width",.8).attr("opacity",.10);
+    }
+    svg.append("path").attr("d",mkline(gg.feel)).attr("fill","none")
+      .attr("stroke",GC[gname]).attr("stroke-width",3);
+    gg.feel.forEach((v,i)=>{
+      svg.append("circle").attr("cx",x(i+1)).attr("cy",y(v)).attr("r",3.4)
+        .attr("fill",GC[gname]).attr("stroke","#fcf9ef").attr("stroke-width",1.2);
+    });
+    // endpoint values
+    svg.append("text").attr("x",x(1)).attr("y",y(gg.feel[0])+15).attr("text-anchor","middle")
+      .attr("font-size",10).attr("font-weight",700).attr("fill",GC[gname]).text(gg.feel[0].toFixed(2));
+    svg.append("text").attr("x",x(5)).attr("y",y(gg.feel[4])-8).attr("text-anchor","middle")
+      .attr("font-size",10).attr("font-weight",700).attr("fill",GC[gname]).text(gg.feel[4].toFixed(2));
+    // top-step annotation
+    const ts = gg.steps_feel[3];
+    svg.append("text").attr("x",(x(4)+x(5))/2 + 2).attr("y",(y(gg.feel[3])+y(gg.feel[4]))/2 + 17)
+      .attr("text-anchor","middle").attr("font-size",9.5).attr("font-style","italic")
+      .attr("fill",SOFT).text(`top step ${fmt2(ts)}`);
+    // x labels
+    for(const q of [1,2,3,4,5]){
+      svg.append("text").attr("x",x(q)).attr("y",H-m.b+14).attr("text-anchor","middle")
+        .attr("font-size",9.5).attr("fill",SOFT).text(q);
+    }
+    svg.append("text").attr("x",x(1)).attr("y",H-4).attr("text-anchor","start")
+      .attr("font-size",8.8).attr("fill",FAINT).text("poorest");
+    svg.append("text").attr("x",x(5)).attr("y",H-4).attr("text-anchor","end")
+      .attr("font-size",8.8).attr("fill",FAINT).text("richest");
+  }
+}
+
+/* ============ 3. divergence quadrant scatter ============ */
+const DIV_LABELS = {
+  "Israel":{dx:9,dy:11,a:"start"}, "Guatemala":{dx:9,dy:-4,a:"start"}, "El Salvador":{dx:-9,dy:2,a:"end"},
+  "Honduras":{dx:2,dy:-9,a:"middle"}, "Ecuador":{dx:-8,dy:12,a:"end"}, "Costa Rica":{dx:8,dy:-7,a:"start"},
+  "Mozambique":{dx:-9,dy:-7,a:"end"}, "Venezuela":{dx:0,dy:18,a:"middle"},
+  "Turkmenistan":{dx:-9,dy:-7,a:"end"}, "Myanmar":{dx:-9,dy:2,a:"end"}, "Tanzania":{dx:-9,dy:0,a:"end"},
+  "Rwanda":{dx:9,dy:11,a:"start"}, "India":{dx:-9,dy:4,a:"end"}, "Indonesia":{dx:8,dy:-7,a:"start"},
+  "Sri Lanka":{dx:2,dy:16,a:"middle"}, "Algeria":{dx:9,dy:-5,a:"start"},
+  "Botswana":{dx:9,dy:4,a:"start"}, "Denmark":{dx:-9,dy:-5,a:"end"}, "Kyrgyzstan":{dx:9,dy:-5,a:"start"},
+};
+function drawDiv(){
+  d3.select("#chart-div").selectAll("svg").remove();
+  const W = cw("#chart-div", 340, 1000), narrow = W < 560;
+  const H = narrow ? W*0.95 : W*0.58;
+  const m = {t:30, r:26, b:46, l:50};
+  const svg = svgIn("#chart-div", W, H,
+    "Quadrant scatter comparing felt-adequacy residuals with ladder residuals for 147 countries; Latin American countries rate their lives above their income but feel money-poor, while several Asian and African countries show the reverse");
+  const x = d3.scaleLinear().domain([-2.45, 1.75]).range([m.l, W-m.r]);
+  const y = d3.scaleLinear().domain([-0.85, 0.85]).range([H-m.b, m.t]);
+  // quadrant tint: top-left = feels paid but rates life low; bottom-right = the reverse
+  svg.append("rect").attr("x",x(-2.45)).attr("y",y(0.85)).attr("width",x(0)-x(-2.45)).attr("height",y(0)-y(0.85))
+    .attr("fill","#0b6b54").attr("opacity",.05);
+  svg.append("rect").attr("x",x(0)).attr("y",y(0)).attr("width",x(1.75)-x(0)).attr("height",y(-0.85)-y(0))
+    .attr("fill","#c98a00").attr("opacity",.06);
+  // axes
+  svg.append("line").attr("x1",x(0)).attr("x2",x(0)).attr("y1",y(-0.85)).attr("y2",y(0.85)).attr("stroke",FAINT).attr("stroke-width",1);
+  svg.append("line").attr("x1",x(-2.45)).attr("x2",x(1.75)).attr("y1",y(0)).attr("y2",y(0)).attr("stroke",FAINT).attr("stroke-width",1);
+  for(const t of [-2,-1,1]){
+    svg.append("text").attr("x",x(t)).attr("y",y(-0.85)+16).attr("text-anchor","middle").attr("font-size",10.5).attr("fill",FAINT).text(t===1?"+1 rung":t+" rungs");
+  }
+  for(const t of [-0.5,0.5]){
+    svg.append("text").attr("x",x(0)-7).attr("y",y(t)+4).attr("text-anchor","end").attr("font-size",10.5).attr("fill",FAINT).text(t>0?"+0.5":"−0.5");
+  }
+  svg.append("text").attr("x",W-m.r).attr("y",y(0)-8).attr("text-anchor","end").attr("font-size",narrow?10:11).attr("fill",SOFT)
+    .text(narrow?"rates life better →":"rates life better than income predicts →");
+  svg.append("text").attr("x",m.l).attr("y",y(0)+28).attr("text-anchor","start").attr("font-size",narrow?10:11).attr("fill",SOFT)
+    .text("← rates life worse");
+  svg.append("text").attr("transform",`translate(14,${y(0.45)}) rotate(-90)`).attr("text-anchor","middle")
+    .attr("font-size",11).attr("fill",SOFT).text("feels richer ↑");
+  svg.append("text").attr("transform",`translate(14,${y(-0.45)}) rotate(-90)`).attr("text-anchor","middle")
+    .attr("font-size",11).attr("fill",SOFT).text("↓ feels poorer");
+  if(!narrow){
+    svg.append("text").attr("x",x(-2.35)).attr("y",y(0.78)).attr("font-size",10.5).attr("font-style","italic").attr("fill",SOFT)
+      .text("feels paid, rates life low — Central & South Asia, East Africa");
+    svg.append("text").attr("x",x(1.65)).attr("y",y(-0.74)).attr("text-anchor","end").attr("font-size",10.5).attr("font-style","italic").attr("fill",SOFT)
+      .text("rates life high, feels money-poor — Latin America, Israel");
+  }
+  const setA = new Set(DATA.meta.feel_not_ladder), setB = new Set(DATA.meta.ladder_not_feel);
+  for(const dpt of DATA.scatter){
+    const hot = setA.has(dpt.c) ? "#00855f" : setB.has(dpt.c) ? "#c98a00" : null;
+    svg.append("circle").attr("cx",x(dpt.resl)).attr("cy",y(dpt.res)).attr("r",hot?(narrow?4:5.2):(narrow?2.6:3.4))
+      .attr("fill",hot||"#aaa091").attr("opacity",hot?.95:.55)
+      .attr("stroke",hot?"#fcf9ef":"none").attr("stroke-width",1)
+      .on("mousemove",(ev)=>{
+        showTip(`<b>${dpt.c}</b><br>Ladder vs income curve: ${fmt2(dpt.resl)} rungs<br>Felt adequacy vs curve: ${fmt2(dpt.res)} points`, ev);
+      })
+      .on("mouseleave",hideTip)
+      .append("title").text(`${dpt.c}: ladder residual ${fmt2(dpt.resl)}, felt-adequacy residual ${fmt2(dpt.res)}`);
+  }
+  const labelSet = narrow ? new Set(["Israel","Costa Rica","Guatemala","India","Tanzania","Myanmar","Turkmenistan","Venezuela","Botswana"]) : null;
+  for(const dpt of DATA.scatter){
+    let L = DIV_LABELS[dpt.c];
+    if(!L) continue;
+    if(labelSet && !labelSet.has(dpt.c)) continue;
+    if(narrow && dpt.resl > 1) L = {dx:-8, dy:L.dy, a:"end"};
+    svg.append("text").attr("x",x(dpt.resl)+L.dx).attr("y",y(dpt.res)+L.dy)
+      .attr("text-anchor",L.a).attr("font-size",narrow?9.5:10.5).attr("font-weight",600).attr("fill",INK)
+      .attr("paint-order","stroke").attr("stroke","#fcf9ef").attr("stroke-width",3)
+      .text(dpt.c);
+  }
+  const lg = d3.select("#legend-div"); lg.selectAll("*").remove();
+  const pairs = [["#00855f","feels richer than it rates its life (top 8 divergers)"],
+                 ["#c98a00","rates life higher than it feels paid (top 8 divergers)"],
+                 ["#aaa091","all other countries"]];
+  for(const [c,t] of pairs){
+    const k = lg.append("span").attr("class","key");
+    k.append("span").attr("class","swatch").style("background",c);
+    k.append("span").text(t);
+  }
+}
+
+/* ============ 4. enough-money bars ============ */
+function drawEM(){
+  d3.select("#chart-em").selectAll("svg").remove();
+  const W = cw("#chart-em", 340, 1000), narrow = W < 560;
+  const H = narrow ? W*0.85 : W*0.42;
+  const m = {t:26, r:14, b:44, l:42};
+  const svg = svgIn("#chart-em", W, H,
+    "Grouped bar chart: share agreeing they have enough money to do everything they want, by income quintile within each World Bank income group; rises with quintile in every group, reaching only about half in the richest fifth of high-income countries");
+  const xg = d3.scaleBand().domain(GORDER).range([m.l, W-m.r]).paddingInner(0.22).paddingOuter(0.04);
+  const xq = d3.scaleBand().domain([1,2,3,4,5]).range([0, xg.bandwidth()]).paddingInner(0.18);
+  const y = d3.scaleLinear().domain([0, 0.56]).range([H-m.b, m.t]);
+  for(const t of [0.1,0.2,0.3,0.4,0.5]){
+    svg.append("line").attr("x1",m.l).attr("x2",W-m.r).attr("y1",y(t)).attr("y2",y(t)).attr("stroke",RULE);
+    svg.append("text").attr("x",m.l-6).attr("y",y(t)+4).attr("text-anchor","end")
+      .attr("font-size",10.5).attr("fill",FAINT).text(Math.round(t*100)+"%");
+  }
+  for(const gname of GORDER){
+    const e = DATA.em[gname];
+    for(let q=1; q<=5; q++){
+      const v = e.agree[q-1];
+      const bx = xg(gname)+xq(q);
+      svg.append("rect").attr("x",bx).attr("y",y(v)).attr("width",xq.bandwidth()).attr("height",y(0)-y(v))
+        .attr("rx",2).attr("fill",GC[gname]).attr("opacity",0.35+0.65*(q-1)/4)
+        .on("mousemove",(ev)=>{
+          showTip(`<b>${GSHORT[gname]}</b>, quintile ${q} (${q===1?"poorest":q===5?"richest":"middle ranks"})<br>${d3.format(".1%")(v)} agree they have enough money<br>(typical country, ${e.ncty} countries, 2013–2015)`, ev);
+        })
+        .on("mouseleave",hideTip)
+        .append("title").text(`${gname} quintile ${q}: ${d3.format(".0%")(v)} agree`);
+      if(q===1 || q===5){
+        svg.append("text").attr("x",bx+xq.bandwidth()/2).attr("y",y(v)-5).attr("text-anchor","middle")
+          .attr("font-size",narrow?9:10.5).attr("font-weight",700).attr("fill",GC[gname])
+          .text(Math.round(v*100)+"%");
+      }
+    }
+    svg.append("text").attr("x",xg(gname)+xg.bandwidth()/2).attr("y",H-m.b+17).attr("text-anchor","middle")
+      .attr("font-size",narrow?9.5:11.5).attr("font-weight",600).attr("fill",SOFT).text(GSHORT[gname]);
+    svg.append("text").attr("x",xg(gname)+xq(1)+xq.bandwidth()/2).attr("y",H-m.b+31).attr("text-anchor","middle")
+      .attr("font-size",9).attr("fill",FAINT).text("poorest");
+    svg.append("text").attr("x",xg(gname)+xq(5)+xq.bandwidth()/2).attr("y",H-m.b+31).attr("text-anchor","middle")
+      .attr("font-size",9).attr("fill",FAINT).text("richest");
+  }
+}
+
+function drawAll(){ drawStrip(); drawScatter(); drawGrad(); drawDiv(); drawEM(); }
+drawAll();
+let rt = null;
+window.addEventListener("resize", ()=>{ clearTimeout(rt); rt = setTimeout(drawAll, 180); });
+</script>
+<!--SL_BOOKNAV_START-->
+<style>
+.slbn{font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;background:#0f1417;border-top:1px solid #27313a;color:#9fb0ba;padding:24px 20px 40px;margin:48px 0 0}
+.slbn-in{max-width:1080px;margin:0 auto;display:flex;align-items:stretch;gap:12px}
+.slbn a{flex:1 1 0;min-width:0;text-decoration:none;color:inherit;border:1px solid #27313a;border-radius:10px;padding:13px 15px;display:flex;flex-direction:column;gap:4px;background:#161d22;transition:border-color .15s,transform .15s}
+.slbn a:hover{border-color:#3fa9a0;transform:translateY(-2px)}
+.slbn a:focus-visible{outline:2px solid #3fa9a0;outline-offset:2px}
+.slbn a.slbn-next{text-align:right;align-items:flex-end}
+.slbn a.slbn-toc{flex:0 0 auto;min-width:120px;justify-content:center;align-items:center;text-align:center}
+.slbn .slbn-dir{font:700 10px/1 inherit;letter-spacing:.13em;text-transform:uppercase;color:#6b7c87}
+.slbn .slbn-ttl{font:700 14px/1.3 inherit;color:#eef2f4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.slbn a.slbn-disabled{opacity:.38;pointer-events:none}
+@media(max-width:640px){.slbn-in{flex-wrap:wrap}.slbn a{flex:1 1 100%}.slbn a.slbn-next{text-align:left;align-items:flex-start}.slbn a.slbn-toc{order:-1}}
+</style>
+<nav class="slbn" aria-label="Book navigation"><div class="slbn-in"><a class="slbn-prev" href="../read.html?ch=out-of-place" target="_top"><span class="slbn-dir">‹ Previous</span><span class="slbn-ttl">Out of Place — The Geography of the LGBT Well-Being Gap</span></a><a class="slbn-toc" href="../index.html#book" target="_top"><span class="slbn-dir">The Scissors</span><span class="slbn-ttl">Chapter 33 / 36</span></a><a class="slbn-next" href="../read.html?ch=faith-where-its-normative" target="_top"><span class="slbn-dir">Next ›</span><span class="slbn-ttl">Faith Pays Off Where Faith Is the Norm</span></a></div></nav>
+<!--SL_BOOKNAV_END-->
+</body>
+</html>

@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fifty Years of American Evenings</title>
+<style>
+  :root{
+    --bg:#12152a;
+    --bg-deep:#0c0e1d;
+    --panel:#181c33;
+    --ink:#ece7da;
+    --ink-dim:#b3aec0;
+    --ink-faint:#807b91;
+    --hairline:rgba(236,231,218,.13);
+    --relatives:#f4b860;
+    --friends:#ee8166;
+    --neighbors:#a98fe0;
+    --bar:#e25c8e;
+    --tv:#3f6e9e;
+    --www:#6cc3e0;
+    --accent:#f4b860;
+    --serif:Georgia, 'Iowan Old Style', 'Times New Roman', serif;
+    --sans:system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:linear-gradient(180deg,#1b2140 0,#12152a 340px,#0c0e1d 100%);
+    color:var(--ink); font-family:var(--serif); font-size:18px; line-height:1.62;
+  }
+  a{color:var(--www); text-decoration:none; border-bottom:1px solid rgba(108,195,224,.35)}
+  a:hover,a:focus-visible{color:#9fdcf0; border-bottom-color:#9fdcf0}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:2px}
+  .wrap{max-width:740px; margin:0 auto; padding:0 20px}
+  .wide{max-width:980px; margin:0 auto; padding:0 20px}
+  header{padding:84px 0 30px; text-align:center; position:relative}
+  .dusk{
+    position:absolute; left:0; right:0; top:0; height:330px; z-index:-1; pointer-events:none;
+    background:
+      radial-gradient(ellipse 70% 60% at 50% -8%, rgba(238,129,102,.20), rgba(238,129,102,0) 62%),
+      radial-gradient(ellipse 45% 40% at 78% 4%, rgba(169,143,224,.14), rgba(169,143,224,0) 65%);
+  }
+  .kicker{font-family:var(--sans); font-size:12px; letter-spacing:.24em; text-transform:uppercase; color:var(--accent); margin:0 0 18px}
+  h1{font-size:clamp(34px,6vw,58px); line-height:1.06; margin:0 0 20px; font-weight:700; letter-spacing:-.01em}
+  .dek{font-size:clamp(18px,2.6vw,22px); font-style:italic; color:var(--ink-dim); max-width:640px; margin:0 auto 26px; line-height:1.5}
+  .byline{font-family:var(--sans); font-size:13px; color:var(--ink-faint); letter-spacing:.04em}
+  .byline b{color:var(--ink-dim); font-weight:600}
+  main p{margin:0 0 1.35em}
+  h2{font-size:clamp(24px,3.6vw,32px); line-height:1.18; margin:2.2em 0 .65em; letter-spacing:-.005em}
+  h3{font-family:var(--sans); font-size:15px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-dim); margin:2em 0 .5em}
+  .drop::first-letter{
+    float:left; font-size:3.45em; line-height:.84; padding:6px 10px 0 0; color:var(--accent); font-weight:700;
+  }
+  figure{margin:34px 0 10px; background:rgba(24,28,51,.55); border:1px solid var(--hairline); border-radius:14px; padding:22px 20px 14px}
+  figure h4{font-family:var(--sans); font-size:17px; margin:0 0 4px; font-weight:700; color:var(--ink)}
+  figure .sub{font-family:var(--sans); font-size:13.5px; color:var(--ink-dim); margin:0 0 14px; line-height:1.5}
+  figcaption{font-family:var(--sans); font-size:12.5px; color:var(--ink-faint); line-height:1.55; margin-top:10px; border-top:1px solid var(--hairline); padding-top:10px}
+  svg{width:100%; height:auto; display:block}
+  .toggle{display:flex; gap:8px; margin:0 0 14px; font-family:var(--sans)}
+  .toggle button{
+    background:transparent; color:var(--ink-dim); border:1px solid var(--hairline); border-radius:999px;
+    font-family:var(--sans); font-size:13px; padding:7px 16px; cursor:pointer; letter-spacing:.02em;
+  }
+  .toggle button[aria-pressed="true"]{background:var(--accent); color:#241a08; border-color:var(--accent); font-weight:600}
+  .toggle button:hover{border-color:var(--accent); color:var(--ink)}
+  .toggle button[aria-pressed="true"]:hover{color:#241a08}
+  .facets{display:grid; grid-template-columns:repeat(auto-fit,minmax(215px,1fr)); gap:14px}
+  .facets figure{margin:0; padding:14px 12px 10px}
+  #tip{
+    position:fixed; z-index:30; pointer-events:none; display:none; max-width:270px;
+    background:#0d1022; border:1px solid rgba(244,184,96,.4); border-radius:10px;
+    font-family:var(--sans); font-size:12.5px; line-height:1.5; color:var(--ink); padding:10px 12px;
+    box-shadow:0 8px 28px rgba(0,0,0,.55);
+  }
+  #tip .tt-year{font-weight:700; font-size:13.5px; margin-bottom:4px; color:var(--accent)}
+  #tip .row{display:flex; justify-content:space-between; gap:14px}
+  #tip .sw{display:inline-block; width:8px; height:8px; border-radius:2px; margin-right:6px}
+  .pull{
+    border-left:3px solid var(--bar); padding:4px 0 4px 20px; margin:1.8em 0; font-size:21px;
+    line-height:1.45; font-style:italic; color:var(--ink-dim);
+  }
+  .caveats{background:rgba(24,28,51,.55); border:1px solid var(--hairline); border-radius:14px; padding:8px 26px 14px; margin:2em 0}
+  .caveats ul{padding-left:20px; margin:.5em 0}
+  .caveats li{margin:.55em 0}
+  footer{border-top:1px solid var(--hairline); margin-top:70px; padding:38px 0 80px; font-family:var(--sans); font-size:13.5px; color:var(--ink-faint); line-height:1.7}
+  footer h3{margin-top:0}
+  footer p{margin:0 0 1em}
+  .stars{font-family:var(--sans); text-align:center; color:var(--ink-faint); letter-spacing:.6em; margin:2.4em 0; font-size:14px}
+  @media (max-width:560px){
+    body{font-size:16.5px}
+    figure{padding:14px 12px 10px}
+  }
+</style>
+</head>
+<body>
+<div class="dusk" aria-hidden="true"></div>
+<header class="wrap">
+  <p class="kicker">American evenings &middot; 1974&ndash;2024</p>
+  <h1>Fifty Years of American Evenings</h1>
+  <p class="dek">Since 1974 the General Social Survey has asked the same four questions: how often do you spend an evening with relatives, with friends, with neighbors, at a bar? The company thinned. The glow stayed. And the people who still gather now look happier, relative to those who don&rsquo;t, than they did when the asking began.</p>
+  <p class="byline">Data: <b>General Social Survey</b>, NORC, 1972&ndash;2024 cumulative file &middot; all estimates weighted (wtssps)</p>
+</header>
+
+<main>
+  <div class="wrap">
+    <p class="drop">The neighbors left first. In 1974, 61 percent of American adults said they spent a social evening with someone in their neighborhood at least once a month. By 2018 it was 46 percent. In 2024 it was 38 &mdash; a figure dimmed further by a change in how the survey is taken, but the descent was forty years old before that asterisk arrived. Evenings with relatives and evenings with friends, by contrast, held almost eerily steady for four straight decades &mdash; roughly three in four adults saw family at least monthly, just under two in three saw friends &mdash; before both slipped in the 2020s. Convert each answer to a rough count using the survey&rsquo;s own frequency categories and the average American&rsquo;s calendar of company shrank from about 12.2 expected social evenings a month in 1974 to 10.9 by 2018, and 9.5 in 2024.</p>
+    <p>What filled the vacated hours is less novel than the usual story suggests. Television never really rose: 3.0 hours a day in 1975, 3.0 hours a day in 2024. It was already there, the wallpaper of the American evening, fifty years running. The new tenant is the internet &mdash; from 5.1 hours a week in 2000 (the survey excludes email) to 16.5 hours by 2022, a tripling that sits on top of the old TV habit rather than replacing it.</p>
+    <p>That is the familiar act of this story, the one Robert Putnam was telling in 2000 with data that ended in the late 1990s. The GSS lets you run the tape 25 years past <em>Bowling Alone</em>. But it also lets you ask a second, stranger question: as evenings in company became scarcer, did their <em>association</em> with happiness fade &mdash; or sharpen? The answer, in these data, is that it sharpened. In the 1970s, Americans who often spent evenings with relatives or neighbors were about as likely to say they were &ldquo;very happy&rdquo; as those who rarely did. In the 2010s and 2020s, the gap between frequent and rare socializers runs six to nine percentage points. And one activity &mdash; the bar &mdash; flipped its sign entirely.</p>
+  </div>
+
+  <div class="wide">
+    <figure>
+      <h4 id="stream-title">The shape of an evening, 1974&ndash;2024</h4>
+      <p class="sub" id="stream-sub">Expected social evenings per month, from stated frequencies. The four activities are asked separately &mdash; they are not parts of a whole, and one evening can count in two bands &mdash; so read the stack as an additive index of company, not a diary.</p>
+      <div class="toggle" role="group" aria-label="View selector for the main chart">
+        <button id="btn-year" aria-pressed="true">By year</button>
+        <button id="btn-cohort" aria-pressed="false">By birth cohort</button>
+      </div>
+      <div id="stream"></div>
+      <figcaption id="stream-cap">Weighted means of category midpoints (almost daily&thinsp;=&thinsp;20 evenings/month; once or twice a week&thinsp;=&thinsp;6; several times a month&thinsp;=&thinsp;3; about once a month&thinsp;=&thinsp;1; several times a year&thinsp;=&thinsp;0.3; about once a year&thinsp;=&thinsp;0.08; never&thinsp;=&thinsp;0 &mdash; an approximation, stated in the notes). Points exist only in survey years. The 2021&ndash;2024 surveys moved to push-to-web; levels after the dashed line are partly mode-shifted.</figcaption>
+    </figure>
+
+    <figure>
+      <h4>Meanwhile, the screen</h4>
+      <p class="sub">Hours per day: television (asked since 1975) with internet use stacked on top (asked 2000&ndash;2022, hours per week divided by seven; excludes email).</p>
+      <div id="screens"></div>
+      <figcaption>Weighted means. TV hours are per day; internet hours are converted from a weekly question and exclude email, so the two are rough companions, not a single measured total. The internet item was not asked in 2024.</figcaption>
+    </figure>
+  </div>
+
+  <div class="wrap">
+    <p>The chart&rsquo;s long middle is the surprise. The friendship recession, as told from time diaries, is usually a story of the 2010s. Seen from the GSS&rsquo;s longer window, evenings with friends and family were remarkably durable; what eroded for half a century was the <em>proximate</em> tie &mdash; the neighbor, the person you see because they are simply there. That is Putnam&rsquo;s decline, still running a quarter century after he described it. The 2020s drop in friends and relatives is real in the data but arrives exactly when the survey changed modes, so some unknown share of it is methodology, not loneliness. We flag it rather than lean on it.</p>
+    <p>Toggle the chart to birth cohorts and the age&ndash;period&ndash;cohort picture is laid out for inspection rather than modeled. Each ribbon is a birth decade flowing through the ages of life; every generation socializes most in its twenties and settles toward a floor. But the ribbons stack lower with each decade of birth: Americans born in the 1950s averaged 12.4 expected social evenings a month at ages 25&ndash;31; those born in the 1990s, observed at the same ages, averaged 10.5. The evening didn&rsquo;t empty because old people aged; it emptied because each new cohort arrived a little less social-by-evening than the one before.</p>
+
+    <h2>Scarcer company, bigger gap</h2>
+    <p>Now the second act. For each activity and each pooled bin of surveys, take the people who report that activity at least monthly (&ldquo;frequent&rdquo;) and those who report it less than monthly (&ldquo;rare&rdquo;), and compare the share saying they are <em>very happy</em>. The result is a gradient &mdash; an association, emphatically not a causal effect; happy people may seek company at least as much as company makes people happy.</p>
+  </div>
+
+  <div class="wide">
+    <figure style="background:transparent;border:0;padding:0">
+      <div class="facets" id="facets"></div>
+      <figcaption style="border-top:0;padding-top:4px">Percentage-point gap in &ldquo;very happy&rdquo; between frequent (at least monthly) and rare (less than monthly) participants, per pooled 3-survey bin. Shaded bands: 95% weighted-bootstrap intervals (600 replicates). The bar panel is age-adjusted by direct standardization (ages 18&ndash;34 / 35&ndash;54 / 55+, pooled weighted standard); one of its bins, 1989&ndash;91, is withheld because an age-by-frequency cell fell below an effective N of 50. The dashed line marks the 2021 mode change.</figcaption>
+    </figure>
+  </div>
+
+  <div class="wrap">
+    <p>Evenings with relatives carried essentially no happiness signal in the mid-1970s &mdash; a gap under one percentage point, statistically indistinguishable from zero. By 2010&ndash;14 the gap was 9 points; in the 2021&ndash;24 surveys it stands at 6.5. Neighbors trace the same arc: nothing in the 1970s, 6.4 points in the most recent bin &mdash; the very activity that collapsed is the one whose remaining practitioners look happiest relative to abstainers. Friends are the honest exception: the friends gradient is small and noisy across the whole half century, flickering in and out of significance, never the dependable signal the other two became. If you expected the friendship recession to make friendship the most precious currency, the GSS only half obliges: in a 2018&ndash;2021 snapshot, 51 percent of frequent friends-socializers rated their social life very good or excellent against 38 percent of rare ones &mdash; but on the long happiness series, family and neighbors are where scarcity and signal moved together.</p>
+
+    <p class="pull">In the 1970s, the regulars at the bar were measurably less happy than everyone else. In the 2020s, they are measurably happier.</p>
+
+    <h2>The bar flipped</h2>
+    <p>The wildcard was always the tavern question. Bar-going is the only one of the four that was already a minority habit in 1974 (29 percent monthly, drifting to 25 by 2024), the only one with a strong age skew, and the only one whose happiness association ran <em>negative</em> at the start. Age-adjusted, frequent bar-goers in 1974&ndash;77 were 7.2 percentage points <em>less</em> likely to be very happy than their same-age peers who rarely went &mdash; the tavern as refuge, the lonely-regular reading. That deficit shrank through the 1980s and 1990s, crossed zero in the 2010s, and in 2021&ndash;24 sits at <em>positive</em> 3.9 points, an interval that excludes zero. The institution didn&rsquo;t change its drinks; its clientele and its meaning changed. As the casual tavern faded, an evening at a bar stopped marking the person with nowhere else to be and started marking the person who still has somewhere to go &mdash; a scheduled, social, increasingly optional &ldquo;third place.&rdquo; That is one reading; selection is surely doing work in both directions, and the data cannot split it. But the sign flip itself is not subtle, and it is the cleanest single emblem of the half-century: the same behavior, in an emptier evening, now keeps different company.</p>
+
+    <h2>What this shows &mdash; and what it can&rsquo;t</h2>
+    <div class="caveats">
+      <ul>
+        <li><strong>Association, not causation.</strong> Every gradient here compares people who do and don&rsquo;t socialize; it cannot say which way the arrow runs. Happiness recruits company at least as plausibly as company produces happiness, and third factors (health, marriage, money) feed both.</li>
+        <li><strong>Behavior vs. evaluation.</strong> The four evening items measure the frequency of a behavior. &ldquo;Very happy&rdquo; is a global self-evaluation. We juxtapose them; we never treat one as the other.</li>
+        <li><strong>The 2021 asterisk.</strong> The GSS moved from in-person interviewing to push-to-web in 2021&ndash;22. Post-2021 levels are partly mode-shifted, which is why every trend wears a dashed line there and why we anchor the long declines to 2018 wherever possible. A mode change can impersonate a social collapse; we decline the impersonation.</li>
+        <li><strong>Ordinal scales, stated thresholds.</strong> &ldquo;At least monthly&rdquo; means a code of &ldquo;about once a month&rdquo; or more often; the evenings-per-month index uses stated midpoints and is an approximation, not a diary count.</li>
+        <li><strong>The bar item is the trickiest.</strong> Most Americans never go; bar-goers are young. The bar gradient is therefore shown age-adjusted, and one early bin is withheld for thin cells. The flip survives the adjustment; that is precisely why it is reported.</li>
+        <li><strong>Loneliness is a snapshot, not a trend.</strong> The GSS loneliness items exist only in a 2018 module (and the social-life rating in 2018&ndash;2021). They are reported once, never trended &mdash; and in that one snapshot, frequent socializers actually score slightly <em>worse</em> on lack-of-companionship (1.97 vs 1.77 on a 1&ndash;5 scale, higher = lonelier), a reminder that the loneliest socializers are often the youngest, and that single-year module cuts are confounded by age.</li>
+      </ul>
+    </div>
+    <p>What the half-century portrait does establish is the pairing: the long emptying of the American evening was led by its most casual ties, and over the same decades the remaining company came to travel with happiness more tightly &mdash; family steadily, neighbors at the end, the bar by way of a full reversal. Whether connection became more precious because it became scarce, or the people left gathering are simply the flourishing kind, the GSS cannot say. It can say that in 1974 an evening among others told you almost nothing about whether an American was very happy, and that today it tells you quite a lot.</p>
+    <p class="stars" aria-hidden="true">&#10022; &#10022; &#10022;</p>
+  </div>
+
+  <footer>
+    <div class="wrap">
+      <h3>Notes &amp; data</h3>
+      <p><strong>Source.</strong> <a href="https://gss.norc.org/">General Social Survey</a> (NORC, University of Chicago), cumulative file 1972&ndash;2024, 75,699 respondents. The four social-evening items (<code>socrel</code>, <code>socfrend</code>, <code>socommun</code>, <code>socbar</code>) were asked in 29 survey years from 1974 to 2024 on a 7-category frequency scale (never &hellip; almost daily); TV hours since 1975; internet hours per week (excluding email) 2000&ndash;2022; happiness (&ldquo;not too happy / pretty happy / very happy&rdquo;) all years. Every statistic on this page is weighted with <code>wtssps</code>; nothing is reported unweighted. The evening items are behavior-frequency measures; happiness is an evaluative measure; the 2018+ social-satisfaction and loneliness items are module snapshots and are never trended.</p>
+      <p><strong>Method.</strong> &ldquo;At least monthly&rdquo; = about once a month or more; &ldquo;about weekly+&rdquo; = once or twice a week or almost daily. The evenings-per-month index maps categories to midpoints (almost daily = 20, once or twice a week = 6, several times a month = 3, about once a month = 1, several times a year = 0.3, about once a year = 0.08, never = 0) &mdash; a stated approximation; the stacked view is an additive index, not a partition of real evenings. Gradients pool surveys into 3-survey bins (2016&ndash;18 holds two surveys so the post-mode-change years form their own bin) and compare weighted shares &ldquo;very happy&rdquo; between frequent (monthly+) and rare (&lt;monthly) participants, with 95% bands from a weighted bootstrap (600 replicates, resampling respondents with their weights). Any cell with effective N = (&Sigma;w)&sup2;/&Sigma;w&sup2; below 50 is suppressed. The bar gradient is age-adjusted by direct standardization over ages 18&ndash;34/35&ndash;54/55+ using the pooled weighted age distribution of bar-item respondents. Cohort ribbons require all four items answered and show weighted means by birth decade and 7-year age band, same suppression rule. The 2021&ndash;22 push-to-web mode change is marked in every chart that crosses it; post-2021 levels are treated as partially mode-shifted.</p>
+      <p><strong>Reading.</strong> Putnam, R. D. (2000), <a href="https://www.simonandschuster.com/books/Bowling-Alone/Robert-D-Putnam/9780743203043"><em>Bowling Alone</em></a>. Sandstrom, G. M. &amp; Dunn, E. W. (2014), <a href="https://doi.org/10.1177/0146167214529799">weak ties and well-being</a>. Cox, D. A. (2021), <a href="https://www.americansurveycenter.org/research/the-state-of-american-friendship-change-challenges-and-loss/">The State of American Friendship</a>, Survey Center on American Life. Hall, J. A. (2018), <a href="https://doi.org/10.1177/0265407518761225">how many hours does it take to make a friend?</a>. Twenge, J. M., Spitzberg, B. H. &amp; Campbell, W. K. (2019), <a href="https://doi.org/10.1177/0265407519836170">declines in in-person social interaction among U.S. adolescents</a>.</p>
+      <p>Built from the GSS public cumulative file; all numbers in this article are computed in the accompanying analysis script and stored with their sample sizes and weighting in a claims ledger.</p>
+    </div>
+  </footer>
+</main>
+
+<div id="tip" role="status" aria-live="polite"></div>
+
+<script type="module">
+import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+const DATA = {"meta":{"title":"Fifty Years of American Evenings","slug":"fifty-years-of-evenings","dataset":"General Social Survey (GSS) cumulative file 1972-2024","weight":"wtssps","soc_years":"1974-2024","n_total_rows":75699,"thresholds":{"monthly":"code >= 4 (About once a month or more)","weekly":"code >= 6 (Once or twice a week, or Almost daily)"},"epm_mapping":{"Almost daily":20,"Once or twice a week":6,"Several times a month":3,"About once a month":1,"Several times a year":0.3,"About once a year":0.08,"Never":0},"epm_note":"Stacked stream = sum of per-activity expected evenings per month from stated midpoints; an approximation, not a literal diary count, and the four items can overlap in one evening.","binning":"3-survey pooled bins (2016-18 holds 2 surveys so 2021+ starts its own bin)","suppression":"cells with effective N = (sum w)^2 / sum w^2 < 50 suppressed","gradient":"weighted % very happy, frequent (monthly+) minus rare (<monthly); 600-rep weighted bootstrap 95% bands; socbar direct-standardized over age bands 18-34/35-54/55+ (pooled weighted standard)","mode_change":"2021-2022 GSS moved to push-to-web; level shifts vs 2018 are partly mode effects - flagged in every trend","constructs":"soc* items = behavior frequency (social); happy = evaluative; satsoc & lonely_* = 2018+ snapshots, never trended","wwwhr_note":"wwwhr (hours/week online excl. email) asked 2000-2022, not 2024; tvhours is hours/day"},"activities":[{"var":"socrel","name":"Relatives"},{"var":"socfrend","name":"Friends"},{"var":"socommun","name":"Neighbors"},{"var":"socbar","name":"Bar"}],"yearly":[{"year":1974,"socrel":{"monthly":0.7371,"weekly":0.3945,"epm":4.571,"n":1482,"effn":1229.7},"socfrend":{"monthly":0.636,"weekly":0.2416,"epm":2.705,"n":1478,"effn":1226.6},"socommun":{"monthly":0.6108,"weekly":0.3073,"epm":3.513,"n":1476,"effn":1224.6},"socbar":{"monthly":0.2856,"weekly":0.1208,"epm":1.409,"n":1462,"effn":1216.8}},{"year":1975,"socrel":{"monthly":0.7134,"weekly":0.3817,"epm":4.076,"n":1488,"effn":1222.5},"socfrend":{"monthly":0.6229,"weekly":0.2161,"epm":2.719,"n":1485,"effn":1220.0},"socommun":{"monthly":0.5524,"weekly":0.2724,"epm":3.027,"n":1485,"effn":1220.0},"socbar":{"monthly":0.2568,"weekly":0.0946,"epm":1.122,"n":1476,"effn":1212.7}},{"year":1977,"socrel":{"monthly":0.7188,"weekly":0.3733,"epm":4.283,"n":1526,"effn":1226.7},"socfrend":{"monthly":0.6522,"weekly":0.2354,"epm":2.802,"n":1523,"effn":1224.2},"socommun":{"monthly":0.5516,"weekly":0.2803,"epm":3.036,"n":1524,"effn":1224.9},"socbar":{"monthly":0.307,"weekly":0.118,"epm":1.482,"n":1525,"effn":1225.7}},{"year":1978,"socrel":{"monthly":0.6804,"weekly":0.3495,"epm":3.982,"n":1526,"effn":953.3},"socfrend":{"monthly":0.5959,"weekly":0.2382,"epm":2.554,"n":1526,"effn":953.9},"socommun":{"monthly":0.5172,"weekly":0.289,"epm":3.009,"n":1522,"effn":951.4},"socbar":{"monthly":0.2812,"weekly":0.1115,"epm":1.331,"n":1528,"effn":955.7}},{"year":1982,"socrel":{"monthly":0.6806,"weekly":0.3408,"epm":3.888,"n":1849,"effn":1100.2},"socfrend":{"monthly":0.6496,"weekly":0.2221,"epm":2.89,"n":1848,"effn":1099.9},"socommun":{"monthly":0.5366,"weekly":0.2332,"epm":2.792,"n":1851,"effn":1101.6},"socbar":{"monthly":0.3033,"weekly":0.1358,"epm":1.461,"n":1844,"effn":1098.1}},{"year":1983,"socrel":{"monthly":0.6919,"weekly":0.3192,"epm":3.709,"n":1594,"effn":969.5},"socfrend":{"monthly":0.655,"weekly":0.2301,"epm":2.595,"n":1594,"effn":969.8},"socommun":{"monthly":0.5237,"weekly":0.2561,"epm":2.998,"n":1592,"effn":968.4},"socbar":{"monthly":0.2829,"weekly":0.1186,"epm":1.29,"n":1593,"effn":988.0}},{"year":1985,"socrel":{"monthly":0.7202,"weekly":0.3743,"epm":4.407,"n":1526,"effn":974.9},"socfrend":{"monthly":0.6619,"weekly":0.2433,"epm":2.849,"n":1529,"effn":974.7},"socommun":{"monthly":0.5201,"weekly":0.2466,"epm":2.905,"n":1527,"effn":973.4},"socbar":{"monthly":0.3174,"weekly":0.1109,"epm":1.315,"n":1529,"effn":974.2}},{"year":1986,"socrel":{"monthly":0.6941,"weekly":0.3706,"epm":4.502,"n":1464,"effn":1182.0},"socfrend":{"monthly":0.6436,"weekly":0.2218,"epm":2.49,"n":1465,"effn":1183.2},"socommun":{"monthly":0.5404,"weekly":0.2801,"epm":3.112,"n":1467,"effn":1184.6},"socbar":{"monthly":0.2653,"weekly":0.1014,"epm":1.114,"n":1463,"effn":1180.8}},{"year":1988,"socrel":{"monthly":0.6975,"weekly":0.3567,"epm":4.386,"n":984,"effn":794.5},"socfrend":{"monthly":0.6591,"weekly":0.2071,"epm":2.617,"n":986,"effn":796.1},"socommun":{"monthly":0.5066,"weekly":0.2461,"epm":2.616,"n":984,"effn":795.2},"socbar":{"monthly":0.2637,"weekly":0.0958,"epm":1.046,"n":983,"effn":794.0}},{"year":1989,"socrel":{"monthly":0.6774,"weekly":0.351,"epm":3.929,"n":1001,"effn":775.4},"socfrend":{"monthly":0.6201,"weekly":0.2328,"epm":2.844,"n":1002,"effn":775.8},"socommun":{"monthly":0.4677,"weekly":0.2398,"epm":2.718,"n":999,"effn":773.2},"socbar":{"monthly":0.2237,"weekly":0.0895,"epm":0.996,"n":1004,"effn":777.7}},{"year":1990,"socrel":{"monthly":0.6994,"weekly":0.3555,"epm":4.176,"n":925,"effn":721.7},"socfrend":{"monthly":0.6396,"weekly":0.2123,"epm":2.605,"n":925,"effn":721.4},"socommun":{"monthly":0.4895,"weekly":0.2267,"epm":2.702,"n":921,"effn":718.1},"socbar":{"monthly":0.2483,"weekly":0.0844,"epm":0.92,"n":924,"effn":720.7}},{"year":1991,"socrel":{"monthly":0.7075,"weekly":0.353,"epm":4.42,"n":1020,"effn":759.8},"socfrend":{"monthly":0.6689,"weekly":0.2597,"epm":3.023,"n":1019,"effn":759.0},"socommun":{"monthly":0.4936,"weekly":0.238,"epm":2.728,"n":1019,"effn":758.8},"socbar":{"monthly":0.2589,"weekly":0.0904,"epm":1.139,"n":1018,"effn":758.6}},{"year":1993,"socrel":{"monthly":0.7252,"weekly":0.3316,"epm":4.095,"n":1075,"effn":842.5},"socfrend":{"monthly":0.6476,"weekly":0.2477,"epm":2.865,"n":1076,"effn":843.4},"socommun":{"monthly":0.4787,"weekly":0.2153,"epm":2.545,"n":1076,"effn":843.7},"socbar":{"monthly":0.2651,"weekly":0.0858,"epm":0.98,"n":1076,"effn":843.4}},{"year":1994,"socrel":{"monthly":0.7112,"weekly":0.35,"epm":4.139,"n":1968,"effn":1520.9},"socfrend":{"monthly":0.6597,"weekly":0.2396,"epm":2.725,"n":1966,"effn":1519.3},"socommun":{"monthly":0.4762,"weekly":0.2152,"epm":2.58,"n":1965,"effn":1518.6},"socbar":{"monthly":0.255,"weekly":0.0883,"epm":1.095,"n":1962,"effn":1517.7}},{"year":1996,"socrel":{"monthly":0.7009,"weekly":0.3606,"epm":4.325,"n":1957,"effn":1557.2},"socfrend":{"monthly":0.67,"weekly":0.245,"epm":2.94,"n":1955,"effn":1556.9},"socommun":{"monthly":0.4809,"weekly":0.2088,"epm":2.485,"n":1952,"effn":1553.5},"socbar":{"monthly":0.248,"weekly":0.0814,"epm":0.998,"n":1951,"effn":1552.9}},{"year":1998,"socrel":{"monthly":0.7077,"weekly":0.3681,"epm":4.12,"n":1864,"effn":1418.0},"socfrend":{"monthly":0.6396,"weekly":0.215,"epm":2.694,"n":1856,"effn":1410.2},"socommun":{"monthly":0.4691,"weekly":0.2028,"epm":2.447,"n":1862,"effn":1415.7},"socbar":{"monthly":0.2436,"weekly":0.0785,"epm":1.02,"n":1861,"effn":1414.8}},{"year":2000,"socrel":{"monthly":0.7265,"weekly":0.373,"epm":4.508,"n":1864,"effn":1455.4},"socfrend":{"monthly":0.6429,"weekly":0.2251,"epm":2.802,"n":1862,"effn":1454.6},"socommun":{"monthly":0.4559,"weekly":0.217,"epm":2.508,"n":1861,"effn":1453.0},"socbar":{"monthly":0.2576,"weekly":0.0859,"epm":1.025,"n":1860,"effn":1452.0}},{"year":2002,"socrel":{"monthly":0.7276,"weekly":0.3767,"epm":4.886,"n":905,"effn":649.3},"socfrend":{"monthly":0.7025,"weekly":0.248,"epm":3.168,"n":906,"effn":650.2},"socommun":{"monthly":0.4618,"weekly":0.2252,"epm":3.039,"n":905,"effn":649.2},"socbar":{"monthly":0.2917,"weekly":0.0905,"epm":1.132,"n":905,"effn":649.3}},{"year":2004,"socrel":{"monthly":0.7522,"weekly":0.4086,"epm":5.155,"n":905,"effn":654.0},"socfrend":{"monthly":0.656,"weekly":0.2145,"epm":2.791,"n":904,"effn":653.1},"socommun":{"monthly":0.4762,"weekly":0.2168,"epm":2.732,"n":904,"effn":653.4},"socbar":{"monthly":0.2462,"weekly":0.0754,"epm":0.856,"n":905,"effn":654.0}},{"year":2006,"socrel":{"monthly":0.7333,"weekly":0.4037,"epm":4.777,"n":1989,"effn":1386.9},"socfrend":{"monthly":0.6629,"weekly":0.242,"epm":2.854,"n":1989,"effn":1386.7},"socommun":{"monthly":0.4695,"weekly":0.2205,"epm":2.526,"n":1990,"effn":1387.6},"socbar":{"monthly":0.2368,"weekly":0.0697,"epm":0.846,"n":1989,"effn":1387.1}},{"year":2008,"socrel":{"monthly":0.7234,"weekly":0.3832,"epm":5.059,"n":1328,"effn":941.8},"socfrend":{"monthly":0.6456,"weekly":0.2316,"epm":2.997,"n":1325,"effn":939.2},"socommun":{"monthly":0.4544,"weekly":0.1987,"epm":2.481,"n":1327,"effn":941.0},"socbar":{"monthly":0.2572,"weekly":0.0808,"epm":0.919,"n":1328,"effn":941.8}},{"year":2010,"socrel":{"monthly":0.7442,"weekly":0.3994,"epm":5.207,"n":1425,"effn":922.6},"socfrend":{"monthly":0.6621,"weekly":0.2442,"epm":2.764,"n":1425,"effn":922.6},"socommun":{"monthly":0.4855,"weekly":0.2436,"epm":2.917,"n":1426,"effn":922.9},"socbar":{"monthly":0.2788,"weekly":0.0754,"epm":1.002,"n":1426,"effn":922.9}},{"year":2012,"socrel":{"monthly":0.7303,"weekly":0.366,"epm":4.913,"n":1298,"effn":839.3},"socfrend":{"monthly":0.6633,"weekly":0.2388,"epm":2.938,"n":1299,"effn":838.8},"socommun":{"monthly":0.4547,"weekly":0.194,"epm":2.466,"n":1298,"effn":837.9},"socbar":{"monthly":0.2605,"weekly":0.0776,"epm":0.952,"n":1300,"effn":839.6}},{"year":2014,"socrel":{"monthly":0.7043,"weekly":0.3682,"epm":4.93,"n":1673,"effn":1240.5},"socfrend":{"monthly":0.6577,"weekly":0.2115,"epm":2.752,"n":1675,"effn":1241.7},"socommun":{"monthly":0.4655,"weekly":0.2044,"epm":2.461,"n":1675,"effn":1241.7},"socbar":{"monthly":0.2616,"weekly":0.0613,"epm":0.885,"n":1675,"effn":1241.7}},{"year":2016,"socrel":{"monthly":0.742,"weekly":0.384,"epm":5.239,"n":1884,"effn":1261.4},"socfrend":{"monthly":0.6446,"weekly":0.189,"epm":2.682,"n":1886,"effn":1263.4},"socommun":{"monthly":0.4557,"weekly":0.1889,"epm":2.384,"n":1886,"effn":1263.4},"socbar":{"monthly":0.2842,"weekly":0.0743,"epm":0.971,"n":1886,"effn":1263.4}},{"year":2018,"socrel":{"monthly":0.7399,"weekly":0.3881,"epm":5.365,"n":1556,"effn":943.3},"socfrend":{"monthly":0.6407,"weekly":0.186,"epm":2.341,"n":1557,"effn":943.3},"socommun":{"monthly":0.4594,"weekly":0.1823,"epm":2.252,"n":1557,"effn":943.2},"socbar":{"monthly":0.2791,"weekly":0.0654,"epm":0.971,"n":1557,"effn":943.3}},{"year":2021,"socrel":{"monthly":0.6109,"weekly":0.2615,"epm":3.692,"n":2705,"effn":1786.0},"socfrend":{"monthly":0.4804,"weekly":0.1178,"epm":1.738,"n":2701,"effn":1782.9},"socommun":{"monthly":0.3065,"weekly":0.099,"epm":1.235,"n":2705,"effn":1786.5},"socbar":{"monthly":0.195,"weekly":0.0351,"epm":0.6,"n":2702,"effn":1783.9}},{"year":2022,"socrel":{"monthly":0.6986,"weekly":0.352,"epm":4.85,"n":2370,"effn":925.4},"socfrend":{"monthly":0.5861,"weekly":0.1886,"epm":2.532,"n":2366,"effn":922.8},"socommun":{"monthly":0.4129,"weekly":0.1642,"epm":2.025,"n":2372,"effn":925.5},"socbar":{"monthly":0.2568,"weekly":0.0429,"epm":0.729,"n":2368,"effn":923.4}},{"year":2024,"socrel":{"monthly":0.6718,"weekly":0.3243,"epm":4.462,"n":2169,"effn":1132.5},"socfrend":{"monthly":0.5685,"weekly":0.1693,"epm":2.229,"n":2166,"effn":1130.2},"socommun":{"monthly":0.3828,"weekly":0.1633,"epm":2.012,"n":2169,"effn":1132.4},"socbar":{"monthly":0.2485,"weekly":0.0543,"epm":0.789,"n":2172,"effn":1133.2}}],"tv":[{"year":1975,"hrs_day":2.99,"n":1483},{"year":1977,"hrs_day":2.957,"n":1525},{"year":1978,"hrs_day":2.772,"n":1528},{"year":1980,"hrs_day":2.945,"n":1454},{"year":1982,"hrs_day":2.935,"n":1854},{"year":1983,"hrs_day":2.948,"n":1595},{"year":1985,"hrs_day":2.953,"n":1523},{"year":1986,"hrs_day":3.035,"n":1466},{"year":1988,"hrs_day":3.137,"n":979},{"year":1989,"hrs_day":3.034,"n":998},{"year":1990,"hrs_day":2.861,"n":925},{"year":1991,"hrs_day":3.102,"n":1014},{"year":1993,"hrs_day":2.862,"n":1594},{"year":1994,"hrs_day":2.818,"n":1965},{"year":1996,"hrs_day":2.889,"n":1947},{"year":1998,"hrs_day":2.849,"n":2337},{"year":2000,"hrs_day":2.94,"n":1829},{"year":2002,"hrs_day":2.96,"n":905},{"year":2004,"hrs_day":2.864,"n":899},{"year":2006,"hrs_day":2.791,"n":1987},{"year":2008,"hrs_day":2.833,"n":1324},{"year":2010,"hrs_day":2.887,"n":1426},{"year":2012,"hrs_day":2.95,"n":1298},{"year":2014,"hrs_day":2.848,"n":1669},{"year":2016,"hrs_day":2.775,"n":1883},{"year":2018,"hrs_day":2.744,"n":1555},{"year":2021,"hrs_day":3.382,"n":2683},{"year":2022,"hrs_day":3.068,"n":2352},{"year":2024,"hrs_day":3.008,"n":2152}],"www":[{"year":2000,"hrs_week":5.134,"n":998},{"year":2002,"hrs_week":5.906,"n":1574},{"year":2004,"hrs_week":7.597,"n":1701},{"year":2006,"hrs_week":9.217,"n":1791},{"year":2010,"hrs_week":9.957,"n":1050},{"year":2012,"hrs_week":10.746,"n":1019},{"year":2014,"hrs_week":12.218,"n":1399},{"year":2016,"hrs_week":13.045,"n":1587},{"year":2018,"hrs_week":13.677,"n":1362},{"year":2021,"hrs_week":15.13,"n":2466},{"year":2022,"hrs_week":16.489,"n":2239}],"bins":[{"bin":"1974-77","mid":1975.3,"socrel":{"monthly":0.723,"weekly":0.3831,"epm":4.309,"n":4496},"socfrend":{"monthly":0.6372,"weekly":0.2311,"epm":2.743,"n":4486},"socommun":{"monthly":0.5714,"weekly":0.2866,"epm":3.19,"n":4485},"socbar":{"monthly":0.2834,"weekly":0.1112,"epm":1.339,"n":4463}},{"bin":"1978-83","mid":1981.0,"socrel":{"monthly":0.6842,"weekly":0.3365,"epm":3.859,"n":4969},"socfrend":{"monthly":0.6348,"weekly":0.2296,"epm":2.692,"n":4968},"socommun":{"monthly":0.5265,"weekly":0.2577,"epm":2.925,"n":4965},"socbar":{"monthly":0.29,"weekly":0.1228,"epm":1.366,"n":4965}},{"bin":"1985-88","mid":1986.3,"socrel":{"monthly":0.705,"weekly":0.3686,"epm":4.437,"n":3974},"socfrend":{"monthly":0.6545,"weekly":0.2264,"epm":2.659,"n":3980},"socommun":{"monthly":0.5243,"weekly":0.2589,"epm":2.91,"n":3978},"socbar":{"monthly":0.285,"weekly":0.1037,"epm":1.175,"n":3975}},{"bin":"1989-91","mid":1990.0,"socrel":{"monthly":0.6946,"weekly":0.3531,"epm":4.175,"n":2946},"socfrend":{"monthly":0.6429,"weekly":0.2355,"epm":2.83,"n":2946},"socommun":{"monthly":0.4834,"weekly":0.2351,"epm":2.716,"n":2939},"socbar":{"monthly":0.2435,"weekly":0.0882,"epm":1.021,"n":2946}},{"bin":"1993-96","mid":1994.3,"socrel":{"monthly":0.7102,"weekly":0.3502,"epm":4.202,"n":5000},"socfrend":{"monthly":0.6611,"weekly":0.2434,"epm":2.839,"n":4997},"socommun":{"monthly":0.4786,"weekly":0.2127,"epm":2.535,"n":4993},"socbar":{"monthly":0.2545,"weekly":0.0851,"epm":1.032,"n":4989}},{"bin":"1998-02","mid":2000.0,"socrel":{"monthly":0.7191,"weekly":0.3717,"epm":4.426,"n":4633},"socfrend":{"monthly":0.6533,"weekly":0.2256,"epm":2.83,"n":4624},"socommun":{"monthly":0.4624,"weekly":0.2129,"epm":2.588,"n":4628},"socbar":{"monthly":0.2587,"weekly":0.0838,"epm":1.044,"n":4626}},{"bin":"2004-08","mid":2006.0,"socrel":{"monthly":0.7343,"weekly":0.3983,"epm":4.948,"n":4222},"socfrend":{"monthly":0.656,"weekly":0.2328,"epm":2.885,"n":4218},"socommun":{"monthly":0.4662,"weekly":0.2128,"epm":2.556,"n":4221},"socbar":{"monthly":0.2453,"weekly":0.0745,"epm":0.871,"n":4222}},{"bin":"2010-14","mid":2012.0,"socrel":{"monthly":0.725,"weekly":0.3777,"epm":5.015,"n":4396},"socfrend":{"monthly":0.6608,"weekly":0.2302,"epm":2.811,"n":4399},"socommun":{"monthly":0.4688,"weekly":0.214,"epm":2.611,"n":4399},"socbar":{"monthly":0.2668,"weekly":0.0707,"epm":0.943,"n":4401}},{"bin":"2016-18","mid":2017.0,"socrel":{"monthly":0.7411,"weekly":0.3859,"epm":5.296,"n":3440},"socfrend":{"monthly":0.6429,"weekly":0.1876,"epm":2.529,"n":3443},"socommun":{"monthly":0.4573,"weekly":0.1859,"epm":2.325,"n":3443},"socbar":{"monthly":0.2819,"weekly":0.0703,"epm":0.971,"n":3443}},{"bin":"2021-24","mid":2022.3,"socrel":{"monthly":0.6579,"weekly":0.31,"epm":4.303,"n":7244},"socfrend":{"monthly":0.5414,"weekly":0.1564,"epm":2.146,"n":7233},"socommun":{"monthly":0.3643,"weekly":0.1396,"epm":1.727,"n":7246},"socbar":{"monthly":0.2313,"weekly":0.0434,"epm":0.699,"n":7242}}],"gradients":{"socrel":[{"bin":"1974-77","mid":1975.3,"gap":0.0094,"lo":-0.0249,"hi":0.0399,"vh_freq":0.3507,"vh_rare":0.3412,"n":4469,"effn":3654.5,"adjusted":false},{"bin":"1978-83","mid":1981.0,"gap":0.068,"lo":0.0308,"hi":0.1022,"vh_freq":0.3499,"vh_rare":0.2819,"n":4905,"effn":2982.8,"adjusted":false},{"bin":"1985-88","mid":1986.3,"gap":0.0287,"lo":-0.0079,"hi":0.0661,"vh_freq":0.3258,"vh_rare":0.2971,"n":3928,"effn":2878.5,"adjusted":false},{"bin":"1989-91","mid":1990.0,"gap":0.0478,"lo":0.005,"hi":0.087,"vh_freq":0.3489,"vh_rare":0.3011,"n":2926,"effn":2240.8,"adjusted":false},{"bin":"1993-96","mid":1994.3,"gap":0.0635,"lo":0.0311,"hi":0.0936,"vh_freq":0.3245,"vh_rare":0.261,"n":4975,"effn":3900.9,"adjusted":false},{"bin":"1998-02","mid":2000.0,"gap":0.0615,"lo":0.0282,"hi":0.0954,"vh_freq":0.355,"vh_rare":0.2935,"n":4560,"effn":3465.9,"adjusted":false},{"bin":"2004-08","mid":2006.0,"gap":0.0474,"lo":0.0118,"hi":0.0835,"vh_freq":0.3346,"vh_rare":0.2872,"n":4193,"effn":2962.1,"adjusted":false},{"bin":"2010-14","mid":2012.0,"gap":0.0896,"lo":0.0537,"hi":0.1244,"vh_freq":0.3242,"vh_rare":0.2347,"n":4378,"effn":2973.0,"adjusted":false},{"bin":"2016-18","mid":2017.0,"gap":0.0764,"lo":0.0312,"hi":0.1172,"vh_freq":0.3251,"vh_rare":0.2487,"n":3426,"effn":2192.9,"adjusted":false},{"bin":"2021-24","mid":2022.3,"gap":0.0649,"lo":0.0354,"hi":0.091,"vh_freq":0.2457,"vh_rare":0.1808,"n":6771,"effn":3390.4,"adjusted":false}],"socfrend":[{"bin":"1974-77","mid":1975.3,"gap":0.0148,"lo":-0.0193,"hi":0.0439,"vh_freq":0.3535,"vh_rare":0.3387,"n":4460,"effn":3647.2,"adjusted":false},{"bin":"1978-83","mid":1981.0,"gap":0.009,"lo":-0.0239,"hi":0.0444,"vh_freq":0.3319,"vh_rare":0.3229,"n":4902,"effn":2981.6,"adjusted":false},{"bin":"1985-88","mid":1986.3,"gap":0.0141,"lo":-0.0198,"hi":0.0486,"vh_freq":0.3232,"vh_rare":0.3091,"n":3934,"effn":2879.7,"adjusted":false},{"bin":"1989-91","mid":1990.0,"gap":0.0105,"lo":-0.0272,"hi":0.0525,"vh_freq":0.3383,"vh_rare":0.3278,"n":2926,"effn":2240.3,"adjusted":false},{"bin":"1993-96","mid":1994.3,"gap":0.0029,"lo":-0.0277,"hi":0.0362,"vh_freq":0.3072,"vh_rare":0.3044,"n":4972,"effn":3900.0,"adjusted":false},{"bin":"1998-02","mid":2000.0,"gap":0.0158,"lo":-0.0172,"hi":0.0481,"vh_freq":0.3425,"vh_rare":0.3267,"n":4551,"effn":3458.7,"adjusted":false},{"bin":"2004-08","mid":2006.0,"gap":0.0185,"lo":-0.0155,"hi":0.0561,"vh_freq":0.3287,"vh_rare":0.3102,"n":4189,"effn":2958.5,"adjusted":false},{"bin":"2010-14","mid":2012.0,"gap":0.0631,"lo":0.0306,"hi":0.096,"vh_freq":0.3218,"vh_rare":0.2587,"n":4381,"effn":2973.2,"adjusted":false},{"bin":"2016-18","mid":2017.0,"gap":-0.0153,"lo":-0.0563,"hi":0.0254,"vh_freq":0.2998,"vh_rare":0.3151,"n":3429,"effn":2194.6,"adjusted":false},{"bin":"2021-24","mid":2022.3,"gap":0.027,"lo":-0.0014,"hi":0.0541,"vh_freq":0.2356,"vh_rare":0.2087,"n":6760,"effn":3383.3,"adjusted":false}],"socommun":[{"bin":"1974-77","mid":1975.3,"gap":0.0076,"lo":-0.025,"hi":0.037,"vh_freq":0.3509,"vh_rare":0.3433,"n":4459,"effn":3646.0,"adjusted":false},{"bin":"1978-83","mid":1981.0,"gap":-0.024,"lo":-0.0554,"hi":0.0061,"vh_freq":0.317,"vh_rare":0.341,"n":4900,"effn":2980.3,"adjusted":false},{"bin":"1985-88","mid":1986.3,"gap":0.018,"lo":-0.0167,"hi":0.0524,"vh_freq":0.3269,"vh_rare":0.3089,"n":3933,"effn":2879.2,"adjusted":false},{"bin":"1989-91","mid":1990.0,"gap":0.0387,"lo":0.002,"hi":0.0755,"vh_freq":0.3544,"vh_rare":0.3157,"n":2919,"effn":2234.2,"adjusted":false},{"bin":"1993-96","mid":1994.3,"gap":0.0398,"lo":0.0109,"hi":0.0701,"vh_freq":0.3263,"vh_rare":0.2865,"n":4968,"effn":3896.2,"adjusted":false},{"bin":"1998-02","mid":2000.0,"gap":0.0177,"lo":-0.0166,"hi":0.0507,"vh_freq":0.3466,"vh_rare":0.3289,"n":4555,"effn":3461.7,"adjusted":false},{"bin":"2004-08","mid":2006.0,"gap":0.0439,"lo":0.0089,"hi":0.0774,"vh_freq":0.3454,"vh_rare":0.3015,"n":4192,"effn":2961.4,"adjusted":false},{"bin":"2010-14","mid":2012.0,"gap":0.0429,"lo":0.0081,"hi":0.079,"vh_freq":0.3233,"vh_rare":0.2804,"n":4381,"effn":2972.6,"adjusted":false},{"bin":"2016-18","mid":2017.0,"gap":0.0133,"lo":-0.0231,"hi":0.0508,"vh_freq":0.3125,"vh_rare":0.2993,"n":3429,"effn":2194.5,"adjusted":false},{"bin":"2021-24","mid":2022.3,"gap":0.0639,"lo":0.0347,"hi":0.0937,"vh_freq":0.2643,"vh_rare":0.2004,"n":6772,"effn":3390.3,"adjusted":false}],"socbar":[{"bin":"1974-77","mid":1975.3,"gap":-0.0725,"lo":-0.1091,"hi":-0.0319,"vh_freq":0.2727,"vh_rare":0.3788,"n":4437,"effn":3631.6,"adjusted":true},{"bin":"1978-83","mid":1981.0,"gap":-0.0508,"lo":-0.0929,"hi":-0.003,"vh_freq":0.2678,"vh_rare":0.3548,"n":4898,"effn":2998.9,"adjusted":true},{"bin":"1985-88","mid":1986.3,"gap":-0.0742,"lo":-0.1189,"hi":-0.027,"vh_freq":0.2517,"vh_rare":0.3447,"n":3928,"effn":2873.9,"adjusted":true},{"bin":"1989-91","mid":1990.0,"suppressed":true},{"bin":"1993-96","mid":1994.3,"gap":-0.0209,"lo":-0.0604,"hi":0.0197,"vh_freq":0.2715,"vh_rare":0.3175,"n":4967,"effn":3896.8,"adjusted":true},{"bin":"1998-02","mid":2000.0,"gap":-0.0391,"lo":-0.081,"hi":-0.0005,"vh_freq":0.2956,"vh_rare":0.3516,"n":4553,"effn":3459.7,"adjusted":true},{"bin":"2004-08","mid":2006.0,"gap":-0.0227,"lo":-0.0628,"hi":0.0232,"vh_freq":0.2996,"vh_rare":0.3292,"n":4193,"effn":2962.3,"adjusted":true},{"bin":"2010-14","mid":2012.0,"gap":0.0151,"lo":-0.0265,"hi":0.0543,"vh_freq":0.3071,"vh_rare":0.2977,"n":4382,"effn":2973.6,"adjusted":true},{"bin":"2016-18","mid":2017.0,"gap":0.0038,"lo":-0.0412,"hi":0.0493,"vh_freq":0.3036,"vh_rare":0.3056,"n":3429,"effn":2194.7,"adjusted":true},{"bin":"2021-24","mid":2022.3,"gap":0.039,"lo":0.0039,"hi":0.0727,"vh_freq":0.2482,"vh_rare":0.2159,"n":6766,"effn":3386.8,"adjusted":true}]},"cohorts":[{"cohort":"1900s","born":1900,"pts":[{"age":63.0,"total":8.068,"friends":1.105,"n":68,"effn":59.5},{"age":70.0,"total":8.497,"friends":1.487,"n":421,"effn":314.5},{"age":81.5,"total":8.155,"friends":1.356,"n":688,"effn":496.2}]},{"cohort":"1910s","born":1910,"pts":[{"age":56.0,"total":8.907,"friends":1.718,"n":267,"effn":223.2},{"age":63.0,"total":8.589,"friends":1.474,"n":606,"effn":466.8},{"age":70.0,"total":9.049,"friends":1.79,"n":681,"effn":496.6},{"age":81.5,"total":9.039,"friends":1.575,"n":779,"effn":604.4}]},{"cohort":"1920s","born":1920,"pts":[{"age":49.0,"total":9.686,"friends":1.928,"n":546,"effn":433.0},{"age":56.0,"total":8.699,"friends":1.698,"n":872,"effn":615.2},{"age":63.0,"total":8.163,"friends":1.697,"n":795,"effn":608.7},{"age":70.0,"total":8.684,"friends":1.874,"n":641,"effn":528.6},{"age":81.5,"total":8.125,"friends":1.56,"n":647,"effn":471.7}]},{"cohort":"1930s","born":1930,"pts":[{"age":35.0,"total":10.897,"friends":2.429,"n":198,"effn":176.1},{"age":42.0,"total":8.846,"friends":1.994,"n":808,"effn":615.0},{"age":49.0,"total":8.979,"friends":1.934,"n":770,"effn":495.7},{"age":56.0,"total":8.332,"friends":1.7,"n":684,"effn":506.7},{"age":63.0,"total":8.361,"friends":2.031,"n":587,"effn":473.2},{"age":70.0,"total":8.985,"friends":1.825,"n":451,"effn":339.8},{"age":81.5,"total":8.477,"friends":1.681,"n":750,"effn":503.6}]},{"cohort":"1940s","born":1940,"pts":[{"age":28.0,"total":12.328,"friends":3.041,"n":680,"effn":531.0},{"age":35.0,"total":9.97,"friends":2.423,"n":1148,"effn":809.1},{"age":42.0,"total":8.831,"friends":2.23,"n":1083,"effn":780.5},{"age":49.0,"total":8.025,"friends":1.9,"n":1092,"effn":869.9},{"age":56.0,"total":9.031,"friends":1.982,"n":793,"effn":596.4},{"age":63.0,"total":8.926,"friends":1.876,"n":673,"effn":500.1},{"age":70.0,"total":8.069,"friends":1.615,"n":675,"effn":470.0},{"age":81.5,"total":7.373,"friends":1.607,"n":679,"effn":358.0}]},{"cohort":"1950s","born":1950,"pts":[{"age":21.0,"total":18.574,"friends":5.397,"n":921,"effn":672.5},{"age":28.0,"total":12.423,"friends":3.191,"n":1575,"effn":1082.6},{"age":35.0,"total":9.794,"friends":2.463,"n":1523,"effn":1225.9},{"age":42.0,"total":8.706,"friends":2.251,"n":1385,"effn":1083.2},{"age":49.0,"total":9.85,"friends":2.238,"n":957,"effn":678.5},{"age":56.0,"total":9.637,"friends":2.078,"n":943,"effn":615.4},{"age":63.0,"total":8.459,"friends":1.706,"n":1089,"effn":661.3},{"age":70.0,"total":7.78,"friends":1.747,"n":713,"effn":350.2}]},{"cohort":"1960s","born":1960,"pts":[{"age":21.0,"total":18.218,"friends":5.532,"n":914,"effn":612.1},{"age":28.0,"total":12.377,"friends":3.298,"n":1408,"effn":1092.2},{"age":35.0,"total":10.35,"friends":2.627,"n":1336,"effn":1073.4},{"age":42.0,"total":9.38,"friends":2.186,"n":952,"effn":688.0},{"age":49.0,"total":8.808,"friends":1.828,"n":919,"effn":618.4},{"age":56.0,"total":8.465,"friends":1.764,"n":1113,"effn":678.7},{"age":63.0,"total":7.109,"friends":1.459,"n":401,"effn":200.1}]},{"cohort":"1970s","born":1970,"pts":[{"age":21.0,"total":18.997,"friends":6.347,"n":814,"effn":616.9},{"age":28.0,"total":13.467,"friends":3.626,"n":965,"effn":714.3},{"age":35.0,"total":10.963,"friends":2.552,"n":947,"effn":687.0},{"age":42.0,"total":9.832,"friends":2.297,"n":1019,"effn":682.4},{"age":49.0,"total":8.528,"friends":1.982,"n":795,"effn":401.1}]},{"cohort":"1980s","born":1980,"pts":[{"age":21.0,"total":20.251,"friends":6.773,"n":624,"effn":442.0},{"age":28.0,"total":13.803,"friends":3.552,"n":945,"effn":620.8},{"age":35.0,"total":9.762,"friends":2.283,"n":1221,"effn":778.5},{"age":42.0,"total":8.806,"friends":2.017,"n":546,"effn":271.4}]},{"cohort":"1990s","born":1990,"pts":[{"age":21.0,"total":17.365,"friends":5.552,"n":655,"effn":416.4},{"age":28.0,"total":10.524,"friends":2.727,"n":863,"effn":480.9},{"age":35.0,"total":10.708,"friends":2.534,"n":149,"effn":67.7}]}],"snapshots":{"satsoc":{"years":"2018+2021","construct":"domain satisfaction snapshot","good_freq":0.5145,"good_rare":0.3825,"n":3960,"note":"share rating social life 'very good' or 'excellent' (4-5 of 5), by friends-evening frequency"},"lonely":{"years":"2018","construct":"loneliness snapshot, higher=lonelier (1-5)","mean_freq":1.975,"mean_rare":1.765,"n":381}},"totals":{"epm_1974":12.2,"epm_2018":10.93,"epm_2024":9.49}};
+
+const C = {socrel:"#f4b860", socfrend:"#ee8166", socommun:"#a98fe0", socbar:"#e25c8e"};
+const NAME = {socrel:"Relatives", socfrend:"Friends", socommun:"Neighbors", socbar:"Bar"};
+const KEYS = ["socrel","socfrend","socommun","socbar"];
+const INK = "#ece7da", DIM = "#b3aec0", FAINT = "#807b91", HAIR = "rgba(236,231,218,.14)";
+const tip = d3.select("#tip");
+
+function svgIn(sel, w, h, label){
+  d3.select(sel).selectAll("*").remove();
+  return d3.select(sel).append("svg")
+    .attr("viewBox", `0 0 ${w} ${h}`)
+    .attr("role","img").attr("aria-label", label);
+}
+function axisStyle(g){
+  g.selectAll("text").attr("fill", DIM).attr("font-family","system-ui,sans-serif").attr("font-size",11.5);
+  g.selectAll("line").attr("stroke", HAIR);
+  g.selectAll(".domain").attr("stroke", HAIR);
+}
+function showTip(html, ev){
+  tip.style("display","block").html(html);
+  const r = tip.node().getBoundingClientRect();
+  let x = ev.clientX + 16, y = ev.clientY + 14;
+  if (x + r.width > window.innerWidth - 8) x = ev.clientX - r.width - 14;
+  if (y + r.height > window.innerHeight - 8) y = ev.clientY - r.height - 12;
+  tip.style("left", x+"px").style("top", y+"px");
+}
+function hideTip(){ tip.style("display","none"); }
+function modeMark(g, x, y0, y1, withLabel){
+  g.append("line").attr("x1",x(2021)).attr("x2",x(2021)).attr("y1",y0).attr("y2",y1)
+    .attr("stroke","#9fdcf0").attr("stroke-width",1).attr("stroke-dasharray","3 4").attr("opacity",.75);
+  if(withLabel){
+    g.append("text").attr("x",x(2021)-6).attr("y",y0+12).attr("text-anchor","end")
+      .attr("fill","#9fdcf0").attr("font-family","system-ui,sans-serif").attr("font-size",11)
+      .text("2021: survey moves online →");
+    g.append("text").attr("x",x(2021)-6).attr("y",y0+26).attr("text-anchor","end")
+      .attr("fill",FAINT).attr("font-family","system-ui,sans-serif").attr("font-size",10.5)
+      .text("levels partly mode-shifted");
+  }
+}
+
+/* ---------------- centerpiece: stacked evenings stream ---------------- */
+function renderStream(){
+  const W=960, H=470, M={t:18,r:24,b:34,l:52};
+  const svg = svgIn("#stream", W, H,
+    "Stacked area chart of expected social evenings per month, 1974 to 2024, split into evenings with relatives, friends, neighbors and at a bar; the total falls from about 12 to about 9.5, with the 2021 survey mode change marked");
+  const x = d3.scaleLinear().domain([1974,2024]).range([M.l, W-M.r]);
+  const y = d3.scaleLinear().domain([0,13.5]).range([H-M.b, M.t]);
+  const stack = d3.stack().keys(KEYS).value((d,k)=>d[k].epm);
+  const series = stack(DATA.yearly);
+  const area = d3.area().x(d=>x(d.data.year)).y0(d=>y(d[0])).y1(d=>y(d[1])).curve(d3.curveMonotoneX);
+
+  // mode-shift zone
+  svg.append("rect").attr("x",x(2019.5)).attr("y",M.t).attr("width",x(2024)-x(2019.5)).attr("height",H-M.b-M.t)
+    .attr("fill","rgba(159,220,240,.05)");
+
+  svg.selectAll("path.band").data(series).join("path")
+    .attr("class","band").attr("d",area)
+    .attr("fill",d=>C[d.key]).attr("opacity",.92)
+    .attr("stroke","#0c0e1d").attr("stroke-width",.8);
+
+  // axes
+  const gx = svg.append("g").attr("transform",`translate(0,${H-M.b})`)
+    .call(d3.axisBottom(x).tickValues([1974,1980,1990,2000,2010,2021]).tickFormat(d3.format("d")).tickSize(5));
+  axisStyle(gx);
+  const gy = svg.append("g").attr("transform",`translate(${M.l},0)`)
+    .call(d3.axisLeft(y).ticks(6).tickSize(-(W-M.l-M.r)));
+  axisStyle(gy); gy.selectAll("line").attr("stroke",HAIR);
+  svg.append("text").attr("x",M.l).attr("y",12).attr("fill",DIM)
+    .attr("font-family","system-ui,sans-serif").attr("font-size",11.5)
+    .text("expected social evenings per month ↑");
+
+  // band labels at 1991
+  const li = DATA.yearly.findIndex(d=>d.year===1991);
+  series.forEach(s=>{
+    const yy = y((s[li][0]+s[li][1])/2);
+    svg.append("text").attr("x",x(1991)).attr("y",yy+4).attr("text-anchor","middle")
+      .attr("fill","#0c0e1d").attr("font-family","system-ui,sans-serif")
+      .attr("font-weight",700).attr("font-size",s.key==="socbar"?11:13)
+      .text(NAME[s.key]);
+  });
+
+  modeMark(svg, x, M.t, H-M.b, true);
+
+  // total annotation at start and end
+  const first = DATA.yearly[0], last = DATA.yearly[DATA.yearly.length-1];
+  const tot = r => KEYS.reduce((a,k)=>a+r[k].epm,0);
+  svg.append("text").attr("x",x(1974)+4).attr("y",y(tot(first))-8)
+    .attr("fill",INK).attr("font-family","system-ui,sans-serif").attr("font-size",11.5).attr("font-weight",600)
+    .text(`${tot(first).toFixed(1)} evenings`);
+  svg.append("text").attr("x",x(2024)-2).attr("y",y(tot(last))-8).attr("text-anchor","end")
+    .attr("fill",INK).attr("font-family","system-ui,sans-serif").attr("font-size",11.5).attr("font-weight",600)
+    .text(`${tot(last).toFixed(1)}`);
+
+  // hover
+  const guide = svg.append("line").attr("y1",M.t).attr("y2",H-M.b)
+    .attr("stroke",INK).attr("stroke-width",1).attr("opacity",0);
+  svg.append("rect").attr("x",M.l).attr("y",M.t).attr("width",W-M.l-M.r).attr("height",H-M.t-M.b)
+    .attr("fill","transparent")
+    .on("mousemove",(ev)=>{
+      const yr = x.invert(d3.pointer(ev)[0]);
+      const d = DATA.yearly.reduce((a,b)=>Math.abs(b.year-yr)<Math.abs(a.year-yr)?b:a);
+      guide.attr("x1",x(d.year)).attr("x2",x(d.year)).attr("opacity",.5);
+      const tv = DATA.tv.find(t=>t.year===d.year);
+      const ww = DATA.www.find(t=>t.year===d.year);
+      let html = `<div class="tt-year">${d.year}${d.year>=2021?" · online mode":""}</div>`;
+      KEYS.forEach(k=>{
+        html += `<div class="row"><span><span class="sw" style="background:${C[k]}"></span>${NAME[k]}</span>`+
+          `<span>${d[k].epm.toFixed(1)}/mo · ${(d[k].monthly*100).toFixed(0)}% monthly+</span></div>`;
+      });
+      html += `<div class="row" style="margin-top:4px;border-top:1px solid rgba(236,231,218,.15);padding-top:4px"><span>Total in company</span><b>${tot(d).toFixed(1)}/mo</b></div>`;
+      if(tv) html += `<div class="row"><span><span class="sw" style="background:${"#3f6e9e"}"></span>TV</span><span>${tv.hrs_day.toFixed(1)} h/day</span></div>`;
+      if(ww) html += `<div class="row"><span><span class="sw" style="background:${"#6cc3e0"}"></span>Internet</span><span>${ww.hrs_week.toFixed(1)} h/wk</span></div>`;
+      showTip(html, ev);
+    })
+    .on("mouseleave",()=>{ guide.attr("opacity",0); hideTip(); });
+}
+
+/* ---------------- cohort ribbons ---------------- */
+function renderCohorts(){
+  const W=960, H=470, M={t:18,r:86,b:34,l:52};
+  const svg = svgIn("#stream", W, H,
+    "Line chart of total expected social evenings per month by age, one line per birth decade from the 1900s to the 1990s; younger cohorts sit lower at the same ages");
+  const x = d3.scaleLinear().domain([18,86]).range([M.l, W-M.r]);
+  const y = d3.scaleLinear().domain([4,17]).range([H-M.b, M.t]);
+  const col = d3.scaleSequential(d3.interpolateRgbBasis(["#8d6a3f","#f4b860","#ee8166","#e25c8e","#a98fe0","#6cc3e0"]))
+    .domain([1900,1990]);
+  const line = d3.line().x(d=>x(d.age)).y(d=>y(d.total)).curve(d3.curveMonotoneX);
+
+  const gx = svg.append("g").attr("transform",`translate(0,${H-M.b})`)
+    .call(d3.axisBottom(x).tickValues([20,30,40,50,60,70,80]).tickFormat(d=>d+(d===20?" yrs old":"")).tickSize(5));
+  axisStyle(gx);
+  const gy = svg.append("g").attr("transform",`translate(${M.l},0)`)
+    .call(d3.axisLeft(y).ticks(6).tickSize(-(W-M.l-M.r)));
+  axisStyle(gy);
+  svg.append("text").attr("x",M.l).attr("y",12).attr("fill",DIM)
+    .attr("font-family","system-ui,sans-serif").attr("font-size",11.5)
+    .text("total expected social evenings per month, by age ↑  (all four activities; cells with effective N < 50 hidden)");
+
+  const hi = new Set([1950,1990]);
+  DATA.cohorts.forEach(c=>{
+    svg.append("path").attr("d",line(c.pts)).attr("fill","none")
+      .attr("stroke",col(c.born)).attr("stroke-width",hi.has(c.born)?3.4:1.7)
+      .attr("opacity",hi.has(c.born)?1:.62)
+      .attr("tabindex",-1)
+      .on("mousemove",(ev)=>{
+        const ax = x.invert(d3.pointer(ev, svg.node())[0]);
+        const p = c.pts.reduce((a,b)=>Math.abs(b.age-ax)<Math.abs(a.age-ax)?b:a);
+        showTip(`<div class="tt-year">Born ${c.cohort}</div>
+          <div class="row"><span>Age ${Math.round(p.age-3)}–${Math.round(p.age+3)}</span><b>${p.total.toFixed(1)} evenings/mo</b></div>
+          <div class="row"><span>of which friends</span><span>${p.friends.toFixed(1)}/mo</span></div>
+          <div class="row"><span>respondents</span><span>${p.n.toLocaleString()}</span></div>`, ev);
+      })
+      .on("mouseleave", hideTip);
+    const end = c.pts[c.pts.length-1];
+    svg.append("text").attr("x",x(end.age)+7).attr("y",y(end.total)+4)
+      .attr("fill",col(c.born)).attr("font-family","system-ui,sans-serif")
+      .attr("font-size",hi.has(c.born)?12:10.5).attr("font-weight",hi.has(c.born)?700:400)
+      .text(c.cohort);
+  });
+
+  // annotate the 1950s vs 1990s comparison at age 25-31
+  const c50 = DATA.cohorts.find(c=>c.born===1950), c90 = DATA.cohorts.find(c=>c.born===1990);
+  if(c50 && c90){
+    const p50 = c50.pts.find(p=>p.age===28), p90 = c90.pts.find(p=>p.age===28);
+    if(p50 && p90){
+      svg.append("line").attr("x1",x(28)).attr("x2",x(28)).attr("y1",y(p50.total)).attr("y2",y(p90.total))
+        .attr("stroke",INK).attr("stroke-width",1).attr("stroke-dasharray","2 3").attr("opacity",.7);
+      svg.append("text").attr("x",x(28)-8).attr("y",y((p50.total+p90.total)/2)-2).attr("text-anchor","end")
+        .attr("fill",INK).attr("font-family","system-ui,sans-serif").attr("font-size",11.5)
+        .text(`same ages 25–31: ${p50.total.toFixed(1)} → ${p90.total.toFixed(1)}`);
+      svg.append("text").attr("x",x(28)-8).attr("y",y((p50.total+p90.total)/2)+12).attr("text-anchor","end")
+        .attr("fill",FAINT).attr("font-family","system-ui,sans-serif").attr("font-size",10.5)
+        .text("born 1950s vs born 1990s");
+    }
+  }
+}
+
+/* ---------------- screens companion band ---------------- */
+function renderScreens(){
+  const W=960, H=215, M={t:16,r:24,b:30,l:52};
+  const svg = svgIn("#screens", W, H,
+    "Area chart of screen hours per day, 1975 to 2024: TV steady near 3 hours per day, internet hours stacked on top rising from 2000 to 2022");
+  const x = d3.scaleLinear().domain([1974,2024]).range([M.l, W-M.r]);
+  const y = d3.scaleLinear().domain([0,6.2]).range([H-M.b, M.t]);
+
+  const tv = DATA.tv.map(d=>({year:d.year, v:d.hrs_day}));
+  const wwByYear = new Map(DATA.www.map(d=>[d.year, d.hrs_week/7]));
+  const tvArea = d3.area().x(d=>x(d.year)).y0(y(0)).y1(d=>y(d.v)).curve(d3.curveMonotoneX);
+  const tvTop = new Map(tv.map(d=>[d.year, d.v]));
+  const both = DATA.www.filter(d=>tvTop.has(d.year))
+    .map(d=>({year:d.year, y0:tvTop.get(d.year), y1:tvTop.get(d.year)+d.hrs_week/7}));
+  const wwArea = d3.area().x(d=>x(d.year)).y0(d=>y(d.y0)).y1(d=>y(d.y1)).curve(d3.curveMonotoneX);
+
+  svg.append("rect").attr("x",x(2019.5)).attr("y",M.t).attr("width",x(2024)-x(2019.5)).attr("height",H-M.b-M.t)
+    .attr("fill","rgba(159,220,240,.05)");
+  svg.append("path").attr("d",tvArea(tv)).attr("fill","#3f6e9e").attr("opacity",.85);
+  svg.append("path").attr("d",wwArea(both)).attr("fill","#6cc3e0").attr("opacity",.8);
+
+  const gx = svg.append("g").attr("transform",`translate(0,${H-M.b})`)
+    .call(d3.axisBottom(x).tickValues([1975,1990,2000,2010,2022]).tickFormat(d3.format("d")).tickSize(5));
+  axisStyle(gx);
+  const gy = svg.append("g").attr("transform",`translate(${M.l},0)`)
+    .call(d3.axisLeft(y).tickValues([0,2,4,6]).tickSize(-(W-M.l-M.r)));
+  axisStyle(gy);
+  svg.append("text").attr("x",M.l).attr("y",10).attr("fill",DIM)
+    .attr("font-family","system-ui,sans-serif").attr("font-size",11.5)
+    .text("screen hours per day ↑");
+
+  svg.append("text").attr("x",x(1990)).attr("y",y(1.45)).attr("text-anchor","middle")
+    .attr("fill","#cfe3f4").attr("font-family","system-ui,sans-serif").attr("font-size",12.5).attr("font-weight",600)
+    .text("television — about 3 h/day for fifty years");
+  svg.append("text").attr("x",x(2014)).attr("y",y(4.6)).attr("text-anchor","middle")
+    .attr("fill","#bfeafa").attr("font-family","system-ui,sans-serif").attr("font-size",12).attr("font-weight",600)
+    .text("+ internet (excl. email)");
+  modeMark(svg, x, M.t, H-M.b, false);
+
+  svg.append("rect").attr("x",M.l).attr("y",M.t).attr("width",W-M.l-M.r).attr("height",H-M.t-M.b)
+    .attr("fill","transparent")
+    .on("mousemove",(ev)=>{
+      const yr = x.invert(d3.pointer(ev)[0]);
+      const d = tv.reduce((a,b)=>Math.abs(b.year-yr)<Math.abs(a.year-yr)?b:a);
+      const w = wwByYear.get(d.year);
+      let html = `<div class="tt-year">${d.year}</div>
+        <div class="row"><span><span class="sw" style="background:#3f6e9e"></span>TV</span><b>${d.v.toFixed(1)} h/day</b></div>`;
+      if(w!=null) html += `<div class="row"><span><span class="sw" style="background:#6cc3e0"></span>Internet</span><b>${(w*7).toFixed(1)} h/wk (≈${w.toFixed(1)} h/day)</b></div>`;
+      else html += `<div class="row"><span style="color:#807b91">internet item not asked</span></div>`;
+      showTip(html, ev);
+    })
+    .on("mouseleave", hideTip);
+}
+
+/* ---------------- gradient facets ---------------- */
+function renderFacets(){
+  const host = d3.select("#facets");
+  host.selectAll("*").remove();
+  KEYS.forEach(k=>{
+    const recs = DATA.gradients[k];
+    const fig = host.append("figure");
+    fig.append("h4").style("font-size","14px").style("color",C[k])
+      .text(NAME[k] + (k==="socbar" ? " (age-adjusted)" : ""));
+    fig.append("p").attr("class","sub").style("margin-bottom","8px")
+      .text("very-happy gap, frequent − rare (pp)");
+    const W=250, H=205, M={t:10,r:10,b:24,l:30};
+    const svg = fig.append("svg").attr("viewBox",`0 0 ${W} ${H}`)
+      .attr("role","img")
+      .attr("aria-label",`Trend in the very-happy percentage point gap between frequent and rare ${NAME[k].toLowerCase()} socializers, 1974 to 2024, with bootstrap bands`);
+    const x = d3.scaleLinear().domain([1974,2024]).range([M.l,W-M.r]);
+    const y = d3.scaleLinear().domain([-12.5,12.5]).range([H-M.b,M.t]);
+    const ok = recs.filter(r=>!r.suppressed);
+
+    // contiguous runs (break at suppressed bins)
+    const runs=[]; let cur=[];
+    recs.forEach(r=>{ if(r.suppressed){ if(cur.length) runs.push(cur); cur=[]; } else cur.push(r); });
+    if(cur.length) runs.push(cur);
+
+    const band = d3.area().x(r=>x(r.mid)).y0(r=>y(r.lo*100)).y1(r=>y(r.hi*100)).curve(d3.curveMonotoneX);
+    const line = d3.line().x(r=>x(r.mid)).y(r=>y(r.gap*100)).curve(d3.curveMonotoneX);
+
+    svg.append("line").attr("x1",M.l).attr("x2",W-M.r).attr("y1",y(0)).attr("y2",y(0))
+      .attr("stroke",HAIR).attr("stroke-width",1);
+    svg.append("text").attr("x",W-M.r).attr("y",y(0)-3).attr("text-anchor","end")
+      .attr("fill",FAINT).attr("font-family","system-ui,sans-serif").attr("font-size",8.5).text("no gap");
+
+    runs.forEach(run=>{
+      svg.append("path").attr("d",band(run)).attr("fill",C[k]).attr("opacity",.18);
+      svg.append("path").attr("d",line(run)).attr("fill","none").attr("stroke",C[k]).attr("stroke-width",2);
+    });
+    // suppressed markers
+    recs.filter(r=>r.suppressed).forEach(r=>{
+      svg.append("text").attr("x",x(r.mid)).attr("y",y(0)+11).attr("text-anchor","middle")
+        .attr("fill",FAINT).attr("font-family","system-ui,sans-serif").attr("font-size",8.5)
+        .text("···");
+    });
+    modeMark(svg, x, M.t, H-M.b, false);
+
+    svg.selectAll("circle").data(ok).join("circle")
+      .attr("cx",r=>x(r.mid)).attr("cy",r=>y(r.gap*100)).attr("r",3.1)
+      .attr("fill",C[k]).attr("stroke","#0c0e1d").attr("stroke-width",1)
+      .on("mousemove",(ev,r)=>{
+        showTip(`<div class="tt-year">${NAME[k]} · ${r.bin}${r.adjusted?" (age-adj.)":""}</div>
+          <div class="row"><span>gap (frequent − rare)</span><b>${(r.gap*100).toFixed(1)} pp</b></div>
+          <div class="row"><span>95% band</span><span>${(r.lo*100).toFixed(1)} … ${(r.hi*100).toFixed(1)}</span></div>
+          <div class="row"><span>% very happy, frequent</span><span>${(r.vh_freq*100).toFixed(1)}%</span></div>
+          <div class="row"><span>% very happy, rare</span><span>${(r.vh_rare*100).toFixed(1)}%</span></div>
+          <div class="row"><span>respondents</span><span>${r.n.toLocaleString()}</span></div>`, ev);
+      })
+      .on("mouseleave", hideTip);
+
+    const gx = svg.append("g").attr("transform",`translate(0,${H-M.b})`)
+      .call(d3.axisBottom(x).tickValues([1980,2000,2021]).tickFormat(d3.format("d")).tickSize(4));
+    axisStyle(gx);
+    const gy = svg.append("g").attr("transform",`translate(${M.l},0)`)
+      .call(d3.axisLeft(y).tickValues([-10,-5,0,5,10]).tickSize(3));
+    axisStyle(gy);
+  });
+}
+
+/* ---------------- toggle wiring ---------------- */
+const bYear = document.getElementById("btn-year");
+const bCoh  = document.getElementById("btn-cohort");
+function setView(v){
+  bYear.setAttribute("aria-pressed", v==="year");
+  bCoh.setAttribute("aria-pressed", v==="cohort");
+  if(v==="year") renderStream(); else renderCohorts();
+  document.getElementById("stream-cap").textContent = v==="year"
+    ? "Weighted means of category midpoints (almost daily = 20 evenings/month; once or twice a week = 6; several times a month = 3; about once a month = 1; several times a year = 0.3; about once a year = 0.08; never = 0 — an approximation, stated in the notes). Points exist only in survey years. The 2021–2024 surveys moved to push-to-web; levels after the dashed line are partly mode-shifted."
+    : "Each ribbon is a birth decade observed at different ages across 1974–2024 (an age–period–cohort display, not a formal model: cohorts are seen at different ages in different periods, including the post-2021 online mode). All four activities summed via the midpoint mapping; age cells with effective N < 50 are hidden.";
+}
+bYear.addEventListener("click",()=>setView("year"));
+bCoh.addEventListener("click",()=>setView("cohort"));
+
+renderStream();
+renderScreens();
+renderFacets();
+</script>
+<!--SL_BOOKNAV_START-->
+<style>
+.slbn{font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;background:#0f1417;border-top:1px solid #27313a;color:#9fb0ba;padding:24px 20px 40px;margin:48px 0 0}
+.slbn-in{max-width:1080px;margin:0 auto;display:flex;align-items:stretch;gap:12px}
+.slbn a{flex:1 1 0;min-width:0;text-decoration:none;color:inherit;border:1px solid #27313a;border-radius:10px;padding:13px 15px;display:flex;flex-direction:column;gap:4px;background:#161d22;transition:border-color .15s,transform .15s}
+.slbn a:hover{border-color:#3fa9a0;transform:translateY(-2px)}
+.slbn a:focus-visible{outline:2px solid #3fa9a0;outline-offset:2px}
+.slbn a.slbn-next{text-align:right;align-items:flex-end}
+.slbn a.slbn-toc{flex:0 0 auto;min-width:120px;justify-content:center;align-items:center;text-align:center}
+.slbn .slbn-dir{font:700 10px/1 inherit;letter-spacing:.13em;text-transform:uppercase;color:#6b7c87}
+.slbn .slbn-ttl{font:700 14px/1.3 inherit;color:#eef2f4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.slbn a.slbn-disabled{opacity:.38;pointer-events:none}
+@media(max-width:640px){.slbn-in{flex-wrap:wrap}.slbn a{flex:1 1 100%}.slbn a.slbn-next{text-align:left;align-items:flex-start}.slbn a.slbn-toc{order:-1}}
+</style>
+<nav class="slbn" aria-label="Book navigation"><div class="slbn-in"><a class="slbn-prev" href="../read.html?ch=long-retreat-of-trust" target="_top"><span class="slbn-dir">‹ Previous</span><span class="slbn-ttl">The Long Retreat of Trust</span></a><a class="slbn-toc" href="../index.html#book" target="_top"><span class="slbn-dir">The Scissors</span><span class="slbn-ttl">Chapter 16 / 36</span></a><a class="slbn-next" href="../read.html?ch=someone-to-count-on" target="_top"><span class="slbn-dir">Next ›</span><span class="slbn-ttl">Someone to Count On</span></a></div></nav>
+<!--SL_BOOKNAV_END-->
+</body>
+</html>

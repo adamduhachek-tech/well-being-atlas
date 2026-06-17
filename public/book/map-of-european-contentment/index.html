@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Map of European Contentment — Where Europe Is Most and Least Satisfied With Life</title>
+<style>
+  :root{
+    --bg:#f4f1ea;
+    --bg-deep:#e7e0d2;
+    --panel:#fcfaf4;
+    --panel-2:#f7f3ea;
+    --ink:#1a1813;
+    --ink-dim:#4a463b;
+    --ink-faint:#8a8373;
+    --hair:rgba(26,24,19,.13);
+    --hair-soft:rgba(26,24,19,.06);
+    --low:#c7522a;
+    --low-deep:#8f3416;
+    --mid:#e7c98f;
+    --high:#2166ac;
+    --high-deep:#114a82;
+    --missing:#e3ddd0;
+    --pc:#b5462f;
+    --pc-deep:#8a3320;
+    --west:#2f6fa5;
+    --west-deep:#1d4d77;
+    --accent:#b5462f;
+    --rule:#b3a98c;
+    --serif:'Hoefler Text','Iowan Old Style',Georgia,'Times New Roman',serif;
+    --sans:'Avenir Next',system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+    --mono:'SFMono-Regular',ui-monospace,'Cascadia Mono',Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--serif); font-size:18.5px; line-height:1.64; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility}
+  a{color:var(--west-deep); text-decoration:none; border-bottom:1px solid rgba(47,111,165,.4)}
+  a:hover,a:focus-visible{color:var(--accent); border-bottom-color:var(--accent)}
+  a:focus-visible,button:focus-visible,[tabindex]:focus-visible{outline:2.5px solid var(--accent); outline-offset:2px; border-radius:3px}
+  .wrap{max-width:716px; margin:0 auto; padding:0 22px}
+  .wide{max-width:1080px; margin:0 auto; padding:0 22px}
+  header{padding:78px 0 18px}
+  .kicker{font-family:var(--sans); font-size:12px; letter-spacing:.3em; text-transform:uppercase; color:var(--accent); margin:0 0 20px; font-weight:600}
+  h1{font-size:clamp(36px,6.4vw,66px); line-height:1.0; margin:0 0 22px; font-weight:700; letter-spacing:-.022em}
+  .dek{font-size:clamp(18px,2.5vw,23.5px); font-style:italic; color:var(--ink-dim); max-width:680px; margin:0 0 26px; line-height:1.46}
+  .byline{font-family:var(--sans); font-size:13px; color:var(--ink-faint); letter-spacing:.04em}
+  .byline b{color:var(--ink-dim); font-weight:600}
+  main p{margin:0 0 1.34em}
+  h2{font-size:clamp(25px,3.6vw,35px); line-height:1.12; margin:2.0em 0 .5em; letter-spacing:-.015em; font-weight:700}
+  .lead{font-size:clamp(19px,2.4vw,22px); line-height:1.5; color:var(--ink)}
+  .drop::first-letter{float:left; font-size:3.55em; line-height:.8; padding:8px 11px 0 0; color:var(--accent); font-weight:700; font-family:var(--serif)}
+  strong{font-weight:700}
+  .num{font-variant-numeric:tabular-nums; font-feature-settings:"tnum" 1}
+  .hi-t{color:var(--high-deep); font-weight:700}
+  .lo-t{color:var(--low-deep); font-weight:700}
+  .figwrap{margin:44px auto 16px}
+  figure{margin:0; background:var(--panel); border:1px solid var(--hair); border-radius:16px; padding:26px 24px 18px; box-shadow:0 1px 0 rgba(26,24,19,.04), 0 14px 40px -28px rgba(26,24,19,.45)}
+  figure h4{font-family:var(--sans); font-size:19px; margin:0 0 5px; font-weight:700; color:var(--ink); letter-spacing:-.01em}
+  figure .sub{font-family:var(--sans); font-size:13.5px; color:var(--ink-dim); margin:0 0 16px; line-height:1.5; max-width:760px}
+  figcaption{font-family:var(--sans); font-size:12.5px; color:var(--ink-faint); line-height:1.55; margin-top:14px; border-top:1px solid var(--hair-soft); padding-top:11px}
+  svg{width:100%; height:auto; display:block; overflow:visible}
+  text{font-family:var(--sans)}
+  .legend{display:flex; flex-wrap:wrap; gap:8px 18px; font-family:var(--sans); font-size:12.5px; color:var(--ink-dim); margin:0 0 12px; align-items:center}
+  .legend span.li{display:inline-flex; align-items:center; gap:7px}
+  .sw{width:13px; height:13px; border-radius:3px; display:inline-block; border:1px solid rgba(26,24,19,.18)}
+  .tip{position:fixed; pointer-events:none; opacity:0; background:var(--ink); color:#fff; font-family:var(--sans); font-size:12.5px; line-height:1.5; padding:11px 13px; border-radius:9px; max-width:260px; z-index:50; transition:opacity .09s; box-shadow:0 8px 30px rgba(26,24,19,.36)}
+  .tip b{color:#fff; font-weight:700}
+  .tip .tname{font-size:14px; font-weight:700; margin-bottom:5px; display:flex; align-items:center; gap:7px}
+  .tip .row{display:flex; justify-content:space-between; gap:18px; font-variant-numeric:tabular-nums}
+  .tip .muted{color:#c4bdac}
+  .tip .tag{font-size:10px; letter-spacing:.06em; text-transform:uppercase; padding:1px 6px; border-radius:10px; font-weight:600}
+  .tip .tag-pc{background:rgba(181,70,47,.32); color:#ffd9cb}
+  .tip .tag-w{background:rgba(47,111,165,.32); color:#cfe2f4}
+  .smcap{font-family:var(--sans); font-size:11px; letter-spacing:.04em; fill:var(--ink-faint)}
+  .axlab{font-family:var(--sans); font-size:12px; fill:var(--ink-faint)}
+  .ctrl{display:inline-flex; gap:4px; background:var(--panel-2); border:1px solid var(--hair); border-radius:999px; padding:4px; font-family:var(--sans)}
+  .ctrl button{font-family:var(--sans); font-size:12.5px; font-weight:600; color:var(--ink-dim); background:transparent; border:0; padding:6px 13px; border-radius:999px; cursor:pointer; letter-spacing:.01em; transition:background .12s,color .12s}
+  .ctrl button[aria-pressed="true"]{background:var(--ink); color:#fbf8f1}
+  .ctrl button:hover:not([aria-pressed="true"]){background:var(--hair-soft)}
+  .ctrlrow{display:flex; flex-wrap:wrap; gap:14px; align-items:center; margin:0 0 16px}
+  .note{font-family:var(--sans); font-size:14px; line-height:1.55; color:var(--ink-dim); background:var(--bg-deep); border-left:3px solid var(--rule); border-radius:0 8px 8px 0; padding:14px 16px; margin:26px 0}
+  table.fallback{border-collapse:collapse; width:100%; font-family:var(--sans); font-size:12.5px; margin-top:8px}
+  table.fallback caption{text-align:left; color:var(--ink-faint); font-size:12px; margin-bottom:6px}
+  table.fallback th,table.fallback td{border:1px solid var(--hair-soft); padding:4px 8px; text-align:right}
+  table.fallback th:first-child,table.fallback td:first-child{text-align:left}
+  footer{font-family:var(--sans); font-size:13.5px; color:var(--ink-dim); line-height:1.62; padding:30px 0 80px}
+  footer h2{font-family:var(--sans); font-size:15px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint); margin:0 0 14px; font-weight:700}
+  footer p{margin:0 0 1em; max-width:760px}
+  footer a{color:var(--west-deep)}
+  hr.sep{border:0; border-top:1px solid var(--hair); max-width:1080px; margin:46px auto 0}
+  .pill{font-family:var(--sans); font-size:11px; letter-spacing:.07em; text-transform:uppercase; font-weight:600; padding:2px 8px; border-radius:20px; display:inline-block; vertical-align:middle}
+  .pill-eval{background:rgba(47,111,165,.14); color:var(--west-deep)}
+  .pill-perc{background:rgba(181,70,47,.13); color:var(--pc-deep)}
+  .country-mark{stroke:var(--panel); stroke-width:.5px; cursor:pointer; transition:opacity .1s}
+  .country-mark:focus-visible{outline:none; stroke:var(--ink); stroke-width:1.6px}
+  @media (max-width:560px){
+    figure{padding:20px 14px 14px; border-radius:13px}
+    .figwrap{margin:30px auto 14px}
+  }
+  @media (prefers-reduced-motion: reduce){*{transition:none!important; animation:none!important}}
+</style>
+</head>
+<body>
+<header class="wrap">
+  <p class="kicker">European Values Study · 2017 wave</p>
+  <h1>The Map of European Contentment</h1>
+  <p class="dek">From the Alps to the Caucasus, a 1.8-point gap in life satisfaction separates Europe's most and least contented nations. A Nordic-Alpine peak and a post-communist trough are the continent's dominant geography — but happiness and health draw a stranger map.</p>
+  <p class="byline">By the numbers · <b>European Values Study (EVS), 1981–2017</b> · 2017 wave · 32 countries · within-country weighted, each country counted once</p>
+</header>
+
+<main>
+<div class="wrap">
+  <p class="lead drop">Ask Europeans, on a scale of one to ten, how satisfied they are with their lives, and the continent sorts itself into a shape you could almost have guessed. <span class="hi-t">Switzerland</span> sits at the top, with a mean of <strong class="num">8.0</strong>. Far below it, <span class="lo-t">Ukraine</span> closes the ranking at <strong class="num">6.2</strong>. Between the most and least satisfied nations lies a gap of <strong class="num">1.8</strong> points — the width of European contentment, measured across <strong class="num">32</strong> countries in the latest wave of the European Values Study.</p>
+
+  <p>Drawn on a map, that range resolves into two facts that dominate everything else. There is a bright ridge of satisfaction running through the Nordic countries and the Alpine west. And there is a darker band across the post-communist east, deepening as it reaches Russia, the Caucasus and the Black Sea. Average a country's residents — weighting each survey response within the country, then letting every nation count once — and Western Europe comes out at <strong class="num">7.7</strong>, the formerly communist countries at <strong class="num">7.0</strong>: an East–West gap of about <strong class="num">0.65</strong> of a point.</p>
+</div>
+
+<div class="figwrap wide">
+  <figure>
+    <h4>Where Europe is most and least satisfied with life</h4>
+    <p class="sub">Mean life satisfaction (1–10) by country, European Values Study 2017 wave. Each country's value is its within-country weighted average; countries not in the EVS sample are left neutral. Hover or tap any country for detail.</p>
+    <div class="legend" id="legend-hero"></div>
+    <div id="map-hero" style="position:relative"></div>
+    <figcaption id="cap-hero"></figcaption>
+  </figure>
+</div>
+
+<div class="wrap">
+  <p>The peak is unsurprising in light of decades of well-being research: the Nordic cluster and Switzerland reliably lead global life-satisfaction rankings, a pattern the World Happiness Report attributes to social trust, freedom and the quality of governance rather than to wealth alone. <span class="hi-t">Norway</span> follows Switzerland at <strong class="num">8.0</strong>, then <span class="hi-t">Finland</span> at <strong class="num">7.9</strong> and the <span class="hi-t">Netherlands</span> at <strong class="num">7.8</strong>. What is more arresting is the company they keep. The fifth-most-satisfied country in this sample is not Sweden or Germany but <strong>Bosnia and Herzegovina</strong>, at <strong class="num">7.7</strong> — a post-communist, middle-income nation outscoring every Western country except the top four.</p>
+
+  <p>That single ranking is a warning against reading the map as a story about money. The correlation between national income and satisfaction is real but loose; income predicts life satisfaction while leaving large residuals that freedoms, social ties and history fill in. <span class="lo-t">Bulgaria</span> and <span class="lo-t">Ukraine</span> anchor the bottom at <strong class="num">6.2</strong>, with <span class="lo-t">Azerbaijan</span>, <span class="lo-t">Russia</span> and <span class="lo-t">Armenia</span> just above — a cluster of the formerly Soviet and the Soviet-adjacent that no amount of Bosnia-style exception quite dissolves.</p>
+
+  <h2>The ranking, country by country</h2>
+  <p>Laid out as a column, the full order makes the two Europes legible at a glance. The equal-country average for the whole continent sits at <strong class="num">7.2</strong>; ten countries clear the Western mean, and the lower third is almost entirely post-communist.</p>
+</div>
+
+<div class="figwrap wide">
+  <figure>
+    <h4>Every country, ranked — and which Europe it belongs to</h4>
+    <p class="sub">Mean life satisfaction (1–10), 2017 wave, highest to lowest. Bars are colored by whether a country is post-communist or Western. The dashed line marks the equal-country European average. <em>Note: the axis is zoomed to the 5.8–8.2 band — it does not start at zero — so the differences between countries are legible.</em></p>
+    <div class="legend">
+      <span class="li"><span class="sw" style="background:var(--west)"></span> Western Europe</span>
+      <span class="li"><span class="sw" style="background:var(--pc)"></span> Post-communist</span>
+      <span class="li"><span class="sw" style="background:transparent;border-style:dashed;border-color:var(--ink-faint)"></span> European average</span>
+    </div>
+    <div id="chart-rank" style="position:relative"></div>
+    <figcaption id="cap-rank"></figcaption>
+  </figure>
+</div>
+
+<div class="wrap">
+  <h2>Four maps, four Europes</h2>
+  <p>Life satisfaction is only one way to ask whether a life is going well. The European Values Study carries three other evaluative readings: how much <strong>freedom of choice and control</strong> people feel they have over their lives, how they rate their own <strong>health</strong>, and a separate, blunter question — taking everything together, are you <strong>happy</strong>? Map all four side by side and the tidy Nordic-to-Black-Sea gradient begins to fracture.</p>
+
+  <p>Switch the maps and watch the Balkans light up. On <strong>perceived freedom</strong>, the leaders are not the Nordics but <span class="hi-t">Finland</span> and <span class="hi-t">Bosnia and Herzegovina</span>, with <span class="hi-t">Romania</span> and <span class="hi-t">Montenegro</span> close behind — several post-communist countries report feeling more in command of their lives than the Dutch or the French do. Self-rated <strong>health</strong> tilts south and west again, with Norway, Switzerland and Spain on top and the post-Soviet north-east — Latvia, Belarus, Russia, Ukraine — reporting the dimmest health on the continent.</p>
+</div>
+
+<div class="figwrap wide">
+  <figure>
+    <h4>The same continent, four different measures</h4>
+    <p class="sub">Each small map shades all 32 EVS countries on its own scale (dark = highest, pale = lowest within that measure). Life satisfaction and freedom run 1–10; happiness runs 1–4; health runs 1–5. Hover any country to read all four at once.</p>
+    <div id="map-small" style="position:relative"></div>
+    <figcaption id="cap-small"></figcaption>
+  </figure>
+</div>
+
+<div class="wrap">
+  <p>Then there is happiness — the question that should track satisfaction most closely, and sometimes does the opposite. The happiest countries by this measure are <span class="hi-t">Norway</span>, the <span class="hi-t">United Kingdom</span> and <span class="hi-t">Sweden</span>; the least happy is <span class="lo-t">Bulgaria</span>, at <strong class="num">2.7</strong> on the four-point scale. But the interesting cases are the countries that rank very differently on the two questions. <strong>Romania</strong> sits 12th in life satisfaction yet 25th in happiness — a country that judges its life well but does not call itself happy. <strong>Belarus</strong> runs the other way: 24th in satisfaction, 11th in happiness. <strong>France</strong>, too, reports more happiness than its middling satisfaction would predict.</p>
+
+  <p>These are not large countries' worth of people changing their minds; they are the fingerprints of how survey questions are heard. A reflective "how satisfied are you with your life" and a flatter "are you happy" are answered through different cultural filters, and the gap between them is its own small geography.</p>
+</div>
+
+<div class="figwrap wide">
+  <figure>
+    <h4>Satisfied, but not happy — and the reverse</h4>
+    <p class="sub">Each country's rank on life satisfaction (left) connected to its rank on happiness (right), 2017 wave. Steeply sloping lines are countries that answer the two questions very differently. Highlighted are the largest divergences in each direction.</p>
+    <div id="chart-slope" style="position:relative"></div>
+    <figcaption id="cap-slope"></figcaption>
+  </figure>
+</div>
+
+<div class="wrap">
+  <h2>What this map does, and does not, show</h2>
+  <p><strong>One wave, one snapshot.</strong> Every figure here comes from the 2017 wave of the EVS (fieldwork ran 2017–2021). This is a portrait of a moment, not a trend; the continent's well-being geography has not always looked like this, and need not stay this way.</p>
+  <p><strong>Nations, not people.</strong> Within each country, responses are weighted by the survey's own weight. Across countries, every nation counts once, so this is the average <em>national</em> experience — not a population-weighted European figure. A small country and a large one move the continental average equally, and "Europe's mean" is the mean of its countries, not of its citizens.</p>
+  <p><strong>Evaluative, throughout.</strong> Life satisfaction, perceived freedom, self-rated health and the happiness item are all reflective judgments people make about their lives. The EVS carries no "yesterday" mood items, so nothing here speaks to how European days actually <em>felt</em> — only to how people weigh their lives when asked.</p>
+  <p><strong>Differences, not destinies — and some are small.</strong> Cross-country comparisons of subjective scales are vulnerable to differences in how questions are translated and how cultures use rating scales; the satisfied-but-not-happy split is partly exactly that. Gaps of a few tenths of a point should be read as suggestive, not decisive. And one cell is thin: Ukraine's effective sample falls to <strong class="num">250</strong> after weighting, so its bottom-of-the-table figure carries more uncertainty than the rest.</p>
+</div>
+
+<hr class="sep">
+<div class="wide">
+<footer>
+  <h2>Notes &amp; data</h2>
+  <p><strong>Source.</strong> European Values Study (EVS), 1981–2017, 2017 wave (fieldwork 2017–2021). Life satisfaction is the “all things considered, how satisfied are you with your life as a whole” item (1–10); perceived freedom is “how much freedom of choice and control you have over your life” (1–10); health is self-rated health (1–5, higher is better); happiness is the “taking all things together, would you say you are happy” item (1–4, higher is happier). Country context (HDI, GNI per capita, Gini, life expectancy) shown in tooltips is from external sources joined to each country.</p>
+  <p><strong>Weighting.</strong> Within each country, estimates use the EVS within-country survey weight <span style="font-family:var(--mono)">weight</span>; no EVS statistic here is reported unweighted. There is no population variable, so all cross-country and “Europe” figures weight each <em>country</em> equally — the average national experience, not population-weighted.</p>
+  <p><strong>Coverage &amp; suppression.</strong> The map and rankings cover the <strong>32</strong> European countries surveyed in the 2017 wave with an effective sample of at least 50 (effective N = (Σw)² ⁄ Σw²); cells below that threshold are suppressed. Countries not in the EVS sample — and the few European territories shown for context — are left neutral on every map and noted in the legend. The United States and Canada, which appear in some early EVS waves, are excluded as non-European. Ukraine's effective N is 250, the smallest retained.</p>
+  <p><strong>Construct.</strong> Every measure here is <strong>evaluative or perceptual</strong> — a reflective self-assessment. The EVS has no experiential “yesterday affect” items, so no claim is made about momentary feeling. Comparisons are descriptive associations across countries, not causal.</p>
+  <p><strong>Further reading.</strong> John Helliwell, Richard Layard, Jeffrey Sachs et al., <a href="https://worldhappiness.report/">World Happiness Report</a> (2023), on the Nordic cluster's persistent lead; Angus Deaton, <a href="https://doi.org/10.1257/jep.22.2.53">“Income, health, and well-being around the world”</a> (2008), on income's loose grip on satisfaction; Ruut Veenhoven, “Happiness in Nations” (1993), on the geography of happiness and Southern-European scale-use effects; and Eurofound's <a href="https://www.eurofound.europa.eu/en/surveys/european-quality-life-surveys-eqls">European Quality of Life Survey</a> (2016) on persistent East–West gaps.</p>
+  <p style="color:var(--ink-faint)">Construct labels — <span class="pill pill-eval">evaluative</span> life satisfaction, health, happiness · <span class="pill pill-perc">perceptual</span> perceived freedom. Association, not causation. Country-level, not population-weighted.</p>
+</footer>
+</div>
+</main>
+
+<div class="tip" id="tip" role="status" aria-live="polite"></div>
+
+<script type="module">
+import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+import * as topojson from "https://cdn.jsdelivr.net/npm/topojson-client@3/+esm";
+
+const DATA = {"meta":{"slug":"map-of-european-contentment","title":"The Map of European Contentment","dek":"From the Alps to the Caucasus, a 1.8-point gap in life satisfaction separates Europe's most and least contented nations. A Nordic-Alpine peak and a post-communist trough are the continent's dominant geography — but happiness and health draw a stranger map.","dataset":"European Values Study (EVS), 1981-2017","wave":7,"wave_years":"2017 wave (fieldwork 2017-2021)","weight":"Within-country survey weight ('weight'); cross-country means weight each country equally — average national experience, not population-weighted","constructs":{"satis_your_life":"evaluative","how_much_freedom_of_choice_and_control":"perceived autonomy/control","health":"self-rated health (evaluative/perceptual)","happy":"evaluative"},"suppression":"Country-wave cells with effective N < 50 suppressed; effN = (sum w)^2 / sum(w^2)","geo_join":"country_code -> topo_id (ISO 3166 numeric, zero-padded to 3 digits) joins to world-110m.json 'id' field","post_communist_set":["Albania","Armenia","Azerbaijan","Belarus","Bosnia Herzegovina","Bulgaria","Croatia","Czechia","Estonia","Georgia","Hungary","Latvia","Lithuania","Moldova","Montenegro","North Macedonia","Poland","Romania","Russia","Serbia","Slovakia","Slovenia","Ukraine"],"colors":{"scale_low":"#c7522a","scale_mid":"#f5e4c3","scale_high":"#2166ac","missing":"#e8e8e8","pc_accent":"#b5462f","west_accent":"#2f6fa5"}},"headline":{"n_countries":32,"wave":7,"wave_label":"2017 wave (fieldwork 2017-2021)","top_country":"Switzerland","top_satis":8.018,"bottom_country":"Ukraine","bottom_satis":6.198,"satis_range":1.82,"europe_mean_satis":7.23,"europe_mean_freedom":7.17,"europe_mean_health":3.684,"europe_mean_happy":3.08,"pc_mean_satis":7.026,"west_mean_satis":7.678,"east_west_gap":0.652,"n_post_communist":22,"n_western":10},"countries":[{"country":"Switzerland","country_code":756,"topo_id":"756","eff_n":3060.0,"n_raw":3167,"post_communist":false,"ctx_hdi":0.944,"ctx_gni_pc":57625.0,"ctx_gini":32.3,"ctx_life_expectancy":83.5,"satis_your_life":8.018,"how_much_freedom_of_choice_and_control":7.414,"health":4.023,"happy":3.282,"rank_satis_your_life":1,"rank_how_much_freedom_of_choice_and_control":9,"rank_health":2,"rank_happy":5},{"country":"Norway","country_code":578,"topo_id":"578","eff_n":1040.0,"n_raw":1121,"post_communist":false,"ctx_hdi":0.953,"ctx_gni_pc":68012.0,"ctx_gini":27.5,"ctx_life_expectancy":82.3,"satis_your_life":8.007,"how_much_freedom_of_choice_and_control":7.695,"health":4.044,"happy":3.348,"rank_satis_your_life":2,"rank_how_much_freedom_of_choice_and_control":3,"rank_health":1,"rank_happy":1},{"country":"Finland","country_code":246,"topo_id":"246","eff_n":948.0,"n_raw":1193,"post_communist":false,"ctx_hdi":0.92,"ctx_gni_pc":41002.0,"ctx_gini":27.1,"ctx_life_expectancy":81.5,"satis_your_life":7.898,"how_much_freedom_of_choice_and_control":7.805,"health":3.726,"happy":3.101,"rank_satis_your_life":3,"rank_how_much_freedom_of_choice_and_control":1,"rank_health":15,"rank_happy":12},{"country":"Netherlands","country_code":528,"topo_id":"528","eff_n":2015.0,"n_raw":2396,"post_communist":false,"ctx_hdi":0.931,"ctx_gni_pc":47900.0,"ctx_gini":28.2,"ctx_life_expectancy":82.0,"satis_your_life":7.836,"how_much_freedom_of_choice_and_control":6.99,"health":3.853,"happy":3.29,"rank_satis_your_life":4,"rank_how_much_freedom_of_choice_and_control":23,"rank_health":8,"rank_happy":4},{"country":"Bosnia Herzegovina","country_code":70,"topo_id":"070","eff_n":1420.0,"n_raw":1723,"post_communist":true,"ctx_hdi":0.768,"ctx_gni_pc":11716.0,"ctx_gini":33.0,"ctx_life_expectancy":77.1,"satis_your_life":7.722,"how_much_freedom_of_choice_and_control":7.796,"health":3.794,"happy":3.14,"rank_satis_your_life":5,"rank_how_much_freedom_of_choice_and_control":2,"rank_health":13,"rank_happy":10},{"country":"United Kingdom","country_code":826,"topo_id":"826","eff_n":1499.0,"n_raw":1787,"post_communist":false,"ctx_hdi":0.922,"ctx_gni_pc":39116.0,"ctx_gini":33.2,"ctx_life_expectancy":81.7,"satis_your_life":7.713,"how_much_freedom_of_choice_and_control":7.363,"health":3.899,"happy":3.331,"rank_satis_your_life":6,"rank_how_much_freedom_of_choice_and_control":12,"rank_health":6,"rank_happy":2},{"country":"Slovenia","country_code":705,"topo_id":"705","eff_n":968.0,"n_raw":1074,"post_communist":true,"ctx_hdi":0.896,"ctx_gni_pc":30594.0,"ctx_gini":25.4,"ctx_life_expectancy":81.1,"satis_your_life":7.672,"how_much_freedom_of_choice_and_control":7.631,"health":3.672,"happy":3.041,"rank_satis_your_life":7,"rank_how_much_freedom_of_choice_and_control":7,"rank_health":17,"rank_happy":19},{"country":"Sweden","country_code":752,"topo_id":"752","eff_n":950.0,"n_raw":1194,"post_communist":false,"ctx_hdi":0.933,"ctx_gni_pc":47766.0,"ctx_gini":29.2,"ctx_life_expectancy":82.6,"satis_your_life":7.643,"how_much_freedom_of_choice_and_control":7.647,"health":3.987,"happy":3.327,"rank_satis_your_life":8,"rank_how_much_freedom_of_choice_and_control":6,"rank_health":4,"rank_happy":3},{"country":"Germany","country_code":276,"topo_id":"276","eff_n":1935.0,"n_raw":2159,"post_communist":false,"ctx_hdi":0.936,"ctx_gni_pc":46136.0,"ctx_gini":31.7,"ctx_life_expectancy":81.2,"satis_your_life":7.634,"how_much_freedom_of_choice_and_control":7.232,"health":3.688,"happy":3.077,"rank_satis_your_life":9,"rank_how_much_freedom_of_choice_and_control":14,"rank_health":16,"rank_happy":16},{"country":"Poland","country_code":616,"topo_id":"616","eff_n":1133.0,"n_raw":1345,"post_communist":true,"ctx_hdi":0.865,"ctx_gni_pc":26150.0,"ctx_gini":30.8,"ctx_life_expectancy":77.8,"satis_your_life":7.562,"how_much_freedom_of_choice_and_control":7.043,"health":3.659,"happy":3.224,"rank_satis_your_life":10,"rank_how_much_freedom_of_choice_and_control":20,"rank_health":18,"rank_happy":8},{"country":"Montenegro","country_code":499,"topo_id":"499","eff_n":752.0,"n_raw":1001,"post_communist":true,"ctx_hdi":0.814,"ctx_gni_pc":16779.0,"ctx_gini":31.9,"ctx_life_expectancy":77.3,"satis_your_life":7.539,"how_much_freedom_of_choice_and_control":7.689,"health":3.972,"happy":3.26,"rank_satis_your_life":11,"rank_how_much_freedom_of_choice_and_control":4,"rank_health":5,"rank_happy":6},{"country":"Romania","country_code":642,"topo_id":"642","eff_n":1337.0,"n_raw":1604,"post_communist":true,"ctx_hdi":0.811,"ctx_gni_pc":22646.0,"ctx_gini":35.9,"ctx_life_expectancy":75.6,"satis_your_life":7.503,"how_much_freedom_of_choice_and_control":7.681,"health":3.737,"happy":2.975,"rank_satis_your_life":12,"rank_how_much_freedom_of_choice_and_control":5,"rank_health":14,"rank_happy":25},{"country":"Czechia","country_code":203,"topo_id":"203","eff_n":1415.0,"n_raw":1795,"post_communist":true,"ctx_hdi":0.888,"ctx_gni_pc":30588.0,"ctx_gini":25.9,"ctx_life_expectancy":78.9,"satis_your_life":7.494,"how_much_freedom_of_choice_and_control":7.131,"health":3.813,"happy":3.068,"rank_satis_your_life":13,"rank_how_much_freedom_of_choice_and_control":17,"rank_health":11,"rank_happy":17},{"country":"Spain","country_code":724,"topo_id":"724","eff_n":1148.0,"n_raw":1209,"post_communist":false,"ctx_hdi":0.891,"ctx_gni_pc":34258.0,"ctx_gini":36.2,"ctx_life_expectancy":83.3,"satis_your_life":7.492,"how_much_freedom_of_choice_and_control":7.407,"health":4.018,"happy":3.096,"rank_satis_your_life":14,"rank_how_much_freedom_of_choice_and_control":10,"rank_health":3,"rank_happy":13},{"country":"Croatia","country_code":191,"topo_id":"191","eff_n":972.0,"n_raw":1483,"post_communist":true,"ctx_hdi":0.831,"ctx_gni_pc":22162.0,"ctx_gini":31.1,"ctx_life_expectancy":77.8,"satis_your_life":7.456,"how_much_freedom_of_choice_and_control":7.422,"health":3.548,"happy":2.985,"rank_satis_your_life":15,"rank_how_much_freedom_of_choice_and_control":8,"rank_health":21,"rank_happy":23},{"country":"Slovakia","country_code":703,"topo_id":"703","eff_n":1215.0,"n_raw":1428,"post_communist":true,"ctx_hdi":0.855,"ctx_gni_pc":29467.0,"ctx_gini":26.5,"ctx_life_expectancy":77.0,"satis_your_life":7.308,"how_much_freedom_of_choice_and_control":7.232,"health":3.853,"happy":3.087,"rank_satis_your_life":16,"rank_how_much_freedom_of_choice_and_control":15,"rank_health":9,"rank_happy":15},{"country":"North Macedonia","country_code":807,"topo_id":"807","eff_n":888.0,"n_raw":1099,"post_communist":true,"ctx_hdi":0.757,"ctx_gni_pc":12505.0,"ctx_gini":35.6,"ctx_life_expectancy":75.9,"satis_your_life":7.287,"how_much_freedom_of_choice_and_control":7.38,"health":3.864,"happy":3.223,"rank_satis_your_life":17,"rank_how_much_freedom_of_choice_and_control":11,"rank_health":7,"rank_happy":9},{"country":"Italy","country_code":380,"topo_id":"380","eff_n":1986.0,"n_raw":2276,"post_communist":false,"ctx_hdi":0.88,"ctx_gni_pc":35299.0,"ctx_gini":35.4,"ctx_life_expectancy":83.2,"satis_your_life":7.278,"how_much_freedom_of_choice_and_control":7.113,"health":3.826,"happy":2.983,"rank_satis_your_life":18,"rank_how_much_freedom_of_choice_and_control":19,"rank_health":10,"rank_happy":24},{"country":"France","country_code":250,"topo_id":"250","eff_n":1298.0,"n_raw":1867,"post_communist":false,"ctx_hdi":0.901,"ctx_gni_pc":39254.0,"ctx_gini":32.7,"ctx_life_expectancy":82.7,"satis_your_life":7.264,"how_much_freedom_of_choice_and_control":6.962,"health":3.798,"happy":3.23,"rank_satis_your_life":19,"rank_how_much_freedom_of_choice_and_control":24,"rank_health":12,"rank_happy":7},{"country":"Estonia","country_code":233,"topo_id":"233","eff_n":1174.0,"n_raw":1300,"post_communist":true,"ctx_hdi":0.871,"ctx_gni_pc":28993.0,"ctx_gini":32.7,"ctx_life_expectancy":77.7,"satis_your_life":7.23,"how_much_freedom_of_choice_and_control":7.133,"health":3.539,"happy":3.02,"rank_satis_your_life":20,"rank_how_much_freedom_of_choice_and_control":16,"rank_health":23,"rank_happy":21},{"country":"Albania","country_code":8,"topo_id":"008","eff_n":1209.0,"n_raw":1435,"post_communist":true,"ctx_hdi":0.785,"ctx_gni_pc":11886.0,"ctx_gini":29.0,"ctx_life_expectancy":78.5,"satis_your_life":7.193,"how_much_freedom_of_choice_and_control":6.824,"health":3.489,"happy":2.871,"rank_satis_your_life":21,"rank_how_much_freedom_of_choice_and_control":26,"rank_health":26,"rank_happy":31},{"country":"Hungary","country_code":348,"topo_id":"348","eff_n":1350.0,"n_raw":1507,"post_communist":true,"ctx_hdi":0.838,"ctx_gni_pc":25393.0,"ctx_gini":30.4,"ctx_life_expectancy":76.1,"satis_your_life":7.148,"how_much_freedom_of_choice_and_control":7.011,"health":3.505,"happy":2.999,"rank_satis_your_life":22,"rank_how_much_freedom_of_choice_and_control":22,"rank_health":25,"rank_happy":22},{"country":"Latvia","country_code":428,"topo_id":"428","eff_n":1219.0,"n_raw":1331,"post_communist":true,"ctx_hdi":0.847,"ctx_gni_pc":25002.0,"ctx_gini":34.2,"ctx_life_expectancy":74.7,"satis_your_life":6.915,"how_much_freedom_of_choice_and_control":6.574,"health":3.434,"happy":2.926,"rank_satis_your_life":23,"rank_how_much_freedom_of_choice_and_control":29,"rank_health":28,"rank_happy":28},{"country":"Belarus","country_code":112,"topo_id":"112","eff_n":1512.0,"n_raw":1536,"post_communist":true,"ctx_hdi":0.808,"ctx_gni_pc":16323.0,"ctx_gini":25.4,"ctx_life_expectancy":73.1,"satis_your_life":6.851,"how_much_freedom_of_choice_and_control":7.13,"health":3.43,"happy":3.122,"rank_satis_your_life":24,"rank_how_much_freedom_of_choice_and_control":18,"rank_health":29,"rank_happy":11},{"country":"Lithuania","country_code":440,"topo_id":"440","eff_n":1344.0,"n_raw":1415,"post_communist":true,"ctx_hdi":0.858,"ctx_gni_pc":28314.0,"ctx_gini":37.4,"ctx_life_expectancy":74.8,"satis_your_life":6.754,"how_much_freedom_of_choice_and_control":7.352,"health":3.525,"happy":2.915,"rank_satis_your_life":25,"rank_how_much_freedom_of_choice_and_control":13,"rank_health":24,"rank_happy":30},{"country":"Georgia","country_code":268,"topo_id":"268","eff_n":1576.0,"n_raw":2185,"post_communist":true,"ctx_hdi":0.78,"ctx_gni_pc":9186.0,"ctx_gini":37.9,"ctx_life_expectancy":73.4,"satis_your_life":6.712,"how_much_freedom_of_choice_and_control":6.423,"health":3.27,"happy":3.089,"rank_satis_your_life":26,"rank_how_much_freedom_of_choice_and_control":32,"rank_health":31,"rank_happy":14},{"country":"Serbia","country_code":688,"topo_id":"688","eff_n":609.0,"n_raw":1486,"post_communist":true,"ctx_hdi":0.787,"ctx_gni_pc":13019.0,"ctx_gini":28.5,"ctx_life_expectancy":75.3,"satis_your_life":6.7,"how_much_freedom_of_choice_and_control":6.85,"health":3.547,"happy":2.943,"rank_satis_your_life":27,"rank_how_much_freedom_of_choice_and_control":25,"rank_health":22,"rank_happy":26},{"country":"Armenia","country_code":51,"topo_id":"051","eff_n":833.0,"n_raw":1487,"post_communist":true,"ctx_hdi":0.755,"ctx_gni_pc":9144.0,"ctx_gini":33.6,"ctx_life_expectancy":74.8,"satis_your_life":6.388,"how_much_freedom_of_choice_and_control":7.026,"health":3.634,"happy":3.063,"rank_satis_your_life":28,"rank_how_much_freedom_of_choice_and_control":21,"rank_health":20,"rank_happy":18},{"country":"Russia","country_code":643,"topo_id":"643","eff_n":902.0,"n_raw":1804,"post_communist":true,"ctx_hdi":0.816,"ctx_gni_pc":24233.0,"ctx_gini":37.7,"ctx_life_expectancy":71.2,"satis_your_life":6.374,"how_much_freedom_of_choice_and_control":6.779,"health":3.398,"happy":2.929,"rank_satis_your_life":29,"rank_how_much_freedom_of_choice_and_control":28,"rank_health":30,"rank_happy":27},{"country":"Azerbaijan","country_code":31,"topo_id":"031","eff_n":1550.0,"n_raw":1764,"post_communist":true,"ctx_hdi":0.757,"ctx_gni_pc":15600.0,"ctx_gini":26.6,"ctx_life_expectancy":72.1,"satis_your_life":6.362,"how_much_freedom_of_choice_and_control":6.427,"health":3.648,"happy":3.028,"rank_satis_your_life":30,"rank_how_much_freedom_of_choice_and_control":31,"rank_health":19,"rank_happy":20},{"country":"Bulgaria","country_code":100,"topo_id":"100","eff_n":1086.0,"n_raw":1539,"post_communist":true,"ctx_hdi":0.813,"ctx_gni_pc":18740.0,"ctx_gini":37.4,"ctx_life_expectancy":74.9,"satis_your_life":6.204,"how_much_freedom_of_choice_and_control":6.443,"health":3.472,"happy":2.675,"rank_satis_your_life":31,"rank_how_much_freedom_of_choice_and_control":30,"rank_health":27,"rank_happy":32},{"country":"Ukraine","country_code":804,"topo_id":"804","eff_n":250.0,"n_raw":1585,"post_communist":true,"ctx_hdi":0.751,"ctx_gni_pc":8130.0,"ctx_gini":25.0,"ctx_life_expectancy":72.1,"satis_your_life":6.198,"how_much_freedom_of_choice_and_control":6.823,"health":3.222,"happy":2.926,"rank_satis_your_life":32,"rank_how_much_freedom_of_choice_and_control":27,"rank_health":32,"rank_happy":29}],"europe_means":{"satis_your_life":7.23,"how_much_freedom_of_choice_and_control":7.17,"health":3.684,"happy":3.08},"rankings":{"top_satis_your_life":[{"country":"Switzerland","value":8.018},{"country":"Norway","value":8.007},{"country":"Finland","value":7.898},{"country":"Netherlands","value":7.836},{"country":"Bosnia Herzegovina","value":7.722}],"bottom_satis_your_life":[{"country":"Armenia","value":6.388},{"country":"Russia","value":6.374},{"country":"Azerbaijan","value":6.362},{"country":"Bulgaria","value":6.204},{"country":"Ukraine","value":6.198}],"top_how_much_freedom_of_choice_and_control":[{"country":"Finland","value":7.805},{"country":"Bosnia Herzegovina","value":7.796},{"country":"Norway","value":7.695},{"country":"Montenegro","value":7.689},{"country":"Romania","value":7.681}],"bottom_how_much_freedom_of_choice_and_control":[{"country":"Russia","value":6.779},{"country":"Latvia","value":6.574},{"country":"Bulgaria","value":6.443},{"country":"Azerbaijan","value":6.427},{"country":"Georgia","value":6.423}],"top_health":[{"country":"Norway","value":4.044},{"country":"Switzerland","value":4.023},{"country":"Spain","value":4.018},{"country":"Sweden","value":3.987},{"country":"Montenegro","value":3.972}],"bottom_health":[{"country":"Latvia","value":3.434},{"country":"Belarus","value":3.43},{"country":"Russia","value":3.398},{"country":"Georgia","value":3.27},{"country":"Ukraine","value":3.222}],"top_happy":[{"country":"Norway","value":3.348},{"country":"United Kingdom","value":3.331},{"country":"Sweden","value":3.327},{"country":"Netherlands","value":3.29},{"country":"Switzerland","value":3.282}],"bottom_happy":[{"country":"Latvia","value":2.926},{"country":"Ukraine","value":2.926},{"country":"Lithuania","value":2.915},{"country":"Albania","value":2.871},{"country":"Bulgaria","value":2.675}]},"exceptions_happy":[{"country":"Romania","rank_satis":12,"rank_freedom":5,"rank_health":14,"rank_happy":25,"satis":7.503,"freedom":7.681,"health":3.737,"happy":2.975,"div_freedom":7,"div_health":-2,"div_happy":-13},{"country":"Belarus","rank_satis":24,"rank_freedom":18,"rank_health":29,"rank_happy":11,"satis":6.851,"freedom":7.13,"health":3.43,"happy":3.122,"div_freedom":6,"div_health":-5,"div_happy":13},{"country":"Slovenia","rank_satis":7,"rank_freedom":7,"rank_health":17,"rank_happy":19,"satis":7.672,"freedom":7.631,"health":3.672,"happy":3.041,"div_freedom":0,"div_health":-10,"div_happy":-12},{"country":"France","rank_satis":19,"rank_freedom":24,"rank_health":12,"rank_happy":7,"satis":7.264,"freedom":6.962,"health":3.798,"happy":3.23,"div_freedom":-5,"div_health":7,"div_happy":12},{"country":"Georgia","rank_satis":26,"rank_freedom":32,"rank_health":31,"rank_happy":14,"satis":6.712,"freedom":6.423,"health":3.27,"happy":3.089,"div_freedom":-6,"div_health":-5,"div_happy":12},{"country":"Albania","rank_satis":21,"rank_freedom":26,"rank_health":26,"rank_happy":31,"satis":7.193,"freedom":6.824,"health":3.489,"happy":2.871,"div_freedom":-5,"div_health":-5,"div_happy":-10},{"country":"Armenia","rank_satis":28,"rank_freedom":21,"rank_health":20,"rank_happy":18,"satis":6.388,"freedom":7.026,"health":3.634,"happy":3.063,"div_freedom":7,"div_health":8,"div_happy":10},{"country":"Azerbaijan","rank_satis":30,"rank_freedom":31,"rank_health":19,"rank_happy":20,"satis":6.362,"freedom":6.427,"health":3.648,"happy":3.028,"div_freedom":-1,"div_health":11,"div_happy":10}],"wave_coverage":{"1":{"n_countries":9,"countries":["France","Germany","Italy","Netherlands","Northern Ireland","Norway","Spain","Sweden","United Kingdom"]},"2":{"n_countries":20,"countries":["Bulgaria","Czechia","Estonia","Finland","France","Germany","Hungary","Italy","Latvia","Lithuania","Netherlands","Northern Ireland","Norway","Poland","Romania","Slovakia","Slovenia","Spain","Sweden","United Kingdom"]},"4":{"n_countries":25,"countries":["Belarus","Bulgaria","Croatia","Czechia","Estonia","Finland","France","Germany","Greece","Hungary","Italy","Latvia","Lithuania","Netherlands","Northern Ireland","Poland","Romania","Russia","Slovakia","Slovenia","Spain","Sweden","Turkey","Ukraine","United Kingdom"]},"5":{"n_countries":36,"countries":["Albania","Armenia","Belarus","Bosnia Herzegovina","Bulgaria","Croatia","Cyprus","Czechia","Estonia","Finland","France","Georgia","Germany","Greece","Hungary","Italy","Latvia","Lithuania","Moldova","Montenegro","Netherlands","North Macedonia","Northern Ireland","Norway","Poland","Romania","Russia","Serbia","Slovakia","Slovenia","Spain","Sweden","Switzerland","Turkey","Ukraine","United Kingdom"]},"7":{"n_countries":32,"countries":["Albania","Armenia","Azerbaijan","Belarus","Bosnia Herzegovina","Bulgaria","Croatia","Czechia","Estonia","Finland","France","Georgia","Germany","Hungary","Italy","Latvia","Lithuania","Montenegro","Netherlands","North Macedonia","Norway","Poland","Romania","Russia","Serbia","Slovakia","Slovenia","Spain","Sweden","Switzerland","Ukraine","United Kingdom"]}}};
+
+const C = DATA.meta.colors;
+const PC = "#b5462f", WEST = "#2f6fa5";
+const byTopo = new Map(DATA.countries.map(d => [d.topo_id, d]));
+const byName = new Map(DATA.countries.map(d => [d.country, d]));
+
+// measure metadata
+const MEASURES = {
+  satis_your_life: {label:"Life satisfaction", short:"Satisfaction", scaleHint:"1–10", construct:"evaluative", lo:["#fbeee0","#f3d3a8","#e7a55f","#cf6a2e","#a23b14"]},
+  how_much_freedom_of_choice_and_control: {label:"Perceived freedom", short:"Freedom", scaleHint:"1–10", construct:"perceptual", lo:["#ece9f2","#cdc4e0","#a895c9","#7e63ac","#553a86"]},
+  health: {label:"Self-rated health", short:"Health", scaleHint:"1–5", construct:"evaluative", lo:["#e6efe7","#bcd9bf","#86bd90","#4f9a63","#2a6b41"]},
+  happy: {label:"Happiness", short:"Happiness", scaleHint:"1–4", construct:"evaluative", lo:["#e7eef4","#c0d6e8","#88b4d6","#4f87bb","#27598e"]}
+};
+const fmt = (v,m)=> m==="health" ? v.toFixed(2) : v.toFixed(m==="happy"?2:1);
+
+const tip = document.getElementById("tip");
+function showTip(html, ev){
+  tip.innerHTML = html; tip.style.opacity = 1;
+  const pad=16, w=tip.offsetWidth, h=tip.offsetHeight;
+  let x=ev.clientX+pad, y=ev.clientY+pad;
+  if(x+w>window.innerWidth-8) x=ev.clientX-w-pad;
+  if(y+h>window.innerHeight-8) y=ev.clientY-h-pad;
+  if(x<6) x=6; if(y<6) y=6;
+  tip.style.left=x+"px"; tip.style.top=y+"px";
+}
+function hideTip(){ tip.style.opacity=0; }
+function countryTip(d){
+  const tag = d.post_communist
+    ? `<span class="tag tag-pc">Post-communist</span>`
+    : `<span class="tag tag-w">Western</span>`;
+  return `<div class="tname">${d.country} ${tag}</div>`+
+    `<div class="row"><span class="muted">Life satisfaction</span><b>${fmt(d.satis_your_life,"satis_your_life")}</b></div>`+
+    `<div class="row"><span class="muted">Perceived freedom</span><b>${fmt(d.how_much_freedom_of_choice_and_control,"how_much_freedom_of_choice_and_control")}</b></div>`+
+    `<div class="row"><span class="muted">Self-rated health</span><b>${fmt(d.health,"health")}</b></div>`+
+    `<div class="row"><span class="muted">Happiness (1–4)</span><b>${fmt(d.happy,"happy")}</b></div>`+
+    `<div class="row" style="margin-top:5px;border-top:1px solid rgba(255,255,255,.16);padding-top:5px"><span class="muted">Satisfaction rank</span><b>#${d.rank_satis_your_life} of 32</b></div>`+
+    `<div class="row"><span class="muted">Effective N</span><b>${d3.format(",")(Math.round(d.eff_n))}</b></div>`;
+}
+
+// build a per-measure quantile-ish sequential color scale across the 32 countries
+function colorScale(measure){
+  const vals = DATA.countries.map(d=>d[measure]);
+  const ext = d3.extent(vals);
+  return d3.scaleLinear()
+    .domain(d3.range(5).map(i=> ext[0] + (ext[1]-ext[0])*i/4))
+    .range(MEASURES[measure].lo)
+    .clamp(true);
+}
+
+// ===== load geo, then draw maps =====
+const geoUrl = new URL("./geo.topojson", import.meta.url).href;
+const topo = await fetch(geoUrl).then(r=>r.json());
+const objName = Object.keys(topo.objects)[0];
+const feats = topojson.feature(topo, topo.objects[objName]).features;
+// outer mesh for crisp borders
+const mesh = topojson.mesh(topo, topo.objects[objName], (a,b)=>a!==b);
+const outer = topojson.mesh(topo, topo.objects[objName], (a,b)=>a===b);
+
+// Manual conic-conformal fit to a European window that reaches the Caucasus
+// (Georgia, Armenia, Azerbaijan) in the south-east as well as the Nordic north.
+// Centre is dropped to 53.5N and pushed east to 5E, with lower standard parallels,
+// so every one of the 32 EVS countries — including the Caucasus trio the story
+// names — sits comfortably inside the frame. Scale is keyed to width; the
+// projection is hard-clipped to the frame so Russia's Asian extent is hidden.
+function makeProjection(width, height){
+  return d3.geoConicConformal()
+    .rotate([-15, 0])
+    .parallels([41, 60])
+    .center([5, 53.5])
+    .scale(width * (900/1080) * 1.02)
+    .translate([width*0.40, height*0.50])
+    .clipExtent([[0,0],[width,height]]);
+}
+
+/* ============ HERO CHOROPLETH ============ */
+(function(){
+  const measure = "satis_your_life";
+  const W=1080, H=700;
+  const svg = d3.select("#map-hero").append("svg")
+    .attr("viewBox",`0 0 ${W} ${H}`).attr("width","100%")
+    .attr("role","img")
+    .attr("aria-label","Choropleth map of Europe shading each country by mean life satisfaction in the 2017 European Values Study. Switzerland and the Nordic countries are darkest; Ukraine, Bulgaria, Russia and the Caucasus are palest.");
+  svg.append("desc").text("Mean life satisfaction, 1 to 10, by country, EVS 2017 wave. Highest: Switzerland 8.0. Lowest: Ukraine 6.2. Western Europe averages 7.7, post-communist Europe 7.0.");
+  const proj = makeProjection(W,H);
+  const path = d3.geoPath(proj);
+  const color = colorScale(measure);
+
+  // soft sea/graticule backdrop
+  const defs = svg.append("defs");
+  const grad = defs.append("radialGradient").attr("id","seaglow").attr("cx","40%").attr("cy","32%").attr("r","82%");
+  grad.append("stop").attr("offset","0%").attr("stop-color","#f1ede4");
+  grad.append("stop").attr("offset","100%").attr("stop-color","#e4dccc");
+  // drop-shadow so the landmass reads as a figure floating on the sea
+  const ds = defs.append("filter").attr("id","landshadow").attr("x","-8%").attr("y","-8%").attr("width","116%").attr("height","116%");
+  ds.append("feDropShadow").attr("dx",0).attr("dy",2.4).attr("stdDeviation",4.5)
+    .attr("flood-color","#3a3326").attr("flood-opacity",0.34);
+  svg.append("rect").attr("x",0).attr("y",0).attr("width",W).attr("height",H).attr("fill","url(#seaglow)").attr("rx",10);
+  const grat = d3.geoGraticule().step([10,10]);
+  svg.append("path").datum(grat).attr("d",path).attr("fill","none").attr("stroke","rgba(26,24,19,.05)").attr("stroke-width",.7);
+
+  // a single silhouette of all land, shadowed, sitting under the choropleth so
+  // the continent lifts off the water as one figure (avoids per-country halos)
+  svg.append("path").datum({type:"FeatureCollection",features:feats}).attr("d",path)
+    .attr("fill","#efe9dd").attr("stroke","none").attr("filter","url(#landshadow)").attr("pointer-events","none");
+
+  const g = svg.append("g");
+  g.selectAll("path.country").data(feats).join("path")
+    .attr("class","country-mark")
+    .attr("d",path)
+    .attr("tabindex", f => byTopo.has(f.id)?0:null)
+    .attr("role", f => byTopo.has(f.id)?"img":null)
+    .attr("aria-label", f => { const d=byTopo.get(f.id); return d?`${d.country}: life satisfaction ${fmt(d.satis_your_life,measure)} of 10`:null; })
+    .attr("fill", f => { const d=byTopo.get(f.id); return d? color(d[measure]) : "var(--missing)"; })
+    .attr("stroke", f => byTopo.has(f.id)?"rgba(255,255,255,.7)":"rgba(26,24,19,.1)")
+    .on("mousemove", function(ev,f){ const d=byTopo.get(f.id); if(!d) return;
+      d3.select(this).raise().attr("stroke","var(--ink)").attr("stroke-width",1.6);
+      showTip(countryTip(d), ev); })
+    .on("mouseleave", function(){ d3.select(this).attr("stroke","rgba(255,255,255,.7)").attr("stroke-width",.5); hideTip(); })
+    .on("focus", function(ev,f){ const d=byTopo.get(f.id); if(!d) return;
+      const bb=this.getBoundingClientRect();
+      showTip(countryTip(d), {clientX:bb.x+bb.width/2, clientY:bb.y+bb.height/2}); })
+    .on("blur", hideTip);
+
+  // internal + outer borders for crispness
+  svg.append("path").datum(mesh).attr("d",path).attr("fill","none").attr("stroke","rgba(255,255,255,.5)").attr("stroke-width",.5).attr("pointer-events","none");
+  svg.append("path").datum(outer).attr("d",path).attr("fill","none").attr("stroke","rgba(26,24,19,.32)").attr("stroke-width",.8).attr("pointer-events","none");
+
+  // Labels for the anchors the prose names. Crowded Alpine/Balkan countries get
+  // a leader line out to clear water so their names don't collide; "in" labels
+  // sit on the country itself. dir = hi (dark fill, white text) / lo (pale fill,
+  // dark text). dx,dy push the label box; when offset, a leader dot+line is drawn.
+  const labelSet = [
+    {name:"Norway",            dir:"hi", mode:"in",   dx:0,    dy:0},
+    {name:"Switzerland",       dir:"hi", mode:"lead", dx:-104, dy:8,   anchor:"end"},
+    {name:"Slovenia",          dir:"hi", mode:"lead", dx:-70,  dy:48,  anchor:"end"},
+    {name:"Bosnia Herzegovina",dir:"hi", mode:"lead", dx:-44,  dy:80,  anchor:"end"},
+    {name:"Montenegro",        dir:"hi", mode:"lead", dx:54,   dy:46,  anchor:"start"},
+    {name:"Russia",            dir:"lo", mode:"in",   dx:0,    dy:0},
+    {name:"Ukraine",           dir:"lo", mode:"in",   dx:0,    dy:0},
+    {name:"Bulgaria",          dir:"lo", mode:"in",   dx:0,    dy:0},
+    {name:"Georgia",           dir:"lo", mode:"lead", dx:18,   dy:-30, anchor:"start"},
+    {name:"Armenia",           dir:"lo", mode:"lead", dx:30,   dy:6,   anchor:"start"},
+    {name:"Azerbaijan",        dir:"lo", mode:"lead", dx:34,   dy:30,  anchor:"start"},
+  ];
+  const lg = svg.append("g").attr("pointer-events","none");
+  labelSet.forEach(({name,dir,mode,dx,dy,anchor})=>{
+    const f = feats.find(ff=>byTopo.get(ff.id)?.country===name); if(!f) return;
+    const d = byName.get(name);
+    const c = path.centroid(f);
+    if(!c[0]) return;
+    const lx = c[0]+dx, ly = c[1]+dy;
+    const ta = anchor || "middle";
+    if(mode==="lead"){
+      // anchor dot on the country + a thin leader line to the label
+      lg.append("line").attr("x1",c[0]).attr("y1",c[1]).attr("x2",lx).attr("y2",ly-4)
+        .attr("stroke","rgba(26,24,19,.5)").attr("stroke-width",.9);
+      lg.append("circle").attr("cx",c[0]).attr("cy",c[1]).attr("r",2.1)
+        .attr("fill","#2a2418").attr("stroke","#fff").attr("stroke-width",.8);
+    }
+    // label colours: leader labels always sit on the cream sea, so dark ink;
+    // "in" labels sit on the fill, so hi=white / lo=dark with a paper halo.
+    const onSea = mode==="lead";
+    const fill = onSea ? (dir==="hi" ? "#1d4d77" : "#7a2f15") : (dir==="hi" ? "#fff" : "#5b2b18");
+    const halo = onSea ? "rgba(244,241,234,.92)" : (dir==="hi" ? "rgba(26,24,19,.45)" : "rgba(252,250,244,.85)");
+    lg.append("text").attr("x",lx).attr("y",ly).attr("text-anchor",ta)
+      .attr("font-family","var(--sans)").attr("font-size",12.5).attr("font-weight",700)
+      .attr("fill",fill).attr("paint-order","stroke").attr("stroke",halo).attr("stroke-width",2.8)
+      .text(d.country.replace("Bosnia Herzegovina","Bosnia").replace("North Macedonia","N. Macedonia"));
+    lg.append("text").attr("x",lx).attr("y",ly+14).attr("text-anchor",ta)
+      .attr("font-family","var(--sans)").attr("font-size",11).attr("font-weight",700)
+      .attr("fill",fill).attr("paint-order","stroke").attr("stroke",halo).attr("stroke-width",2.6)
+      .text(fmt(d[measure],measure));
+  });
+
+  // Single titled key, set in the open Atlantic to the lower-left so it never
+  // overlaps the Caucasus cluster in the south-east. Title, gradient ramp and
+  // the missing-data swatch are aligned into one block on a soft card.
+  const lw=232, lh=11;
+  const padX=14, padY=12, cardW=lw+padX*2, cardH=86;
+  const lx=24, ly=H-cardH-22;
+  const ext = d3.extent(DATA.countries.map(d=>d[measure]));
+  const lgrad = defs.append("linearGradient").attr("id","herolegend");
+  d3.range(0,1.0001,.1).forEach(t=> lgrad.append("stop").attr("offset",`${t*100}%`).attr("stop-color", color(ext[0]+(ext[1]-ext[0])*t)));
+  const leg = svg.append("g").attr("transform",`translate(${lx},${ly})`);
+  leg.append("rect").attr("x",-2).attr("y",-2).attr("width",cardW).attr("height",cardH).attr("rx",9)
+    .attr("fill","rgba(252,250,244,.84)").attr("stroke","rgba(26,24,19,.12)");
+  const k = leg.append("g").attr("transform",`translate(${padX},${padY})`);
+  k.append("text").attr("x",0).attr("y",2).attr("class","smcap").attr("font-weight",700).attr("font-size",12).attr("fill","var(--ink-dim)").text("Mean life satisfaction (1–10)");
+  k.append("rect").attr("y",10).attr("width",lw).attr("height",lh).attr("rx",3).attr("fill","url(#herolegend)").attr("stroke","rgba(26,24,19,.18)");
+  const ls = d3.scaleLinear().domain(ext).range([0,lw]);
+  k.append("g").attr("transform",`translate(0,${10+lh})`).call(d3.axisBottom(ls).ticks(4).tickSize(4).tickFormat(d3.format(".1f")))
+    .call(g=>g.select(".domain").remove())
+    .call(g=>g.selectAll("text").attr("class","axlab").attr("font-size",10.5))
+    .call(g=>g.selectAll("line").attr("stroke","var(--ink-faint)"));
+  // missing swatch, aligned into the same key
+  k.append("rect").attr("x",0).attr("y",54).attr("width",12).attr("height",12).attr("rx",3).attr("fill","var(--missing)").attr("stroke","rgba(26,24,19,.18)");
+  k.append("text").attr("x",18).attr("y",64).attr("class","axlab").attr("font-size",11).text("not in the EVS sample");
+
+  document.getElementById("legend-hero").innerHTML =
+    `<span class="li"><span class="pill pill-eval">evaluative</span></span>`+
+    `<span class="li" style="margin-left:auto;color:var(--ink-faint)">EVS 2017 wave · within-country weighted · each country counted once</span>`;
+  document.getElementById("cap-hero").innerHTML =
+    `Highest: Switzerland (${fmt(byName.get("Switzerland").satis_your_life,measure)}); lowest: Ukraine (${fmt(byName.get("Ukraine").satis_your_life,measure)}). `+
+    `Western European countries average ${DATA.headline.west_mean_satis.toFixed(2)}, post-communist ${DATA.headline.pc_mean_satis.toFixed(2)} — a gap of ${DATA.headline.east_west_gap.toFixed(2)}. `+
+    `European Values Study 2017 wave; mean of within-country weighted means, each country counted once. Construct: evaluative life satisfaction.`;
+})();
+
+/* ============ RANKED LOLLIPOP ============ */
+(function(){
+  const rows = DATA.countries.slice().sort((a,b)=> b.satis_your_life - a.satis_your_life);
+  const W=1080, rowH=24, M={t:14,r:54,b:44,l:158};
+  const H = M.t + M.b + rows.length*rowH;
+  const svg = d3.select("#chart-rank").append("svg")
+    .attr("viewBox",`0 0 ${W} ${H}`).attr("width","100%")
+    .attr("role","img")
+    .attr("aria-label","Horizontal ranking of 32 European countries by mean life satisfaction, colored by post-communist or Western status, with the European average marked.");
+  const iw=W-M.l-M.r, ih=rows.length*rowH;
+  const g=svg.append("g").attr("transform",`translate(${M.l},${M.t})`);
+  const x=d3.scaleLinear().domain([5.8,8.2]).range([0,iw]);
+  const y=d3.scalePoint().domain(rows.map(d=>d.country)).range([rowH/2, ih-rowH/2]);
+
+  // gridlines
+  g.append("g").selectAll("line").data(x.ticks(6)).join("line")
+    .attr("x1",d=>x(d)).attr("x2",d=>x(d)).attr("y1",-2).attr("y2",ih).attr("stroke","var(--hair-soft)");
+  g.append("g").selectAll("text").data(x.ticks(6)).join("text").attr("class","axlab")
+    .attr("x",d=>x(d)).attr("y",ih+18).attr("text-anchor","middle").text(d=>d.toFixed(1));
+  g.append("text").attr("class","smcap").attr("x",iw/2).attr("y",ih+36).attr("text-anchor","middle").text("mean life satisfaction (1–10) →");
+
+  // European average line
+  const avg = DATA.headline.europe_mean_satis;
+  g.append("line").attr("x1",x(avg)).attr("x2",x(avg)).attr("y1",-4).attr("y2",ih+2)
+    .attr("stroke","var(--ink-faint)").attr("stroke-dasharray","4 4").attr("stroke-width",1.3);
+  g.append("text").attr("class","smcap").attr("x",x(avg)).attr("y",-6).attr("text-anchor","middle").attr("font-weight",700).attr("fill","var(--ink-dim)").text(`Europe avg ${avg.toFixed(1)}`);
+
+  const rowg = g.selectAll("g.row").data(rows).join("g").attr("class","row").attr("transform",d=>`translate(0,${y(d.country)})`)
+    .style("cursor","pointer")
+    .on("mousemove",function(ev,d){ d3.select(this).select("circle").attr("r",7); showTip(countryTip(d),ev); })
+    .on("mouseleave",function(){ d3.select(this).select("circle").attr("r",5.5); hideTip(); });
+  rowg.append("line").attr("x1",0).attr("x2",d=>x(d.satis_your_life)).attr("y1",0).attr("y2",0)
+    .attr("stroke",d=>d.post_communist?PC:WEST).attr("stroke-width",2).attr("opacity",.5);
+  rowg.append("circle").attr("cx",d=>x(d.satis_your_life)).attr("cy",0).attr("r",5.5)
+    .attr("fill",d=>d.post_communist?PC:WEST).attr("stroke","var(--panel)").attr("stroke-width",1.2);
+  rowg.append("text").attr("x",-12).attr("y",4).attr("text-anchor","end").attr("class","axlab")
+    .attr("fill","var(--ink-dim)").attr("font-size",12.5)
+    .text(d=>d.country.replace("Bosnia Herzegovina","Bosnia & Herz.").replace("North Macedonia","N. Macedonia"));
+  rowg.append("text").attr("x",d=>x(d.satis_your_life)+11).attr("y",4).attr("class","axlab")
+    .attr("fill","var(--ink-dim)").attr("font-size",12).attr("font-weight",700).attr("font-variant-numeric","tabular-nums")
+    .text(d=>d.satis_your_life.toFixed(1));
+
+  document.getElementById("cap-rank").innerHTML =
+    `${rows.length} countries, 2017 wave. Of the bottom ten, all but Italy are post-communist; of the top ten, three (Bosnia, Slovenia, Poland) are. `+
+    `European average ${avg.toFixed(2)}, each country counted once. Within-country weighted. Construct: evaluative.`;
+})();
+
+/* ============ SMALL-MULTIPLE CHOROPLETHS ============ */
+(function(){
+  const measures = ["satis_your_life","how_much_freedom_of_choice_and_control","health","happy"];
+  const W=1080, cols=2, gap=24, panelW=(W-gap)/cols, panelH=panelW*0.72, labelH=34;
+  const rows=2, H=rows*(panelH+labelH)+gap;
+  const svg = d3.select("#map-small").append("svg")
+    .attr("viewBox",`0 0 ${W} ${H}`).attr("width","100%")
+    .attr("role","img")
+    .attr("aria-label","Four small choropleth maps of Europe, one each for life satisfaction, perceived freedom, self-rated health and happiness, each shaded on its own scale across the 32 EVS countries.");
+  svg.append("desc").text("Small multiples: life satisfaction and health peak in the Nordic-Alpine west; perceived freedom peaks partly in the Balkans (Finland, Bosnia, Romania, Montenegro); happiness peaks in Norway, the UK and Sweden.");
+
+  measures.forEach((measure,i)=>{
+    const cx = (i%cols)*(panelW+gap);
+    const cy = Math.floor(i/cols)*(panelH+labelH);
+    const meta = MEASURES[measure];
+    const color = colorScale(measure);
+    const proj = makeProjection(panelW, panelH);
+    const path=d3.geoPath(proj);
+    const pg = svg.append("g").attr("transform",`translate(${cx},${cy+labelH})`);
+    // title
+    svg.append("text").attr("x",cx+2).attr("y",cy+15).attr("font-family","var(--sans)").attr("font-size",15).attr("font-weight",700).attr("fill","var(--ink)").text(meta.label);
+    svg.append("text").attr("x",cx+2).attr("y",cy+30).attr("font-family","var(--sans)").attr("font-size",11.5).attr("fill","var(--ink-faint)").text(`${meta.scaleHint} · ${meta.construct}`);
+    pg.append("rect").attr("width",panelW).attr("height",panelH).attr("rx",8).attr("fill","var(--panel-2)");
+    pg.append("path").datum({type:"FeatureCollection",features:feats}).attr("d",path).attr("fill","none");
+    pg.selectAll("path.cm").data(feats).join("path").attr("class","cm")
+      .attr("d",path)
+      .attr("fill",f=>{const d=byTopo.get(f.id); return d?color(d[measure]):"var(--missing)";})
+      .attr("stroke","rgba(255,255,255,.6)").attr("stroke-width",.4)
+      .style("cursor",f=>byTopo.has(f.id)?"pointer":"default")
+      .on("mousemove",function(ev,f){const d=byTopo.get(f.id); if(!d)return;
+        d3.select(this).attr("stroke","var(--ink)").attr("stroke-width",1.2).raise();
+        showTip(`<div class="tname">${d.country}</div>`+
+          `<div class="row"><span class="muted">${meta.label}</span><b>${fmt(d[measure],measure)}</b></div>`+
+          `<div class="row" style="opacity:.8"><span class="muted">rank</span><b>#${d["rank_"+measure]} of 32</b></div>`+
+          countryTip(d).split('</div>').slice(1).join('</div>'), ev);})
+      .on("mouseleave",function(){d3.select(this).attr("stroke","rgba(255,255,255,.6)").attr("stroke-width",.4); hideTip();});
+    pg.append("path").datum(outer).attr("d",path).attr("fill","none").attr("stroke","rgba(26,24,19,.28)").attr("stroke-width",.7).attr("pointer-events","none");
+
+    // mini legend strip
+    const ext=d3.extent(DATA.countries.map(d=>d[measure]));
+    const lgw=84,lgh=8,lgx=panelW-lgw-8,lgy=panelH-20;
+    const gid="sg"+i;
+    const lgrad=svg.append("defs").append("linearGradient").attr("id",gid);
+    d3.range(0,1.001,.1).forEach(t=>lgrad.append("stop").attr("offset",`${t*100}%`).attr("stop-color",color(ext[0]+(ext[1]-ext[0])*t)));
+    pg.append("rect").attr("x",lgx).attr("y",lgy).attr("width",lgw).attr("height",lgh).attr("rx",2).attr("fill",`url(#${gid})`).attr("stroke","rgba(26,24,19,.18)");
+    pg.append("text").attr("x",lgx).attr("y",lgy-3).attr("font-family","var(--sans)").attr("font-size",9.5).attr("fill","var(--ink-faint)").text(ext[0].toFixed(meta.scaleHint==="1–5"?1:1));
+    pg.append("text").attr("x",lgx+lgw).attr("y",lgy-3).attr("text-anchor","end").attr("font-family","var(--sans)").attr("font-size",9.5).attr("fill","var(--ink-faint)").text(ext[1].toFixed(1));
+  });
+  document.getElementById("cap-small").innerHTML =
+    `Each panel is scaled independently across the 32 countries, so darkest always marks that measure's leader. `+
+    `Life satisfaction and health share a Nordic-Alpine peak; perceived freedom lifts several Balkan and post-communist countries; happiness rewards Norway, the UK and Sweden. EVS 2017 wave, within-country weighted, each country counted once.`;
+})();
+
+/* ============ RANK-DIVERGENCE SLOPE ============ */
+(function(){
+  const rows = DATA.countries.map(d=>({
+    country:d.country, post:d.post_communist,
+    rS:d.rank_satis_your_life, rH:d.rank_happy,
+    s:d.satis_your_life, h:d.happy, div:d.rank_happy-d.rank_satis_your_life
+  }));
+  // highlight largest divergences both ways
+  const sorted = rows.slice().sort((a,b)=>a.div-b.div);
+  const hiHappy = sorted.slice(0,4).map(d=>d.country);   // happier than satisfaction rank (negative div)
+  const loHappy = sorted.slice(-4).map(d=>d.country);    // less happy than satisfaction (positive div)
+  const highlight = new Set([...hiHappy, ...loHappy, "Romania","Belarus","France"]);
+
+  const W=1080, H=620, M={t:40,r:150,b:30,l:150};
+  const iw=W-M.l-M.r, ih=H-M.t-M.b;
+  const svg=d3.select("#chart-slope").append("svg")
+    .attr("viewBox",`0 0 ${W} ${H}`).attr("width","100%")
+    .attr("role","img")
+    .attr("aria-label","Slope chart connecting each country's life-satisfaction rank to its happiness rank. Romania and Albania fall sharply (satisfied but not happy); Belarus, France and Georgia rise (happier than satisfied).");
+  const g=svg.append("g").attr("transform",`translate(${M.l},${M.t})`);
+  const y=d3.scaleLinear().domain([1,32]).range([0,ih]);
+  const xL=0, xR=iw;
+
+  // axis headers
+  g.append("text").attr("x",xL).attr("y",-18).attr("text-anchor","middle").attr("font-family","var(--sans)").attr("font-size",13.5).attr("font-weight",700).attr("fill","var(--ink)").text("Life-satisfaction rank");
+  g.append("text").attr("x",xR).attr("y",-18).attr("text-anchor","middle").attr("font-family","var(--sans)").attr("font-size",13.5).attr("font-weight",700).attr("fill","var(--ink)").text("Happiness rank");
+  g.append("text").attr("x",xL).attr("y",-2).attr("text-anchor","middle").attr("class","smcap").text("← most satisfied at top");
+  g.append("text").attr("x",xR).attr("y",-2).attr("text-anchor","middle").attr("class","smcap").text("happiest at top →");
+
+  rows.forEach(d=>{
+    const on = highlight.has(d.country);
+    const col = d.post?PC:WEST;
+    g.append("line").attr("x1",xL).attr("y1",y(d.rS)).attr("x2",xR).attr("y2",y(d.rH))
+      .attr("stroke",col).attr("stroke-width",on?2.4:1).attr("opacity",on?.9:.18);
+    g.append("circle").attr("cx",xL).attr("cy",y(d.rS)).attr("r",on?3.6:2.4).attr("fill",col).attr("opacity",on?1:.4);
+    g.append("circle").attr("cx",xR).attr("cy",y(d.rH)).attr("r",on?3.6:2.4).attr("fill",col).attr("opacity",on?1:.4);
+    if(on){
+      g.append("text").attr("x",xL-10).attr("y",y(d.rS)+4).attr("text-anchor","end").attr("font-family","var(--sans)").attr("font-size",12).attr("font-weight",d.country==="Romania"||d.country==="Belarus"||d.country==="France"?700:600).attr("fill","var(--ink-dim)")
+        .text(`${d.country.replace("Bosnia Herzegovina","Bosnia").replace("North Macedonia","N. Macedonia")} ${d.rS}`);
+      g.append("text").attr("x",xR+10).attr("y",y(d.rH)+4).attr("font-family","var(--sans)").attr("font-size",12).attr("font-weight",d.country==="Romania"||d.country==="Belarus"||d.country==="France"?700:600).attr("fill","var(--ink-dim)")
+        .text(`${d.rH} ${d.country.replace("Bosnia Herzegovina","Bosnia").replace("North Macedonia","N. Macedonia")}`);
+    }
+  });
+  // interactive overlay for all
+  rows.forEach(d=>{
+    g.append("line").attr("x1",xL).attr("y1",y(d.rS)).attr("x2",xR).attr("y2",y(d.rH))
+      .attr("stroke","transparent").attr("stroke-width",10).style("cursor","pointer")
+      .on("mousemove",ev=>{const cd=byName.get(d.country);
+        showTip(`<div class="tname">${d.country} ${d.post?'<span class="tag tag-pc">Post-communist</span>':'<span class="tag tag-w">Western</span>'}</div>`+
+          `<div class="row"><span class="muted">Satisfaction</span><b>${d.s.toFixed(1)} · #${d.rS}</b></div>`+
+          `<div class="row"><span class="muted">Happiness</span><b>${d.h.toFixed(2)} · #${d.rH}</b></div>`+
+          `<div class="row" style="margin-top:4px"><span class="muted">Rank shift</span><b>${d.div>0?'+':''}${d.div} toward happiness</b></div>`, ev);})
+      .on("mouseleave",hideTip);
+  });
+
+  document.getElementById("cap-slope").innerHTML =
+    `Countries whose line slopes down are less happy than their life-satisfaction rank predicts (Romania falls from #${byName.get("Romania").rank_satis_your_life} to #${byName.get("Romania").rank_happy}); those that slope up are happier than predicted (Belarus rises from #${byName.get("Belarus").rank_satis_your_life} to #${byName.get("Belarus").rank_happy}). `+
+    `EVS 2017 wave; satisfaction 1–10, happiness 1–4; both within-country weighted. Construct: both evaluative.`;
+})();
+</script>
+</body>
+</html>

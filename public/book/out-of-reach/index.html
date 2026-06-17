@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Out of Reach — When the American Dream Stopped Feeling Possible</title>
+<style>
+  :root{
+    --bg:#f6f4ef;
+    --bg-deep:#ece8df;
+    --panel:#fcfbf7;
+    --ink:#191815;
+    --ink-dim:#514d45;
+    --ink-faint:#8d877b;
+    --hair:rgba(25,24,21,.14);
+    --hair-soft:rgba(25,24,21,.08);
+    --good:#1f5c7a;
+    --good-soft:rgba(31,92,122,.14);
+    --good-deep:#143f55;
+    --par:#b5793a;
+    --par-soft:rgba(181,121,58,.16);
+    --par-deep:#7e5021;
+    --kid:#8a8f95;
+    --kid-deep:#5d6166;
+    --chetty:#7a2f4e;
+    --chetty-soft:rgba(122,47,78,.13);
+    --accent:#a8442a;
+    --rule:#b3aa97;
+    --serif:'Hoefler Text','Iowan Old Style',Georgia,'Times New Roman',serif;
+    --sans:'Avenir Next',system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+    --mono:'SFMono-Regular',ui-monospace,'Cascadia Mono',Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:var(--serif); font-size:18.5px; line-height:1.64;
+    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+  }
+  a{color:var(--good-deep); text-decoration:none; border-bottom:1px solid rgba(20,63,85,.4)}
+  a:hover,a:focus-visible{color:var(--accent); border-bottom-color:var(--accent)}
+  a:focus-visible,button:focus-visible,select:focus-visible{outline:2.5px solid var(--accent); outline-offset:2px; border-radius:3px}
+  .wrap{max-width:716px; margin:0 auto; padding:0 22px}
+  .wide{max-width:1040px; margin:0 auto; padding:0 22px}
+  header{padding:74px 0 22px}
+  .kicker{font-family:var(--sans); font-size:12px; letter-spacing:.28em; text-transform:uppercase; color:var(--accent); margin:0 0 20px; font-weight:600}
+  h1{font-size:clamp(34px,6vw,60px); line-height:1.02; margin:0 0 22px; font-weight:700; letter-spacing:-.02em}
+  .dek{font-size:clamp(18px,2.5vw,23px); font-style:italic; color:var(--ink-dim); max-width:650px; margin:0 0 26px; line-height:1.46}
+  .byline{font-family:var(--sans); font-size:13px; color:var(--ink-faint); letter-spacing:.04em}
+  .byline b{color:var(--ink-dim); font-weight:600}
+  main p{margin:0 0 1.34em}
+  main{padding-bottom:10px}
+  h2{font-size:clamp(24px,3.5vw,34px); line-height:1.13; margin:2.0em 0 .5em; letter-spacing:-.013em; font-weight:700}
+  .lead{font-size:clamp(19px,2.4vw,22px); line-height:1.5; color:var(--ink)}
+  .drop::first-letter{
+    float:left; font-size:3.55em; line-height:.8; padding:9px 11px 0 0; color:var(--accent);
+    font-weight:700; font-family:var(--serif);
+  }
+  strong{font-weight:700}
+  .good-t{color:var(--good-deep); font-weight:700}
+  .par-t{color:var(--par-deep); font-weight:700}
+  .kid-t{color:var(--kid-deep); font-weight:700}
+  .chetty-t{color:var(--chetty); font-weight:700}
+  .figwrap{margin:42px auto 16px}
+  figure{margin:0; background:var(--panel); border:1px solid var(--hair); border-radius:14px; padding:24px 22px 16px; box-shadow:0 1px 0 rgba(25,24,21,.04)}
+  figure h4{font-family:var(--sans); font-size:18.5px; margin:0 0 5px; font-weight:700; color:var(--ink); letter-spacing:-.01em}
+  figure .sub{font-family:var(--sans); font-size:13.5px; color:var(--ink-dim); margin:0 0 14px; line-height:1.5}
+  figcaption{font-family:var(--sans); font-size:12.5px; color:var(--ink-faint); line-height:1.55; margin-top:12px; border-top:1px solid var(--hair-soft); padding-top:11px}
+  svg{width:100%; height:auto; display:block; overflow:visible}
+  text{font-family:var(--sans)}
+  .controls{display:flex; flex-wrap:wrap; gap:10px 16px; align-items:center; margin:2px 0 16px; font-family:var(--sans)}
+  .seg{display:inline-flex; border:1px solid var(--hair); border-radius:9px; overflow:hidden; background:var(--bg-deep)}
+  .seg button{font-family:var(--sans); font-size:13px; padding:7px 13px; border:0; background:transparent; color:var(--ink-dim); cursor:pointer; font-weight:500}
+  .seg button[aria-pressed="true"]{background:var(--ink); color:var(--panel)}
+  .seg button:hover:not([aria-pressed="true"]){background:rgba(25,24,21,.07); color:var(--ink)}
+  .ctl-label{font-size:11.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-faint); font-weight:600}
+  .legend{display:flex; flex-wrap:wrap; gap:7px 16px; font-family:var(--sans); font-size:12.5px; color:var(--ink-dim); margin:0 0 8px}
+  .legend span.li{display:inline-flex; align-items:center; gap:7px}
+  .line-swatch{width:20px; height:0; border-top-width:3px; border-top-style:solid; display:inline-block}
+  .dash-swatch{width:20px; height:0; border-top:2.5px dashed var(--chetty); display:inline-block}
+  .tip{position:absolute; pointer-events:none; opacity:0; background:var(--ink); color:var(--panel);
+    font-family:var(--sans); font-size:12.5px; line-height:1.5; padding:10px 12px; border-radius:8px;
+    max-width:260px; z-index:30; transition:opacity .08s; box-shadow:0 6px 22px rgba(25,24,21,.32)}
+  .tip b{color:#fff; font-weight:700}
+  .tip .row{display:flex; justify-content:space-between; gap:14px; font-variant-numeric:tabular-nums}
+  .tip .muted{color:#bdb6a9}
+  .tip hr{border:0; border-top:1px solid rgba(255,255,255,.18); margin:6px 0}
+  .smcap{font-family:var(--sans); font-size:11px; letter-spacing:.04em; fill:var(--ink-faint)}
+  .axlab{font-family:var(--sans); font-size:12px; fill:var(--ink-faint)}
+  .note{font-family:var(--sans); font-size:14px; line-height:1.5; color:var(--ink-dim); background:var(--bg-deep);
+    border-left:3px solid var(--rule); border-radius:0 8px 8px 0; padding:14px 16px; margin:26px 0}
+  .twocol{display:grid; grid-template-columns:1fr; gap:18px}
+  @media(min-width:760px){.twocol{grid-template-columns:1fr 1fr}}
+  table.fallback{border-collapse:collapse; width:100%; font-family:var(--sans); font-size:12.5px; margin-top:8px}
+  table.fallback caption{text-align:left; color:var(--ink-faint); font-size:12px; margin-bottom:6px}
+  table.fallback th,table.fallback td{border:1px solid var(--hair-soft); padding:4px 8px; text-align:right}
+  table.fallback th:first-child,table.fallback td:first-child{text-align:left}
+  .visually-hidden{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
+  footer{font-family:var(--sans); font-size:13.5px; color:var(--ink-dim); line-height:1.62; padding:30px 0 80px}
+  footer h2{font-family:var(--sans); font-size:15px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint); margin:0 0 14px; font-weight:700}
+  footer p{margin:0 0 1em; max-width:720px}
+  footer a{color:var(--good-deep)}
+  hr.sep{border:0; border-top:1px solid var(--hair); max-width:1040px; margin:46px auto 0}
+  .pill{font-family:var(--sans); font-size:11px; letter-spacing:.08em; text-transform:uppercase; font-weight:600;
+    padding:2px 8px; border-radius:20px; display:inline-block; vertical-align:middle}
+  .pill-eud{background:var(--good-soft); color:var(--good-deep)}
+  .pill-eval{background:var(--par-soft); color:var(--par-deep)}
+  @media (prefers-reduced-motion: reduce){*{transition:none!important; animation:none!important}}
+</style>
+</head>
+<body>
+<header class="wrap">
+  <p class="kicker">The American Dream · A subjective ledger</p>
+  <h1>Out of Reach</h1>
+  <p class="dek">The belief that the system gives you a fair shot has quietly collapsed — and it is worth real happiness.</p>
+  <p class="byline">By the numbers · <b>General Social Survey, 1987–2024</b> · weighted (<span style="font-family:var(--mono)">wtssps</span>)</p>
+</header>
+
+<main>
+<div class="wrap">
+  <p class="lead drop">The argument over American mobility is usually settled with tax records. Raj Chetty and his colleagues gave us the canonical number: a child born in 1940 had about a 92 percent chance of out-earning their parents; a child born in 1984 had roughly a coin-flip. That is the objective story, and it is grim. But there is a subjective shadow to it that almost no one tracks — what Americans <em>believe</em> about their own chances — and in the General Social Survey that belief has been falling just as steadily.</p>
+
+  <p>The clearest sign sits in a single question the GSS has asked since 1987. <span class="good-t">The way things are in America, people like me and my family have a good chance of improving our standard of living</span> — agree or disagree? In 2000, near the peak of the long boom, <strong>78 percent</strong> of Americans agreed. By 2024 it was <strong>45 percent</strong>. A belief held by more than three in four had become a minority opinion — a <strong>32-percentage-point</strong> collapse <span class="pill pill-eud">eudaimonic</span> in the sense that ordinary life is getting better.</p>
+
+  <p>That is the protagonist of this piece, and the first chart lets you put it next to its quieter siblings.</p>
+</div>
+
+<div class="figwrap wide">
+  <figure>
+    <h4>The belief that you can get ahead has come apart</h4>
+    <p class="sub">Weighted share giving the optimistic answer, by survey year. Bands are 95% bootstrap intervals. Toggle the question to see that the noisy “my kids will do better” item is the one that <em>didn’t</em> move.</p>
+    <div class="controls" role="group" aria-label="Choose belief question">
+      <span class="ctl-label">Question</span>
+      <div class="seg" id="seg-item">
+        <button data-item="goodlife" aria-pressed="true">A fair chance to get ahead</button>
+        <button data-item="parsol" aria-pressed="false">Did better than my parents</button>
+        <button data-item="kidssol" aria-pressed="false">My kids will do better</button>
+      </div>
+      <label style="display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--ink-dim);cursor:pointer">
+        <input type="checkbox" id="chk-chetty" checked> Show Chetty’s objective mobility (cohort)
+      </label>
+    </div>
+    <div id="chart-trend" style="position:relative"></div>
+    <figcaption id="cap-trend"></figcaption>
+  </figure>
+</div>
+
+<div class="wrap">
+  <p>Three questions, three fates. The headline item — <span class="good-t">a fair chance to get ahead</span> — fell furthest and most cleanly. The retrospective one — <span class="par-t">is your standard of living better than your parents’ was at your age?</span> — held up far longer, peaking at <strong>70 percent</strong> in 2004 before sliding to <strong>55 percent</strong> in 2024, a gentler <strong>16-point</strong> erosion of the cushion that lets people feel they have already climbed. And the prospective one — <span class="kid-t">will your children do better than you?</span>, the question that dominates op-eds and stump speeches — barely trends at all. It bounces between the low fifties and high sixties and lands at <strong>59 percent</strong> in 2024, almost exactly where it sat in the late 1990s.</p>
+
+  <p>That last point is worth dwelling on, because it cuts against the usual framing. The item everyone reaches for — the fate of the next generation — is the <em>least</em> informative of the three. It is noisy, it skips 2021, and it shows no durable trend. What actually moved is more personal and more systemic: people’s read on whether the country still offers them a fair shot, and their sense of how far they themselves have come.</p>
+
+  <div class="note">A caution you will see repeated on every chart: the GSS switched to a push-to-web mode in <strong>2021</strong>. Some of the drop after that year is real and some is an artifact of how the question was asked, so the post-2021 points are flagged. But the decline was well underway before the mode change — the fair-chance share had already fallen from 66 percent in 2018 toward the high fifties through the 2010s — so the mode shift sharpens the story without inventing it.</p>
+</div>
+
+<div class="wrap">
+  <h2>The subjective curve bends with the objective one</h2>
+  <p>Here is the intellectual payoff, and it is why Chetty rides along on the first chart as a separate, dashed line. His series is not a GSS time series and must never be read as one: it is indexed by a child’s <em>birth year</em>, not by survey date, and it comes from linked tax records, not from anyone’s opinion. Plotted on its own scale, though, the shape is unmistakable. The objective probability that a child out-earns their parents falls from about <strong>0.92</strong> for the 1940 cohort to roughly <strong>0.50</strong> for those born in the early 1980s. Over the same decades that those children reached adulthood, Americans’ <em>belief</em> in a fair chance bent the same way.</p>
+
+  <p>One line is built from tax returns and the other from survey answers; they share a downward slope, not an axis. That juxtaposition — felt reality tracking measured reality — is the whole point. The country did not just become less mobile. It noticed.</p>
+</div>
+
+<div class="wrap">
+  <h2>What the belief is worth</h2>
+  <p>A belief that has collapsed would matter less if it were inert. It is not. Line up the General Social Survey’s global happiness question — <span class="pill pill-eval">evaluative</span> are you <em>very happy</em>, <em>pretty happy</em>, or <em>not too happy</em>? — against where people fall on the fair-chance scale, and you get one of the cleanest gradients in the whole survey.</p>
+</div>
+
+<div class="figwrap wide">
+  <figure>
+    <h4>Believing the Dream is alive is worth about half a point of happiness</h4>
+    <p class="sub">Weighted mean happiness (1 = not too happy, 3 = very happy) by belief level. The pale lines split the same respondents into thirds of constant-dollar income — the gradient survives inside every income band.</p>
+    <div class="controls" role="group" aria-label="Choose belief question for gradient">
+      <span class="ctl-label">Belief</span>
+      <div class="seg" id="seg-grad">
+        <button data-grad="goodlife" aria-pressed="true">A fair chance to get ahead</button>
+        <button data-grad="parsol" aria-pressed="false">Did better than my parents</button>
+      </div>
+      <label style="display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--ink-dim);cursor:pointer">
+        <input type="checkbox" id="chk-terc" checked> Show within-income terciles
+      </label>
+    </div>
+    <div id="chart-grad" style="position:relative"></div>
+    <figcaption id="cap-grad"></figcaption>
+  </figure>
+</div>
+
+<div class="wrap">
+  <p>Among the people who most flatly reject the fair-chance idea, mean happiness sits at <strong>1.78</strong> on the three-point scale. Among those who most strongly affirm it, it reaches <strong>2.30</strong> — a gap of about <strong>0.53</strong> of a point, which on a scale this compressed is large. The same pattern holds for the “I did better than my parents” item, from <strong>1.76</strong> to <strong>2.25</strong>.</p>
+
+  <p>The obvious objection is that this is just income wearing a disguise: richer people are both happier and more optimistic, so the gradient might be composition, not belief. It is not, or at least not mostly. Split the sample into thirds of constant-dollar income and the slope persists inside every band — even in the bottom third, happiness climbs across the belief scale. A weighted regression makes the same point: each step up the five-point fair-chance scale is worth about <strong>0.11</strong> of a happiness point, and adjusting for log income, age, sex and a college degree trims that by only about <strong>6 percent</strong>. Income matters too, with a coefficient near <strong>0.10</strong> per log-point — but it does not explain the belief away.</p>
+</div>
+
+<div class="wrap">
+  <h2>What this does, and does not, show</h2>
+  <p>Four honest caveats, because this is association, not proof.</p>
+  <p><strong>The arrow runs both ways.</strong> Happier people may simply believe more — optimism and good mood feed each other — so nothing here says that restoring the belief would manufacture the happiness. The regression shows the link is robust to income; it cannot show which way it points.</p>
+  <p><strong>The kids item is the flat one.</strong> The single most-cited mobility question — whether your children will do better — is the least informative in this data. Reporting it honestly means resisting the temptation to fold it into the collapse; it didn’t collapse.</p>
+  <p><strong>The thresholds are choices.</strong> These are ordinal questions, and “optimistic” here means the top two of five boxes — agree or strongly agree, better or much better. The shapes are robust to the cut, but the levels depend on it.</p>
+  <p><strong>The mode change is real, and Chetty is external.</strong> Post-2021 GSS points sit partly on a different measurement footing, flagged throughout. And Chetty’s curve is cited, cohort-indexed tax data — a counterpoint, never a shared axis with the survey series.</p>
+  <p>On partisanship, a brief note and a hand-off: mobility belief did become somewhat more partisan over these decades, with the Democrat-minus-Republican gap widening in years the Democrats held the White House. That is a real pattern, but it is a sibling’s story — <a href="../whose-america-is-thriving/index.html">Whose America Is Thriving?</a> tells it in full — and it is not the spine of this one.</p>
+</div>
+
+<hr class="sep">
+<div class="wide">
+<footer>
+  <h2>Notes &amp; data</h2>
+  <p><strong>Source.</strong> General Social Survey cumulative file, 1972–2024. The three belief items are asked from 1987 (<span style="font-family:var(--mono)">goodlife</span>) and 1994 (<span style="font-family:var(--mono)">parsol</span>, <span style="font-family:var(--mono)">kidssol</span>); <span style="font-family:var(--mono)">kidssol</span> was not fielded in 2021. Every figure is weighted by <span style="font-family:var(--mono)">wtssps</span>, the GSS post-stratification weight — GSS estimates are never reported unweighted here.</p>
+  <p><strong>Definitions.</strong> Belief items are direction-fixed so that 5 is the optimistic pole. “Optimistic” means codes 4–5: <em>agree</em> or <em>strongly agree</em> for the fair-chance item, <em>better</em> or <em>much better</em> for the two standard-of-living comparisons. Happiness is the GSS <span style="font-family:var(--mono)">happy</span> item, 1 = not too happy, 2 = pretty happy, 3 = very happy. The belief items are <strong>eudaimonic</strong> — judgments about opportunity and the good life; happiness is <strong>evaluative</strong>. The two are tagged separately and never conflated.</p>
+  <p><strong>Method.</strong> Yearly shares are weighted means of the optimistic-answer indicator. Single-year cells with effective sample size below 50 are suppressed, where effective N = (Σw)² ⁄ Σw². Share intervals are 95% percentile bands from 2,000 weighted bootstrap resamples within year (fixed seed). The happiness gradient pools all years; the income split uses terciles of <span style="font-family:var(--mono)">coninc</span>, constant-dollar family income. The regression is a weighted least-squares fit of happiness on belief, with and without log income, age, sex and a college-degree indicator (statsmodels). The fair-chance question rests on 28,822 interviews. The <strong>2021–22 push-to-web mode change</strong> shifted levels and is flagged on every trend chart; treat post-2021 points as partly mode-shifted.</p>
+  <p><strong>The objective counterpoint.</strong> The dashed mobility curve is cited from Raj Chetty, David Grusky, Maximilian Hell, Nathaniel Hendren, Robert Manduca and Jimmy Narang, <a href="https://www.science.org/doi/10.1126/science.aal4617">“The fading American dream: Trends in absolute income mobility since 1940,”</a> <em>Science</em> (2017). It is the share of children earning more than their parents by the child’s birth cohort — an external, cohort-indexed series, not computed from the GSS and not a GSS time series.</p>
+  <p><strong>Further reading.</strong> On the psychology of mobility belief: Shai Davidai &amp; Thomas Gilovich on how Americans over-estimate upward mobility; Michael Kraus on perceived class mobility as a motivated, system-justifying belief; Alesina, Stantcheva &amp; Teso (<em>AER</em> 2018) on perceived mobility and redistribution; and the long-run mobility-confidence tracking from Pew Research Center and Gallup.</p>
+  <p style="color:var(--ink-faint)">Construct labels — <span class="pill pill-eud">eudaimonic</span> belief about opportunity · <span class="pill pill-eval">evaluative</span> global happiness. Association, not causation.</p>
+</footer>
+</div>
+</main>
+
+<div class="tip" id="tip" role="status" aria-live="polite"></div>
+
+<script type="module">
+import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+const DATA = {"meta":{"slug":"out-of-reach","title":"Out of Reach - When the American Dream Stopped Feeling Possible","dek":"The belief that the system gives you a fair shot has quietly collapsed - and it is worth real happiness.","dataset":"GSS 1972-2024 (cumulative)","weight":"wtssps (GSS post-stratification weight; always applied - never unweighted)","constructs":{"belief_items":"eudaimonic (a judgment about opportunity / the good life)","happy":"evaluative (global happiness, 1=not too happy .. 3=very happy)"},"mode_change":2021,"mode_note":"GSS switched to push-to-web in 2021-22; level shifts after 2021 are partly a mode artifact, flagged in-chart at every crossing","thresholds":{"goodlife":"share agreeing (codes 4-5, agree or strongly agree)","parsol":"share answering better or much better (codes 4-5)","kidssol":"share answering better or much better (codes 4-5)"},"suppression":"single-year cells with effective N<50 suppressed; effN=(sum w)^2/sum(w^2)","bootstrap":"share 95% CI from 2000 weighted bootstrap resamples within year (seed 20240614)","n_total_rows":75699,"n_items":{"goodlife":28822,"parsol":27099,"kidssol":19430},"item_labels":{"goodlife":"A fair chance to get ahead","parsol":"Did better than my parents","kidssol":"My kids will do better"},"item_q":{"goodlife":"The way things are in America, people like me and my family have a good chance of improving our standard of living","parsol":"Compared with your parents when they were your age, your standard of living now is ...","kidssol":"When your children are your age, their standard of living will be ..."},"item_first":{"goodlife":1987,"parsol":1994,"kidssol":1994},"colors":{"goodlife":"#1f5c7a","parsol":"#b5793a","kidssol":"#9aa0a6","chetty":"#7a2f4e","grad":"#1f5c7a"}},"years":[1987,1994,1996,1998,2000,2002,2004,2006,2008,2010,2012,2014,2016,2018,2021,2022,2024],"trend":{"goodlife":{"1987":{"share":0.731,"lo":0.7041,"hi":0.7572,"n":1509,"effn":1034.7},"1994":{"share":0.626,"lo":0.5984,"hi":0.6534,"n":1467,"effn":1176.0},"1996":{"share":0.647,"lo":0.6231,"hi":0.6697,"n":1895,"effn":1521.4},"1998":{"share":0.745,"lo":0.7231,"hi":0.767,"n":1880,"effn":1456.6},"2000":{"share":0.778,"lo":0.756,"hi":0.7976,"n":1877,"effn":1490.4},"2002":{"share":0.747,"lo":0.7122,"hi":0.7802,"n":909,"effn":657.8},"2004":{"share":0.687,"lo":0.6525,"hi":0.7205,"n":873,"effn":620.3},"2006":{"share":0.698,"lo":0.6749,"hi":0.7199,"n":1979,"effn":1363.6},"2008":{"share":0.598,"lo":0.5675,"hi":0.6274,"n":1355,"effn":973.4},"2010":{"share":0.587,"lo":0.555,"hi":0.6186,"n":1368,"effn":879.1},"2012":{"share":0.549,"lo":0.5161,"hi":0.5817,"n":1332,"effn":856.4},"2014":{"share":0.595,"lo":0.5684,"hi":0.622,"n":1683,"effn":1268.4},"2016":{"share":0.586,"lo":0.5589,"hi":0.6125,"n":1950,"effn":1319.9},"2018":{"share":0.656,"lo":0.6236,"hi":0.6848,"n":1553,"effn":938.2},"2021":{"share":0.469,"lo":0.4452,"hi":0.4924,"n":2664,"effn":1731.9},"2022":{"share":0.48,"lo":0.4472,"hi":0.5113,"n":2353,"effn":922.7},"2024":{"share":0.454,"lo":0.4242,"hi":0.4819,"n":2175,"effn":1103.9}},"parsol":{"1994":{"share":0.653,"lo":0.6251,"hi":0.6783,"n":1468,"effn":1177.6},"1996":{"share":0.636,"lo":0.6115,"hi":0.6612,"n":1887,"effn":1515.9},"1998":{"share":0.662,"lo":0.6365,"hi":0.6857,"n":1879,"effn":1482.0},"2000":{"share":0.683,"lo":0.6596,"hi":0.7071,"n":1856,"effn":1473.9},"2002":{"share":0.685,"lo":0.6473,"hi":0.721,"n":899,"effn":648.2},"2004":{"share":0.702,"lo":0.6669,"hi":0.7376,"n":866,"effn":614.7},"2006":{"share":0.67,"lo":0.647,"hi":0.6948,"n":1964,"effn":1352.4},"2008":{"share":0.628,"lo":0.5996,"hi":0.6575,"n":1339,"effn":960.7},"2010":{"share":0.599,"lo":0.5668,"hi":0.6298,"n":1361,"effn":875.5},"2012":{"share":0.62,"lo":0.5881,"hi":0.6506,"n":1308,"effn":841.9},"2014":{"share":0.615,"lo":0.5892,"hi":0.6417,"n":1663,"effn":1251.9},"2016":{"share":0.595,"lo":0.5679,"hi":0.6213,"n":1932,"effn":1309.7},"2018":{"share":0.628,"lo":0.5992,"hi":0.6575,"n":1536,"effn":929.7},"2021":{"share":0.577,"lo":0.5537,"hi":0.5992,"n":2653,"effn":1723.2},"2022":{"share":0.611,"lo":0.5805,"hi":0.6422,"n":2329,"effn":930.1},"2024":{"share":0.545,"lo":0.5172,"hi":0.5738,"n":2159,"effn":1098.8}},"kidssol":{"1994":{"share":0.522,"lo":0.4918,"hi":0.5517,"n":1287,"effn":1044.8},"1996":{"share":0.528,"lo":0.5026,"hi":0.5551,"n":1691,"effn":1364.2},"1998":{"share":0.636,"lo":0.6093,"hi":0.6621,"n":1622,"effn":1266.8},"2000":{"share":0.691,"lo":0.665,"hi":0.7163,"n":1578,"effn":1256.2},"2002":{"share":0.689,"lo":0.6533,"hi":0.7256,"n":790,"effn":576.6},"2004":{"share":0.604,"lo":0.5661,"hi":0.6447,"n":779,"effn":556.8},"2006":{"share":0.639,"lo":0.6115,"hi":0.6651,"n":1717,"effn":1192.6},"2008":{"share":0.596,"lo":0.5641,"hi":0.6304,"n":1184,"effn":860.1},"2010":{"share":0.609,"lo":0.5735,"hi":0.6436,"n":1205,"effn":779.4},"2012":{"share":0.568,"lo":0.5344,"hi":0.6017,"n":1155,"effn":759.5},"2014":{"share":0.58,"lo":0.5499,"hi":0.6096,"n":1482,"effn":1117.1},"2016":{"share":0.614,"lo":0.5857,"hi":0.6436,"n":1730,"effn":1167.6},"2018":{"share":0.64,"lo":0.6064,"hi":0.6751,"n":1355,"effn":813.7},"2022":{"share":0.569,"lo":0.5217,"hi":0.6202,"n":1029,"effn":398.1},"2024":{"share":0.588,"lo":0.5433,"hi":0.6347,"n":826,"effn":424.6}}},"grad":{"goodlife":{"raw":[{"level":1,"mean_happy":1.775,"effn":797.1,"n":1268},{"level":2,"mean_happy":2.0,"effn":3361.9,"n":5205},{"level":3,"mean_happy":2.077,"effn":3001.0,"n":4944},{"level":4,"mean_happy":2.186,"effn":8483.3,"n":12807},{"level":5,"mean_happy":2.302,"effn":2886.0,"n":4412}],"terciles":[{"tercile":1,"points":[{"level":1,"mean_happy":1.679,"effn":288.4,"n":478},{"level":2,"mean_happy":1.856,"effn":1099.5,"n":1677},{"level":3,"mean_happy":1.966,"effn":690.7,"n":1268},{"level":4,"mean_happy":2.04,"effn":2135.7,"n":3353},{"level":5,"mean_happy":2.097,"effn":690.7,"n":1142}]},{"tercile":2,"points":[{"level":1,"mean_happy":1.804,"effn":201.5,"n":295},{"level":2,"mean_happy":2.034,"effn":932.9,"n":1419},{"level":3,"mean_happy":2.085,"effn":856.8,"n":1326},{"level":4,"mean_happy":2.196,"effn":2549.3,"n":3649},{"level":5,"mean_happy":2.309,"effn":850.3,"n":1206}]},{"tercile":3,"points":[{"level":1,"mean_happy":1.962,"effn":112.9,"n":169},{"level":2,"mean_happy":2.136,"effn":756.5,"n":1124},{"level":3,"mean_happy":2.206,"effn":884.1,"n":1267},{"level":4,"mean_happy":2.305,"effn":2666.4,"n":3759},{"level":5,"mean_happy":2.442,"effn":1018.5,"n":1440}]}],"cuts":[23847,54202]},"parsol":{"raw":[{"level":1,"mean_happy":1.761,"effn":759.2,"n":1234},{"level":2,"mean_happy":1.906,"effn":2088.5,"n":3209},{"level":3,"mean_happy":2.129,"effn":4020.4,"n":6171},{"level":4,"mean_happy":2.141,"effn":5306.9,"n":8118},{"level":5,"mean_happy":2.25,"effn":5299.4,"n":8214}],"terciles":[{"tercile":1,"points":[{"level":1,"mean_happy":1.704,"effn":395.7,"n":626},{"level":2,"mean_happy":1.77,"effn":823.9,"n":1185},{"level":3,"mean_happy":2.018,"effn":1069.9,"n":1750},{"level":4,"mean_happy":1.991,"effn":1352.0,"n":2111},{"level":5,"mean_happy":2.109,"effn":1013.4,"n":1761}]},{"tercile":2,"points":[{"level":1,"mean_happy":1.779,"effn":178.8,"n":242},{"level":2,"mean_happy":2.007,"effn":624.6,"n":913},{"level":3,"mean_happy":2.142,"effn":1137.9,"n":1718},{"level":4,"mean_happy":2.159,"effn":1584.9,"n":2271},{"level":5,"mean_happy":2.229,"effn":1443.5,"n":2137}]},{"tercile":3,"points":[{"level":1,"mean_happy":2.138,"effn":52.1,"n":76},{"level":2,"mean_happy":2.037,"effn":370.9,"n":534},{"level":3,"mean_happy":2.243,"effn":1124.3,"n":1569},{"level":4,"mean_happy":2.256,"effn":1539.5,"n":2248},{"level":5,"mean_happy":2.364,"effn":2009.8,"n":2886}]}],"cuts":[24018,54202]}},"gradspan":{"goodlife":{"lo":1.775,"hi":2.302,"span":0.527},"parsol":{"lo":1.761,"hi":2.25,"span":0.489}},"reg":{"n":23313,"raw_coef":0.1104,"raw_se":0.0039,"adj_coef":0.1041,"adj_se":0.0039,"loginc_coef":0.1046,"attenuation_pct":5.7},"chetty":{"source":"Chetty, Grusky, Hell, Hendren, Manduca & Narang (2017), 'The fading American dream', Science 356(6336): 398-406","label":"Share of children earning more than their parents, by birth cohort (Chetty et al. 2017)","note":"EXTERNAL series, cohort-indexed by child's birth year - NOT computed from the GSS and NOT a GSS time series; shown as an annotated counterpoint on its own scale","cohort":[1940,1950,1960,1970,1980,1984],"value":[0.92,0.79,0.62,0.61,0.5,0.5]},"headline":{"goodlife_2000":0.778,"goodlife_1987":0.731,"goodlife_2018":0.656,"goodlife_2022":0.48,"goodlife_2024":0.454,"goodlife_drop_2000_2024":-32.4,"parsol_1994":0.653,"parsol_2004":0.702,"parsol_2024":0.545,"parsol_drop_2004_2024":-15.7,"kidssol_1994":0.522,"kidssol_2000":0.691,"kidssol_2024":0.588}};
+
+const C = DATA.meta.colors;
+const tip = document.getElementById("tip");
+function showTip(html, ev){
+  tip.innerHTML = html; tip.style.opacity = 1;
+  const pad = 14, w = tip.offsetWidth, h = tip.offsetHeight;
+  let x = ev.clientX + pad, y = ev.clientY + pad;
+  if (x + w > window.innerWidth - 6) x = ev.clientX - w - pad;
+  if (y + h > window.innerHeight - 6) y = ev.clientY - h - pad;
+  tip.style.left = x + "px"; tip.style.top = y + "px";
+}
+function hideTip(){ tip.style.opacity = 0; }
+
+const ITEM_LABEL = DATA.meta.item_labels;
+const ITEM_COL = {goodlife:C.good, parsol:C.par, kidssol:C.kid};
+const LINE_DEEP = {goodlife:"#143f55", parsol:"#7e5021", kidssol:"#5d6166"};
+const fmtPct = v => (v==null) ? "—" : Math.round(v*100) + "%";
+
+/* ============================ TREND CHART ============================ */
+const trendState = { item:"goodlife", chetty:true };
+const TW = 1000, TH = 470, TM = {t:24, r:128, b:54, l:48};
+const tsvg = d3.select("#chart-trend").append("svg")
+  .attr("viewBox", `0 0 ${TW} ${TH}`).attr("width","100%")
+  .attr("role","img").attr("aria-label",
+    "Line chart: the weighted share of Americans giving the optimistic answer to three mobility-belief questions, by survey year, with Raj Chetty's objective absolute-mobility curve as a separate dashed counterpoint.");
+const tInner = tsvg.append("g").attr("transform",`translate(${TM.l},${TM.t})`);
+const tiw = TW - TM.l - TM.r, tih = TH - TM.t - TM.b;
+
+const allYears = DATA.years;
+const xT = d3.scaleLinear().domain([1986, 2025]).range([0, tiw]);
+const yT = d3.scaleLinear().domain([0.4, 0.95]).range([tih, 0]);
+// Chetty secondary x: birth cohort, its own scale and band on the right
+const xCh = d3.scaleLinear().domain([1938, 1986]).range([0, tiw]);
+
+// gridlines
+tInner.append("g").attr("class","grid")
+  .selectAll("line").data(yT.ticks(6)).join("line")
+  .attr("x1",0).attr("x2",tiw).attr("y1",d=>yT(d)).attr("y2",d=>yT(d))
+  .attr("stroke","var(--hair-soft)").attr("stroke-width",1);
+
+// y axis (share)
+tInner.append("g").selectAll("text.yl").data(yT.ticks(6)).join("text")
+  .attr("class","axlab").attr("x",-10).attr("y",d=>yT(d)+4).attr("text-anchor","end")
+  .text(d=>Math.round(d*100)+"%");
+// x axis (survey year)
+const xTicks = [1990,2000,2010,2020];
+tInner.append("g").selectAll("text.xl").data(xTicks).join("text")
+  .attr("class","axlab").attr("x",d=>xT(d)).attr("y",tih+24).attr("text-anchor","middle")
+  .text(d=>d);
+tInner.append("text").attr("class","smcap").attr("x",0).attr("y",tih+44).text("GSS survey year →");
+
+// mode-change flag
+const modeX = xT(DATA.meta.mode_change);
+tInner.append("line").attr("x1",modeX).attr("x2",modeX).attr("y1",0).attr("y2",tih)
+  .attr("stroke","var(--accent)").attr("stroke-width",1).attr("stroke-dasharray","3 3").attr("opacity",.55);
+tInner.append("text").attr("class","smcap").attr("x",modeX-5).attr("y",13).attr("text-anchor","end")
+  .attr("fill","var(--accent)").text("web-mode change ’21 ▸");
+
+// chetty layer (dashed, own scale)
+const chG = tInner.append("g").attr("class","chetty-layer");
+const chLine = d3.line().x((d,i)=>xCh(DATA.chetty.cohort[i])).y(d=>yT(d));
+function drawChetty(){
+  chG.selectAll("*").remove();
+  if(!trendState.chetty) return;
+  chG.append("path").datum(DATA.chetty.value)
+    .attr("fill","none").attr("stroke",C.chetty).attr("stroke-width",2.4)
+    .attr("stroke-dasharray","7 5").attr("d",chLine).attr("opacity",.9);
+  chG.selectAll("circle.ch").data(DATA.chetty.value).join("circle").attr("class","ch")
+    .attr("cx",(d,i)=>xCh(DATA.chetty.cohort[i])).attr("cy",d=>yT(d)).attr("r",3.4)
+    .attr("fill",C.chetty)
+    .on("mousemove",(ev,d)=>{const i=DATA.chetty.value.indexOf(d);
+      showTip(`<b>Chetty (external)</b><div class="row"><span class="muted">birth cohort</span><b>${DATA.chetty.cohort[i]}</b></div><div class="row"><span class="muted">out-earned parents</span><b>${Math.round(d*100)}%</b></div>`,ev);})
+    .on("mouseleave",hideTip);
+  // inline label, placed above the steep left segment to avoid the belief curve
+  const clab = chG.append("text").attr("class","smcap").attr("fill",C.chetty)
+    .attr("x",xCh(1948)).attr("y",yT(0.86)).attr("text-anchor","start").attr("font-weight",700);
+  clab.append("tspan").attr("x",xCh(1948)).text("Chetty 2017 (objective):");
+  clab.append("tspan").attr("x",xCh(1948)).attr("dy",13).attr("font-weight",400)
+    .text("children out-earning parents, by birth cohort");
+  const cohTicks=[1940,1960,1980];
+  chG.selectAll("text.ct").data(cohTicks).join("text").attr("class","smcap")
+    .attr("fill",C.chetty).attr("x",d=>xCh(d)).attr("y",-8).attr("text-anchor","middle")
+    .text(d=>"’"+String(d).slice(2)+" cohort");
+}
+
+// compact in-chart legend (solid belief vs dashed external Chetty)
+const legG = tInner.append("g").attr("transform",`translate(${tiw-2},${tih-2})`);
+function drawLegend(){
+  legG.selectAll("*").remove();
+  const col = LINE_DEEP[trendState.item];
+  const rows = [["solid", col, "GSS belief (survey)"]];
+  if(trendState.chetty) rows.push(["dash", C.chetty, "Chetty mobility (external)"]);
+  rows.forEach((r,i)=>{
+    const y = -(rows.length-1-i)*16;
+    legG.append("line").attr("x1",-150).attr("x2",-124).attr("y1",y).attr("y2",y)
+      .attr("stroke",r[1]).attr("stroke-width",r[0]==="dash"?2.4:3)
+      .attr("stroke-dasharray",r[0]==="dash"?"7 5":null);
+    legG.append("text").attr("class","smcap").attr("x",-118).attr("y",y+4)
+      .attr("text-anchor","start").attr("fill","var(--ink-dim)").text(r[2]);
+  });
+}
+
+const beliefG = tInner.append("g").attr("class","belief-layer");
+const tLine = d3.line().x(d=>xT(d.year)).y(d=>yT(d.share)).curve(d3.curveMonotoneX);
+const tArea = d3.area().x(d=>xT(d.year)).y0(d=>yT(d.lo)).y1(d=>yT(d.hi)).curve(d3.curveMonotoneX);
+
+function trendData(item){
+  const t = DATA.trend[item];
+  return Object.keys(t).map(y=>({year:+y, ...t[y]})).filter(d=>d.share!=null).sort((a,b)=>a.year-b.year);
+}
+function drawBelief(){
+  const item = trendState.item, col = ITEM_COL[item];
+  const rows = trendData(item);
+  const lineCol = LINE_DEEP[item];
+  beliefG.selectAll("*").remove();
+  // band
+  beliefG.append("path").datum(rows.filter(d=>d.lo!=null)).attr("fill",col).attr("opacity",.16).attr("d",tArea);
+  // line (deeper stroke so the protagonist reads clearly over its own band)
+  beliefG.append("path").datum(rows).attr("fill","none").attr("stroke",lineCol).attr("stroke-width",3.4).attr("d",tLine);
+  // points
+  beliefG.selectAll("circle.pt").data(rows).join("circle").attr("class","pt")
+    .attr("cx",d=>xT(d.year)).attr("cy",d=>yT(d.share))
+    .attr("r",d=>d.year>=DATA.meta.mode_change?4.6:3.6)
+    .attr("fill",d=>d.year>=DATA.meta.mode_change?"var(--panel)":lineCol)
+    .attr("stroke",lineCol).attr("stroke-width",2)
+    .attr("tabindex",0).attr("role","button")
+    .attr("aria-label",d=>`${d.year}: ${Math.round(d.share*100)} percent, N ${d.n}`)
+    .on("mousemove",(ev,d)=>ptTip(ev,d,item,col))
+    .on("focus",function(ev,d){const r=this.getBoundingClientRect();ptTip({clientX:r.x+r.width/2,clientY:r.y},d,item,col);})
+    .on("mouseleave",hideTip).on("blur",hideTip);
+  // end label
+  const last = rows[rows.length-1];
+  beliefG.append("text").attr("class","smcap").attr("fill",lineCol)
+    .attr("x",xT(last.year)+8).attr("y",yT(last.share)+4).attr("font-weight",700)
+    .text(`${ITEM_LABEL[item]}`);
+  beliefG.append("text").attr("class","smcap").attr("fill",lineCol)
+    .attr("x",xT(last.year)+8).attr("y",yT(last.share)+19)
+    .text(`${Math.round(last.share*100)}% in ${last.year}`);
+  drawLegend();
+  // caption
+  document.getElementById("cap-trend").innerHTML =
+    `<strong>${ITEM_LABEL[item]}.</strong> ${DATA.meta.item_q[item]} ${cap_extra(item,rows)} `+
+    `Optimistic = ${DATA.meta.thresholds[item]}. Hollow points are post-2021 (web mode). `+
+    `N per year ${d3.min(rows,d=>d.n)}–${d3.max(rows,d=>d.n)}; weighted by wtssps. `+
+    `Chetty’s dashed curve is external and cohort-indexed — a separate scale, not the GSS timeline.`;
+}
+function cap_extra(item,rows){
+  if(item==="goodlife") return `It fell from ${Math.round(DATA.headline.goodlife_2000*100)}% agreeing in 2000 to ${Math.round(DATA.headline.goodlife_2024*100)}% in 2024.`;
+  if(item==="parsol") return `It eased from a ${Math.round(DATA.headline.parsol_2004*100)}% peak in 2004 to ${Math.round(DATA.headline.parsol_2024*100)}% in 2024.`;
+  return `The noisiest of the three: roughly flat, ${Math.round(DATA.headline.kidssol_1994*100)}% in 1994 and ${Math.round(DATA.headline.kidssol_2024*100)}% in 2024 — not asked in 2021.`;
+}
+function ptTip(ev,d,item,col){
+  const flag = d.year>=DATA.meta.mode_change ? `<hr><span class="muted">post-2021 web mode</span>` : "";
+  showTip(`<b>${ITEM_LABEL[item]} · ${d.year}</b>`+
+    `<div class="row"><span class="muted">optimistic</span><b>${Math.round(d.share*100)}%</b></div>`+
+    `<div class="row"><span class="muted">95% band</span><b>${d.lo==null?"—":Math.round(d.lo*100)+"–"+Math.round(d.hi*100)+"%"}</b></div>`+
+    `<div class="row"><span class="muted">N</span><b>${d.n.toLocaleString()}</b></div>${flag}`, ev);
+}
+
+drawChetty(); drawBelief();
+
+// fallback table for trend
+(function(){
+  const wrap = d3.select("#chart-trend").append("table").attr("class","fallback").style("display","none");
+  wrap.append("caption").text("Weighted optimistic share by year (fair-chance item)");
+  const head = wrap.append("thead").append("tr");
+  head.append("th").text("Year"); head.append("th").text("Share"); head.append("th").text("N");
+  const tb = wrap.append("tbody");
+  trendData("goodlife").forEach(d=>{
+    const tr = tb.append("tr");
+    tr.append("td").text(d.year); tr.append("td").text(Math.round(d.share*100)+"%"); tr.append("td").text(d.n);
+  });
+})();
+
+document.querySelectorAll("#seg-item button").forEach(b=>{
+  b.addEventListener("click",()=>{
+    document.querySelectorAll("#seg-item button").forEach(x=>x.setAttribute("aria-pressed","false"));
+    b.setAttribute("aria-pressed","true");
+    trendState.item = b.dataset.item; drawBelief();
+  });
+});
+document.getElementById("chk-chetty").addEventListener("change",e=>{
+  trendState.chetty = e.target.checked; drawChetty(); drawLegend();
+});
+
+/* ============================ GRADIENT CHART ============================ */
+const gradState = { item:"goodlife", terc:true };
+const GW = 1000, GH = 440, GM = {t:24, r:36, b:70, l:54};
+const gsvg = d3.select("#chart-grad").append("svg")
+  .attr("viewBox",`0 0 ${GW} ${GH}`).attr("width","100%")
+  .attr("role","img").attr("aria-label",
+    "Line chart: weighted mean happiness rises with each step up the mobility-belief scale, shown overall and within thirds of constant-dollar income.");
+const gInner = gsvg.append("g").attr("transform",`translate(${GM.l},${GM.t})`);
+const giw = GW - GM.l - GM.r, gih = GH - GM.t - GM.b;
+const xG = d3.scalePoint().domain([1,2,3,4,5]).range([0,giw]).padding(0.5);
+const yG = d3.scaleLinear().domain([1.6,2.5]).range([gih,0]);
+const BELIEF_LABELS = {1:"strongly\ndisagree",2:"disagree",3:"neither",4:"agree",5:"strongly\nagree"};
+const BELIEF_LABELS_P = {1:"much\nworse",2:"worse",3:"same",4:"better",5:"much\nbetter"};
+
+gInner.append("g").attr("class","grid").selectAll("line").data(yG.ticks(6)).join("line")
+  .attr("x1",0).attr("x2",giw).attr("y1",d=>yG(d)).attr("y2",d=>yG(d))
+  .attr("stroke","var(--hair-soft)");
+gInner.append("g").selectAll("text.yl").data(yG.ticks(6)).join("text")
+  .attr("class","axlab").attr("x",-10).attr("y",d=>yG(d)+4).attr("text-anchor","end")
+  .text(d=>d.toFixed(1));
+gInner.append("text").attr("class","smcap").attr("transform","rotate(-90)")
+  .attr("x",-gih/2).attr("y",-40).attr("text-anchor","middle").text("mean happiness (1–3) →");
+
+const gLineLayer = gInner.append("g");
+const gXlabLayer = gInner.append("g");
+const gLine = d3.line().x(d=>xG(d.level)).y(d=>yG(d.mean_happy)).curve(d3.curveMonotoneX);
+
+function drawGrad(){
+  const item = gradState.item, col = C.grad;
+  gLineLayer.selectAll("*").remove(); gXlabLayer.selectAll("*").remove();
+  const g = DATA.grad[item];
+  // x labels
+  const labs = item==="goodlife"?BELIEF_LABELS:BELIEF_LABELS_P;
+  [1,2,3,4,5].forEach(lv=>{
+    const t = gXlabLayer.append("text").attr("class","axlab")
+      .attr("x",xG(lv)).attr("y",gih+22).attr("text-anchor","middle");
+    labs[lv].split("\n").forEach((ln,i)=> t.append("tspan").attr("x",xG(lv)).attr("dy",i?13:0).text(ln));
+  });
+  gXlabLayer.append("text").attr("class","smcap").attr("x",0).attr("y",gih+58)
+    .text(`← rejects belief        ${ITEM_LABEL[item]}        affirms belief →`);
+  // terciles (pale)
+  if(gradState.terc){
+    const tcol = ["#9fc0cf","#5d8ea3","#2b5f78"];
+    g.terciles.forEach((tc,ti)=>{
+      gLineLayer.append("path").datum(tc.points).attr("fill","none")
+        .attr("stroke",tcol[ti]).attr("stroke-width",1.6).attr("opacity",.85)
+        .attr("stroke-dasharray","4 3").attr("d",gLine);
+      const lp = tc.points[tc.points.length-1];
+      gLineLayer.append("text").attr("class","smcap").attr("fill",tcol[ti])
+        .attr("x",xG(lp.level)+6).attr("y",yG(lp.mean_happy)+3)
+        .text(["low inc.","mid inc.","high inc."][ti]);
+      gLineLayer.selectAll(null).data(tc.points).join("circle")
+        .attr("cx",d=>xG(d.level)).attr("cy",d=>yG(d.mean_happy)).attr("r",2.6)
+        .attr("fill",tcol[ti])
+        .on("mousemove",(ev,d)=>showTip(`<b>${["Low","Mid","High"][ti]}-income third · belief ${d.level}</b>`+
+          `<div class="row"><span class="muted">mean happy</span><b>${d.mean_happy.toFixed(2)}</b></div>`+
+          `<div class="row"><span class="muted">N</span><b>${d.n.toLocaleString()}</b></div>`,ev))
+        .on("mouseleave",hideTip);
+    });
+  }
+  // raw (bold)
+  gLineLayer.append("path").datum(g.raw).attr("fill","none").attr("stroke",col)
+    .attr("stroke-width",3.4).attr("d",gLine);
+  gLineLayer.selectAll("circle.gr").data(g.raw).join("circle").attr("class","gr")
+    .attr("cx",d=>xG(d.level)).attr("cy",d=>yG(d.mean_happy)).attr("r",5)
+    .attr("fill","var(--panel)").attr("stroke",col).attr("stroke-width",2.6)
+    .attr("tabindex",0).attr("role","button")
+    .attr("aria-label",d=>`belief level ${d.level}: mean happiness ${d.mean_happy.toFixed(2)}, N ${d.n}`)
+    .on("mousemove",(ev,d)=>gradTip(ev,d))
+    .on("focus",function(ev,d){const r=this.getBoundingClientRect();gradTip({clientX:r.x+r.width/2,clientY:r.y},d);})
+    .on("mouseleave",hideTip).on("blur",hideTip);
+  // endpoint labels
+  const a=g.raw[0], b=g.raw[g.raw.length-1];
+  gLineLayer.append("text").attr("class","smcap").attr("fill",col).attr("font-weight",700)
+    .attr("x",xG(a.level)).attr("y",yG(a.mean_happy)-12).attr("text-anchor","middle").text(a.mean_happy.toFixed(2));
+  gLineLayer.append("text").attr("class","smcap").attr("fill",col).attr("font-weight",700)
+    .attr("x",xG(b.level)).attr("y",yG(b.mean_happy)-12).attr("text-anchor","middle").text(b.mean_happy.toFixed(2));
+  // caption
+  const span = DATA.gradspan[item];
+  document.getElementById("cap-grad").innerHTML =
+    `<strong>${ITEM_LABEL[item]}.</strong> Mean happiness climbs from ${span.lo.toFixed(2)} among those at the bottom of the belief scale to ${span.hi.toFixed(2)} at the top — a ${span.span.toFixed(2)}-point gap. `+
+    `The dashed lines are the same gradient inside low-, mid- and high-income thirds (constant-dollar ${DATA.meta.item_first[item]?'family income':'income'}); the slope survives in all three. `+
+    `Pooled across years, weighted by wtssps. Happiness is evaluative; belief is eudaimonic.`;
+}
+function gradTip(ev,d){
+  showTip(`<b>Belief level ${d.level}</b>`+
+    `<div class="row"><span class="muted">mean happy</span><b>${d.mean_happy.toFixed(2)}</b></div>`+
+    `<div class="row"><span class="muted">N</span><b>${d.n.toLocaleString()}</b></div>`,ev);
+}
+drawGrad();
+
+// gradient fallback table
+(function(){
+  const wrap = d3.select("#chart-grad").append("table").attr("class","fallback").style("display","none");
+  wrap.append("caption").text("Mean happiness by fair-chance belief level (pooled, weighted)");
+  const head = wrap.append("thead").append("tr");
+  head.append("th").text("Belief level"); head.append("th").text("Mean happy"); head.append("th").text("N");
+  const tb = wrap.append("tbody");
+  DATA.grad.goodlife.raw.forEach(d=>{const tr=tb.append("tr");
+    tr.append("td").text(d.level); tr.append("td").text(d.mean_happy.toFixed(2)); tr.append("td").text(d.n);});
+})();
+
+document.querySelectorAll("#seg-grad button").forEach(b=>{
+  b.addEventListener("click",()=>{
+    document.querySelectorAll("#seg-grad button").forEach(x=>x.setAttribute("aria-pressed","false"));
+    b.setAttribute("aria-pressed","true"); gradState.item=b.dataset.grad; drawGrad();
+  });
+});
+document.getElementById("chk-terc").addEventListener("change",e=>{ gradState.terc=e.target.checked; drawGrad(); });
+</script>
+<!--SL_BOOKNAV_START-->
+<style>
+.slbn{font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;background:#0f1417;border-top:1px solid #27313a;color:#9fb0ba;padding:24px 20px 40px;margin:48px 0 0}
+.slbn-in{max-width:1080px;margin:0 auto;display:flex;align-items:stretch;gap:12px}
+.slbn a{flex:1 1 0;min-width:0;text-decoration:none;color:inherit;border:1px solid #27313a;border-radius:10px;padding:13px 15px;display:flex;flex-direction:column;gap:4px;background:#161d22;transition:border-color .15s,transform .15s}
+.slbn a:hover{border-color:#3fa9a0;transform:translateY(-2px)}
+.slbn a:focus-visible{outline:2px solid #3fa9a0;outline-offset:2px}
+.slbn a.slbn-next{text-align:right;align-items:flex-end}
+.slbn a.slbn-toc{flex:0 0 auto;min-width:120px;justify-content:center;align-items:center;text-align:center}
+.slbn .slbn-dir{font:700 10px/1 inherit;letter-spacing:.13em;text-transform:uppercase;color:#6b7c87}
+.slbn .slbn-ttl{font:700 14px/1.3 inherit;color:#eef2f4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.slbn a.slbn-disabled{opacity:.38;pointer-events:none}
+@media(max-width:640px){.slbn-in{flex-wrap:wrap}.slbn a{flex:1 1 100%}.slbn a.slbn-next{text-align:left;align-items:flex-start}.slbn a.slbn-toc{order:-1}}
+</style>
+<nav class="slbn" aria-label="Book navigation"><div class="slbn-in"><a class="slbn-prev" href="../read.html?ch=alone" target="_top"><span class="slbn-dir">‹ Previous</span><span class="slbn-ttl">Alone</span></a><a class="slbn-toc" href="../index.html#book" target="_top"><span class="slbn-dir">The Scissors</span><span class="slbn-ttl">Chapter 22 / 36</span></a><a class="slbn-next" href="../read.html?ch=the-optimism-gap" target="_top"><span class="slbn-dir">Next ›</span><span class="slbn-ttl">The Optimism Gap</span></a></div></nav>
+<!--SL_BOOKNAV_END-->
+</body>
+</html>

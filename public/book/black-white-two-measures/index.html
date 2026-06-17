@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="There is no single answer to whether Black or white Americans are happier. It depends on which well-being measure you use - and the most counterintuitive measure runs opposite to the obvious one.">
+<title>Lower on the Ladder, Lighter in the Day</title>
+<style>
+  :root{
+    --bg:#f7f6f3;
+    --bg2:#edeae3;
+    --card:#ffffff;
+    --ink:#1c1b1a;
+    --ink2:#65615b;
+    --ink3:#8d8881;
+    --hair:#e3ded5;
+    --line:#cdc7bb;
+    /* colorblind-safe, non-partisan: muted slate-blue vs warm ochre. Neither "good".  */
+    --black:#3a6ea5;     /* slate blue  = Black Americans */
+    --blackdk:#28507a;
+    --white:#c98a2b;     /* warm ochre  = white Americans */
+    --whitedk:#9a6716;
+    --eval:#5b5750;      /* evaluative block accent */
+    --exp:#5b5750;       /* experiential block accent */
+    --zero:#46423c;
+    --grid:#ebe6dc;
+    --good:#2f6f54;
+    --bad:#8a4334;
+    --sans: ui-sans-serif, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Charter, Georgia, "Times New Roman", serif;
+    --mono: ui-monospace, "Cascadia Code", Consolas, "SF Mono", Menlo, monospace;
+  }
+  *{ box-sizing:border-box; }
+  html{ -webkit-text-size-adjust:100%; }
+  body{ margin:0; background:var(--bg); color:var(--ink); font:17.5px/1.66 var(--serif); }
+  a{ color:var(--blackdk); text-decoration:underline; text-decoration-color:rgba(58,110,165,.4); text-underline-offset:2.5px; }
+  a:hover{ text-decoration-color:var(--blackdk); }
+  a:focus-visible, button:focus-visible{ outline:3px solid var(--black); outline-offset:2px; border-radius:3px; }
+
+  .prose{ max-width:680px; margin:0 auto; padding:0 22px; }
+  .prose p{ margin:1.12em 0; }
+  .prose h2{ font:800 1.5rem/1.18 var(--sans); letter-spacing:-.018em; margin:2.2em 0 .15em; }
+  .prose h2 .num{ font:700 11.5px/1 var(--mono); color:var(--black); letter-spacing:.18em; display:block; margin-bottom:9px; text-transform:uppercase; }
+  .lede{ font-size:1.135rem; }
+  .lede b{ font-weight:700; }
+  em.ev{ font-style:normal; font-weight:600; color:var(--blackdk); border-bottom:1.5px dotted rgba(58,110,165,.5); }
+  em.ex{ font-style:normal; font-weight:600; color:var(--whitedk); border-bottom:1.5px dotted rgba(201,138,43,.6); }
+
+  .topstrip{ display:flex; height:7px; }
+  .topstrip span{ flex:1; }
+  .hero-inner{ max-width:920px; margin:0 auto; padding:54px 22px 0; }
+  .kicker{ font:600 11.5px/1.5 var(--mono); letter-spacing:.2em; text-transform:uppercase; color:var(--ink2); margin:0; }
+  h1{ font-family:var(--serif); font-weight:700; font-size:clamp(2.35rem, 6.6vw, 4.1rem); line-height:1.02;
+      letter-spacing:-.015em; margin:.26em 0 .34em; }
+  h1 .em{ font-style:italic; color:var(--black); }
+  .dek{ font-size:clamp(1.05rem, 2.3vw, 1.28rem); line-height:1.5; color:var(--ink2); margin:0; max-width:660px; font-family:var(--sans); }
+  .meta{ font:12px/1.7 var(--mono); color:var(--ink2); border-top:1px solid var(--hair); border-bottom:1px solid var(--hair);
+    padding:9px 0; margin-top:30px; display:flex; gap:6px 22px; flex-wrap:wrap; }
+  .meta b{ color:var(--ink); font-weight:600; }
+
+  figure{ margin:38px 0; }
+  .figwrap{ max-width:1040px; margin:0 auto; padding:0 16px; }
+  figcaption{ max-width:680px; margin:14px auto 0; padding:0 22px; font:13.5px/1.6 var(--sans); color:var(--ink2); }
+  figcaption b{ color:var(--ink); }
+
+  .card{ background:var(--card); border:1px solid var(--hair); border-radius:13px; padding:18px 16px 14px;
+    box-shadow:0 1px 0 rgba(28,27,26,.03), 0 16px 36px -30px rgba(28,27,26,.42); }
+  svg{ display:block; width:100%; height:auto; overflow:visible; }
+  .chart-title{ font:700 15.5px/1.3 var(--sans); margin:2px 4px 2px; }
+  .chart-sub{ font:13px/1.45 var(--sans); color:var(--ink2); margin:0 4px 12px; }
+
+  .controls{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin:4px 4px 12px; }
+  .controls .lab{ font:600 11px/1 var(--mono); letter-spacing:.12em; text-transform:uppercase; color:var(--ink2); margin-right:2px; }
+  button.tg{ font:600 12.5px/1 var(--sans); color:var(--ink2); background:var(--bg2); border:1px solid var(--line);
+    border-radius:999px; padding:7px 13px; cursor:pointer; transition:all .14s; }
+  button.tg:hover{ color:var(--ink); border-color:var(--ink2); }
+  button.tg[aria-pressed="true"]{ background:var(--ink); color:#fff; border-color:var(--ink); }
+
+  .chips{ display:flex; gap:8px 16px; flex-wrap:wrap; font:12.5px/1.4 var(--sans); color:var(--ink2); margin:2px 4px 12px; align-items:center; }
+  .chips .sw{ display:inline-block; width:12px; height:12px; border-radius:50%; margin-right:5px; vertical-align:-2px; }
+  .chips .sq{ display:inline-block; width:12px; height:12px; border-radius:3px; margin-right:5px; vertical-align:-2px; }
+
+  .tip{ position:absolute; pointer-events:none; opacity:0; transition:opacity .1s; z-index:9;
+    background:var(--ink); color:#fff; border-radius:9px; padding:10px 12px; font:13px/1.46 var(--sans);
+    max-width:250px; box-shadow:0 12px 34px -8px rgba(0,0,0,.5); }
+  .tip b{ font-size:13.5px; } .tip .tn{ color:#c9c2b8; font-size:11.5px; }
+  .tip .hdr{ font-weight:700; margin-bottom:4px; }
+  .tip .row{ display:flex; justify-content:space-between; gap:16px; }
+  .tip .row span:last-child{ font-variant-numeric:tabular-nums; }
+  .tip .ev{ color:#9ec3ea; } .tip .ex{ color:#f0c581; }
+
+  .callout{ border:1px solid var(--hair); border-left:4px solid var(--black); background:var(--card);
+    padding:17px 20px 18px; margin:34px auto; max-width:680px; }
+  .callout h3{ margin:0 0 8px; font:700 11.5px/1.3 var(--mono); letter-spacing:.14em; text-transform:uppercase; color:var(--blackdk); }
+  .callout p{ margin:.5em 0; font-size:15.5px; }
+
+  details.fb{ max-width:1040px; margin:8px auto 0; padding:0 16px; }
+  details.fb summary{ cursor:pointer; font:600 12px/1.4 var(--sans); color:var(--ink2); padding:5px 0; }
+  table.fallback{ border-collapse:collapse; width:100%; font:12px/1.4 var(--sans); margin-top:8px; }
+  table.fallback caption{ text-align:left; font:600 12px/1.4 var(--sans); color:var(--ink2); margin-bottom:6px; }
+  table.fallback th, table.fallback td{ border:1px solid var(--hair); padding:3px 7px; text-align:right; }
+  table.fallback th:first-child, table.fallback td:first-child{ text-align:left; }
+  .vh{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0; }
+
+  footer{ margin-top:78px; background:var(--bg2); border-top:1px solid var(--hair);
+    padding:42px 0 84px; font:13.5px/1.7 var(--sans); color:#534d45; }
+  footer .prose{ max-width:770px; }
+  footer h2{ font:700 12px/1 var(--mono); letter-spacing:.2em; text-transform:uppercase; color:var(--ink); margin:0 0 18px; }
+  footer h3{ font:700 13px/1.3 var(--sans); margin:24px 0 7px; color:var(--ink); }
+  footer ul{ margin:6px 0 0; padding-left:19px; } footer li{ margin:7px 0; }
+  footer a{ color:var(--blackdk); }
+  .endmark{ color:var(--black); font-weight:800; }
+
+  @media (prefers-reduced-motion: reduce){ *{ transition:none !important; animation:none !important; } }
+  @media (max-width:520px){ body{ font-size:16.5px; } .chart-title{ font-size:14.5px; } .hero-inner{ padding-top:38px; } }
+</style>
+</head>
+<body>
+
+<div class="topstrip" aria-hidden="true">
+  <span style="background:var(--black)"></span>
+  <span style="background:var(--white)"></span>
+  <span style="background:var(--black)"></span>
+  <span style="background:var(--white)"></span>
+</div>
+
+<header>
+  <div class="hero-inner">
+    <p class="kicker">Well-being &middot; Race &middot; Two measures</p>
+    <h1>Lower on the Ladder, <span class="em">Lighter in the Day</span></h1>
+    <p class="dek">There is no single answer to whether Black or white Americans are happier. It depends entirely on which measure of well-being you use &mdash; and the most counterintuitive one runs opposite to the obvious one.</p>
+    <div class="meta">
+      <span><b>GSS</b> 1972&ndash;2024 &middot; weighted</span>
+      <span><b>Gallup US Daily</b> 2008&ndash;2017 &middot; unweighted</span>
+      <span>Constructs: <b>evaluative</b> vs <b>experiential</b></span>
+    </div>
+  </div>
+</header>
+
+<main>
+<article>
+
+<div class="prose">
+  <p class="lede">Ask whether Black or white Americans are happier and you assume there is an answer. There isn&rsquo;t &mdash; not a single one. <b>Which group looks better off flips depending on the question you ask.</b> When people <em class="ev">rate their lives</em> &mdash; a ladder, a satisfaction scale &mdash; Black Americans sit slightly lower, consistent with lower income and the weight of structural disadvantage. But ask how their <em class="ex">days actually felt</em> &mdash; the worry, the stress of yesterday &mdash; and the ranking reverses: Black Americans report calmer days than white Americans, and the calm gap is <em>widest among the affluent</em>. Psychologists call this the race paradox in well-being, and it is the reason any one-number answer is wrong.</p>
+
+  <p>The trick is that &ldquo;well-being&rdquo; is not one thing. Researchers since <a href="https://doi.org/10.1037/0033-2909.95.3.542">Ed Diener</a> have split it into two families that need not agree. <em class="ev">Evaluative</em> well-being is the considered judgment &mdash; <i>all things considered, how is my life?</i> <em class="ex">Experiential</em> well-being is the texture of the day &mdash; <i>did I feel worried, stressed, sad, happy yesterday?</i> Average them into one score and you erase the most interesting fact in the data: for Black and white Americans, the two measures point in opposite directions. So we keep them apart and let them disagree.</p>
+</div>
+
+<div class="prose">
+  <h2><span class="num">01 / Half a century</span>The evaluative gap has roughly halved &mdash; but read the fine print</h2>
+  <p>Start with the measure with the longest record: the General Social Survey has asked Americans since 1972 whether they are <em class="ev">very happy, pretty happy, or not too happy</em>. It is an evaluative item &mdash; a verdict on life as a whole. For decades white Americans were markedly more likely to call themselves very happy. In the 1970s the Black-minus-white gap in the very-happy share ran near <b id="p-gapfirst">&minus;0.13</b> &mdash; about <b id="p-gapfirstpts">13</b> percentage points fewer Black Americans at the top of the scale. By the 2000s and 2010s it had shrunk toward zero; in <b>2014</b> and <b>2018</b> the gap was within a point of nothing, and in <b>2022</b> it briefly crossed to slightly positive.</p>
+
+  <p>But convergence is not the same as good news, and honesty demands the fine print. Part of the closing is that <b>white happiness fell</b>. The white very-happy share slid from about <b id="p-whitefirst">0.36</b> in the 1970s to <b id="p-whitelast">0.22</b> in the 2020s &mdash; a decline of roughly <b id="p-whitedecl">14</b> points &mdash; while the Black share moved less. The gap narrowed partly because the higher line came down to meet the lower one. One more caution: in 2021 the GSS changed how it reaches people, shifting to web and mail self-administration; happiness levels jump around that break for both groups, so points from 2021 on are flagged and read with care.</p>
+</div>
+
+<figure>
+  <div class="figwrap">
+    <div class="card">
+      <p class="chart-title">The very-happy gap, 1972&ndash;2024</p>
+      <p class="chart-sub">Share calling themselves &ldquo;very happy,&rdquo; weighted (<span class="mono">wtssps</span>). The gap between the lines has roughly halved &mdash; partly because the white line came down. Points from 2021 mark the survey&rsquo;s mode change.</p>
+      <div class="chips" id="chips-gss"></div>
+      <div id="gss" style="position:relative;"></div>
+    </div>
+  </div>
+  <figcaption><b>Evaluative well-being, the long view.</b> Two lines &mdash; Black and white &ldquo;very happy&rdquo; shares &mdash; converge over fifty years. The hollow markers from 2021 sit after the GSS switched to self-administration; treat the level shift there as a survey artifact, not a mood swing. General Social Survey, 1972&ndash;2024, weighted.</figcaption>
+</figure>
+
+<div class="prose">
+  <h2><span class="num">02 / The present day</span>One question, opposite answers</h2>
+  <p>Now bring in the present and many measures at once. Gallup interviewed hundreds of thousands of Americans every year, asking both how they <em class="ev">rate</em> their lives and how their <em class="ex">day</em> felt. (This extract carries no survey weight, so every Gallup figure here is <b>unweighted</b> and descriptive.) Lay the Black-minus-white gap for each measure on a single zero-centered axis and the paradox becomes a picture: the dots fall on <em>both sides of zero</em>.</p>
+
+  <p>On the measures that ask people to <em class="ev">judge their lives</em>, Black Americans sit a touch lower: the current-life ladder reads <b id="p-curb">6.92</b> for Black respondents versus <b id="p-curw">7.04</b> for white. (The one evaluative measure that runs the other way is expectation &mdash; Black Americans are far more optimistic about the future &mdash; a reversal a <a href="../the-optimism-gap/">companion piece</a> tells in full.) But swing to the measures that ask how the <em class="ex">day felt</em>, and the sign flips. Black Americans report less <b>worry</b> (<b id="p-worryb">0.262</b> vs <b id="p-worryw">0.278</b>), less <b>stress</b> (<b id="p-stressb">0.337</b> vs <b id="p-stressw">0.370</b>), less <b>physical pain</b>, and more <b>enjoyment&hellip;</b> with one honest exception: <b>sadness</b> runs slightly <em>higher</em> for Black respondents (<b id="p-sadb">0.172</b> vs <b id="p-sadw">0.157</b>). The portrait is not &ldquo;one group is happier.&rdquo; It is that the measures genuinely disagree.</p>
+</div>
+
+<figure>
+  <div class="figwrap">
+    <div class="card">
+      <p class="chart-title">Which measure are you asking about?</p>
+      <p class="chart-sub">Black-minus-white gap on each measure, with a 95% bootstrap interval. Standardized so measures are comparable (gap &divide; pooled SD). The two blocks lean opposite ways.</p>
+      <div class="controls" role="group" aria-label="Units">
+        <span class="lab">Units</span>
+        <button class="tg" id="u-std" aria-pressed="true">Standardized</button>
+        <button class="tg" id="u-nat" aria-pressed="false">Native units</button>
+      </div>
+      <div class="chips" id="chips-div"></div>
+      <div id="diverge" style="position:relative;"></div>
+    </div>
+  </div>
+  <figcaption><b>The visual argument.</b> Each row is a well-being measure; the dot is the Black-minus-white gap; the whisker is a 95% bootstrap interval. The top block (&ldquo;how they rate their lives&rdquo;) and the bottom block (&ldquo;how their days feel&rdquo;) fall on opposite sides of zero. <b>For worry, stress, sadness and pain, a dot on the Black-higher side means more of that bad feeling</b> &mdash; so the calm advantage shows up as those rows sitting on the white-higher side. Gallup US Daily, unweighted; affect computed within 2013&ndash;2017.</figcaption>
+</figure>
+
+<div class="prose">
+  <h2><span class="num">03 / Not composition</span>The calm gap is not just income</h2>
+  <p>The obvious objection: maybe Black Americans report calmer days because the sample differs &mdash; younger, or sorted into different jobs. It survives the test. Split the data by income and the calm gap holds <em>within every level</em> &mdash; and, strikingly, it is <b>largest among the affluent</b>. Among high-income Americans, white respondents report stress on <b id="p-sthi-w">0.382</b> of days against <b id="p-sthi-b">0.320</b> for Black respondents of the same income bracket &mdash; a <b id="p-sthi-gap">6</b>-point calm advantage. Among the low-income, where life is harder for both, the gap is smaller. Less worry, less stress, at every rung, widest at the top: this is not a composition artifact.</p>
+
+  <p>It is not an age-and-education artifact either. Slice the data into <span id="p-aecells">nine</span> age&times;education cells &mdash; three age bands crossed with three education levels &mdash; and Black Americans report less stress than comparable white Americans in <b id="p-aeshare">most</b> of them. The calm gap is a stubborn, replicated feature of the data &mdash; which is exactly why it has launched a literature, and a debate, about what it means.</p>
+</div>
+
+<figure>
+  <div class="figwrap">
+    <div class="card">
+      <p class="chart-title">Less worry, less stress &mdash; at every income, widest at the top</p>
+      <p class="chart-sub">Black-minus-white gap in the share reporting the feeling &ldquo;yesterday,&rdquo; with 95% bootstrap intervals. A dot left of zero = Black Americans calmer.</p>
+      <div class="controls" role="group" aria-label="View">
+        <span class="lab">Split by</span>
+        <button class="tg" id="c-inc" aria-pressed="true">Income</button>
+        <button class="tg" id="c-ae" aria-pressed="false">Age &times; education</button>
+      </div>
+      <div class="chips" id="chips-calm"></div>
+      <div id="calm" style="position:relative;"></div>
+    </div>
+  </div>
+  <figcaption><b>It widens with income, not away.</b> If the calm gap were really about poverty or composition it should shrink among the comfortable. It does the opposite. Switch to age&times;education to see it persist cell by cell. Gallup US Daily, unweighted, 2013&ndash;2017; whiskers are 95% bootstrap intervals.</figcaption>
+</figure>
+
+<div class="prose">
+  <h2><span class="num">04 / What this shows &mdash; and what it doesn&rsquo;t</span>Read this part slowly</h2>
+  <p>This is the section that matters most, because the finding is so easy to misread. <b>Nothing here says Black Americans are &ldquo;happier&rdquo; than white Americans.</b> That single-summary claim is false, and the data refuse it. Black Americans in these surveys rate their current lives slightly <em>lower</em>, report <em>more</em> sadness, earn less on average, and live disproportionately where the deaths of despair concentrate. The structural disadvantage is real and this article does not soften it.</p>
+
+  <p>What the data do show is narrower and stranger: on the <em class="ex">experiential</em> agitation measures &mdash; worry, stress &mdash; Black Americans report calmer days than white Americans of the same income, age, and education. That pattern is real and has been replicated across datasets (<a href="https://doi.org/10.1111/j.1467-6494.2009.00597.x">Keyes</a>, <a href="https://doi.org/10.1093/aje/kwy224">Erving and colleagues</a>, and others find a parallel paradox in mental-health diagnoses). But <em>why</em> is genuinely open. Candidate explanations are several and we assert none: that &ldquo;stress&rdquo; and &ldquo;worry&rdquo; may be reported differently across cultural contexts; that religiosity and social support buffer daily distress; that what looks like resilience may carry a hidden physiological cost (the &ldquo;John Henryism&rdquo; literature); that the gap reflects differential <em>reporting</em> as much as differential <em>experience</em>. These are competing hypotheses, not conclusions.</p>
+
+  <p>And the paradox has a serious counter-tradition. <a href="https://doi.org/10.2307/2657333">Hughes and Thomas</a> argued that across domain after domain Black Americans report lower quality of life &mdash; that the rosy affect numbers should not be read as the whole story. The honest position is the one the two measures force on us: <b>well-being is plural.</b> A group can rate its life lower and still report lighter days; the optimism can be high and the sadness higher too. Averaging it into a verdict would be the one thing the data clearly say not to do.</p>
+</div>
+
+<div class="callout">
+  <h3>The one-line version</h3>
+  <p>Black Americans rate their lives slightly lower and report a bit more sadness; they also report less worry and less stress &mdash; even at the same income, and most so among the affluent. Both things are true. Which group is &ldquo;happier&rdquo; depends entirely on which measure you mean, which is why we never collapse them into one.</p>
+</div>
+
+</article>
+</main>
+
+<footer>
+  <div class="prose">
+    <h2>Notes &amp; data</h2>
+    <p><b>Data.</b> Two sources, kept separate. The fifty-year evaluative trend is the <b>General Social Survey, 1972&ndash;2024</b>, weighted with <span class="mono">wtssps</span> (the weight that covers 2021 onward). &ldquo;Very happy&rdquo; is the top category of the GSS general-happiness item. The present-day multi-measure portrait is the <b>Gallup US Daily extract, 2008&ndash;2017</b>, which carries <b>no survey weight</b>: every Gallup statistic here is <b>unweighted</b> and descriptive, with no population benchmarking.</p>
+
+    <h3>Constructs</h3>
+    <p>We tag every measure. <b>Evaluative</b> (a judgment of life as a whole): GSS very-happy, Gallup current ladder, Gallup Thriving (current ladder &ge;7 <i>and</i> expected future ladder &ge;8), Gallup future ladder. <b>Experiential</b> (how yesterday felt, asked as yes/no): worry, stress, sadness, enjoyment, physical pain. The two families are reported separately and never averaged into a single &ldquo;well-being&rdquo; number &mdash; the whole point is that they disagree.</p>
+
+    <h3>Method</h3>
+    <ul>
+      <li><b>Affect regime break.</b> Gallup&rsquo;s yesterday-affect items shift discontinuously in 2013 (the daily sample roughly halves). All affect statistics are computed <b>within 2013&ndash;2017</b>; we never trend affect across 2013. Ladder, future ladder and Thriving are continuous and pooled over 2008&ndash;2017; GSS happiness over 1972&ndash;2024.</li>
+      <li><b>Standardizing the gaps.</b> To compare measures on different scales, each Black-minus-white gap is divided by the pooled within-measure standard deviation (a Cohen&rsquo;s <i>d</i>); native units are reported alongside on every row and in every tooltip.</li>
+      <li><b>Bootstrap.</b> Each gap carries a 95% interval from <span id="f-boot">800</span> resamples (fixed seed). GSS decade bins are flagged when the Kish effective sample size falls below 50; thin Black cells in the age&times;education split are suppressed below 50.</li>
+      <li><b>Polarity.</b> For worry, stress, sadness and physical pain, &ldquo;Black higher&rdquo; means <i>more</i> of that feeling. So a calmer result appears as a <i>negative</i> gap. The diverging chart labels this explicitly so the bad-feeling rows are never mistaken for &ldquo;wins.&rdquo;</li>
+      <li><b>Mode change.</b> The GSS moved to web/mail self-administration in 2021; trend points from 2021 on are drawn hollow and read with care.</li>
+      <li><b>Race.</b> Categories are coarse self-report; Hispanic, Asian and Other respondents exist too (shown lightly for context), but the spine of this piece is Black versus white. Everything is association and self-report, not causation.</li>
+    </ul>
+
+    <h3>Sources &amp; further reading</h3>
+    <ul>
+      <li>Diener 1984, <a href="https://doi.org/10.1037/0033-2909.95.3.542">Subjective well-being</a>; Diener, Suh, Lucas &amp; Smith 1999, <a href="https://doi.org/10.1037/0033-2909.125.2.276">Three decades of progress</a> &mdash; the two-measures backbone.</li>
+      <li>Stevenson &amp; Wolfers 2008, <a href="https://doi.org/10.1086/592004">Happiness inequality in the United States</a> &mdash; the Black-white evaluative gap closing.</li>
+      <li>Keyes 2009, <a href="https://doi.org/10.1111/j.1467-6494.2009.00597.x">The Black-White paradox in health</a>; Mouzon 2017, <a href="https://doi.org/10.1007/s12552-017-9198-9">Religious involvement and the paradox</a>; Barnes &amp; Bates 2017, <a href="https://doi.org/10.1007/s00127-017-1394-9">Racial patterns in psychological distress</a>; Erving, Thomas &amp; Frazier 2019, <a href="https://doi.org/10.1093/aje/kwy224">Is the paradox consistent?</a> &mdash; the race paradox in mental health.</li>
+      <li>Hughes &amp; Thomas 1998, <a href="https://doi.org/10.2307/2657333">The continuing significance of race</a> &mdash; the counter-evidence, engaged honestly.</li>
+      <li>Graham &amp; Pinto 2019, <a href="https://doi.org/10.1007/s00148-018-0687-y">Unequal hopes and lives</a> &mdash; the optimism reversal (see the companion piece).</li>
+    </ul>
+    <p style="margin-top:22px;color:var(--ink3)">Built by hand with D3 v7. <span class="endmark">&#9632;</span></p>
+  </div>
+</footer>
+
+<div class="tip" id="tip" role="status" aria-live="polite"></div>
+
+<script type="module">
+import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+
+const DATA = {"meta":{"title":"Lower on the Ladder, Lighter in the Day","dek":"There is no single answer to whether Black or white Americans are happier - it depends entirely on which measure you use.","slug":"black-white-two-measures","gss":{"dataset":"GSS 1972-2024","years":"1972-2024","weight":"wtssps","happy_note":"very happy = top category of GSS general happiness (extract direction-fixed: higher = happier)","suppression":"decade bins / years with Kish effective N < 50 flagged","mode_break":"GSS moved to web/mail self-administration in 2021; trend points from 2021 on are flagged"},"gallup":{"dataset":"Gallup US Daily (2008-2017 extract)","eval_years":"2008-2017","affect_years":"2013-2017","weight":"unweighted (this Gallup US Daily extract carries no survey weight)","affect_regime":"yesterday-affect items break at 2013 (sample halves); ALL affect stats computed within 2013-2017","thriving_rule":"Thriving = current ladder >= 7 AND future ladder >= 8 (Gallup-Healthways definition)"},"constructs":{"evaluative":"how people RATE their lives (GSS very-happy, current ladder, Thriving, future ladder)","experiential":"how their DAYS FEEL (yesterday worry, stress, sadness, enjoyment, physical pain)","rule":"evaluative and experiential are reported separately and NEVER averaged into one well-being number"},"standardization":"cross-measure gaps shown as Cohen's d = (Black mean - White mean) / pooled within-measure SD; native units reported alongside","polarity_note":"for worry/stress/sadness/pain, 'Black higher' means MORE of that feeling (so a NEGATIVE gap = calmer, not a deficit)","boot_reps":800,"seed":20260613,"caveat":"association and self-report, not causation; the calm gap is replicated but debated; no single-summary 'happier' claim is made"},"gss_trend":[{"bin":"1972-1979","y0":1972,"y1":1979,"white_vh":0.356,"black_vh":0.223,"vh_gap":-0.133,"white_mean":2.246,"black_mean":1.972,"mean_gap":-0.275,"white_n":9314,"black_n":1232,"white_eff_n":7412,"black_eff_n":905,"mode_break":false,"suppressed":false},{"bin":"1980-1989","y0":1980,"y1":1989,"white_vh":0.348,"black_vh":0.225,"vh_gap":-0.123,"white_mean":2.248,"black_mean":2.016,"mean_gap":-0.233,"white_n":11566,"black_n":2162,"white_eff_n":8173,"black_eff_n":1178,"mode_break":false,"suppressed":false},{"bin":"1990-1999","y0":1990,"y1":1999,"white_vh":0.334,"black_vh":0.224,"vh_gap":-0.11,"white_mean":2.24,"black_mean":2.043,"mean_gap":-0.197,"white_n":10770,"black_n":1716,"white_eff_n":8544,"black_eff_n":1286,"mode_break":false,"suppressed":false},{"bin":"2000-2009","y0":2000,"y1":2009,"white_vh":0.347,"black_vh":0.263,"vh_gap":-0.084,"white_mean":2.246,"black_mean":2.057,"mean_gap":-0.19,"white_n":8078,"black_n":1471,"white_eff_n":6093,"black_eff_n":1025,"mode_break":false,"suppressed":false},{"bin":"2010-2019","y0":2010,"y1":2019,"white_vh":0.314,"black_vh":0.268,"vh_gap":-0.045,"white_mean":2.193,"black_mean":2.068,"mean_gap":-0.125,"white_n":8688,"black_n":1862,"white_eff_n":5914,"black_eff_n":1212,"mode_break":false,"suppressed":false},{"bin":"2020-2024","y0":2020,"y1":2024,"white_vh":0.219,"black_vh":0.196,"vh_gap":-0.022,"white_mean":2.006,"black_mean":1.933,"mean_gap":-0.073,"white_n":7865,"black_n":1586,"white_eff_n":3938,"black_eff_n":789,"mode_break":true,"suppressed":false}],"gss_years":[{"year":1972,"white_vh":0.317,"black_vh":0.187,"gap":-0.13,"white_n":1342,"black_n":260,"black_eff_n":210,"mode_break":false,"suppressed":false},{"year":1973,"white_vh":0.383,"black_vh":0.177,"gap":-0.206,"white_n":1306,"black_n":181,"black_eff_n":147,"mode_break":false,"suppressed":false},{"year":1974,"white_vh":0.374,"black_vh":0.268,"gap":-0.106,"white_n":1303,"black_n":170,"black_eff_n":140,"mode_break":false,"suppressed":false},{"year":1975,"white_vh":0.343,"black_vh":0.191,"gap":-0.151,"white_n":1318,"black_n":163,"black_eff_n":123,"mode_break":false,"suppressed":false},{"year":1976,"white_vh":0.369,"black_vh":0.158,"gap":-0.211,"white_n":1361,"black_n":129,"black_eff_n":98,"mode_break":false,"suppressed":false},{"year":1977,"white_vh":0.366,"black_vh":0.296,"gap":-0.071,"white_n":1336,"black_n":176,"black_eff_n":139,"mode_break":false,"suppressed":false},{"year":1978,"white_vh":0.343,"black_vh":0.288,"gap":-0.055,"white_n":1348,"black_n":153,"black_eff_n":97,"mode_break":false,"suppressed":false},{"year":1980,"white_vh":0.356,"black_vh":0.241,"gap":-0.115,"white_n":1313,"black_n":139,"black_eff_n":77,"mode_break":false,"suppressed":false},{"year":1982,"white_vh":0.355,"black_vh":0.224,"gap":-0.131,"white_n":1323,"black_n":506,"black_eff_n":344,"mode_break":false,"suppressed":false},{"year":1983,"white_vh":0.326,"black_vh":0.196,"gap":-0.13,"white_n":1400,"black_n":157,"black_eff_n":86,"mode_break":false,"suppressed":false},{"year":1984,"white_vh":0.363,"black_vh":0.248,"gap":-0.115,"white_n":1227,"black_n":168,"black_eff_n":109,"mode_break":false,"suppressed":false},{"year":1985,"white_vh":0.297,"black_vh":0.236,"gap":-0.061,"white_n":1336,"black_n":150,"black_eff_n":94,"mode_break":false,"suppressed":false},{"year":1986,"white_vh":0.346,"black_vh":0.204,"gap":-0.141,"white_n":1233,"black_n":179,"black_eff_n":136,"mode_break":false,"suppressed":false},{"year":1987,"white_vh":0.354,"black_vh":0.184,"gap":-0.17,"white_n":1204,"black_n":523,"black_eff_n":380,"mode_break":false,"suppressed":false},{"year":1988,"white_vh":0.371,"black_vh":0.28,"gap":-0.092,"white_n":1221,"black_n":184,"black_eff_n":141,"mode_break":false,"suppressed":false},{"year":1989,"white_vh":0.361,"black_vh":0.221,"gap":-0.14,"white_n":1309,"black_n":156,"black_eff_n":115,"mode_break":false,"suppressed":false},{"year":1990,"white_vh":0.361,"black_vh":0.259,"gap":-0.103,"white_n":1142,"black_n":156,"black_eff_n":109,"mode_break":false,"suppressed":false},{"year":1991,"white_vh":0.329,"black_vh":0.25,"gap":-0.078,"white_n":1256,"black_n":201,"black_eff_n":149,"mode_break":false,"suppressed":false},{"year":1993,"white_vh":0.33,"black_vh":0.222,"gap":-0.108,"white_n":1344,"black_n":177,"black_eff_n":130,"mode_break":false,"suppressed":false},{"year":1994,"white_vh":0.321,"black_vh":0.173,"gap":-0.148,"white_n":2471,"black_n":385,"black_eff_n":294,"mode_break":false,"suppressed":false},{"year":1996,"white_vh":0.326,"black_vh":0.246,"gap":-0.079,"white_n":2331,"black_n":401,"black_eff_n":313,"mode_break":false,"suppressed":false},{"year":1998,"white_vh":0.349,"black_vh":0.226,"gap":-0.123,"white_n":2226,"black_n":396,"black_eff_n":302,"mode_break":false,"suppressed":false},{"year":2000,"white_vh":0.368,"black_vh":0.271,"gap":-0.097,"white_n":2186,"black_n":417,"black_eff_n":326,"mode_break":false,"suppressed":false},{"year":2002,"white_vh":0.35,"black_vh":0.293,"gap":-0.056,"white_n":1093,"black_n":197,"black_eff_n":132,"mode_break":false,"suppressed":false},{"year":2004,"white_vh":0.335,"black_vh":0.325,"gap":-0.01,"white_n":1073,"black_n":160,"black_eff_n":122,"mode_break":false,"suppressed":false},{"year":2006,"white_vh":0.344,"black_vh":0.256,"gap":-0.087,"white_n":2174,"black_n":416,"black_eff_n":270,"mode_break":false,"suppressed":false},{"year":2008,"white_vh":0.326,"black_vh":0.208,"gap":-0.117,"white_n":1552,"black_n":281,"black_eff_n":191,"mode_break":false,"suppressed":false},{"year":2010,"white_vh":0.296,"black_vh":0.241,"gap":-0.055,"white_n":1546,"black_n":310,"black_eff_n":191,"mode_break":false,"suppressed":false},{"year":2012,"white_vh":0.34,"black_vh":0.223,"gap":-0.117,"white_n":1469,"black_n":299,"black_eff_n":199,"mode_break":false,"suppressed":false},{"year":2014,"white_vh":0.322,"black_vh":0.322,"gap":-0.0,"white_n":1885,"black_n":384,"black_eff_n":269,"mode_break":false,"suppressed":false},{"year":2016,"white_vh":0.301,"black_vh":0.242,"gap":-0.059,"white_n":2096,"black_n":487,"black_eff_n":317,"mode_break":false,"suppressed":false},{"year":2018,"white_vh":0.314,"black_vh":0.304,"gap":-0.01,"white_n":1692,"black_n":382,"black_eff_n":239,"mode_break":false,"suppressed":false},{"year":2021,"white_vh":0.19,"black_vh":0.169,"gap":-0.021,"white_n":3099,"black_n":458,"black_eff_n":311,"mode_break":true,"suppressed":false},{"year":2022,"white_vh":0.234,"black_vh":0.235,"gap":0.001,"white_n":2503,"black_n":559,"black_eff_n":216,"mode_break":true,"suppressed":false},{"year":2024,"white_vh":0.238,"black_vh":0.187,"gap":-0.051,"white_n":2263,"black_n":569,"black_eff_n":275,"mode_break":true,"suppressed":false}],"gss_headline":{"first_bin":"1972-1979","last_bin":"2020-2024","vh_gap_first":-0.133,"vh_gap_last":-0.022,"mean_gap_first":-0.275,"mean_gap_last":-0.073,"white_vh_first":0.356,"white_vh_last":0.219,"white_vh_decline":0.137},"measures":[{"key":"ladder","label":"Current ladder (0-10)","construct":"evaluative","block":"rate","polarity":1,"unit":"ladder","window":"2008-2017","white":7.043,"black":6.924,"gap":-0.119,"std_gap":-0.061,"ci_lo":-0.129,"ci_hi":-0.109,"white_n":1996076,"black_n":197706,"pooled_sd":1.9387},{"key":"thriving","label":"Thriving (curr>=7 & fut>=8)","construct":"evaluative","block":"rate","polarity":1,"unit":"share","window":"2008-2017","white":0.516,"black":0.546,"gap":0.03,"std_gap":0.061,"ci_lo":0.028,"ci_hi":0.033,"white_n":1912394,"black_n":190566,"pooled_sd":0.4996},{"key":"future","label":"Future ladder (~5 yrs, 0-10)","construct":"evaluative","block":"rate","polarity":1,"unit":"ladder","window":"2008-2017","white":7.423,"black":8.289,"gap":0.866,"std_gap":0.382,"ci_lo":0.856,"ci_hi":0.876,"white_n":1915005,"black_n":190953,"pooled_sd":2.2662},{"key":"enjoyment","label":"Enjoyment yesterday","construct":"experiential","block":"feel","polarity":1,"unit":"share","window":"2013-2017","white":0.87,"black":0.835,"gap":-0.034,"std_gap":-0.101,"ci_lo":-0.037,"ci_hi":-0.032,"white_n":647233,"black_n":77937,"pooled_sd":0.3405},{"key":"worry","label":"Worry yesterday","construct":"experiential","block":"feel","polarity":-1,"unit":"share","window":"2013-2017","white":0.278,"black":0.262,"gap":-0.016,"std_gap":-0.036,"ci_lo":-0.019,"ci_hi":-0.013,"white_n":647848,"black_n":78041,"pooled_sd":0.4471},{"key":"stress","label":"Stress yesterday","construct":"experiential","block":"feel","polarity":-1,"unit":"share","window":"2013-2017","white":0.37,"black":0.337,"gap":-0.033,"std_gap":-0.069,"ci_lo":-0.037,"ci_hi":-0.029,"white_n":647855,"black_n":78045,"pooled_sd":0.4818},{"key":"sadness","label":"Sadness yesterday","construct":"experiential","block":"feel","polarity":-1,"unit":"share","window":"2013-2017","white":0.157,"black":0.172,"gap":0.015,"std_gap":0.042,"ci_lo":0.012,"ci_hi":0.019,"white_n":532699,"black_n":62359,"pooled_sd":0.3651},{"key":"pain","label":"Physical pain yesterday","construct":"experiential","block":"feel","polarity":-1,"unit":"share","window":"2013-2017","white":0.255,"black":0.241,"gap":-0.014,"std_gap":-0.032,"ci_lo":-0.017,"ci_hi":-0.011,"white_n":647692,"black_n":78030,"pooled_sd":0.4348}],"income_worry":[{"cell":"High Income","white":0.248,"black":0.216,"gap":-0.032,"ci_lo":-0.039,"ci_hi":-0.025,"white_n":173554,"black_n":13151,"short":"High"},{"cell":"Mid Income","white":0.261,"black":0.225,"gap":-0.036,"ci_lo":-0.041,"ci_hi":-0.031,"white_n":229173,"black_n":24768,"short":"Mid"},{"cell":"Low Income","white":0.369,"black":0.329,"gap":-0.04,"ci_lo":-0.046,"ci_hi":-0.034,"white_n":152796,"black_n":29733,"short":"Low"}],"income_stress":[{"cell":"High Income","white":0.382,"black":0.32,"gap":-0.063,"ci_lo":-0.07,"ci_hi":-0.054,"white_n":173535,"black_n":13153,"short":"High"},{"cell":"Mid Income","white":0.357,"black":0.314,"gap":-0.044,"ci_lo":-0.05,"ci_hi":-0.038,"white_n":229170,"black_n":24762,"short":"Mid"},{"cell":"Low Income","white":0.427,"black":0.387,"gap":-0.04,"ci_lo":-0.046,"ci_hi":-0.034,"white_n":152812,"black_n":29739,"short":"Low"}],"not_composition":{"calm_holds_all_income":true,"stress_widens_with_income":true,"stress_gap_high":-0.063,"stress_gap_low":-0.04,"worry_gap_high":-0.032,"worry_gap_low":-0.04,"ae_calm_share":1.0,"ae_calm_all":true,"ae_n_cells":9},"age_edu_cells":[{"age":"18-34","edu":"High school","white":0.502,"black":0.391,"gap":-0.111,"ci_lo":-0.124,"ci_hi":-0.098,"white_n":26765,"black_n":7835,"calmer":true},{"age":"18-34","edu":"Some college","white":0.537,"black":0.434,"gap":-0.103,"ci_lo":-0.115,"ci_hi":-0.092,"white_n":31168,"black_n":8141,"calmer":true},{"age":"18-34","edu":"College+","white":0.531,"black":0.423,"gap":-0.108,"ci_lo":-0.121,"ci_hi":-0.095,"white_n":40955,"black_n":5743,"calmer":true},{"age":"35-54","edu":"High school","white":0.476,"black":0.376,"gap":-0.1,"ci_lo":-0.111,"ci_hi":-0.087,"white_n":34708,"black_n":7034,"calmer":true},{"age":"35-54","edu":"Some college","white":0.49,"black":0.391,"gap":-0.099,"ci_lo":-0.11,"ci_hi":-0.088,"white_n":48923,"black_n":8351,"calmer":true},{"age":"35-54","edu":"College+","white":0.481,"black":0.371,"gap":-0.109,"ci_lo":-0.119,"ci_hi":-0.099,"white_n":85125,"black_n":10035,"calmer":true},{"age":"55+","edu":"High school","white":0.276,"black":0.246,"gap":-0.03,"ci_lo":-0.037,"ci_hi":-0.021,"white_n":97723,"black_n":10388,"calmer":true},{"age":"55+","edu":"Some college","white":0.288,"black":0.252,"gap":-0.036,"ci_lo":-0.044,"ci_hi":-0.026,"white_n":113190,"black_n":9641,"calmer":true},{"age":"55+","edu":"College+","white":0.277,"black":0.237,"gap":-0.04,"ci_lo":-0.05,"ci_hi":-0.031,"white_n":158268,"black_n":9449,"calmer":true}],"context_races":[{"race":"White","n":647848,"worry":0.278,"stress":0.37,"ladder":7.043},{"race":"Black","n":78041,"worry":0.262,"stress":0.337,"ladder":6.924},{"race":"Hispanic","n":83286,"worry":0.327,"stress":0.386,"ladder":6.972},{"race":"Asian","n":19463,"worry":0.299,"stress":0.408,"ladder":7.062},{"race":"Other","n":13308,"worry":0.311,"stress":0.398,"ladder":6.735}]};
+
+const C = { black:"#3a6ea5", blackdk:"#28507a", white:"#c98a2b", whitedk:"#9a6716",
+            ink:"#1c1b1a", ink2:"#65615b", ink3:"#8d8881", hair:"#e3ded5", line:"#cdc7bb",
+            grid:"#ebe6dc", zero:"#46423c" };
+const fmt2 = d3.format(".2f"), fmt3 = d3.format(".3f"), pct = d3.format("+.0%");
+const sgn = d3.format("+.3f"), sgn2 = d3.format("+.2f");
+const tip = document.getElementById("tip");
+function showTip(html, ev){ tip.innerHTML = html; tip.style.opacity = 1;
+  const pad=14, w=tip.offsetWidth, h=tip.offsetHeight;
+  let x = ev.clientX + pad, y = ev.clientY + pad + window.scrollY;
+  if (x + w > window.innerWidth - 8) x = ev.clientX - w - pad;
+  if (x < 6) x = 6;
+  tip.style.left = x + "px"; tip.style.top = y + "px"; }
+function hideTip(){ tip.style.opacity = 0; }
+
+// ============================================================ CHART 1 : GSS convergence line
+(function gssChart(){
+  const root = d3.select("#gss");
+  const years = DATA.gss_years;
+  const W = 700, H = 380, m = {t:18, r:96, b:42, l:48};
+  const svg = root.append("svg").attr("viewBox", `0 0 ${W} ${H}`)
+    .attr("role","img").attr("aria-label","Line chart: Black and white very-happy shares, 1972 to 2024, converging over time.");
+  const x = d3.scaleLinear().domain([1971, 2025]).range([m.l, W-m.r]);
+  const y = d3.scaleLinear().domain([0.12, 0.42]).range([H-m.b, m.t]);
+
+  // gridlines
+  svg.append("g").selectAll("line").data(y.ticks(5)).join("line")
+    .attr("x1",m.l).attr("x2",W-m.r).attr("y1",d=>y(d)).attr("y2",d=>y(d))
+    .attr("stroke",C.grid).attr("stroke-width",1);
+  // axes
+  svg.append("g").attr("transform",`translate(0,${H-m.b})`).call(d3.axisBottom(x).tickValues([1972,1985,2000,2010,2021,2024]).tickFormat(d3.format("d")))
+    .call(g=>g.select(".domain").attr("stroke",C.line)).call(g=>g.selectAll("text").attr("font","12px var(--sans)").attr("fill",C.ink2));
+  svg.append("g").attr("transform",`translate(${m.l},0)`).call(d3.axisLeft(y).ticks(5).tickFormat(d3.format(".0%")))
+    .call(g=>g.select(".domain").remove()).call(g=>g.selectAll("text").attr("font","12px var(--sans)").attr("fill",C.ink2));
+
+  // mode-change marker
+  svg.append("line").attr("x1",x(2021)).attr("x2",x(2021)).attr("y1",m.t).attr("y2",H-m.b)
+    .attr("stroke",C.line).attr("stroke-dasharray","3 4").attr("stroke-width",1);
+  svg.append("text").attr("x",x(2021)+5).attr("y",m.t+11).attr("font","10.5px var(--sans)").attr("fill",C.ink3).text("2021 mode change");
+
+  const series = [
+    {key:"white_vh", color:C.white, label:"White", lab2:"white"},
+    {key:"black_vh", color:C.black, label:"Black", lab2:"Black"},
+  ];
+  const line = s => d3.line().x(d=>x(d.year)).y(d=>y(d[s.key])).curve(d3.curveMonotoneX);
+  // draw pre-2021 solid and 2021+ as separate dashed segment to respect the break
+  series.forEach(s=>{
+    const pre = years.filter(d=>d.year<=2018);
+    const post = years.filter(d=>d.year>=2021);
+    svg.append("path").datum(pre).attr("fill","none").attr("stroke",s.color).attr("stroke-width",2.6).attr("d",line(s));
+    svg.append("path").datum(post).attr("fill","none").attr("stroke",s.color).attr("stroke-width",2.6).attr("stroke-dasharray","2 4").attr("d",line(s));
+    // connector across the break, faint
+    const bridge = years.filter(d=>d.year>=2018 && d.year<=2021);
+    svg.append("path").datum(bridge).attr("fill","none").attr("stroke",s.color).attr("stroke-width",1).attr("opacity",.4).attr("stroke-dasharray","1 4").attr("d",line(s));
+    // endpoint label
+    const last = years[years.length-1];
+    svg.append("text").attr("x",x(last.year)+8).attr("y",y(last[s.key])).attr("dy","0.34em")
+      .attr("font","700 12.5px var(--sans)").attr("fill",s.color).text(s.label);
+  });
+  // points
+  series.forEach(s=>{
+    svg.append("g").selectAll("circle").data(years).join("circle")
+      .attr("cx",d=>x(d.year)).attr("cy",d=>y(d[s.key])).attr("r",d=>d.year>=2021?3.6:3)
+      .attr("fill",d=>d.year>=2021?"#fff":s.color).attr("stroke",s.color).attr("stroke-width",d=>d.year>=2021?2:1)
+      .style("cursor","pointer")
+      .on("pointerenter",(ev,d)=>{
+        showTip(`<div class="hdr">${d.year}${d.year>=2021?" &middot; web/mail mode":""}</div>
+          <div class="row"><span>White very-happy</span><span>${fmt3(d.white_vh)}</span></div>
+          <div class="row"><span>Black very-happy</span><span>${fmt3(d.black_vh)}</span></div>
+          <div class="row"><span>Gap (B&minus;W)</span><span>${sgn(d.gap)}</span></div>
+          <div class="row"><span class="tn">N white / Black</span><span class="tn">${d3.format(",")(d.white_n)} / ${d3.format(",")(d.black_n)}</span></div>`, ev);
+      }).on("pointermove",ev=>{ const t=tip; t.style.left=(ev.clientX+14)+"px"; t.style.top=(ev.clientY+14+window.scrollY)+"px"; })
+      .on("pointerleave",hideTip);
+  });
+
+  d3.select("#chips-gss").html(
+    `<span><span class="sw" style="background:${C.black}"></span>Black</span>
+     <span><span class="sw" style="background:${C.white}"></span>White</span>
+     <span style="color:var(--ink3)">hollow = 2021+ self-administration (mode change)</span>`);
+})();
+
+// ============================================================ CHART 2 : diverging panel (signature)
+(function divergeChart(){
+  const root = d3.select("#diverge");
+  const SHORT = {ladder:"Current ladder",thriving:"Thriving",future:"Future outlook",
+    enjoyment:"Enjoyment",worry:"Worry",stress:"Stress",sadness:"Sadness",pain:"Physical pain"};
+  const measures = DATA.measures.slice();
+  const evalOrder = ["ladder","thriving","future"];
+  const feelOrder = ["enjoyment","worry","stress","sadness","pain"];
+  const ordered = [...evalOrder, ...feelOrder].map(k=>measures.find(mm=>mm.key===k)).filter(Boolean);
+
+  let mode = "std";
+  const W = 760, rowH = 36, padTop = 46, blockGap = 52, padBot = 30;
+  const m = {l:152, r:134};
+  const LBLX = 18;
+
+  function layout(){
+    let yPos = padTop, rows = [], last = null;
+    ordered.forEach(d=>{ if(d.block!==last) yPos += blockGap; rows.push({d, y:yPos}); yPos += rowH; last = d.block; });
+    return {rows, H: yPos + padBot};
+  }
+  const {rows, H} = layout();
+  const topY = padTop;
+  const lastY = rows[rows.length-1].y;
+  const botY = lastY + 18;
+
+  const svg = root.append("svg").attr("viewBox",`0 0 ${W} ${H}`)
+    .attr("role","img")
+    .attr("aria-label","Diverging dot chart: the Black-minus-white gap on eight well-being measures. Life-evaluation rows and daily-feeling rows fall on opposite sides of zero.");
+
+  const blocks = [
+    {key:"rate", name:"How they rate their lives", note:"evaluative — a verdict on life"},
+    {key:"feel", name:"How their days feel", note:"experiential — yesterday’s worry, stress, joy"},
+  ];
+
+  function draw(){
+    svg.selectAll("*").remove();
+    const f = d => mode==="std" ? (1/d.pooled_sd) : 1;
+    const gOf = d => mode==="std" ? d.std_gap : d.gap;
+    // domain fits every measure (future outlook included) so each is a real dot on one scale
+    const rawExt = d3.max(ordered, d=>Math.max(Math.abs(d.ci_lo*f(d)), Math.abs(d.ci_hi*f(d)), Math.abs(gOf(d))));
+    const ext = rawExt * 1.12;
+    const x = d3.scaleLinear().domain([-ext, ext]).range([m.l, W-m.r]);
+    const xc = v => Math.max(m.l, Math.min(W-m.r, x(v)));
+
+    // gridlines + tick labels
+    const ticks = x.ticks(6).filter(t=>Math.abs(t)>1e-9);
+    ticks.forEach(t=>{
+      svg.append("line").attr("x1",x(t)).attr("x2",x(t)).attr("y1",topY).attr("y2",botY)
+        .attr("stroke",C.line).attr("stroke-opacity",0.20).attr("stroke-width",1);
+      svg.append("text").attr("x",x(t)).attr("y",botY+15).attr("text-anchor","middle")
+        .attr("font","10px var(--mono)").attr("fill",C.ink3).text(sgn2(t));
+    });
+
+    // zero baseline
+    svg.append("line").attr("x1",x(0)).attr("x2",x(0)).attr("y1",topY).attr("y2",botY)
+      .attr("stroke",C.zero).attr("stroke-width",1.6);
+
+    // axis title + direction cues
+    svg.append("text").attr("x",x(0)).attr("y",20).attr("text-anchor","middle")
+      .attr("font","700 12px var(--sans)").attr("fill",C.ink)
+      .text(mode==="std"?"Gap in standard deviations (Cohen’s d)":"Gap in native units");
+    svg.append("text").attr("x",x(0)-10).attr("y",37).attr("text-anchor","end")
+      .attr("font","11.5px var(--sans)").attr("fill",C.ink2).text("← white higher");
+    svg.append("text").attr("x",x(0)+10).attr("y",37).attr("text-anchor","start")
+      .attr("font","11.5px var(--sans)").attr("fill",C.ink2).text("Black higher →");
+
+    // block subheaders, each in its own band above its rows, with a hairline rule
+    blocks.forEach(b=>{
+      const br = rows.filter(r=>r.d.block===b.key);
+      if(!br.length) return;
+      const hy = br[0].y - 26;
+      svg.append("text").attr("x",LBLX).attr("y",hy).attr("font","700 12.5px var(--sans)").attr("fill",C.ink).text(b.name);
+      svg.append("text").attr("x",LBLX).attr("y",hy+14).attr("font","10.5px var(--sans)").attr("fill",C.ink3).text(b.note);
+      svg.append("line").attr("x1",LBLX).attr("x2",W-m.r).attr("y1",hy+22).attr("y2",hy+22)
+        .attr("stroke",C.line).attr("stroke-opacity",0.45).attr("stroke-width",1);
+    });
+
+    rows.forEach(({d,y})=>{
+      const ff = f(d), g = gOf(d);
+      const lo = d.ci_lo*ff, hi = d.ci_hi*ff;
+      // row label (short, left-aligned)
+      svg.append("text").attr("x",LBLX).attr("y",y).attr("dy","0.32em").attr("text-anchor","start")
+        .attr("font","13px var(--sans)").attr("fill",C.ink).text(SHORT[d.key]||d.label);
+      // confidence whisker
+      svg.append("line").attr("x1",xc(lo)).attr("x2",xc(hi)).attr("y1",y).attr("y2",y)
+        .attr("stroke",C.line).attr("stroke-width",2.6).attr("stroke-linecap","round");
+      const col = (d.polarity>0 ? (g>0?C.black:C.white) : (g<0?C.black:C.white));
+      const mark = svg.append("circle").attr("cx",xc(g)).attr("cy",y).attr("r",6.2)
+        .attr("fill",col).attr("stroke","#fff").attr("stroke-width",1.5);
+      // right-hand native value column
+      const valTxt = d.unit==="ladder" ? `${fmt2(d.black)} vs ${fmt2(d.white)}` : `${fmt3(d.black)} vs ${fmt3(d.white)}`;
+      svg.append("text").attr("x",W-m.r+16).attr("y",y).attr("dy","0.32em")
+        .attr("font","11px var(--mono)").attr("fill",C.ink3).text(valTxt);
+      mark.style("cursor","pointer")
+        .on("pointerenter",ev=>{
+          const dir = d.polarity>0 ? (g>0?"Black rate higher":"white rate higher")
+                                   : (g<0?"Black report less (calmer)":"Black report more");
+          showTip(`<div class="hdr">${d.label}</div>
+            <div class="row"><span>White</span><span>${d.unit==="ladder"?fmt2(d.white):fmt3(d.white)}</span></div>
+            <div class="row"><span>Black</span><span>${d.unit==="ladder"?fmt2(d.black):fmt3(d.black)}</span></div>
+            <div class="row"><span>Gap (B&minus;W)</span><span>${sgn(d.gap)}</span></div>
+            <div class="row"><span>Std (Cohen d)</span><span>${sgn2(d.std_gap)}</span></div>
+            <div class="row"><span class="tn">95% CI</span><span class="tn">[${sgn(d.ci_lo)}, ${sgn(d.ci_hi)}]</span></div>
+            <div class="row"><span class="tn">${d.construct}</span><span class="tn">${dir}</span></div>`, ev);
+        }).on("pointermove",ev=>{ tip.style.left=(ev.clientX+14)+"px"; tip.style.top=(ev.clientY+14+window.scrollY)+"px"; })
+        .on("pointerleave",hideTip);
+    });
+
+  }
+  draw();
+
+  d3.select("#chips-div").html(
+    `<span><span class="sw" style="background:${C.black}"></span>dot leans Black</span>
+     <span><span class="sw" style="background:${C.white}"></span>dot leans white</span>
+     <span style="color:var(--ink3)">right column: Black vs white native value</span>`);
+
+  const bStd=document.getElementById("u-std"), bNat=document.getElementById("u-nat");
+  bStd.onclick=()=>{mode="std";bStd.setAttribute("aria-pressed","true");bNat.setAttribute("aria-pressed","false");draw();};
+  bNat.onclick=()=>{mode="nat";bNat.setAttribute("aria-pressed","true");bStd.setAttribute("aria-pressed","false");draw();};
+})();
+
+// ============================================================ CHART 3 : calm gap not-composition
+(function calmChart(){
+  const root = d3.select("#calm");
+  let view = "inc";
+  const W = 700, m = {t:54, r:40, b:40, l:150};
+  const svg = root.append("svg").attr("viewBox",`0 0 ${W} 360`)
+    .attr("role","img").attr("aria-label","Dot chart: Black-minus-white worry and stress gap by income, all negative, widening with income.");
+
+  function rowsFor(){
+    if(view==="inc"){
+      // interleave stress + worry per income level
+      const out=[];
+      DATA.income_stress.forEach((s,i)=>{
+        const w = DATA.income_worry[i];
+        out.push({label:s.short+" income", sub:"stress", d:s, kind:"stress"});
+        out.push({label:"", sub:"worry", d:w, kind:"worry"});
+      });
+      return out;
+    } else {
+      return DATA.age_edu_cells.map(c=>({label:`${c.age} · ${c.edu}`, sub:"stress", d:c, kind:"stress"}));
+    }
+  }
+
+  function draw(){
+    svg.selectAll("*").remove();
+    const rows = rowsFor();
+    const H = m.t + rows.length*30 + m.b;
+    svg.attr("viewBox",`0 0 ${W} ${H}`);
+    const ext = d3.max(rows, r=>Math.max(Math.abs(r.d.ci_lo),Math.abs(r.d.ci_hi),Math.abs(r.d.gap)));
+    const x = d3.scaleLinear().domain([-ext*1.15, ext*0.5]).range([m.l, W-m.r]);
+    const y = d3.scalePoint().domain(d3.range(rows.length)).range([m.t, H-m.b]).padding(0.6);
+
+    // zero line
+    svg.append("line").attr("x1",x(0)).attr("x2",x(0)).attr("y1",m.t-26).attr("y2",H-m.b+6)
+      .attr("stroke",C.zero).attr("stroke-width",1.4);
+    svg.append("text").attr("x",x(0)-8).attr("y",m.t-30).attr("text-anchor","end").attr("font","11px var(--sans)").attr("fill",C.ink2).text("← Black calmer");
+    svg.append("text").attr("x",x(0)+8).attr("y",m.t-30).attr("text-anchor","start").attr("font","11px var(--sans)").attr("fill",C.ink2).text("Black more agitated →");
+    // x axis
+    svg.append("g").attr("transform",`translate(0,${H-m.b})`).call(d3.axisBottom(x).ticks(5).tickFormat(sgn2))
+      .call(g=>g.select(".domain").attr("stroke",C.line)).call(g=>g.selectAll("text").attr("font","11px var(--sans)").attr("fill",C.ink2));
+
+    rows.forEach((r,i)=>{
+      const yy=y(i);
+      if(r.label) svg.append("text").attr("x",m.l-58).attr("y",yy).attr("dy","0.32em").attr("text-anchor","end")
+        .attr("font","12.5px var(--sans)").attr("fill",C.ink).text(r.label);
+      svg.append("text").attr("x",m.l-12).attr("y",yy).attr("dy","0.32em").attr("text-anchor","end")
+        .attr("font","11px var(--mono)").attr("fill",r.kind==="stress"?C.blackdk:C.ink3).text(r.sub);
+      // whisker
+      svg.append("line").attr("x1",x(r.d.ci_lo)).attr("x2",x(r.d.ci_hi)).attr("y1",yy).attr("y2",yy)
+        .attr("stroke",C.line).attr("stroke-width",2.2).attr("stroke-linecap","round");
+      svg.append("circle").attr("cx",x(r.d.gap)).attr("cy",yy).attr("r",5.6)
+        .attr("fill", r.d.gap<0 ? C.black : C.white).attr("stroke","#fff").attr("stroke-width",1.3).style("cursor","pointer")
+        .on("pointerenter",ev=>{
+          showTip(`<div class="hdr">${r.label||r.d.cell||""} &middot; ${r.sub}</div>
+            <div class="row"><span>White</span><span>${fmt3(r.d.white)}</span></div>
+            <div class="row"><span>Black</span><span>${fmt3(r.d.black)}</span></div>
+            <div class="row"><span>Gap (B&minus;W)</span><span>${sgn(r.d.gap)}</span></div>
+            <div class="row"><span class="tn">95% CI</span><span class="tn">[${sgn(r.d.ci_lo)}, ${sgn(r.d.ci_hi)}]</span></div>
+            <div class="row"><span class="tn">N white / Black</span><span class="tn">${d3.format(",")(r.d.white_n)} / ${d3.format(",")(r.d.black_n)}</span></div>`, ev);
+        }).on("pointermove",ev=>{ tip.style.left=(ev.clientX+14)+"px"; tip.style.top=(ev.clientY+14+window.scrollY)+"px"; })
+        .on("pointerleave",hideTip);
+    });
+  }
+  draw();
+
+  d3.select("#chips-calm").html(
+    `<span><span class="sw" style="background:${C.black}"></span>Black calmer (gap &lt; 0)</span>
+     <span style="color:var(--ink3)">whisker = 95% bootstrap CI</span>`);
+
+  const bInc=document.getElementById("c-inc"), bAe=document.getElementById("c-ae");
+  bInc.onclick=()=>{view="inc";bInc.setAttribute("aria-pressed","true");bAe.setAttribute("aria-pressed","false");draw();};
+  bAe.onclick=()=>{view="ae";bAe.setAttribute("aria-pressed","true");bInc.setAttribute("aria-pressed","false");draw();};
+})();
+
+// ============================================================ fill prose numbers from DATA (traceability)
+(function fillProse(){
+  const g = DATA.gss_headline, M = Object.fromEntries(DATA.measures.map(m=>[m.key,m]));
+  const nc = DATA.not_composition;
+  const set=(id,v)=>{const e=document.getElementById(id); if(e) e.textContent=v;};
+  set("p-gapfirst", fmt2(g.vh_gap_first));
+  set("p-gapfirstpts", Math.round(Math.abs(g.vh_gap_first)*100));
+  set("p-whitefirst", fmt2(g.white_vh_first));
+  set("p-whitelast", fmt2(g.white_vh_last));
+  set("p-whitedecl", Math.round(g.white_vh_decline*100));
+  set("p-curb", fmt2(M.ladder.black)); set("p-curw", fmt2(M.ladder.white));
+  set("p-worryb", fmt3(M.worry.black)); set("p-worryw", fmt3(M.worry.white));
+  set("p-stressb", fmt3(M.stress.black)); set("p-stressw", fmt3(M.stress.white));
+  set("p-sadb", fmt3(M.sadness.black)); set("p-sadw", fmt3(M.sadness.white));
+  const sh = DATA.income_stress.find(r=>r.short==="High");
+  set("p-sthi-w", fmt3(sh.white)); set("p-sthi-b", fmt3(sh.black));
+  set("p-sthi-gap", Math.round(Math.abs(sh.gap)*100));
+  set("p-aecells", DATA.age_edu_cells.length);
+  set("p-aeshare", nc.ae_calm_all ? "every one" : Math.round(nc.ae_calm_share*DATA.age_edu_cells.length)+" of "+DATA.age_edu_cells.length);
+})();
+</script>
+<!--SL_BOOKNAV_START-->
+<style>
+.slbn{font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;background:#0f1417;border-top:1px solid #27313a;color:#9fb0ba;padding:24px 20px 40px;margin:48px 0 0}
+.slbn-in{max-width:1080px;margin:0 auto;display:flex;align-items:stretch;gap:12px}
+.slbn a{flex:1 1 0;min-width:0;text-decoration:none;color:inherit;border:1px solid #27313a;border-radius:10px;padding:13px 15px;display:flex;flex-direction:column;gap:4px;background:#161d22;transition:border-color .15s,transform .15s}
+.slbn a:hover{border-color:#3fa9a0;transform:translateY(-2px)}
+.slbn a:focus-visible{outline:2px solid #3fa9a0;outline-offset:2px}
+.slbn a.slbn-next{text-align:right;align-items:flex-end}
+.slbn a.slbn-toc{flex:0 0 auto;min-width:120px;justify-content:center;align-items:center;text-align:center}
+.slbn .slbn-dir{font:700 10px/1 inherit;letter-spacing:.13em;text-transform:uppercase;color:#6b7c87}
+.slbn .slbn-ttl{font:700 14px/1.3 inherit;color:#eef2f4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.slbn a.slbn-disabled{opacity:.38;pointer-events:none}
+@media(max-width:640px){.slbn-in{flex-wrap:wrap}.slbn a{flex:1 1 100%}.slbn a.slbn-next{text-align:left;align-items:flex-start}.slbn a.slbn-toc{order:-1}}
+</style>
+<nav class="slbn" aria-label="Book navigation"><div class="slbn-in"><a class="slbn-prev" href="../read.html?ch=happiness-moved-inside-borders" target="_top"><span class="slbn-dir">‹ Previous</span><span class="slbn-ttl">Happiness Moved Inside Borders</span></a><a class="slbn-toc" href="../index.html#book" target="_top"><span class="slbn-dir">The Scissors</span><span class="slbn-ttl">Chapter 30 / 36</span></a><a class="slbn-next" href="../read.html?ch=gender-gap-two-ways" target="_top"><span class="slbn-dir">Next ›</span><span class="slbn-ttl">The Gender Well-Being Paradox, Measured Two Ways</span></a></div></nav>
+<!--SL_BOOKNAV_END-->
+</body>
+</html>

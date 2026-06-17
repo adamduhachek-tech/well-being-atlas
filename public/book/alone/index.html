@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alone: The Long Retreat of In-Person Social Life</title>
+<meta name="description" content="GSS, 1974-2024: weekly in-person socializing has thinned across half a century, and the people who report no companionship rate their lives far lower. A modest, broad withdrawal - and the happiness that travels with it.">
+<style>
+  :root{
+    --paper:#f4f2ee;
+    --panel:#ffffff;
+    --panel-edge:#e2ddd3;
+    --ink:#1d1c1a;
+    --ink-dim:#56524b;
+    --ink-faint:#8b8678;
+    --hairline:#e7e2d7;
+    --behav:#2f6f8f;       /* behavioral / social - slate blue */
+    --behav-soft:#d4e4ec;
+    --eval:#9c5a2b;        /* evaluative happiness - burnt amber */
+    --eval-soft:#f0ddc8;
+    --iso:#7a3b52;         /* isolation / loneliness - muted plum */
+    --iso-soft:#ecd6de;
+    --mode:#b08a3e;
+    --maxw:720px;
+    --figw:1000px;
+    --sans:"Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --serif:"Iowan Old Style", Charter, "Sitka Text", Cambria, Georgia, serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font:18px/1.65 var(--serif);
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  .skip{position:absolute; left:-9999px; top:0; background:var(--ink); color:var(--paper); padding:.5em 1em; z-index:40; font-family:var(--sans)}
+  .skip:focus{left:8px; top:8px}
+  a{color:var(--behav); text-decoration-color:rgba(47,111,143,.42); text-underline-offset:3px}
+  a:focus-visible, button:focus-visible{outline:2.5px solid var(--iso); outline-offset:2px}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 20px}
+  .wrap-wide{max-width:var(--figw); margin:0 auto; padding:0 20px}
+
+  header{position:relative; padding:78px 0 8px; overflow:hidden}
+  .ghost{
+    position:absolute; top:-12px; left:50%; transform:translateX(-50%);
+    font:900 clamp(120px,30vw,300px)/0.9 var(--sans); letter-spacing:.02em;
+    color:transparent; -webkit-text-stroke:1.4px rgba(29,28,26,.085);
+    user-select:none; pointer-events:none; white-space:nowrap;
+  }
+  .kicker{font:700 12px/1.5 var(--sans); letter-spacing:.24em; text-transform:uppercase; color:var(--iso)}
+  h1{
+    font:900 clamp(42px,7.6vw,76px)/1.0 var(--sans); letter-spacing:-.028em;
+    margin:.22em 0 .3em; text-wrap:balance;
+  }
+  .dek{font-size:clamp(19px,2.7vw,23px); line-height:1.46; color:var(--ink-dim); margin:0 0 22px; max-width:36em}
+  .byline{
+    font:400 13px/1.7 var(--sans); color:var(--ink-faint);
+    border-top:2px solid var(--ink); padding-top:12px; display:flex; gap:18px; flex-wrap:wrap;
+  }
+  .byline b{color:var(--ink-dim); font-weight:600}
+
+  main{position:relative; z-index:1}
+  h2{font:800 clamp(25px,3.8vw,33px)/1.16 var(--sans); letter-spacing:-.018em; margin:2.05em 0 .5em}
+  p{margin:0 0 1.12em}
+  strong{color:#000}
+  .lead-in::first-letter{
+    float:left; font:900 64px/0.78 var(--sans); color:var(--iso);
+    margin:6px 10px 0 0;
+  }
+  .tagline{font:700 11px/1 var(--sans); letter-spacing:.16em; text-transform:uppercase; padding:4px 8px; border-radius:3px; white-space:nowrap}
+  .tag-behav{background:var(--behav-soft); color:var(--behav)}
+  .tag-eval{background:var(--eval-soft); color:var(--eval)}
+  .tag-iso{background:var(--iso-soft); color:var(--iso)}
+
+  .statrow{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:30px 0 8px}
+  .stat{background:var(--panel); border:1px solid var(--panel-edge); border-top:3px solid var(--ink-faint); padding:13px 14px 11px}
+  .stat.behav{border-top-color:var(--behav)}
+  .stat.eval{border-top-color:var(--eval)}
+  .stat.iso{border-top-color:var(--iso)}
+  .stat .lab{font:700 10.5px/1.4 var(--sans); letter-spacing:.11em; text-transform:uppercase; color:var(--ink-faint)}
+  .stat .val{font:800 clamp(19px,2.5vw,26px)/1.12 var(--sans); margin-top:6px; font-variant-numeric:tabular-nums}
+  .stat.behav .val{color:var(--behav)} .stat.eval .val{color:var(--eval)} .stat.iso .val{color:var(--iso)}
+  .stat .sub{font:400 12px/1.42 var(--sans); color:var(--ink-dim); margin-top:4px}
+  @media(max-width:680px){ .statrow{grid-template-columns:1fr 1fr} }
+  @media(max-width:420px){ .statrow{grid-template-columns:1fr} }
+
+  figure{margin:38px 0}
+  .fig{
+    background:var(--panel); border:1px solid var(--panel-edge);
+    padding:20px 20px 14px; position:relative;
+    box-shadow:0 22px 48px -36px rgba(50,40,20,.4);
+  }
+  .figtitle{font:800 18px/1.3 var(--sans); margin:0 0 3px}
+  .figsub{font:400 13.5px/1.55 var(--sans); color:var(--ink-dim); margin:0 0 10px; max-width:56em}
+  figcaption{font:400 12.5px/1.6 var(--sans); color:var(--ink-faint); margin-top:10px}
+  .chart{position:relative}
+  .chart svg{display:block; width:100%; height:auto}
+
+  .controls{display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin:8px 0 10px; font-family:var(--sans)}
+  button.mbtn{
+    font:700 12.5px/1.2 var(--sans); letter-spacing:.02em; cursor:pointer;
+    background:var(--paper); color:var(--ink-dim); border:1.5px solid var(--panel-edge);
+    border-radius:999px; padding:8px 14px; transition:all .15s;
+  }
+  button.mbtn:hover{border-color:var(--ink-dim)}
+  button.mbtn[aria-pressed="true"]{background:var(--ink); border-color:var(--ink); color:var(--paper)}
+  .ctl-label{font:700 11px/1 var(--sans); letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint); margin-right:2px}
+
+  .modecall{
+    display:flex; gap:10px; align-items:flex-start;
+    background:#fbf4e2; border:1px solid #e6d3a0; border-left:4px solid var(--mode);
+    padding:10px 14px; margin:6px 0 12px; font:400 13px/1.55 var(--sans); color:#5a4a22;
+  }
+  .modecall b{color:#3f3315}
+  .modecall .ex{font:900 15px/1.2 var(--sans); color:var(--mode); flex:none}
+
+  .readout{
+    font:400 13px/1.6 var(--sans); color:var(--ink-dim);
+    border-top:1px dashed var(--hairline); padding-top:8px; margin-top:6px; min-height:2.6em;
+  }
+  .readout b{color:var(--ink); font-variant-numeric:tabular-nums}
+
+  .tip{
+    position:absolute; pointer-events:none; z-index:20; display:none;
+    background:#241f1a; color:#f4efe4; border-radius:6px; padding:9px 11px;
+    font:400 12.5px/1.5 var(--sans); max-width:240px; box-shadow:0 8px 24px rgba(0,0,0,.35);
+  }
+  .tip b{color:#fff} .tip .trg{color:#cfc6b4; font-size:11px; letter-spacing:.06em; text-transform:uppercase}
+  .tip .num{font-variant-numeric:tabular-nums}
+
+  .pull{
+    border-left:3px solid var(--iso); padding:2px 0 2px 18px; margin:26px 0;
+    font:600 21px/1.42 var(--serif); color:var(--ink);
+  }
+
+  .notes{
+    margin-top:62px; border-top:2px solid var(--ink); padding:26px 0 70px;
+    font:400 14px/1.7 var(--sans); color:var(--ink-dim);
+  }
+  .notes h2{font-size:19px; margin:0 0 14px}
+  .notes ul{padding-left:1.2em; margin:0}
+  .notes li{margin-bottom:9px}
+  .smallcaps{font-variant:small-caps; letter-spacing:.04em}
+  code{font:13px/1.4 ui-monospace, "Cascadia Code", Consolas, monospace; background:#efe9dd; padding:1px 5px; border-radius:3px}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to article</a>
+<header>
+  <div class="ghost" aria-hidden="true">alone</div>
+  <div class="wrap">
+    <p class="kicker">General Social Survey &middot; 1974&ndash;2024 &middot; United States</p>
+    <h1>Alone</h1>
+    <p class="dek">For fifty years the General Social Survey has asked Americans how often they spend a social evening with neighbors, with friends, at a bar. The answer has been quietly shrinking. And the people who say they lack for company rate their lives far below everyone else.</p>
+    <div class="byline">
+      <span><b>Data</b> GSS cumulative file, 1974&ndash;2024, weight <code>wtssps</code></span>
+      <span><b>Sample</b> 45,294 responses on the social-evening items</span>
+      <span><b>Reading</b> behavioral, evaluative, and isolation measures &mdash; kept apart</span>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <div class="wrap">
+    <p class="lead-in">Nothing in this data collapses. That is the first thing to say, because the easy version of the story &mdash; a nation falling off a cliff into solitude &mdash; is not what the numbers show. The decline of in-person social life in America has been slow, partial, and uneven, a drift rather than a plunge. Even at its mid-1970s peak, only about a quarter of Americans spent a social evening with friends from outside the neighborhood as often as once a week. The thinning is real, and it has a cost. But it is measured in single digits per decade, not in a vanishing of social life.</p>
+    <p>Start with neighbors, where the retreat is steepest. In the mid-1970s, <strong>28.4%</strong> of Americans spent a social evening with someone in their neighborhood at least weekly. By 2024 that share was <strong>16.1%</strong> &mdash; a fall of about 12 points, the largest drop among the four social-evening items the GSS has tracked since 1974. The corner tavern emptied too: weekly bar or tavern socializing slid from <strong>10.9%</strong> to <strong>5.5%</strong>, cut roughly in half. Socializing with friends from outside the neighborhood declined more gently, from 22.7% to 16.2% &mdash; about 6 points across half a century.</p>
+    <p>These are different rooms of the same house, and they emptied at different rates. The neighborhood &mdash; the unplanned, low-effort sociability of the people who happen to live nearby &mdash; thinned the most. <span class="tagline tag-behav">Behavioral</span>&ensp;Each of these is a behavioral measure: how often you actually did something, not how you felt about it. The GSS asks respondents to place each kind of evening on a scale from never to almost daily; reported here is the share at <em>weekly or more</em>.</p>
+
+    <div class="statrow" role="list" aria-label="Headline numbers">
+      <div class="stat behav" role="listitem"><div class="lab">Neighbors, weekly+ &middot; behavioral</div><div class="val">28.4 &rarr; 16.1%</div><div class="sub">steepest fall, about 12 points</div></div>
+      <div class="stat behav" role="listitem"><div class="lab">Bar / tavern, weekly+ &middot; behavioral</div><div class="val">10.9 &rarr; 5.5%</div><div class="sub">roughly halved since the 1970s</div></div>
+      <div class="stat eval" role="listitem"><div class="lab">&ldquo;Very happy&rdquo; &middot; evaluative</div><div class="val">34.8 &rarr; 23.6%</div><div class="sub">down about 11 points, 1976&ndash;2024</div></div>
+      <div class="stat iso" role="listitem"><div class="lab">Loneliness gap &middot; 2018 snapshot</div><div class="val">35.5 pts</div><div class="sub">very-happy gap, never- vs ever-lonely</div></div>
+    </div>
+  </div>
+
+  <div class="wrap-wide">
+    <figure>
+      <div class="fig">
+        <p class="figtitle">Fifty years of social evenings, thinning</p>
+        <p class="figsub">Weighted share of Americans who spend a social evening at least weekly, by venue, in two-year pooled bins. Young adults (18&ndash;34) tracked alongside everyone, where the items allow. The 2021&ndash;22 push-to-web window is shaded on every panel &mdash; read shifts across it with caution.</p>
+        <div class="controls" id="age-controls" role="group" aria-label="Choose age group"></div>
+        <div class="modecall"><span class="ex" aria-hidden="true">!</span><span><b>Mind the shaded band.</b> The GSS moved to push-to-web data collection for 2021 and 2022 (a COVID adaptation). Mode changes can move reported levels on their own, so part of the deep 2021 dip &mdash; and some of the partial 2022 rebound &mdash; may be the survey, not the times.</span></div>
+        <div class="chart" id="smallmult-chart"></div>
+        <div class="readout" id="sm-readout">Hover or focus a point for the year, the share, and its sample size.</div>
+        <figcaption>Bins pool adjacent survey years; cells with effective N below 50 are suppressed. The neighbor and bar items are shown for all adults only (young-adult cells are thin in some years); friends and neighbors carry the young-adult overlay. Behavioral measure: in-person socializing frequency, share at weekly or more.</figcaption>
+      </div>
+    </figure>
+  </div>
+
+  <div class="wrap">
+    <h2>The young pulled back fastest from friends</h2>
+    <p>Young adults have always socialized with friends more than their elders &mdash; that is what being young, unsettled, and unencumbered tends to look like. But the gap has narrowed from the top down. Among 18-to-34-year-olds, weekly-or-more socializing with friends fell from <strong>35.6%</strong> in the mid-1970s to <strong>27.7%</strong> in 2024, a drop of about 8 points &mdash; steeper than the roughly 6-point fall for the population as a whole. The most social cohort gave up the most ground.</p>
+    <p>This is the cut that has drawn the loudest argument. One camp reads a generation's retreat from face-to-face friendship as the social signature of smartphones and feeds; the critics answer that the effect sizes are small, the timing is loose, and a few points of decline spread over decades is not a mental-health emergency. The GSS cannot settle that fight. It can only show the shape: a real, modest withdrawal that began long before the iPhone and continued after it.</p>
+
+    <p class="pull">A drift, not a plunge &mdash; but the people at the bottom of it rate their lives very differently from everyone else.</p>
+
+    <h2>The happiness that travels with company</h2>
+    <p>The GSS also asks, every year, a blunt evaluative question: taken all together, how would you say things are these days &mdash; would you say you are very happy, pretty happy, or not too happy? <span class="tagline tag-eval">Evaluative</span>&ensp;This is a global judgment about one's life, not a report of yesterday's mood. The share answering <strong>very happy</strong> has drifted down alongside the social items, from <strong>34.8%</strong> in the mid-1970s to <strong>23.6%</strong> in 2024 &mdash; though the sharpest single move is the 2021 web-mode year, which the same caution applies to.</p>
+    <p>Pool the most recent decade and the cross-sectional pattern is clear, if gentle. To avoid leaning on any one frequency item &mdash; the friends-only gradient is bumpy, with the very-most-frequent socializers looking slightly <em>less</em> happy than the merely-frequent &mdash; the cleaner signal comes from a simple composite: how many of the four social activities a person does at least weekly. Among those who do <strong>none</strong> of the four weekly, <strong>23.5%</strong> call themselves very happy. Among those who do <strong>three</strong>, <strong>31.1%</strong> do &mdash; a gap of about 8 points. More weekly company, modestly more happiness. The relationship is real and it is small, which is the honest size of most well-being effects.</p>
+  </div>
+
+  <div class="wrap-wide">
+    <figure>
+      <div class="fig">
+        <p class="figtitle">The happiness cost of isolation, two ways</p>
+        <p class="figsub">Left: the share calling themselves &ldquo;very happy&rdquo; rises with the number of weekly social activities (composite, 2014&ndash;2024 pooled). Right: in a single 2018 module, happiness falls steeply with how often people say they lack companionship. Both relate an evaluative measure to a behavioral or isolation measure &mdash; never the same axis.</p>
+        <div class="chart" id="gradient-chart"></div>
+        <div class="readout" id="grad-readout">Hover or focus a bar for the exact share and sample size.</div>
+        <figcaption>Left panel: 2014&ndash;2024 pooled, weighted; the raw single-item friends gradient is drawn faintly behind to show its non-monotone bump honestly. Right panel: 2018 loneliness module only (N&nbsp;&asymp;&nbsp;1,167) &mdash; a single-year snapshot, never a trend. Evaluative measure (share very happy) against a behavioral composite (left) and an isolation item (right).</figcaption>
+      </div>
+    </figure>
+  </div>
+
+  <div class="wrap">
+    <p>The starkest number in the whole file is not a trend at all. In 2018, and only in 2018, the GSS ran a loneliness module. It asked how often people felt they lacked companionship, on a scale from never to always. Among those who said they <strong>never</strong> lacked companionship, <strong>46.2%</strong> called themselves very happy. Among those who felt that lack <strong>sometimes, often, or always</strong>, just <strong>10.7%</strong> did &mdash; a gap of <strong>35.5 percentage points</strong>. <span class="tagline tag-iso">Isolation</span>&ensp;That is one survey, one year, measured at one moment; it says nothing about whether loneliness causes unhappiness or unhappiness invites loneliness, and nothing about change over time. What it shows is that, cross-sectionally, the absence of company sorts almost perfectly with the absence of a sense of a good life.</p>
+
+    <h2>What this does and doesn&rsquo;t show</h2>
+    <p><strong>These trends sit beside each other; they do not push each other.</strong> Weekly socializing has thinned and the very-happy share has slipped over the same fifty years, and the people with the least company today rate their lives the lowest. But co-movement is not cause. The GSS cannot tell us whether shrinking social evenings <em>made</em> Americans less happy, whether unhappiness pulled people indoors, or whether some third force &mdash; longer commutes, more screens, smaller households, the disappearance of the third place &mdash; moved both at once. The loneliness gap, drawn from a single 2018 snapshot, is the clearest illustration of the link and the weakest possible evidence about its direction.</p>
+    <p><strong>The mode change is real and it is flagged everywhere.</strong> The 2021 and 2022 surveys switched to push-to-web, and 2021 in particular shows the deepest dip in nearly every series &mdash; a year that bundled a genuine pandemic withdrawal with a change in how the survey reached people. The recovery in 2022 and the partial settling in 2024 suggest the 2021 trough overstates the secular trend; the longer 1974&ndash;2018 decline does not depend on those years.</p>
+    <p><strong>And the levels were never high.</strong> Even in the 1970s, weekly socializing with friends or at a bar topped out around a third and a tenth of Americans respectively; the neighbor item, the most common, never reached much past a third. What has happened is not the loss of a golden age of constant togetherness but the slow erosion of an already-modest baseline &mdash; a few points a decade, concentrated in the most casual, least-scheduled kinds of company. The cord did not snap. It frayed.</p>
+  </div>
+
+  <div class="wrap notes">
+    <h2 id="notes">Notes &amp; data</h2>
+    <ul>
+      <li><span class="smallcaps">Source.</span> General Social Survey cumulative file, 1974&ndash;2024 (NORC, University of Chicago). All estimates use the post-stratification weight <code>wtssps</code>, which covers the full 1972&ndash;2024 span and is required for any year from 2021 onward; no unweighted GSS statistics are reported. Pre-aggregated figures and every numeric claim are recorded in <code>analysis/alone/data.json</code> and <code>analysis/alone/claims.json</code>.</li>
+      <li><span class="smallcaps">Items &amp; constructs.</span> The four social-evening items (<code>socfrend</code>, <code>socbar</code>, <code>socrel</code>, <code>socommun</code>) are <b>behavioral / social</b>: frequency of in-person socializing on a 1&ndash;7 scale (never &hellip; almost daily), reported as the share at weekly or more (code&nbsp;&ge;&nbsp;6). Happiness (<code>happy</code>) is <b>evaluative</b>: a 3-point global judgment (not too happy / pretty happy / very happy), reported as the share &ldquo;very happy.&rdquo; The loneliness items (<code>lonely_lackcomp</code>, <code>lonely_leftout</code>) measure <b>isolation</b>, with higher = lonelier. None of these is experiential daily affect, and the three constructs are never plotted on a single axis.</li>
+      <li><span class="smallcaps">Sample &amp; pooling.</span> 45,294 responses on the social items across 29 survey years; 61,577 on the happiness trend. Subgroup-by-year cuts pool adjacent survey years into bins, and cells with effective N below 50 are suppressed and not shown. The recent happiness gradient pools 2014&ndash;2024 (N&nbsp;&asymp;&nbsp;12,306).</li>
+      <li><span class="smallcaps">2021&ndash;22 mode change.</span> The 2021 and 2022 GSS waves moved to push-to-web collection (a COVID adaptation). Level shifts versus the 2018&ndash;2020 in-person interviews may partly reflect this mode change; it is annotated on every trend panel and any trend crossing that window should be read with care.</li>
+      <li><span class="smallcaps">Loneliness snapshot.</span> The loneliness items were fielded in 2018 only (N&nbsp;&asymp;&nbsp;1,167). All loneliness figures are cross-sectional snapshots from that single year and must never be read as a trend; the very-happy gap between the never-lonely and the ever-lonely is an association, not a causal estimate.</li>
+      <li><span class="smallcaps">Prior art.</span> Robert Putnam, <a href="https://en.wikipedia.org/wiki/Bowling_Alone"><i>Bowling Alone</i></a> (2000), on the long decline of American civic and social connection; Jean Twenge, <i>iGen</i> (2017), on adolescent social withdrawal and screens, and the skeptical reply from <a href="https://journals.sagepub.com/doi/10.1177/0956797616678438">Orben &amp; Przybylski (2019)</a> on the small and contested size of screen&ndash;wellbeing associations; U.S. time-use evidence on declining face-to-face socializing. This piece re-derives the GSS social-evening trends on the latest cumulative file and pairs them with the cross-sectional happiness gradient, taking no side the data cannot support.</li>
+    </ul>
+  </div>
+</main>
+
+<script type="module">
+import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+
+const DATA = /*DATA*/{"meta":{"title":"Alone: The Long Retreat of In-Person Social Life","slug":"alone","dataset":"General Social Survey (GSS), 1974-2024","weight":"wtssps (post-stratified weight, covers 1972-2024)","construct_notes":{"happy":"evaluative (3-pt global happiness: 1=Not too happy, 2=Pretty happy, 3=Very happy; direction-fixed so higher=happier)","socfrend_socbar_socrel_socommun":"behavioral/social (in-person socializing frequency, 1=Never...7=Almost daily; direction-fixed so higher=more frequent)","lonely_lackcomp_leftout":"social/experiential isolation (1=Never...5=Always; HIGHER=LONELIER; module item, 2018 only — CROSS-SECTIONAL SNAPSHOT, never a trend)"},"suppression_rule":"Cells with effective N < 50 suppressed and not reported","mode_change_flag":"2021 and 2022 GSS surveys changed mode to push-to-web (COVID); level shifts vs 2018-2020 may partly reflect mode effects — flagged in any trend crossing that boundary","lonely_note":"lonely_lackcomp and lonely_leftout are 2018 module items only (N~1,167 and N~1,166 respectively). ALL lonely_* numbers are CROSS-SECTIONAL SNAPSHOTS from a single survey year. Never interpret as a trend.","social_years_covered":[1974,1975,1977,1978,1982,1983,1985,1986,1988,1989,1990,1991,1993,1994,1996,1998,2000,2002,2004,2006,2008,2010,2012,2014,2016,2018,2021,2022,2024],"lonely_years_covered":[2018],"recent_pooling_years":"2014-2024"},"year_series":[{"year":1974,"share_frend_weekly":0.2416,"share_bar_weekly":0.1208,"share_rel_weekly":0.3945,"share_commun_weekly":0.3073,"mean_socfrend":4.0397,"mean_socbar":2.5094,"mean_socrel":4.681,"mean_socommun":3.9346,"pct_veryhappy":0.3643,"n_socfrend":1478,"n_happy":1480,"mode_change_flag":false},{"year":1975,"share_frend_weekly":0.2161,"share_bar_weekly":0.0946,"share_rel_weekly":0.3817,"share_commun_weekly":0.2724,"mean_socfrend":3.9616,"mean_socbar":2.3192,"mean_socrel":4.5548,"mean_socommun":3.7185,"pct_veryhappy":0.3252,"n_socfrend":1485,"n_happy":1485,"mode_change_flag":false},{"year":1977,"share_frend_weekly":0.2354,"share_bar_weekly":0.118,"share_rel_weekly":0.3733,"share_commun_weekly":0.2803,"mean_socfrend":4.1007,"mean_socbar":2.5808,"mean_socrel":4.5698,"mean_socommun":3.7279,"pct_veryhappy":0.3555,"n_socfrend":1523,"n_happy":1527,"mode_change_flag":false},{"year":1978,"share_frend_weekly":0.2382,"share_bar_weekly":0.1115,"share_rel_weekly":0.3495,"share_commun_weekly":0.289,"mean_socfrend":3.9777,"mean_socbar":2.5216,"mean_socrel":4.4746,"mean_socommun":3.6449,"pct_veryhappy":0.3364,"n_socfrend":1526,"n_happy":1517,"mode_change_flag":false},{"year":1982,"share_frend_weekly":0.2221,"share_bar_weekly":0.1358,"share_rel_weekly":0.3408,"share_commun_weekly":0.2332,"mean_socfrend":4.1065,"mean_socbar":2.6351,"mean_socrel":4.4418,"mean_socommun":3.6424,"pct_veryhappy":0.3388,"n_socfrend":1848,"n_happy":1855,"mode_change_flag":false},{"year":1983,"share_frend_weekly":0.2301,"share_bar_weekly":0.1186,"share_rel_weekly":0.3192,"share_commun_weekly":0.2561,"mean_socfrend":4.072,"mean_socbar":2.5041,"mean_socrel":4.4246,"mean_socommun":3.613,"pct_veryhappy":0.314,"n_socfrend":1594,"n_happy":1573,"mode_change_flag":false},{"year":1985,"share_frend_weekly":0.2433,"share_bar_weekly":0.1109,"share_rel_weekly":0.3743,"share_commun_weekly":0.2466,"mean_socfrend":4.1274,"mean_socbar":2.619,"mean_socrel":4.6223,"mean_socommun":3.612,"pct_veryhappy":0.2907,"n_socfrend":1529,"n_happy":1530,"mode_change_flag":false},{"year":1986,"share_frend_weekly":0.2218,"share_bar_weekly":0.1014,"share_rel_weekly":0.3706,"share_commun_weekly":0.2801,"mean_socfrend":4.0401,"mean_socbar":2.3938,"mean_socrel":4.5269,"mean_socommun":3.6666,"pct_veryhappy":0.3281,"n_socfrend":1465,"n_happy":1449,"mode_change_flag":false},{"year":1988,"share_frend_weekly":0.2071,"share_bar_weekly":0.0958,"share_rel_weekly":0.3567,"share_commun_weekly":0.2461,"mean_socfrend":4.0584,"mean_socbar":2.3817,"mean_socrel":4.5471,"mean_socommun":3.5113,"pct_veryhappy":0.3606,"n_socfrend":986,"n_happy":1466,"mode_change_flag":false},{"year":1989,"share_frend_weekly":0.2328,"share_bar_weekly":0.0895,"share_rel_weekly":0.351,"share_commun_weekly":0.2398,"mean_socfrend":3.9842,"mean_socbar":2.2224,"mean_socrel":4.4328,"mean_socommun":3.3883,"pct_veryhappy":0.3422,"n_socfrend":1002,"n_happy":1526,"mode_change_flag":false},{"year":1990,"share_frend_weekly":0.2123,"share_bar_weekly":0.0844,"share_rel_weekly":0.3555,"share_commun_weekly":0.2267,"mean_socfrend":4.0236,"mean_socbar":2.3194,"mean_socrel":4.5482,"mean_socommun":3.406,"pct_veryhappy":0.3505,"n_socfrend":925,"n_happy":1361,"mode_change_flag":false},{"year":1991,"share_frend_weekly":0.2597,"share_bar_weekly":0.0904,"share_rel_weekly":0.353,"share_commun_weekly":0.238,"mean_socfrend":4.1253,"mean_socbar":2.3413,"mean_socrel":4.5696,"mean_socommun":3.4557,"pct_veryhappy":0.3173,"n_socfrend":1019,"n_happy":1504,"mode_change_flag":false},{"year":1993,"share_frend_weekly":0.2477,"share_bar_weekly":0.0858,"share_rel_weekly":0.3316,"share_commun_weekly":0.2153,"mean_socfrend":4.1391,"mean_socbar":2.3886,"mean_socrel":4.5275,"mean_socommun":3.3885,"pct_veryhappy":0.3136,"n_socfrend":1076,"n_happy":1601,"mode_change_flag":false},{"year":1994,"share_frend_weekly":0.2396,"share_bar_weekly":0.0883,"share_rel_weekly":0.35,"share_commun_weekly":0.2152,"mean_socfrend":4.1147,"mean_socbar":2.3983,"mean_socrel":4.5378,"mean_socommun":3.3706,"pct_veryhappy":0.3,"n_socfrend":1966,"n_happy":2977,"mode_change_flag":false},{"year":1996,"share_frend_weekly":0.245,"share_bar_weekly":0.0814,"share_rel_weekly":0.3606,"share_commun_weekly":0.2088,"mean_socfrend":4.1647,"mean_socbar":2.358,"mean_socrel":4.5219,"mean_socommun":3.3835,"pct_veryhappy":0.3223,"n_socfrend":1955,"n_happy":2885,"mode_change_flag":false},{"year":1998,"share_frend_weekly":0.215,"share_bar_weekly":0.0785,"share_rel_weekly":0.3681,"share_commun_weekly":0.2028,"mean_socfrend":4.0807,"mean_socbar":2.3345,"mean_socrel":4.5444,"mean_socommun":3.3659,"pct_veryhappy":0.3335,"n_socfrend":1856,"n_happy":2806,"mode_change_flag":false},{"year":2000,"share_frend_weekly":0.2251,"share_bar_weekly":0.0859,"share_rel_weekly":0.373,"share_commun_weekly":0.217,"mean_socfrend":4.0757,"mean_socbar":2.3784,"mean_socrel":4.6275,"mean_socommun":3.3202,"pct_veryhappy":0.3474,"n_socfrend":1862,"n_happy":2777,"mode_change_flag":false},{"year":2002,"share_frend_weekly":0.248,"share_bar_weekly":0.0905,"share_rel_weekly":0.3767,"share_commun_weekly":0.2252,"mean_socfrend":4.2639,"mean_socbar":2.5169,"mean_socrel":4.6432,"mean_socommun":3.4137,"pct_veryhappy":0.3263,"n_socfrend":906,"n_happy":1369,"mode_change_flag":false},{"year":2004,"share_frend_weekly":0.2145,"share_bar_weekly":0.0754,"share_rel_weekly":0.4086,"share_commun_weekly":0.2168,"mean_socfrend":4.0633,"mean_socbar":2.307,"mean_socrel":4.7829,"mean_socommun":3.4159,"pct_veryhappy":0.3221,"n_socfrend":904,"n_happy":1337,"mode_change_flag":false},{"year":2006,"share_frend_weekly":0.242,"share_bar_weekly":0.0697,"share_rel_weekly":0.4037,"share_commun_weekly":0.2205,"mean_socfrend":4.1106,"mean_socbar":2.3013,"mean_socrel":4.7044,"mean_socommun":3.3889,"pct_veryhappy":0.3222,"n_socfrend":1989,"n_happy":2986,"mode_change_flag":false},{"year":2008,"share_frend_weekly":0.2316,"share_bar_weekly":0.0808,"share_rel_weekly":0.3832,"share_commun_weekly":0.1987,"mean_socfrend":4.0898,"mean_socbar":2.378,"mean_socrel":4.6659,"mean_socommun":3.2942,"pct_veryhappy":0.309,"n_socfrend":1325,"n_happy":2015,"mode_change_flag":false},{"year":2010,"share_frend_weekly":0.2442,"share_bar_weekly":0.0754,"share_rel_weekly":0.3994,"share_commun_weekly":0.2436,"mean_socfrend":4.1287,"mean_socbar":2.483,"mean_socrel":4.7324,"mean_socommun":3.4903,"pct_veryhappy":0.2801,"n_socfrend":1425,"n_happy":2039,"mode_change_flag":false},{"year":2012,"share_frend_weekly":0.2388,"share_bar_weekly":0.0776,"share_rel_weekly":0.366,"share_commun_weekly":0.194,"mean_socfrend":4.1279,"mean_socbar":2.3653,"mean_socrel":4.668,"mean_socommun":3.2399,"pct_veryhappy":0.3175,"n_socfrend":1299,"n_happy":1964,"mode_change_flag":false},{"year":2014,"share_frend_weekly":0.2115,"share_bar_weekly":0.0613,"share_rel_weekly":0.3682,"share_commun_weekly":0.2044,"mean_socfrend":4.0837,"mean_socbar":2.4139,"mean_socrel":4.593,"mean_socommun":3.3238,"pct_veryhappy":0.3192,"n_socfrend":1675,"n_happy":2530,"mode_change_flag":false},{"year":2016,"share_frend_weekly":0.189,"share_bar_weekly":0.0743,"share_rel_weekly":0.384,"share_commun_weekly":0.1889,"mean_socfrend":4.0271,"mean_socbar":2.5023,"mean_socrel":4.712,"mean_socommun":3.2468,"pct_veryhappy":0.3043,"n_socfrend":1886,"n_happy":2859,"mode_change_flag":false},{"year":2018,"share_frend_weekly":0.186,"share_bar_weekly":0.0654,"share_rel_weekly":0.3881,"share_commun_weekly":0.1823,"mean_socfrend":3.9789,"mean_socbar":2.5102,"mean_socrel":4.7309,"mean_socommun":3.2605,"pct_veryhappy":0.315,"n_socfrend":1557,"n_happy":2344,"mode_change_flag":false},{"year":2021,"share_frend_weekly":0.1178,"share_bar_weekly":0.0351,"share_rel_weekly":0.2615,"share_commun_weekly":0.099,"mean_socfrend":3.5317,"mean_socbar":2.2612,"mean_socrel":4.204,"mean_socommun":2.6429,"pct_veryhappy":0.1937,"n_socfrend":2701,"n_happy":4014,"mode_change_flag":true},{"year":2022,"share_frend_weekly":0.1886,"share_bar_weekly":0.0429,"share_rel_weekly":0.352,"share_commun_weekly":0.1642,"mean_socfrend":3.8816,"mean_socbar":2.4234,"mean_socrel":4.5618,"mean_socommun":3.0779,"pct_veryhappy":0.2475,"n_socfrend":2366,"n_happy":3520,"mode_change_flag":true},{"year":2024,"share_frend_weekly":0.1693,"share_bar_weekly":0.0543,"share_rel_weekly":0.3243,"share_commun_weekly":0.1633,"mean_socfrend":3.8255,"mean_socbar":2.4055,"mean_socrel":4.4822,"mean_socommun":3.0485,"pct_veryhappy":0.234,"n_socfrend":2166,"n_happy":3281,"mode_change_flag":false}],"year_series_young":[{"year":1974,"share_frend_weekly":0.4028,"share_commun_weekly":0.401,"pct_veryhappy":0.2869,"n_socfrend":527,"n_happy":528,"mode_change_flag":false},{"year":1975,"share_frend_weekly":0.3215,"share_commun_weekly":0.342,"pct_veryhappy":0.2708,"n_socfrend":551,"n_happy":550,"mode_change_flag":false},{"year":1977,"share_frend_weekly":0.3583,"share_commun_weekly":0.3616,"pct_veryhappy":0.2882,"n_socfrend":526,"n_happy":527,"mode_change_flag":false},{"year":1978,"share_frend_weekly":0.3453,"share_commun_weekly":0.3454,"pct_veryhappy":0.3262,"n_socfrend":600,"n_happy":595,"mode_change_flag":false},{"year":1982,"share_frend_weekly":0.329,"share_commun_weekly":0.3008,"pct_veryhappy":0.2868,"n_socfrend":699,"n_happy":699,"mode_change_flag":false},{"year":1983,"share_frend_weekly":0.3193,"share_commun_weekly":0.3259,"pct_veryhappy":0.2846,"n_socfrend":612,"n_happy":598,"mode_change_flag":false},{"year":1985,"share_frend_weekly":0.3712,"share_commun_weekly":0.3278,"pct_veryhappy":0.2757,"n_socfrend":530,"n_happy":530,"mode_change_flag":false},{"year":1986,"share_frend_weekly":0.3296,"share_commun_weekly":0.3416,"pct_veryhappy":0.2747,"n_socfrend":514,"n_happy":506,"mode_change_flag":false},{"year":1988,"share_frend_weekly":0.3176,"share_commun_weekly":0.3487,"pct_veryhappy":0.3198,"n_socfrend":342,"n_happy":506,"mode_change_flag":false},{"year":1989,"share_frend_weekly":0.3699,"share_commun_weekly":0.3447,"pct_veryhappy":0.3335,"n_socfrend":352,"n_happy":517,"mode_change_flag":false},{"year":1990,"share_frend_weekly":0.3539,"share_commun_weekly":0.2798,"pct_veryhappy":0.3575,"n_socfrend":299,"n_happy":447,"mode_change_flag":false},{"year":1991,"share_frend_weekly":0.382,"share_commun_weekly":0.3045,"pct_veryhappy":0.2709,"n_socfrend":327,"n_happy":488,"mode_change_flag":false},{"year":1993,"share_frend_weekly":0.4015,"share_commun_weekly":0.2657,"pct_veryhappy":0.2857,"n_socfrend":327,"n_happy":470,"mode_change_flag":false},{"year":1994,"share_frend_weekly":0.3655,"share_commun_weekly":0.2693,"pct_veryhappy":0.2642,"n_socfrend":604,"n_happy":910,"mode_change_flag":false},{"year":1996,"share_frend_weekly":0.3934,"share_commun_weekly":0.2601,"pct_veryhappy":0.284,"n_socfrend":617,"n_happy":929,"mode_change_flag":false},{"year":1998,"share_frend_weekly":0.3402,"share_commun_weekly":0.2694,"pct_veryhappy":0.3142,"n_socfrend":572,"n_happy":860,"mode_change_flag":false},{"year":2000,"share_frend_weekly":0.3563,"share_commun_weekly":0.3107,"pct_veryhappy":0.3068,"n_socfrend":541,"n_happy":815,"mode_change_flag":false},{"year":2002,"share_frend_weekly":0.3811,"share_commun_weekly":0.3002,"pct_veryhappy":0.3089,"n_socfrend":286,"n_happy":412,"mode_change_flag":false},{"year":2004,"share_frend_weekly":0.3552,"share_commun_weekly":0.3257,"pct_veryhappy":0.3229,"n_socfrend":271,"n_happy":392,"mode_change_flag":false},{"year":2006,"share_frend_weekly":0.3953,"share_commun_weekly":0.317,"pct_veryhappy":0.2868,"n_socfrend":538,"n_happy":813,"mode_change_flag":false},{"year":2008,"share_frend_weekly":0.4121,"share_commun_weekly":0.2396,"pct_veryhappy":0.2768,"n_socfrend":359,"n_happy":530,"mode_change_flag":false},{"year":2010,"share_frend_weekly":0.4178,"share_commun_weekly":0.314,"pct_veryhappy":0.2561,"n_socfrend":382,"n_happy":558,"mode_change_flag":false},{"year":2012,"share_frend_weekly":0.3648,"share_commun_weekly":0.2619,"pct_veryhappy":0.3376,"n_socfrend":369,"n_happy":531,"mode_change_flag":false},{"year":2014,"share_frend_weekly":0.3606,"share_commun_weekly":0.2634,"pct_veryhappy":0.2867,"n_socfrend":428,"n_happy":641,"mode_change_flag":false},{"year":2016,"share_frend_weekly":0.3492,"share_commun_weekly":0.2392,"pct_veryhappy":0.2946,"n_socfrend":508,"n_happy":735,"mode_change_flag":false},{"year":2018,"share_frend_weekly":0.308,"share_commun_weekly":0.2616,"pct_veryhappy":0.2564,"n_socfrend":383,"n_happy":632,"mode_change_flag":false},{"year":2021,"share_frend_weekly":0.1916,"share_commun_weekly":0.1273,"pct_veryhappy":0.1404,"n_socfrend":474,"n_happy":730,"mode_change_flag":true},{"year":2022,"share_frend_weekly":0.2906,"share_commun_weekly":0.1998,"pct_veryhappy":0.2323,"n_socfrend":606,"n_happy":884,"mode_change_flag":true},{"year":2024,"share_frend_weekly":0.2766,"share_commun_weekly":0.1962,"pct_veryhappy":0.2059,"n_socfrend":474,"n_happy":739,"mode_change_flag":false}],"year_series_older":[{"year":1974,"share_frend_weekly":0.141,"share_commun_weekly":0.2492,"pct_veryhappy":0.4133,"n_socfrend":945,"n_happy":946,"mode_change_flag":false},{"year":1975,"share_frend_weekly":0.1487,"share_commun_weekly":0.2272,"pct_veryhappy":0.361,"n_socfrend":930,"n_happy":931,"mode_change_flag":false},{"year":1977,"share_frend_weekly":0.1537,"share_commun_weekly":0.2287,"pct_veryhappy":0.3979,"n_socfrend":990,"n_happy":993,"mode_change_flag":false},{"year":1978,"share_frend_weekly":0.1613,"share_commun_weekly":0.2472,"pct_veryhappy":0.3423,"n_socfrend":920,"n_happy":916,"mode_change_flag":false},{"year":1982,"share_frend_weekly":0.1452,"share_commun_weekly":0.1838,"pct_veryhappy":0.3745,"n_socfrend":1139,"n_happy":1142,"mode_change_flag":false},{"year":1983,"share_frend_weekly":0.1703,"share_commun_weekly":0.2092,"pct_veryhappy":0.3319,"n_socfrend":975,"n_happy":968,"mode_change_flag":false},{"year":1985,"share_frend_weekly":0.1601,"share_commun_weekly":0.194,"pct_veryhappy":0.2998,"n_socfrend":993,"n_happy":993,"mode_change_flag":false},{"year":1986,"share_frend_weekly":0.15,"share_commun_weekly":0.2373,"pct_veryhappy":0.3644,"n_socfrend":945,"n_happy":936,"mode_change_flag":false},{"year":1988,"share_frend_weekly":0.1384,"share_commun_weekly":0.1821,"pct_veryhappy":0.3848,"n_socfrend":643,"n_happy":956,"mode_change_flag":false},{"year":1989,"share_frend_weekly":0.1417,"share_commun_weekly":0.1691,"pct_veryhappy":0.3481,"n_socfrend":647,"n_happy":1006,"mode_change_flag":false},{"year":1990,"share_frend_weekly":0.1278,"share_commun_weekly":0.1949,"pct_veryhappy":0.3463,"n_socfrend":626,"n_happy":914,"mode_change_flag":false},{"year":1991,"share_frend_weekly":0.1907,"share_commun_weekly":0.2005,"pct_veryhappy":0.3438,"n_socfrend":690,"n_happy":1014,"mode_change_flag":false},{"year":1993,"share_frend_weekly":0.1669,"share_commun_weekly":0.1878,"pct_veryhappy":0.3268,"n_socfrend":746,"n_happy":1126,"mode_change_flag":false},{"year":1994,"share_frend_weekly":0.1676,"share_commun_weekly":0.1837,"pct_veryhappy":0.3198,"n_socfrend":1357,"n_happy":2062,"mode_change_flag":false},{"year":1996,"share_frend_weekly":0.1702,"share_commun_weekly":0.1834,"pct_veryhappy":0.3425,"n_socfrend":1334,"n_happy":1950,"mode_change_flag":false},{"year":1998,"share_frend_weekly":0.1546,"share_commun_weekly":0.171,"pct_veryhappy":0.3436,"n_socfrend":1280,"n_happy":1943,"mode_change_flag":false},{"year":2000,"share_frend_weekly":0.1652,"share_commun_weekly":0.1746,"pct_veryhappy":0.3661,"n_socfrend":1316,"n_happy":1954,"mode_change_flag":false},{"year":2002,"share_frend_weekly":0.1811,"share_commun_weekly":0.1906,"pct_veryhappy":0.3351,"n_socfrend":613,"n_happy":950,"mode_change_flag":false},{"year":2004,"share_frend_weekly":0.1517,"share_commun_weekly":0.1685,"pct_veryhappy":0.3228,"n_socfrend":629,"n_happy":941,"mode_change_flag":false},{"year":2006,"share_frend_weekly":0.1691,"share_commun_weekly":0.1745,"pct_veryhappy":0.338,"n_socfrend":1446,"n_happy":2165,"mode_change_flag":false},{"year":2008,"share_frend_weekly":0.151,"share_commun_weekly":0.1805,"pct_veryhappy":0.3218,"n_socfrend":958,"n_happy":1475,"mode_change_flag":false},{"year":2010,"share_frend_weekly":0.1679,"share_commun_weekly":0.2119,"pct_veryhappy":0.29,"n_socfrend":1040,"n_happy":1478,"mode_change_flag":false},{"year":2012,"share_frend_weekly":0.1777,"share_commun_weekly":0.1614,"pct_veryhappy":0.309,"n_socfrend":928,"n_happy":1428,"mode_change_flag":false},{"year":2014,"share_frend_weekly":0.1425,"share_commun_weekly":0.1782,"pct_veryhappy":0.3339,"n_socfrend":1243,"n_happy":1880,"mode_change_flag":false},{"year":2016,"share_frend_weekly":0.1189,"share_commun_weekly":0.1675,"pct_veryhappy":0.3079,"n_socfrend":1373,"n_happy":2114,"mode_change_flag":false},{"year":2018,"share_frend_weekly":0.1329,"share_commun_weekly":0.148,"pct_veryhappy":0.3415,"n_socfrend":1167,"n_happy":1705,"mode_change_flag":false},{"year":2021,"share_frend_weekly":0.0902,"share_commun_weekly":0.0933,"pct_veryhappy":0.2119,"n_socfrend":2000,"n_happy":2953,"mode_change_flag":true},{"year":2022,"share_frend_weekly":0.1495,"share_commun_weekly":0.1459,"pct_veryhappy":0.2568,"n_socfrend":1613,"n_happy":2431,"mode_change_flag":true},{"year":2024,"share_frend_weekly":0.129,"share_commun_weekly":0.1511,"pct_veryhappy":0.246,"n_socfrend":1629,"n_happy":2444,"mode_change_flag":false}],"trend_bins":{"all":[{"bin":1976,"share_frend_weekly":0.2269,"share_bar_weekly":0.1087,"share_rel_weekly":0.3721,"share_commun_weekly":0.2836,"mean_socfrend":3.9891,"mean_socbar":2.452,"mean_socrel":4.5587,"mean_socommun":3.7384,"pct_veryhappy":0.3479,"n_socfrend":6012,"n_socbar":5991,"n_socrel":6022,"n_socommun":6007,"n_happy":6009},{"bin":1984,"share_frend_weekly":0.2221,"share_bar_weekly":0.1135,"share_rel_weekly":0.3481,"share_commun_weekly":0.2483,"mean_socfrend":4.05,"mean_socbar":2.4961,"mean_socrel":4.4893,"mean_socommun":3.6105,"pct_veryhappy":0.3213,"n_socfrend":6436,"n_socbar":6429,"n_socrel":6433,"n_socommun":6437,"n_happy":6407},{"bin":1990,"share_frend_weekly":0.2086,"share_bar_weekly":0.0869,"share_rel_weekly":0.3513,"share_commun_weekly":0.2314,"mean_socfrend":3.9793,"mean_socbar":2.2665,"mean_socrel":4.4906,"mean_socommun":3.4119,"pct_veryhappy":0.352,"n_socfrend":2913,"n_socbar":2911,"n_socrel":2910,"n_socommun":2904,"n_happy":4353},{"bin":1991,"share_frend_weekly":0.245,"share_bar_weekly":0.0861,"share_rel_weekly":0.3383,"share_commun_weekly":0.2228,"mean_socfrend":4.0899,"mean_socbar":2.3284,"mean_socrel":4.5302,"mean_socommun":3.4005,"pct_veryhappy":0.3177,"n_socfrend":2095,"n_socbar":2094,"n_socrel":2095,"n_socommun":2095,"n_happy":3105},{"bin":1996,"share_frend_weekly":0.2272,"share_bar_weekly":0.0804,"share_rel_weekly":0.3572,"share_commun_weekly":0.2063,"mean_socfrend":4.0933,"mean_socbar":2.3343,"mean_socrel":4.5243,"mean_socommun":3.3623,"pct_veryhappy":0.3199,"n_socfrend":5777,"n_socbar":5774,"n_socrel":5789,"n_socommun":5779,"n_happy":8668},{"bin":2002,"share_frend_weekly":0.2251,"share_bar_weekly":0.0833,"share_rel_weekly":0.3809,"share_commun_weekly":0.2169,"mean_socfrend":4.1046,"mean_socbar":2.3816,"mean_socrel":4.6624,"mean_socommun":3.3594,"pct_veryhappy":0.3365,"n_socfrend":3672,"n_socbar":3670,"n_socrel":3674,"n_socommun":3670,"n_happy":5483},{"bin":2008,"share_frend_weekly":0.2299,"share_bar_weekly":0.0715,"share_rel_weekly":0.3912,"share_commun_weekly":0.217,"mean_socfrend":4.0706,"mean_socbar":2.3389,"mean_socrel":4.6828,"mean_socommun":3.3808,"pct_veryhappy":0.3082,"n_socfrend":4739,"n_socbar":4743,"n_socrel":4742,"n_socommun":4743,"n_happy":7040},{"bin":2014,"share_frend_weekly":0.2129,"share_bar_weekly":0.0658,"share_rel_weekly":0.3624,"share_commun_weekly":0.1951,"mean_socfrend":4.0535,"mean_socbar":2.3572,"mean_socrel":4.6046,"mean_socommun":3.2712,"pct_veryhappy":0.3191,"n_socfrend":2974,"n_socbar":2975,"n_socrel":2971,"n_socommun":2973,"n_happy":4494},{"bin":2016,"share_frend_weekly":0.1784,"share_bar_weekly":0.0671,"share_rel_weekly":0.3801,"share_commun_weekly":0.1819,"mean_socfrend":3.965,"mean_socbar":2.4711,"mean_socrel":4.7002,"mean_socommun":3.2416,"pct_veryhappy":0.3109,"n_socfrend":3443,"n_socbar":3443,"n_socrel":3440,"n_socommun":3443,"n_happy":5203},{"bin":2021,"share_frend_weekly":0.1438,"share_bar_weekly":0.0376,"share_rel_weekly":0.2982,"share_commun_weekly":0.1268,"mean_socfrend":3.6534,"mean_socbar":2.3159,"mean_socrel":4.3483,"mean_socommun":2.8489,"pct_veryhappy":0.2217,"n_socfrend":5067,"n_socbar":5070,"n_socrel":5075,"n_socommun":5077,"n_happy":7534},{"bin":2024,"share_frend_weekly":0.1622,"share_bar_weekly":0.055,"share_rel_weekly":0.3211,"share_commun_weekly":0.1611,"mean_socfrend":3.7912,"mean_socbar":2.3949,"mean_socrel":4.4681,"mean_socommun":3.045,"pct_veryhappy":0.236,"n_socfrend":2166,"n_socbar":2172,"n_socrel":2169,"n_socommun":2169,"n_happy":3281}],"young_18_34":[{"bin":1976,"share_frend_weekly":0.3565,"share_bar_weekly":0.1625,"share_rel_weekly":0.4257,"share_commun_weekly":0.3619,"mean_socfrend":4.6614,"mean_socbar":3.1293,"mean_socrel":4.7932,"mean_socommun":4.1066,"pct_veryhappy":0.2936,"n_socfrend":2204,"n_socbar":2200,"n_socrel":2206,"n_socommun":2203,"n_happy":2200},{"bin":1984,"share_frend_weekly":0.3366,"share_bar_weekly":0.1842,"share_rel_weekly":0.3822,"share_commun_weekly":0.3224,"mean_socfrend":4.6697,"mean_socbar":3.2786,"mean_socrel":4.6592,"mean_socommun":3.9897,"pct_veryhappy":0.281,"n_socfrend":2355,"n_socbar":2349,"n_socrel":2353,"n_socommun":2353,"n_happy":2333},{"bin":1990,"share_frend_weekly":0.3477,"share_bar_weekly":0.1336,"share_rel_weekly":0.3994,"share_commun_weekly":0.3258,"mean_socfrend":4.6311,"mean_socbar":2.8826,"mean_socrel":4.7608,"mean_socommun":3.7587,"pct_veryhappy":0.3364,"n_socfrend":993,"n_socbar":992,"n_socrel":991,"n_socommun":993,"n_happy":1470},{"bin":1991,"share_frend_weekly":0.3918,"share_bar_weekly":0.1202,"share_rel_weekly":0.4025,"share_commun_weekly":0.285,"mean_socfrend":4.8245,"mean_socbar":2.976,"mean_socrel":4.8366,"mean_socommun":3.7641,"pct_veryhappy":0.2783,"n_socfrend":654,"n_socbar":653,"n_socrel":654,"n_socommun":653,"n_happy":958},{"bin":1996,"share_frend_weekly":0.3669,"share_bar_weekly":0.1341,"share_rel_weekly":0.4073,"share_commun_weekly":0.2663,"mean_socfrend":4.7017,"mean_socbar":2.9921,"mean_socrel":4.7501,"mean_socommun":3.6103,"pct_veryhappy":0.2863,"n_socfrend":1793,"n_socbar":1793,"n_socrel":1795,"n_socommun":1791,"n_happy":2699},{"bin":2002,"share_frend_weekly":0.3624,"share_bar_weekly":0.1332,"share_rel_weekly":0.4628,"share_commun_weekly":0.3117,"mean_socfrend":4.7682,"mean_socbar":3.0028,"mean_socrel":5.0067,"mean_socommun":3.7195,"pct_veryhappy":0.3111,"n_socfrend":1098,"n_socbar":1096,"n_socrel":1100,"n_socommun":1096,"n_happy":1619},{"bin":2008,"share_frend_weekly":0.4065,"share_bar_weekly":0.1271,"share_rel_weekly":0.4895,"share_commun_weekly":0.2948,"mean_socfrend":4.7807,"mean_socbar":3.0378,"mean_socrel":5.0309,"mean_socommun":3.5961,"pct_veryhappy":0.2753,"n_socfrend":1279,"n_socbar":1279,"n_socrel":1278,"n_socommun":1279,"n_happy":1901},{"bin":2014,"share_frend_weekly":0.3625,"share_bar_weekly":0.1036,"share_rel_weekly":0.4322,"share_commun_weekly":0.2627,"mean_socfrend":4.7551,"mean_socbar":2.8573,"mean_socrel":4.9135,"mean_socommun":3.4929,"pct_veryhappy":0.3091,"n_socfrend":797,"n_socbar":796,"n_socrel":794,"n_socommun":796,"n_happy":1172},{"bin":2016,"share_frend_weekly":0.3308,"share_bar_weekly":0.1191,"share_rel_weekly":0.476,"share_commun_weekly":0.2492,"mean_socfrend":4.6342,"mean_socbar":3.0447,"mean_socrel":5.0349,"mean_socommun":3.4284,"pct_veryhappy":0.2773,"n_socfrend":891,"n_socbar":891,"n_socrel":890,"n_socommun":891,"n_happy":1367},{"bin":2021,"share_frend_weekly":0.2419,"share_bar_weekly":0.0532,"share_rel_weekly":0.3765,"share_commun_weekly":0.1641,"mean_socfrend":4.2287,"mean_socbar":2.6064,"mean_socrel":4.6681,"mean_socommun":2.8197,"pct_veryhappy":0.1849,"n_socfrend":1080,"n_socbar":1078,"n_socrel":1081,"n_socommun":1080,"n_happy":1614},{"bin":2024,"share_frend_weekly":0.2766,"share_bar_weekly":0.0443,"share_rel_weekly":0.3726,"share_commun_weekly":0.1962,"mean_socfrend":4.3457,"mean_socbar":2.5678,"mean_socrel":4.6955,"mean_socommun":3.102,"pct_veryhappy":0.2059,"n_socfrend":474,"n_socbar":474,"n_socrel":474,"n_socommun":474,"n_happy":739}],"older_35plus":[{"bin":1976,"share_frend_weekly":0.1519,"share_bar_weekly":0.0776,"share_rel_weekly":0.3411,"share_commun_weekly":0.2382,"mean_socfrend":3.5999,"mean_socbar":2.0601,"mean_socrel":4.423,"mean_socommun":3.5253,"pct_veryhappy":0.3792,"n_socfrend":3808,"n_socbar":3791,"n_socrel":3816,"n_socommun":3804,"n_happy":3809},{"bin":1984,"share_frend_weekly":0.156,"share_bar_weekly":0.0726,"share_rel_weekly":0.3284,"share_commun_weekly":0.2055,"mean_socfrend":3.6924,"mean_socbar":2.0446,"mean_socrel":4.3912,"mean_socommun":3.3917,"pct_veryhappy":0.3443,"n_socfrend":4081,"n_socbar":4080,"n_socrel":4080,"n_socommun":4084,"n_happy":4074},{"bin":1990,"share_frend_weekly":0.1367,"share_bar_weekly":0.0628,"share_rel_weekly":0.3264,"share_commun_weekly":0.1826,"mean_socfrend":3.6422,"mean_socbar":1.9479,"mean_socrel":4.3508,"mean_socommun":3.2326,"pct_veryhappy":0.36,"n_socfrend":1920,"n_socbar":1919,"n_socrel":1919,"n_socommun":1911,"n_happy":2883},{"bin":1991,"share_frend_weekly":0.1784,"share_bar_weekly":0.0706,"share_rel_weekly":0.3092,"share_commun_weekly":0.1945,"mean_socfrend":3.7565,"mean_socbar":2.0344,"mean_socrel":4.3912,"mean_socommun":3.2354,"pct_veryhappy":0.3353,"n_socfrend":1441,"n_socbar":1441,"n_socrel":1441,"n_socommun":1442,"n_happy":2147},{"bin":1996,"share_frend_weekly":0.1643,"share_bar_weekly":0.0562,"share_rel_weekly":0.3347,"share_commun_weekly":0.1794,"mean_socfrend":3.8194,"mean_socbar":2.0382,"mean_socrel":4.4228,"mean_socommun":3.2507,"pct_veryhappy":0.335,"n_socfrend":3984,"n_socbar":3981,"n_socrel":3994,"n_socommun":3988,"n_happy":5969},{"bin":2002,"share_frend_weekly":0.1665,"share_bar_weekly":0.0621,"share_rel_weekly":0.346,"share_commun_weekly":0.1765,"mean_socfrend":3.8215,"mean_socbar":2.1166,"mean_socrel":4.5155,"mean_socommun":3.2058,"pct_veryhappy":0.3472,"n_socfrend":2574,"n_socbar":2574,"n_socrel":2574,"n_socommun":2574,"n_happy":3864},{"bin":2008,"share_frend_weekly":0.1646,"share_bar_weekly":0.051,"share_rel_weekly":0.3549,"share_commun_weekly":0.1883,"mean_socfrend":3.8081,"mean_socbar":2.0805,"mean_socrel":4.5541,"mean_socommun":3.3013,"pct_veryhappy":0.3204,"n_socfrend":3460,"n_socbar":3464,"n_socrel":3464,"n_socommun":3464,"n_happy":5139},{"bin":2014,"share_frend_weekly":0.1581,"share_bar_weekly":0.052,"share_rel_weekly":0.3368,"share_commun_weekly":0.1703,"mean_socfrend":3.7966,"mean_socbar":2.1741,"mean_socrel":4.4915,"mean_socommun":3.19,"pct_veryhappy":0.3226,"n_socfrend":2177,"n_socbar":2179,"n_socrel":2177,"n_socommun":2177,"n_happy":3322},{"bin":2016,"share_frend_weekly":0.1252,"share_bar_weekly":0.049,"share_rel_weekly":0.3465,"share_commun_weekly":0.1584,"mean_socfrend":3.7314,"mean_socbar":2.2709,"mean_socrel":4.5834,"mean_socommun":3.1764,"pct_veryhappy":0.3228,"n_socfrend":2552,"n_socbar":2552,"n_socrel":2550,"n_socommun":2552,"n_happy":3836},{"bin":2021,"share_frend_weekly":0.1172,"share_bar_weekly":0.0334,"share_rel_weekly":0.277,"share_commun_weekly":0.1167,"mean_socfrend":3.4975,"mean_socbar":2.2372,"mean_socrel":4.2616,"mean_socommun":2.8568,"pct_veryhappy":0.2317,"n_socfrend":3987,"n_socbar":3992,"n_socrel":3994,"n_socommun":3997,"n_happy":5920},{"bin":2024,"share_frend_weekly":0.1302,"share_bar_weekly":0.058,"share_rel_weekly":0.3067,"share_commun_weekly":0.1512,"mean_socfrend":3.6359,"mean_socbar":2.3465,"mean_socrel":4.4044,"mean_socommun":3.029,"pct_veryhappy":0.2448,"n_socfrend":1692,"n_socbar":1698,"n_socrel":1695,"n_socommun":1695,"n_happy":2542}],"mode_change_bins":[2021]},"gradient_socfrend":{"years":"2014-2024","construct":"evaluative (happy) vs behavioral/social (socfrend frequency)","data":[{"socfrend_code":1,"label":"Never","pct_veryhappy":0.2048,"mean_happy":1.9415,"n":1389},{"socfrend_code":2,"label":"Once a year","pct_veryhappy":0.207,"mean_happy":2.0118,"n":1129},{"socfrend_code":3,"label":"Several/year","pct_veryhappy":0.2629,"mean_happy":2.1101,"n":2656},{"socfrend_code":4,"label":"~Monthly","pct_veryhappy":0.2664,"mean_happy":2.1302,"n":2686},{"socfrend_code":5,"label":"Several/month","pct_veryhappy":0.2872,"mean_happy":2.1548,"n":2447},{"socfrend_code":6,"label":"Weekly+","pct_veryhappy":0.2542,"mean_happy":2.0889,"n":1695},{"socfrend_code":7,"label":"Daily","pct_veryhappy":0.2444,"mean_happy":2.1222,"n":304}]},"gradient_composite":{"years":"2014-2024","construct":"evaluative (happy) vs behavioral/social (sum of 4 items at weekly+)","data":[{"n_weekly_activities":0,"pct_veryhappy":0.2352,"mean_happy":2.0601,"n":6357},{"n_weekly_activities":1,"pct_veryhappy":0.2838,"mean_happy":2.1344,"n":3713},{"n_weekly_activities":2,"pct_veryhappy":0.2465,"mean_happy":2.1024,"n":1640},{"n_weekly_activities":3,"pct_veryhappy":0.3115,"mean_happy":2.1706,"n":500}]},"lonely_snapshot_2018":{"year":2018,"construct":"social isolation (lonely_lackcomp; HIGHER=LONELIER) vs evaluative (happy)","snapshot_warning":"2018 module only — cross-sectional snapshot, NOT a trend","share_lonely_lackcomp_ge3":0.1351,"share_leftout_ge3":0.1107,"pct_veryhappy_lonely_ge3":0.1071,"pct_veryhappy_not_lonely_code1":0.462,"happy_gap_pct_points":35.5,"mean_happy_lonely_ge3":1.8228,"mean_happy_not_lonely_code1":2.384,"n_2018":1167,"by_lackcomp_level":[{"lonely_lackcomp":1,"label":"Never lonely","pct_veryhappy":0.4629,"mean_happy":2.3885,"n":553},{"lonely_lackcomp":2,"label":"Rarely","pct_veryhappy":0.261,"mean_happy":2.1309,"n":264},{"lonely_lackcomp":3,"label":"Sometimes","pct_veryhappy":0.1055,"mean_happy":1.8828,"n":213},{"lonely_lackcomp":4,"label":"Often","pct_veryhappy":0.1528,"mean_happy":1.8551,"n":73},{"lonely_lackcomp":5,"label":"Always lonely","pct_veryhappy":0.0573,"mean_happy":1.5305,"n":62}],"by_leftout_level":[{"lonely_leftout":1,"label":"Never left out","pct_veryhappy":0.4241,"mean_happy":2.3428,"n":638},{"lonely_leftout":2,"label":"Rarely","pct_veryhappy":0.2231,"mean_happy":2.101,"n":244},{"lonely_leftout":3,"label":"Sometimes","pct_veryhappy":0.1174,"mean_happy":1.8706,"n":171},{"lonely_leftout":4,"label":"Often","pct_veryhappy":0.1213,"mean_happy":1.6476,"n":68}]},"sample_sizes":{"n_total_social_items":45294,"n_total_happy_trend":61577,"n_recent_gradient":12306,"n_lonely_snapshot_2018":1167}}/*/DATA*/;
+
+/* ============ palette + measure config ============ */
+const COL = { behav:"#2f6f8f", eval:"#9c5a2b", iso:"#7a3b52", mode:"#b08a3e", ink:"#1d1c1a", dim:"#56524b", faint:"#8b8678", hair:"#e7e2d7" };
+const MODE_BIN = 2021; // shaded mode-change window center
+const fmtPct = v => (v*100).toFixed(1) + "%";
+const fmtN = n => n.toLocaleString("en-US");
+
+/* venue panel definitions for the small multiples */
+const VENUES = [
+  { key:"share_commun_weekly", name:"Neighbors", note:"steepest decline", hasYoung:true },
+  { key:"share_frend_weekly",  name:"Friends",   note:"the young pulled back most", hasYoung:true },
+  { key:"share_bar_weekly",    name:"Bar or tavern", note:"roughly halved", hasYoung:false },
+  { key:"share_rel_weekly",    name:"Relatives", note:"the most resilient", hasYoung:false }
+];
+
+/* ---------- shared tooltip helpers ---------- */
+function makeTip(container){
+  const tip = document.createElement("div");
+  tip.className = "tip";
+  container.appendChild(tip);
+  return tip;
+}
+function showTip(tip, container, x, y, html){
+  tip.innerHTML = html;
+  tip.style.display = "block";
+  const cw = container.clientWidth, tw = tip.offsetWidth;
+  let lx = x + 14;
+  if (lx + tw > cw - 4) lx = x - tw - 14;
+  tip.style.left = Math.max(2, lx) + "px";
+  tip.style.top = Math.max(0, y - 12) + "px";
+}
+function hideTip(tip){ tip.style.display = "none"; }
+
+/* =====================================================================
+   FIGURE 1 — small multiples: four venues, 1974-2024, with young overlay
+   ===================================================================== */
+const smBox = document.getElementById("smallmult-chart");
+const smTip = makeTip(smBox);
+const smReadout = d3.select("#sm-readout");
+let ageMode = "all"; // "all" | "young"
+
+const ageCtl = d3.select("#age-controls");
+ageCtl.append("span").attr("class","ctl-label").text("Show");
+[["all","Everyone"],["young","Young adults 18–34"]].forEach(([k,lab])=>{
+  ageCtl.append("button").attr("class","mbtn").attr("aria-pressed", k===ageMode)
+    .text(lab)
+    .on("click", function(){
+      if (ageMode === k) return;
+      ageMode = k;
+      ageCtl.selectAll("button").attr("aria-pressed","false");
+      d3.select(this).attr("aria-pressed","true");
+      drawSmallMultiples();
+    });
+});
+
+function drawSmallMultiples(){
+  smBox.innerHTML = ""; smBox.appendChild(smTip);
+  const W = Math.max(330, smBox.clientWidth);
+  const cols = W < 620 ? 1 : 2;
+  const gap = 26;
+  const panelW = (W - gap*(cols-1)) / cols;
+  const panelH = Math.min(230, Math.max(170, panelW*0.62));
+  const rows = Math.ceil(VENUES.length / cols);
+  const H = rows*panelH + (rows-1)*gap + 6;
+
+  const svg = d3.select(smBox).append("svg")
+    .attr("viewBox", `0 0 ${W} ${H}`)
+    .attr("role","img")
+    .attr("aria-label","Small-multiple line charts of weekly-or-more social-evening frequency by venue, 1974 to 2024, with the 2021-22 push-to-web window shaded. Neighbor and friend panels show young adults aged 18 to 34 alongside everyone.");
+  svg.append("desc").text("Each panel plots the weighted share of Americans socializing at least weekly in a given venue across survey years. The shaded vertical band marks the 2021-22 push-to-web mode change.");
+
+  const binsAll = DATA.trend_bins.all;
+  const binsYoung = DATA.trend_bins.young_18_34;
+  const xDom = [1974, 2024];
+
+  VENUES.forEach((v, i) => {
+    const cx = (i % cols) * (panelW + gap);
+    const cy = Math.floor(i / cols) * (panelH + gap);
+    const g = svg.append("g").attr("transform", `translate(${cx},${cy})`);
+
+    const m = { top:34, right:14, bottom:24, left:38 };
+    const iw = panelW - m.left - m.right;
+    const ih = panelH - m.top - m.bottom;
+
+    // y-domain: per venue, padded
+    const allVals = binsAll.map(d => d[v.key]).filter(x => x != null);
+    const youngVals = (v.hasYoung ? binsYoung.map(d => d[v.key]).filter(x=>x!=null) : []);
+    const ymax = d3.max(allVals.concat(youngVals)) * 1.12;
+    const x = d3.scaleLinear().domain(xDom).range([0, iw]);
+    const y = d3.scaleLinear().domain([0, ymax]).range([ih, 0]).nice();
+
+    const inner = g.append("g").attr("transform", `translate(${m.left},${m.top})`);
+
+    // mode-change shaded band 2020.5-2022.5
+    inner.append("rect")
+      .attr("x", x(2020.3)).attr("width", Math.max(2, x(2022.7)-x(2020.3)))
+      .attr("y", 0).attr("height", ih)
+      .attr("fill", COL.mode).attr("opacity", 0.10);
+    inner.append("text")
+      .attr("x", x(2021)).attr("y", -4).attr("text-anchor","middle")
+      .attr("font","700 8.5px var(--sans,sans-serif)").attr("fill", COL.mode)
+      .text("web");
+
+    // gridlines + y ticks
+    const yticks = y.ticks(4);
+    inner.selectAll(".gl").data(yticks).enter().append("line")
+      .attr("x1",0).attr("x2",iw).attr("y1",d=>y(d)).attr("y2",d=>y(d))
+      .attr("stroke", COL.hair).attr("stroke-width",1);
+    inner.selectAll(".yl").data(yticks).enter().append("text")
+      .attr("x",-6).attr("y",d=>y(d)+3).attr("text-anchor","end")
+      .attr("font","11px var(--sans,sans-serif)").attr("fill", COL.faint)
+      .text(d => Math.round(d*100) + "%");
+
+    // x ticks
+    [1980,2000,2020].forEach(t=>{
+      inner.append("text").attr("x",x(t)).attr("y",ih+16).attr("text-anchor","middle")
+        .attr("font","11px var(--sans,sans-serif)").attr("fill", COL.faint).text(t);
+    });
+
+    const line = d3.line().defined(d=>d[v.key]!=null).x(d=>x(d.bin)).y(d=>y(d[v.key])).curve(d3.curveMonotoneX);
+
+    // draw "everyone" always (faint when young is the focus)
+    const allFocus = (ageMode === "all") || !v.hasYoung;
+    inner.append("path").datum(binsAll)
+      .attr("fill","none").attr("stroke", COL.behav)
+      .attr("stroke-width", allFocus ? 2.6 : 1.4)
+      .attr("opacity", allFocus ? 1 : 0.28)
+      .attr("d", line);
+
+    // young overlay where available
+    if (v.hasYoung){
+      const youngFocus = ageMode === "young";
+      inner.append("path").datum(binsYoung)
+        .attr("fill","none").attr("stroke", COL.iso)
+        .attr("stroke-width", youngFocus ? 2.6 : 1.4)
+        .attr("opacity", youngFocus ? 1 : 0.28)
+        .attr("stroke-dasharray", youngFocus ? null : "3,3")
+        .attr("d", line);
+    }
+
+    // points for the focused series (interactive)
+    const focusData = (v.hasYoung && ageMode==="young") ? binsYoung : binsAll;
+    const focusColor = (v.hasYoung && ageMode==="young") ? COL.iso : COL.behav;
+    const seriesLabel = (v.hasYoung && ageMode==="young") ? "18–34" : "all adults";
+    inner.selectAll(".pt").data(focusData.filter(d=>d[v.key]!=null)).enter().append("circle")
+      .attr("cx",d=>x(d.bin)).attr("cy",d=>y(d[v.key])).attr("r",3.1)
+      .attr("fill", focusColor).attr("stroke","#fff").attr("stroke-width",1)
+      .attr("tabindex",0).attr("role","img")
+      .attr("aria-label", d=> `${v.name}, ${seriesLabel}, around ${d.bin}: ${fmtPct(d[v.key])} weekly or more`)
+      .style("cursor","pointer")
+      .on("pointerenter focus", function(ev,d){
+        d3.select(this).attr("r",5);
+        const px = cx + m.left + x(d.bin), py = cy + m.top + y(d[v.key]);
+        showTip(smTip, smBox, px, py,
+          `<b>${v.name}</b> <span class="trg">${seriesLabel}</span><br>
+           <span class="num">~${d.bin}: ${fmtPct(d[v.key])} weekly+</span><br>
+           <span class="num" style="color:#cfc6b4">n &asymp; ${fmtN(d["n_"+ (v.key.split("_")[1]==="commun"?"socommun":v.key.split("_")[1]==="frend"?"socfrend":v.key.split("_")[1]==="bar"?"socbar":"socrel")])}</span>`);
+        smReadout.html(`<b>${v.name}</b>, ${seriesLabel}, around <b>${d.bin}</b>: <b>${fmtPct(d[v.key])}</b> spent a social evening at least weekly.`);
+      })
+      .on("pointerleave blur", function(){
+        d3.select(this).attr("r",3.1); hideTip(smTip);
+      });
+
+    // panel title
+    g.append("text").attr("x",0).attr("y",14)
+      .attr("font","800 14px var(--sans,sans-serif)").attr("fill", COL.ink).text(v.name);
+    g.append("text").attr("x",0).attr("y",27)
+      .attr("font","400 11px var(--sans,sans-serif)").attr("fill", COL.faint).text(v.note);
+
+    // mini legend for young panels
+    if (v.hasYoung){
+      const lg = g.append("g").attr("transform", `translate(${panelW-4},14)`);
+      lg.append("text").attr("text-anchor","end").attr("font","700 10px var(--sans,sans-serif)")
+        .attr("fill", COL.behav).text("all").attr("y",0);
+      lg.append("text").attr("text-anchor","end").attr("font","700 10px var(--sans,sans-serif)")
+        .attr("fill", COL.iso).text("18–34").attr("y",12);
+    }
+  });
+}
+
+/* =====================================================================
+   FIGURE 2 — two-panel gradient: composite activities + 2018 loneliness
+   ===================================================================== */
+const gradBox = document.getElementById("gradient-chart");
+const gradTip = makeTip(gradBox);
+const gradReadout = d3.select("#grad-readout");
+
+function drawGradient(){
+  gradBox.innerHTML = ""; gradBox.appendChild(gradTip);
+  const W = Math.max(330, gradBox.clientWidth);
+  const stack = W < 680;
+  const gap = stack ? 30 : 40;
+  const panelW = stack ? W : (W - gap)/2;
+  const panelH = stack ? 250 : 300;
+  const H = stack ? panelH*2 + gap : panelH;
+
+  const svg = d3.select(gradBox).append("svg")
+    .attr("viewBox", `0 0 ${W} ${H}`)
+    .attr("role","img")
+    .attr("aria-label","Two bar charts. Left: share calling themselves very happy rises with the number of weekly social activities, 2014 to 2024. Right: share very happy falls with how often people lacked companionship in the 2018 loneliness module.");
+  svg.append("desc").text("Both panels relate the evaluative very-happy share to a behavioral composite or an isolation item; the two constructs are kept on separate panels with their own labels.");
+
+  /* ----- panel A: composite weekly activities ----- */
+  const compData = DATA.gradient_composite.data;
+  const rawFrend = DATA.gradient_socfrend.data;
+  const ax = stack ? 0 : 0;
+  const ay = 0;
+  drawHappyBars({
+    svg, ox:ax, oy:ay, panelW, panelH,
+    title:"More weekly company, more happiness",
+    subtitle:"Share “very happy” by number of the four social activities done weekly+ (2014–24)",
+    data: compData,
+    xKey:"n_weekly_activities",
+    xLabel:d=>d.n_weekly_activities + (d.n_weekly_activities===1?" activity":" activities"),
+    color: COL.behav,
+    construct:"behavioral composite × evaluative",
+    ghost: rawFrend, // faint raw friends gradient behind
+    ghostX: d=>d.socfrend_code, ghostXmax:7,
+    readoutPrefix:"Among those doing"
+  });
+
+  /* ----- panel B: 2018 loneliness snapshot ----- */
+  const lonData = DATA.lonely_snapshot_2018.by_lackcomp_level;
+  const bx = stack ? 0 : panelW + gap;
+  const by = stack ? panelH + gap : 0;
+  drawHappyBars({
+    svg, ox:bx, oy:by, panelW, panelH,
+    title:"The 2018 loneliness gap",
+    subtitle:"Share “very happy” by how often people lacked companionship (2018 only)",
+    data: lonData,
+    xKey:"lonely_lackcomp",
+    xLabel:d=>d.label,
+    color: COL.iso,
+    construct:"isolation × evaluative · snapshot",
+    snapshot:true,
+    readoutPrefix:"In 2018, among those who"
+  });
+}
+
+function drawHappyBars(o){
+  const m = { top:48, right:14, bottom:54, left:42 };
+  const iw = o.panelW - m.left - m.right;
+  const ih = o.panelH - m.top - m.bottom;
+  const g = o.svg.append("g").attr("transform", `translate(${o.ox},${o.oy})`);
+
+  const ymax = Math.max(0.5, d3.max(o.data, d=>d.pct_veryhappy)*1.18);
+  const x = d3.scaleBand().domain(o.data.map((d,i)=>i)).range([0, iw]).padding(0.28);
+  const y = d3.scaleLinear().domain([0, ymax]).range([ih, 0]).nice();
+  const inner = g.append("g").attr("transform", `translate(${m.left},${m.top})`);
+
+  // title
+  g.append("text").attr("x",0).attr("y",16)
+    .attr("font","800 15px var(--sans,sans-serif)").attr("fill", COL.ink).text(o.title);
+  g.append("text").attr("x",0).attr("y",31)
+    .attr("font","400 11.5px var(--sans,sans-serif)").attr("fill", COL.faint).text(o.subtitle);
+  g.append("text").attr("x",0).attr("y",o.panelH-4)
+    .attr("font","700 9.5px var(--sans,sans-serif)").attr("letter-spacing","0.06em")
+    .attr("fill", o.color).text(o.construct.toUpperCase());
+
+  // gridlines + y ticks
+  const yt = y.ticks(5);
+  inner.selectAll(".gl").data(yt).enter().append("line")
+    .attr("x1",0).attr("x2",iw).attr("y1",d=>y(d)).attr("y2",d=>y(d))
+    .attr("stroke", COL.hair).attr("stroke-width",1);
+  inner.selectAll(".yl").data(yt).enter().append("text")
+    .attr("x",-6).attr("y",d=>y(d)+3).attr("text-anchor","end")
+    .attr("font","11px var(--sans,sans-serif)").attr("fill", COL.faint)
+    .text(d=>Math.round(d*100)+"%");
+  inner.append("text").attr("x",-m.left+2).attr("y",-12)
+    .attr("font","700 10px var(--sans,sans-serif)").attr("fill",COL.faint).text("% very happy");
+
+  // faint ghost line for raw friends gradient (panel A only)
+  if (o.ghost){
+    const gx = d3.scaleLinear().domain([1, o.ghostXmax]).range([x.bandwidth()/2, iw - x.bandwidth()/2]);
+    const gl = d3.line().x(d=>gx(o.ghostX(d))).y(d=>y(d.pct_veryhappy)).curve(d3.curveMonotoneX);
+    inner.append("path").datum(o.ghost).attr("fill","none")
+      .attr("stroke", COL.faint).attr("stroke-width",1.4).attr("opacity",0.45)
+      .attr("stroke-dasharray","2,3").attr("d", gl);
+    inner.selectAll(".gpt").data(o.ghost).enter().append("circle")
+      .attr("cx",d=>gx(o.ghostX(d))).attr("cy",d=>y(d.pct_veryhappy)).attr("r",2)
+      .attr("fill", COL.faint).attr("opacity",0.5);
+    g.append("text").attr("x", o.panelW-m.right).attr("y",46).attr("text-anchor","end")
+      .attr("font","400 10px var(--sans,sans-serif)").attr("fill",COL.faint)
+      .text("··· raw friends-only gradient (non-monotone)");
+  }
+
+  // bars
+  inner.selectAll(".bar").data(o.data).enter().append("rect")
+    .attr("x",(d,i)=>x(i)).attr("width",x.bandwidth())
+    .attr("y",d=>y(d.pct_veryhappy)).attr("height",d=>ih-y(d.pct_veryhappy))
+    .attr("fill", o.color).attr("opacity",0.9)
+    .attr("tabindex",0).attr("role","img")
+    .attr("aria-label",(d)=> `${o.xLabel(d)}: ${fmtPct(d.pct_veryhappy)} very happy, n ${fmtN(d.n)}`)
+    .style("cursor","pointer")
+    .on("pointerenter focus", function(ev,d){
+      d3.select(this).attr("opacity",1);
+      const i = o.data.indexOf(d);
+      const px = o.ox + m.left + x(i) + x.bandwidth()/2;
+      const py = o.oy + m.top + y(d.pct_veryhappy);
+      showTip(gradTip, gradBox, px, py,
+        `<b>${o.xLabel(d)}</b><br>
+         <span class="num">${fmtPct(d.pct_veryhappy)} very happy</span><br>
+         <span class="num" style="color:#cfc6b4">n = ${fmtN(d.n)}</span>`);
+      gradReadout.html(`${o.readoutPrefix} <b>${o.xLabel(d).toLowerCase()}</b>: <b>${fmtPct(d.pct_veryhappy)}</b> call themselves very happy (n&nbsp;=&nbsp;${fmtN(d.n)}).`);
+    })
+    .on("pointerleave blur", function(){
+      d3.select(this).attr("opacity",0.9); hideTip(gradTip);
+    });
+
+  // value labels on bars
+  inner.selectAll(".vlab").data(o.data).enter().append("text")
+    .attr("x",(d,i)=>x(i)+x.bandwidth()/2).attr("y",d=>y(d.pct_veryhappy)-5)
+    .attr("text-anchor","middle").attr("font","700 11.5px var(--sans,sans-serif)")
+    .attr("fill", o.color).text(d=>Math.round(d.pct_veryhappy*100)+"%");
+
+  // x labels (wrap long isolation labels)
+  inner.selectAll(".xl").data(o.data).enter().append("text")
+    .attr("x",(d,i)=>x(i)+x.bandwidth()/2).attr("y",ih+16).attr("text-anchor","middle")
+    .attr("font","11px var(--sans,sans-serif)").attr("fill", COL.dim)
+    .each(function(d){
+      const lab = o.snapshot ? d.label : (d[o.xKey]);
+      const t = d3.select(this);
+      if (o.snapshot){
+        t.text(lab);
+      } else {
+        t.text(lab);
+      }
+    });
+  // x axis label
+  inner.append("text").attr("x",iw/2).attr("y",ih+40).attr("text-anchor","middle")
+    .attr("font","700 10px var(--sans,sans-serif)").attr("fill",COL.faint)
+    .text(o.snapshot ? "“How often do you feel you lack companionship?”" : "Number of social activities done weekly or more");
+}
+
+/* ---------- initial render + responsive ---------- */
+function renderAll(){
+  drawSmallMultiples();
+  drawGradient();
+}
+renderAll();
+
+let rt;
+window.addEventListener("resize", () => {
+  clearTimeout(rt);
+  rt = setTimeout(renderAll, 180);
+});
+</script>
+<!--SL_BOOKNAV_START-->
+<style>
+.slbn{font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;background:#0f1417;border-top:1px solid #27313a;color:#9fb0ba;padding:24px 20px 40px;margin:48px 0 0}
+.slbn-in{max-width:1080px;margin:0 auto;display:flex;align-items:stretch;gap:12px}
+.slbn a{flex:1 1 0;min-width:0;text-decoration:none;color:inherit;border:1px solid #27313a;border-radius:10px;padding:13px 15px;display:flex;flex-direction:column;gap:4px;background:#161d22;transition:border-color .15s,transform .15s}
+.slbn a:hover{border-color:#3fa9a0;transform:translateY(-2px)}
+.slbn a:focus-visible{outline:2px solid #3fa9a0;outline-offset:2px}
+.slbn a.slbn-next{text-align:right;align-items:flex-end}
+.slbn a.slbn-toc{flex:0 0 auto;min-width:120px;justify-content:center;align-items:center;text-align:center}
+.slbn .slbn-dir{font:700 10px/1 inherit;letter-spacing:.13em;text-transform:uppercase;color:#6b7c87}
+.slbn .slbn-ttl{font:700 14px/1.3 inherit;color:#eef2f4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.slbn a.slbn-disabled{opacity:.38;pointer-events:none}
+@media(max-width:640px){.slbn-in{flex-wrap:wrap}.slbn a{flex:1 1 100%}.slbn a.slbn-next{text-align:left;align-items:flex-start}.slbn a.slbn-toc{order:-1}}
+</style>
+<nav class="slbn" aria-label="Book navigation"><div class="slbn-in"><a class="slbn-prev" href="../read.html?ch=does-generosity-pay" target="_top"><span class="slbn-dir">‹ Previous</span><span class="slbn-ttl">Does Generosity Pay — Everywhere?</span></a><a class="slbn-toc" href="../index.html#book" target="_top"><span class="slbn-dir">The Scissors</span><span class="slbn-ttl">Chapter 21 / 36</span></a><a class="slbn-next" href="../read.html?ch=out-of-reach" target="_top"><span class="slbn-dir">Next ›</span><span class="slbn-ttl">Out of Reach — When the American Dream Stopped Feeling Possible</span></a></div></nav>
+<!--SL_BOOKNAV_END-->
+</body>
+</html>

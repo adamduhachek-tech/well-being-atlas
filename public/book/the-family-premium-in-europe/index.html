@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Family Premium in Secular Europe — Marriage, Children, and Life Satisfaction, 1981–2017</title>
+<style>
+  :root{
+    --bg:#f6f2ea;
+    --bg-deep:#efe7d8;
+    --panel:#fffdf8;
+    --ink:#241c14;
+    --ink-dim:#5a4d3e;
+    --ink-faint:#9a8a73;
+    --hair:rgba(36,28,20,.14);
+    --hair-soft:rgba(36,28,20,.07);
+    --married:#2c6e8a;
+    --married-deep:#1b4d63;
+    --single:#7ba7bc;
+    --divorced:#c4452f;
+    --widowed:#8a6f4e;
+    --kids:#3a7d44;
+    --kids-deep:#27592f;
+    --accent:#c4452f;
+    --west:#3f6fa5;
+    --post:#b5462f;
+    --rule:#c2a878;
+    --serif:'Hoefler Text','Iowan Old Style',Georgia,'Times New Roman',serif;
+    --sans:'Avenir Next',system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+    --mono:'SFMono-Regular',ui-monospace,'Cascadia Mono',Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--serif); font-size:18.5px; line-height:1.64; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility}
+  ::selection{background:rgba(44,110,138,.22)}
+  a{color:var(--married-deep); text-decoration:none; border-bottom:1px solid rgba(27,77,99,.4)}
+  a:hover,a:focus-visible{color:var(--accent); border-bottom-color:var(--accent)}
+  a:focus-visible,button:focus-visible,[tabindex]:focus-visible{outline:2.5px solid var(--accent); outline-offset:2px; border-radius:3px}
+  .wrap{max-width:720px; margin:0 auto; padding:0 22px}
+  .wide{max-width:1060px; margin:0 auto; padding:0 22px}
+  header{padding:78px 0 18px}
+  .kicker{font-family:var(--sans); font-size:12px; letter-spacing:.28em; text-transform:uppercase; color:var(--accent); margin:0 0 20px; font-weight:600}
+  h1{font-size:clamp(35px,6.4vw,64px); line-height:1.0; margin:0 0 22px; font-weight:700; letter-spacing:-.022em}
+  .dek{font-size:clamp(18px,2.5vw,24px); font-style:italic; color:var(--ink-dim); max-width:680px; margin:0 0 26px; line-height:1.45}
+  .byline{font-family:var(--sans); font-size:13px; color:var(--ink-faint); letter-spacing:.04em}
+  .byline b{color:var(--ink-dim); font-weight:600}
+  main p{margin:0 0 1.34em}
+  h2{font-size:clamp(24px,3.5vw,35px); line-height:1.12; margin:1.95em 0 .5em; letter-spacing:-.015em; font-weight:700}
+  .lead{font-size:clamp(19px,2.4vw,22px); line-height:1.5; color:var(--ink)}
+  .drop::first-letter{float:left; font-size:3.55em; line-height:.78; padding:9px 11px 0 0; color:var(--accent); font-weight:700; font-family:var(--serif)}
+  strong{font-weight:700}
+  .m-t{color:var(--married-deep); font-weight:700}
+  .k-t{color:var(--kids-deep); font-weight:700}
+  .figwrap{margin:44px auto 16px}
+  figure{margin:0; background:var(--panel); border:1px solid var(--hair); border-radius:14px; padding:26px 24px 16px; box-shadow:0 1px 0 rgba(36,28,20,.04), 0 14px 40px -28px rgba(36,28,20,.5)}
+  figure h4{font-family:var(--sans); font-size:19px; margin:0 0 5px; font-weight:700; color:var(--ink); letter-spacing:-.01em}
+  figure .sub{font-family:var(--sans); font-size:13.5px; color:var(--ink-dim); margin:0 0 16px; line-height:1.5; max-width:760px}
+  figcaption{font-family:var(--sans); font-size:12.5px; color:var(--ink-faint); line-height:1.55; margin-top:13px; border-top:1px solid var(--hair-soft); padding-top:11px}
+  svg{width:100%; height:auto; display:block; overflow:visible}
+  text{font-family:var(--sans)}
+  .legend{display:flex; flex-wrap:wrap; gap:7px 16px; font-family:var(--sans); font-size:12.5px; color:var(--ink-dim); margin:0 0 12px; align-items:center}
+  .legend span.li{display:inline-flex; align-items:center; gap:6px}
+  .dot{width:11px; height:11px; border-radius:50%; display:inline-block}
+  .swatch{width:22px; height:4px; border-radius:2px; display:inline-block}
+  .toggle{display:inline-flex; gap:0; border:1px solid var(--hair); border-radius:9px; overflow:hidden; font-family:var(--sans); margin-left:auto}
+  .toggle button{appearance:none; border:0; background:var(--panel); color:var(--ink-dim); font-size:12.5px; font-weight:600; padding:6px 13px; cursor:pointer; letter-spacing:.01em}
+  .toggle button+button{border-left:1px solid var(--hair)}
+  .toggle button[aria-pressed="true"]{background:var(--married); color:#fff}
+  .tip{position:absolute; pointer-events:none; opacity:0; background:var(--ink); color:#fff; font-family:var(--sans); font-size:12.5px; line-height:1.5; padding:10px 12px; border-radius:8px; max-width:260px; z-index:30; transition:opacity .08s; box-shadow:0 6px 22px rgba(36,28,20,.32)}
+  .tip b{color:#fff; font-weight:700}
+  .tip .row{display:flex; justify-content:space-between; gap:16px; font-variant-numeric:tabular-nums}
+  .tip .muted{color:#c8b89f}
+  .tip .hd{display:block; margin-bottom:3px}
+  .smcap{font-family:var(--sans); font-size:11px; letter-spacing:.03em; fill:var(--ink-faint)}
+  .axlab{font-family:var(--sans); font-size:12px; fill:var(--ink-faint); font-variant-numeric:tabular-nums}
+  .note{font-family:var(--sans); font-size:14.5px; line-height:1.55; color:var(--ink-dim); background:var(--bg-deep); border-left:3px solid var(--rule); border-radius:0 8px 8px 0; padding:15px 17px; margin:28px 0}
+  .note b{color:var(--ink)}
+  table.fallback{border-collapse:collapse; width:100%; font-family:var(--sans); font-size:12.5px; margin-top:8px}
+  table.fallback caption{text-align:left; color:var(--ink-faint); font-size:12px; margin-bottom:6px}
+  table.fallback th,table.fallback td{border:1px solid var(--hair-soft); padding:4px 8px; text-align:right; font-variant-numeric:tabular-nums}
+  table.fallback th:first-child,table.fallback td:first-child{text-align:left}
+  footer{font-family:var(--sans); font-size:13.5px; color:var(--ink-dim); line-height:1.62; padding:30px 0 80px}
+  footer h2{font-family:var(--sans); font-size:15px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint); margin:0 0 14px; font-weight:700}
+  footer p{margin:0 0 1em; max-width:760px}
+  footer a{color:var(--married-deep)}
+  hr.sep{border:0; border-top:1px solid var(--hair); max-width:1060px; margin:48px auto 0}
+  .pill{font-family:var(--sans); font-size:11px; letter-spacing:.07em; text-transform:uppercase; font-weight:600; padding:2px 8px; border-radius:20px; display:inline-block; vertical-align:middle}
+  .pill-eval{background:rgba(196,69,47,.12); color:var(--accent)}
+  .pill-m{background:rgba(44,110,138,.14); color:var(--married-deep)}
+  @media (prefers-reduced-motion: reduce){*{transition:none!important; animation:none!important}}
+</style>
+</head>
+<body>
+<header class="wrap">
+  <p class="kicker">European Values Study · Family &amp; well-being</p>
+  <h1>The Family Premium in Secular Europe</h1>
+  <p class="dek">Four decades of European surveys agree on something quietly stubborn: marriage still tracks a clear edge in life satisfaction — and having children, almost none. The parenthood non-premium is one of the most consistent null findings in the data.</p>
+  <p class="byline">By the numbers · <b>European Values Study (EVS), 1981–2017</b> · weighted, evaluative life satisfaction</p>
+</header>
+
+<main>
+<div class="wrap">
+  <p class="lead drop">Ask a European how satisfied they are with their life, on a scale from one to ten, and one fact about them predicts the answer with surprising reliability: whether they are married. Across 37 countries and five waves of the European Values Study, married people report a higher life satisfaction than the unmarried in <strong>nearly every country measured</strong> — and once you hold age, sex and education constant, the premium is positive in all 37 of them. Ask instead how many children they have, and the needle barely moves.</p>
+
+  <p>That asymmetry is the story. The two facts most people would file together under "family" pull apart sharply in the data. Marriage carries a premium; children carry a non-premium. The contrast is not subtle, and it survives the obvious adjustments.</p>
+</div>
+
+<div class="figwrap wide">
+  <figure>
+    <h4>In every country, the married report higher life satisfaction</h4>
+    <p class="sub">Each line connects the mean life satisfaction (1–10) of unmarried and married adults within a country. The gap — the family premium — is shown sorted from widest to narrowest. Toggle to the age-adjusted estimate, which nets out age, sex and education within each country.</p>
+    <div class="legend" id="leg-hero">
+      <span class="li"><span class="dot" style="background:var(--single)"></span>Not married</span>
+      <span class="li"><span class="dot" style="background:var(--married)"></span>Married</span>
+      <span class="li"><span class="swatch" style="background:var(--west)"></span>Western</span>
+      <span class="li"><span class="swatch" style="background:var(--post)"></span>Post-communist</span>
+      <span class="toggle" role="group" aria-label="Choose premium measure">
+        <button id="btn-raw" aria-pressed="true">Raw gap</button>
+        <button id="btn-adj" aria-pressed="false">Age-adjusted</button>
+      </span>
+    </div>
+    <div id="chart-hero" style="position:relative"></div>
+    <figcaption id="cap-hero"></figcaption>
+  </figure>
+</div>
+
+<div class="wrap">
+  <p>Pool everyone together and the married sit at <strong>7.25</strong> on the ten-point scale; never-married singles at <strong>7.17</strong>. That raw pooled gap is small — barely a tenth of a point — but it is the wrong number to lead with, because singles are on average younger, and the young are buoyant for reasons that have nothing to do with a wedding. Adjust for age, sex and education within each country and the picture sharpens: the typical married premium is <strong>0.61</strong> of a satisfaction point (the median country, <strong>0.60</strong>), and it is positive everywhere.</p>
+
+  <p>The premium runs widest in <span class="m-t">Cyprus</span>, where married adults outscore the unmarried by <strong>0.92</strong> points, and in <span class="m-t">Sweden</span> at <strong>0.85</strong> — an unlikely pairing of a Mediterranean society and a Nordic one, which is itself a hint that this is not simply about traditional family norms. It runs narrowest in the South Caucasus: in <span class="m-t">Armenia</span> the raw gap actually tips slightly negative, married adults sitting <strong>0.16</strong> of a point <em>below</em> the unmarried, and in <span class="m-t">Azerbaijan</span> by <strong>0.07</strong> — though even there, once age is accounted for, the adjusted premium turns positive.</p>
+
+  <p>The other split is regional. In Western Europe the average age-adjusted married-versus-unmarried premium is <strong>0.70</strong> of a point; across the post-communist countries it is <strong>0.56</strong>. The edge of marriage is real on both sides of the old Iron Curtain, but it is consistently larger in the West. (One caveat on labels: "Western" here is simply the residual — every country not in the post-communist list — so it sweeps in Turkey and Cyprus along with the usual north-western cases. Read it as "non-post-communist," not "EU-West"; the membership is spelled out in the notes.)</p>
+
+  <h2>Now watch the children line go flat</h2>
+  <p>Set the marriage premium beside the relationship between life satisfaction and the number of children a person has, and the contrast becomes visceral. The children line does not climb. It does not really fall. It wanders inside a band a fifth of a point wide and ends almost exactly where it started.</p>
+</div>
+
+<div class="figwrap wide">
+  <figure>
+    <h4>Marriage moves it. Children don't.</h4>
+    <p class="sub">Left: mean life satisfaction by marital status. Right: mean life satisfaction by number of children, 0 to 4 or more. Same vertical scale on both, so the steps you see are directly comparable. Bands are 95% intervals.</p>
+    <div id="chart-contrast" style="position:relative"></div>
+    <figcaption id="cap-contrast"></figcaption>
+  </figure>
+</div>
+
+<div class="wrap">
+  <p>Childless adults average <strong>7.17</strong>. People with one child dip to <strong>6.96</strong>, those with two recover to <strong>7.05</strong>, three-child parents reach <strong>7.15</strong>, and the largest families, four children or more, sit at <strong>7.11</strong>. The entire range, from the most to the least satisfied child-count group, spans just <strong>0.21</strong> of a point — and there is no clean upward march to it. Adjust within each country for age and the rest, and the typical extra satisfaction per additional child is <strong>0.08</strong> of a point: positive in most places, but a rounding error next to marriage's <strong>0.61</strong>. The slope is positive in fewer than nine countries in ten — about 86.5 percent of them — which is to say it is not reliably positive at all.</p>
+
+  <p>The marital-status panel, by contrast, has real structure, and most of it lives below the married line rather than above the single one. The genuinely large gaps are not between the married and the never-married; they are between the married and those whose marriages ended. Divorced and separated adults average <strong>6.51</strong>, the widowed <strong>6.31</strong> — fully <strong>0.74</strong> and <strong>0.94</strong> of a point under the married. The same ranking shows up in the four-point happiness item as a secondary check. Whatever marriage tracks, its absence through loss tracks the steepest deficits in the entire portrait.</p>
+
+  <h2>Two ways to read a premium</h2>
+  <p>A cross-section like this cannot tell you that marrying someone would raise your satisfaction by six tenths of a point. The arrow may run the other way. Stutzer and Frey, following the same people over time, found that happier people are measurably more likely to marry in the first place and less likely to divorce — selection, not treatment, does part of the work. Their longitudinal evidence suggests selection explains part but not all of the premium, which is roughly the most honest thing the cross-section can say in agreement.</p>
+
+  <p>The divorce and widowhood deficits carry their own selection traps. The widowed are old, and age drags on satisfaction independently of marital loss; the divorced include a disproportionate share of people who were less satisfied to begin with. The gap you see conflates the genuine sting of an ending with the sorting of the less content into those endings. It is a real association. It is not a clean causal estimate of what divorce does to a person.</p>
+</div>
+
+<div class="figwrap wide">
+  <figure>
+    <h4>The full marital ladder — and where children sit on it</h4>
+    <p class="sub">Mean life satisfaction by marital status (married vs not) crossed with parenthood (has children vs none). The rows separate cleanly — marriage moves the score. The columns separate too, but read that gap carefully: it is mostly a question of <em>who</em> among the unmarried has children. Hold marital status fixed, and parenthood almost vanishes.</p>
+    <div id="chart-grid" style="position:relative"></div>
+    <figcaption id="cap-grid"></figcaption>
+  </figure>
+</div>
+
+<div class="wrap">
+  <p>None of this means children leave well-being untouched. The research that follows the same parents across the transition tells a more textured story than any single survey snapshot. Nelson, Kushlev and Lyubomirsky's review found a small overall negative tilt to parenthood with wide variation by circumstance; Margolis and Myrskylä showed the effect bends with the number of children already at home and depends heavily on a country's welfare and development context. A flat cross-sectional line is exactly what you would expect when a small drag in early parenthood is offset by a small lift later, averaged across societies that support parents very differently. The flatness is informative, not empty.</p>
+
+  <p>And the marriage premium is not the steady glow it looks like in a pooled snapshot either. Following couples over the years, VanLaningham and colleagues traced marital satisfaction declining with duration — the contented long-married and the recently wed are blended together in a cross-section, so the level overstates the durability. What the EVS can say cleanly is narrow and worth saying: across forty years of a secularizing continent, the married consistently evaluate their lives a little higher than the unmarried, everywhere; the number of children a person has does almost nothing of the kind.</p>
+
+  <h2>What this does, and does not, show</h2>
+  <p><strong>Association, not a lever.</strong> Every figure here is cross-sectional. The married-unmarried gap reflects who marries and stays married as much as anything marriage might do, and the divorce gap blends the pain of an ending with the sorting of the less satisfied into it. Read the premiums as differences between groups, not as the effect of changing one person's status.</p>
+  <p><strong>Evaluative only.</strong> The EVS measures how people <em>judge</em> their lives overall — life satisfaction on a 1–10 scale, with a four-point happiness item as a check. It carries no "yesterday" measures of daily mood, so nothing here speaks to the texture of a parent's actual day, only to the standing evaluation they report.</p>
+  <p><strong>An unbalanced patchwork.</strong> Countries enter and leave across the five waves, so this is a structural portrait pooled over 1981–2017, not a trend. Each country counts once in the cross-country figures — an average national experience, not a population-weighted one — and any country-cell with an effective sample below 50 is dropped before it can add noise.</p>
+</div>
+
+<hr class="sep">
+<div class="wide">
+<footer>
+  <h2>Notes &amp; data</h2>
+  <p><strong>Source.</strong> European Values Study (EVS), waves 1 (1981), 2 (1990), 4 (1999), 5 (2008) and 7 (2017), fieldwork 1981–2017, restricted to European societies (the United States and Canada, which appear in early EVS rounds, are excluded). The structural portrait pools all waves across 37 countries and 217,286 respondents. The primary outcome is life satisfaction, the standard "all things considered, how satisfied are you with your life as a whole these days" item, scored 1 (dissatisfied) to 10 (satisfied); the four-point happiness item is used only as a secondary check.</p>
+  <p><strong>Weighting.</strong> Within-country estimates use the EVS within-country survey weight (<span style="font-family:var(--mono)">weight</span>); estimates are never reported unweighted. There is no population-projection variable in this extract, so every cross-country figure — every "Europe" average, the regional means, the equal-country premiums — weights each <em>country</em> equally. These are averages of national experiences, not population-weighted figures, and should be read as such. Country-cells with effective sample size below 50 are suppressed; effective N = (Σw)² ⁄ Σw².</p>
+  <p><strong>Method.</strong> Pooled means by marital status and by child count are weighted means of life satisfaction with 95% intervals. The age-adjusted premium is the coefficient on "married" in a weighted within-country least-squares fit of life satisfaction on married, age, age², sex and education, with the per-country coefficients then averaged equally across countries (mean 0.61, median 0.60, positive in all 37). The per-child slope comes from the same model with number of children in place of married (mean 0.08, positive in 86.5% of countries). Western and post-communist regional figures average the relevant per-country values equally. The post-communist set follows the standard list (Czechia, Russia, Slovakia, Romania, Bulgaria, Hungary, Lithuania, Poland, Estonia, Latvia, Slovenia, Ukraine, Belarus, Croatia, Georgia, Bosnia Herzegovina, Serbia, Armenia, Albania, North Macedonia, Montenegro, Azerbaijan, Moldova). "Western" here is the residual category — every European society <em>not</em> on that list — and so, by construction, it includes a few cases that are geographically or culturally neither north-western nor EU-15: notably Turkey and Cyprus, which contribute to the "Western" mean alongside Sweden, Germany and the rest. Read "Western" as "non-post-communist," not as "EU-West."</p>
+  <p><strong>Constructs.</strong> Life satisfaction and the happiness item are <strong>evaluative</strong> well-being — global, reflective judgments. Marital status and number of children are reported circumstances, not outcomes. The surveys contain no experiential "yesterday" affect items, so no claim is made about momentary feeling.</p>
+  <p><strong>Further reading.</strong> Alois Stutzer &amp; Bruno S. Frey, <a href="https://doi.org/10.1016/j.socec.2005.11.043">"Does marriage make people happy, or do happy people get married?"</a> (<em>Journal of Socio-Economics</em>, 2006); S. Katherine Nelson, Kostadin Kushlev &amp; Sonja Lyubomirsky, <a href="https://doi.org/10.1037/a0035444">"The pains and pleasures of parenting"</a> (<em>Psychological Bulletin</em>, 2014); Rachel Margolis &amp; Mikko Myrskylä, <a href="https://doi.org/10.1111/j.1728-4457.2011.00389.x">"A global perspective on happiness and fertility"</a> (<em>Population and Development Review</em>, 2011); Jody VanLaningham, David R. Johnson &amp; Paul Amato, <a href="https://doi.org/10.1353/sof.2001.0111">"Marital happiness, marital duration, and the U-shaped curve"</a> (<em>Social Forces</em>, 2001).</p>
+  <p style="color:var(--ink-faint)">Construct labels — <span class="pill pill-m">marital status</span> reported circumstance · <span class="pill pill-eval">evaluative</span> life satisfaction. Cross-sectional association, not causation. European Values Study (EVS), 1981–2017.</p>
+</footer>
+</div>
+</main>
+
+<div class="tip" id="tip" role="status" aria-live="polite"></div>
+
+<script type="module">
+import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+const DATA = {"meta":{"slug":"the-family-premium-in-europe","title":"The Family Premium in Secular Europe","dataset":"European Values Study (EVS), 1981-2017","colors":{"married":"#2c6e8a","single":"#7ba7bc","divorced":"#c4452f","widowed":"#8a6f4e","kids":"#3a7d44","highlight":"#c4452f","post_communist":"#b5462f","western":"#3f6fa5"}},"satis_by_marital":[{"marital_status":"Single","satis_mean":7.1711,"satis_lo":7.1508,"satis_hi":7.1914,"happy_mean":3.0753,"n":51000},{"marital_status":"Married","satis_mean":7.2491,"satis_lo":7.2359,"satis_hi":7.2625,"happy_mean":3.1172,"n":125931},{"marital_status":"Divorced/Separated","satis_mean":6.5126,"satis_lo":6.4736,"satis_hi":6.5562,"happy_mean":2.8377,"n":17109},{"marital_status":"Widowed","satis_mean":6.308,"satis_lo":6.2664,"satis_hi":6.3486,"happy_mean":2.6972,"n":20249}],"satis_by_kids":[{"n_children":"0","satis_mean":7.1698,"satis_lo":7.1513,"satis_hi":7.1892,"happy_mean":3.0781,"n":61150},{"n_children":"1","satis_mean":6.9575,"satis_lo":6.9299,"satis_hi":6.9843,"happy_mean":3.0039,"n":37962},{"n_children":"2","satis_mean":7.0503,"satis_lo":7.0317,"satis_hi":7.0693,"happy_mean":3.0376,"n":68365},{"n_children":"3","satis_mean":7.1462,"satis_lo":7.118,"satis_hi":7.173,"happy_mean":3.0708,"n":28445},{"n_children":"4+","satis_mean":7.1062,"satis_lo":7.0686,"satis_hi":7.1453,"happy_mean":3.052,"n":17886}],"grid_cells":[{"row":"Married","col":"No children","satis_mean":7.181,"n":9418,"n_countries":37},{"row":"Married","col":"Has children","satis_mean":7.0094,"n":90200,"n_countries":37},{"row":"Not married","col":"No children","satis_mean":6.9292,"n":37901,"n_countries":37},{"row":"Not married","col":"Has children","satis_mean":6.3143,"n":31817,"n_countries":37}],"country_premium":[{"country":"Cyprus","region":"Western","married_mean":7.6915,"notmarried_mean":6.7669,"raw_gap":0.9246,"adj_coef":1.0878,"n":998},{"country":"Sweden","region":"Western","married_mean":8.1089,"notmarried_mean":7.2615,"raw_gap":0.8474,"adj_coef":0.742,"n":5232},{"country":"Georgia","region":"Post-communist","married_mean":6.4738,"notmarried_mean":5.7813,"raw_gap":0.6925,"adj_coef":0.9682,"n":3673},{"country":"Italy","region":"Western","married_mean":7.3857,"notmarried_mean":6.8011,"raw_gap":0.5846,"adj_coef":0.8461,"n":9015},{"country":"Finland","region":"Western","married_mean":8.0477,"notmarried_mean":7.4985,"raw_gap":0.5492,"adj_coef":0.6594,"n":3889},{"country":"Hungary","region":"Post-communist","married_mean":6.6031,"notmarried_mean":6.07,"raw_gap":0.5331,"adj_coef":0.9441,"n":4978},{"country":"Norway","region":"Western","married_mean":8.1138,"notmarried_mean":7.5814,"raw_gap":0.5325,"adj_coef":0.7646,"n":4483},{"country":"United Kingdom","region":"Western","married_mean":7.8096,"notmarried_mean":7.2812,"raw_gap":0.5284,"adj_coef":0.7159,"n":6929},{"country":"Switzerland","region":"Western","married_mean":8.2496,"notmarried_mean":7.7686,"raw_gap":0.481,"adj_coef":0.4886,"n":4414},{"country":"Germany","region":"Western","married_mean":7.5142,"notmarried_mean":7.0337,"raw_gap":0.4805,"adj_coef":0.7206,"n":10931},{"country":"Greece","region":"Western","married_mean":7.0195,"notmarried_mean":6.5878,"raw_gap":0.4318,"adj_coef":0.8692,"n":2609},{"country":"France","region":"Western","married_mean":7.1929,"notmarried_mean":6.7737,"raw_gap":0.4192,"adj_coef":0.701,"n":7087},{"country":"Northern Ireland","region":"Western","married_mean":8.0974,"notmarried_mean":7.6926,"raw_gap":0.4048,"adj_coef":0.6877,"n":2100},{"country":"Moldova","region":"Post-communist","married_mean":6.7357,"notmarried_mean":6.3329,"raw_gap":0.4028,"adj_coef":0.7167,"n":1527},{"country":"Netherlands","region":"Western","married_mean":8.0196,"notmarried_mean":7.6278,"raw_gap":0.3918,"adj_coef":0.604,"n":7112},{"country":"Belarus","region":"Post-communist","married_mean":6.2421,"notmarried_mean":5.8517,"raw_gap":0.3904,"adj_coef":0.4408,"n":3977},{"country":"Spain","region":"Western","married_mean":7.2259,"notmarried_mean":6.8366,"raw_gap":0.3894,"adj_coef":0.4692,"n":8786},{"country":"Serbia","region":"Post-communist","married_mean":6.937,"notmarried_mean":6.5655,"raw_gap":0.3714,"adj_coef":0.6207,"n":2947},{"country":"Bulgaria","region":"Post-communist","married_mean":5.8366,"notmarried_mean":5.4741,"raw_gap":0.3625,"adj_coef":0.5465,"n":4970},{"country":"Montenegro","region":"Post-communist","married_mean":7.6481,"notmarried_mean":7.2995,"raw_gap":0.3487,"adj_coef":0.6833,"n":2459},{"country":"Croatia","region":"Post-communist","married_mean":7.1926,"notmarried_mean":6.867,"raw_gap":0.3257,"adj_coef":0.5731,"n":3881},{"country":"Russia","region":"Post-communist","married_mean":5.8603,"notmarried_mean":5.5564,"raw_gap":0.3039,"adj_coef":0.4573,"n":5729},{"country":"Slovakia","region":"Post-communist","married_mean":6.9922,"notmarried_mean":6.6914,"raw_gap":0.3008,"adj_coef":0.4579,"n":5339},{"country":"Czechia","region":"Post-communist","married_mean":7.2479,"notmarried_mean":6.9827,"raw_gap":0.2652,"adj_coef":0.5837,"n":7558},{"country":"Ukraine","region":"Post-communist","married_mean":5.8169,"notmarried_mean":5.5729,"raw_gap":0.244,"adj_coef":0.3974,"n":4214},{"country":"Bosnia Herzegovina","region":"Post-communist","married_mean":7.5353,"notmarried_mean":7.297,"raw_gap":0.2383,"adj_coef":0.5641,"n":3189},{"country":"Estonia","region":"Post-communist","married_mean":6.6475,"notmarried_mean":6.4174,"raw_gap":0.2301,"adj_coef":0.4445,"n":4776},{"country":"North Macedonia","region":"Post-communist","married_mean":7.117,"notmarried_mean":6.9285,"raw_gap":0.1885,"adj_coef":0.6218,"n":2514},{"country":"Turkey","region":"Western","married_mean":6.0715,"notmarried_mean":5.8974,"raw_gap":0.1742,"adj_coef":0.5108,"n":3582},{"country":"Romania","region":"Post-communist","married_mean":6.547,"notmarried_mean":6.3769,"raw_gap":0.1701,"adj_coef":0.4197,"n":5238},{"country":"Slovenia","region":"Post-communist","married_mean":7.2777,"notmarried_mean":7.1086,"raw_gap":0.1691,"adj_coef":0.5352,"n":4424},{"country":"Poland","region":"Post-communist","married_mean":7.0418,"notmarried_mean":6.8856,"raw_gap":0.1562,"adj_coef":0.6129,"n":4882},{"country":"Albania","region":"Post-communist","married_mean":6.7756,"notmarried_mean":6.6244,"raw_gap":0.1512,"adj_coef":0.9991,"n":2933},{"country":"Lithuania","region":"Post-communist","married_mean":6.2114,"notmarried_mean":6.1255,"raw_gap":0.0859,"adj_coef":0.3655,"n":4867},{"country":"Latvia","region":"Post-communist","married_mean":6.1795,"notmarried_mean":6.1373,"raw_gap":0.0422,"adj_coef":0.3104,"n":4682},{"country":"Azerbaijan","region":"Post-communist","married_mean":6.3348,"notmarried_mean":6.4094,"raw_gap":-0.0745,"adj_coef":0.2682,"n":1761},{"country":"Armenia","region":"Post-communist","married_mean":5.99,"notmarried_mean":6.1467,"raw_gap":-0.1566,"adj_coef":0.2406,"n":2963}],"headline":{"satis_single":7.1711,"satis_married":7.2491,"satis_divorced":6.5126,"satis_widowed":6.308,"married_premium_pooled":0.078,"married_vs_divorced":0.7365,"married_vs_widowed":0.9411,"married_premium_adj_mean":0.6119,"married_premium_adj_median":0.604,"married_premium_pct_pos":100.0,"n_countries_premium":37,"married_premium_postcommunist":0.5553,"married_premium_western":0.7048,"satis_0kids":7.1698,"satis_4plus_kids":7.1062,"kids_span":0.2123,"contrast_y_lo":6.1,"contrast_y_hi":7.45,"contrast_y_window":1.35,"child_slope_adj_mean":0.0767,"child_slope_adj_median":0.0895,"child_slope_pct_pos":86.5,"raw_gap_western":0.51,"raw_gap_postcommunist":0.2496,"equal_country_married_mean":7.0214,"equal_country_notmarried_mean":6.6733,"grid_row_effect":0.4734,"grid_col_effect":-0.3932,"grid_married_kids_diff":-0.1716,"grid_notmarried_kids_diff":-0.6149,"n_total_evs":217286,"n_countries":37}};
+const C = DATA.meta.colors;
+const REGCOL = {"Western":C.western,"Post-communist":C.post_communist};
+const tip = document.getElementById("tip");
+function showTip(html, ev){
+  tip.innerHTML = html; tip.style.opacity = 1;
+  const pad=14, w=tip.offsetWidth, h=tip.offsetHeight;
+  let x=ev.clientX+pad, y=ev.clientY+pad;
+  if(x+w>window.innerWidth-6) x=ev.clientX-w-pad;
+  if(y+h>window.innerHeight-6) y=ev.clientY-h-pad;
+  tip.style.left=x+"px"; tip.style.top=y+"px";
+}
+function hideTip(){ tip.style.opacity=0; }
+const f2=d3.format(".2f");
+const sgn=v=>(v>=0?"+":"−")+Math.abs(v).toFixed(2);
+
+/* ============================================================
+   HERO — sorted dumbbells: not-married -> married, by country
+   ============================================================ */
+(function(){
+  const rows = DATA.country_premium.slice();
+  // Equal-country averages of the per-country married / not-married means — the
+  // correct denominators for these dots (not-married = single+divorced+widowed),
+  // matching the equal-country aggregation used everywhere else in the article.
+  const H_AVG_M = DATA.headline.equal_country_married_mean, H_AVG_NM = DATA.headline.equal_country_notmarried_mean;
+  let mode = "raw"; // raw | adj
+  const W=1060, M={t:70,r:128,b:58,l:140};
+  const rowH=23, ih=rows.length*rowH, H=M.t+ih+M.b, iw=W-M.l-M.r;
+  const svg=d3.select("#chart-hero").append("svg").attr("viewBox",`0 0 ${W} ${H}`).attr("width","100%")
+    .attr("role","img").attr("aria-label","Dumbbell chart: in every one of 37 European countries, married adults report higher mean life satisfaction than unmarried adults. Countries sorted by the size of the gap.");
+  svg.append("desc").text("For each country, a line connects the mean life satisfaction of not-married adults to that of married adults; the married point is to the right in nearly every country.");
+  const g=svg.append("g").attr("transform",`translate(${M.l},${M.t})`);
+  const x=d3.scaleLinear().domain([5.2,8.5]).range([0,iw]);
+
+  // gridlines
+  g.append("g").selectAll("line.gx").data(x.ticks(7)).join("line").attr("class","gx")
+    .attr("x1",d=>x(d)).attr("x2",d=>x(d)).attr("y1",-8).attr("y2",ih).attr("stroke","var(--hair-soft)");
+  g.append("g").selectAll("text.gx").data(x.ticks(7)).join("text").attr("class","axlab")
+    .attr("x",d=>x(d)).attr("y",-14).attr("text-anchor","middle").text(d=>d.toFixed(1));
+  g.append("text").attr("class","smcap").attr("x",iw/2).attr("y",ih+34).attr("text-anchor","middle").text("mean life satisfaction (1–10) →");
+
+  // Equal-country average reference: two faint vertical guides at the equal-country
+  // means of the per-country married and not-married dots. Shown only in raw mode,
+  // where the dots ARE those per-country means; in adjusted mode the married dot is
+  // re-anchored to (not-married + premium), so the guide would not correspond.
+  const avgX0 = x(H_AVG_NM), avgX1 = x(H_AVG_M);
+  const avgRef=g.append("g").attr("opacity",.9);
+  // Guide rules stop a touch above the last data row so they cannot run under any
+  // bottom-row gap label; the "country avg" callouts live in the TOP margin (y=-30),
+  // clear of every data row and of the bottom "country avg" zone entirely.
+  const avgY2 = ih - rowH*0.5;
+  [["nm",avgX0,C.single],["m",avgX1,C.married]].forEach(([k,xx,cc])=>{
+    avgRef.append("line").attr("x1",xx).attr("x2",xx).attr("y1",-8).attr("y2",avgY2)
+      .attr("stroke",cc).attr("stroke-width",1).attr("stroke-dasharray","2 4").attr("opacity",.55);
+  });
+  avgRef.append("text").attr("class","smcap").attr("x",avgX1+6).attr("y",-30)
+    .attr("fill",C.married).attr("font-weight",700).attr("text-anchor","start")
+    .text(`married country avg ${f2(H_AVG_M)}`);
+  avgRef.append("text").attr("class","smcap").attr("x",avgX0-6).attr("y",-30)
+    .attr("fill",C.single).attr("font-weight",700).attr("text-anchor","end")
+    .text(`${f2(H_AVG_NM)} not-married avg`);
+
+  const row=g.selectAll("g.r").data(rows,d=>d.country).join("g").attr("class","r")
+    .attr("transform",(d,i)=>`translate(0,${i*rowH+rowH/2})`);
+  row.append("text").attr("class","axlab").attr("x",-12).attr("y",4).attr("text-anchor","end")
+    .attr("font-size",11.5).attr("fill","var(--ink-dim)").text(d=>d.country);
+  const conn=row.append("line").attr("stroke-width",2.4).attr("stroke-linecap","round");
+  const cNM=row.append("circle").attr("r",4.4).attr("fill",C.single).attr("stroke","var(--panel)").attr("stroke-width",1.4);
+  const cM =row.append("circle").attr("r",5).attr("stroke","var(--panel)").attr("stroke-width",1.4);
+  const gapLab=row.append("text").attr("class","axlab").attr("font-size",11).attr("font-weight",700)
+    .attr("text-anchor","start").attr("y",4);
+
+  // invisible hit area for hover per row
+  row.append("rect").attr("x",-M.l).attr("y",-rowH/2).attr("width",W).attr("height",rowH).attr("fill","transparent")
+    .attr("tabindex",0).attr("role","button")
+    .attr("aria-label",d=>`${d.country}: married ${f2(d.married_mean)}, not married ${f2(d.notmarried_mean)}`)
+    .on("mousemove",(ev,d)=>tipFor(d,ev))
+    .on("mouseleave",hideTip)
+    .on("focus",function(ev,d){const r=this.getBoundingClientRect();tipFor(d,{clientX:r.x+r.width/2,clientY:r.y+r.height/2});})
+    .on("blur",hideTip);
+
+  function tipFor(d,ev){
+    const gap = mode==="raw"?d.raw_gap:d.adj_coef;
+    showTip(`<b class="hd">${d.country}</b>`+
+      `<div class="row"><span class="muted">${d.region}</span><span></span></div>`+
+      `<div class="row"><span class="muted">married</span><b>${f2(d.married_mean)}</b></div>`+
+      `<div class="row"><span class="muted">not married</span><b>${f2(d.notmarried_mean)}</b></div>`+
+      `<div class="row"><span class="muted">${mode==="raw"?"raw gap":"age-adjusted"}</span><b>${sgn(gap)}</b></div>`+
+      `<div class="row"><span class="muted">N</span><b>${d.n.toLocaleString()}</b></div>`,ev);
+  }
+
+  function render(animate){
+    // sort by chosen measure desc
+    const key = mode==="raw" ? d=>d.raw_gap : d=>d.adj_coef;
+    rows.sort((a,b)=>d3.descending(key(a),key(b)));
+    // equal-country guides only correspond to the dots in raw mode
+    (animate?avgRef.transition(svg.transition().duration(300)):avgRef).attr("opacity",mode==="raw"?0.9:0);
+    const ord=new Map(rows.map((d,i)=>[d.country,i]));
+    const tt=animate?svg.transition().duration(650).ease(d3.easeCubicInOut):null;
+    g.selectAll("g.r").each(function(d){
+      const sel=d3.select(this);
+      (animate?sel.transition(tt):sel).attr("transform",`translate(0,${ord.get(d.country)*rowH+rowH/2})`);
+    });
+    row.each(function(d){
+      const sel=d3.select(this);
+      const x0=x(d.notmarried_mean);
+      // adjusted: draw married point at notmarried + adj_coef so the connector length == the modeled premium
+      const xMraw=x(d.married_mean);
+      const xMadj=x(d.notmarried_mean + d.adj_coef);
+      const xM = mode==="raw"?xMraw:xMadj;
+      const col=REGCOL[d.region]||C.married;
+      const c=sel.select("line"), nm=sel.select("circle:nth-of-type(1)"), m=sel.select("circle:nth-of-type(2)"), lab=sel.select("text.axlab[font-weight='700']");
+      const cc=sel.selectAll("circle"); // [nm, m]
+      const gap=mode==="raw"?d.raw_gap:d.adj_coef;
+      const lo=Math.min(x0,xM), hi=Math.max(x0,xM);
+      const L=(animate?c.transition(tt):c);
+      L.attr("x1",x0).attr("x2",xM).attr("stroke",gap>=0?col:C.highlight).attr("opacity",.55);
+      (animate?cc.filter((p,i)=>i===0).transition(tt):cc.filter((p,i)=>i===0)).attr("cx",x0);
+      (animate?cc.filter((p,i)=>i===1).transition(tt):cc.filter((p,i)=>i===1)).attr("cx",xM).attr("fill",col);
+      const GL=sel.select("text.axlab:last-of-type");
+      (animate?GL.transition(tt):GL).attr("x",hi+10).text(sgn(gap)).attr("fill",gap>=0?col:C.highlight);
+    });
+    document.getElementById("cap-hero").innerHTML =
+      mode==="raw"
+      ? `Raw within-country means, weighted by the EVS within-country weight. The married point lies to the right of the not-married point in 35 of 37 countries; the two exceptions (Armenia, Azerbaijan) reverse once age is taken into account. European Values Study (EVS), 1981–2017; each country weighted equally; cells with effective N below 50 suppressed. Evaluative.`
+      : `Age-adjusted premium: the coefficient on “married” from a weighted within-country fit netting out age, age², sex and education. Positive in all 37 countries (mean ${f2(DATA.headline.married_premium_adj_mean)}). European Values Study (EVS), 1981–2017; each country weighted equally. Evaluative.`;
+  }
+  render(false);
+
+  function setMode(m){
+    mode=m;
+    document.getElementById("btn-raw").setAttribute("aria-pressed", String(m==="raw"));
+    document.getElementById("btn-adj").setAttribute("aria-pressed", String(m==="adj"));
+    render(true);
+  }
+  document.getElementById("btn-raw").addEventListener("click",()=>setMode("raw"));
+  document.getElementById("btn-adj").addEventListener("click",()=>setMode("adj"));
+
+  // accessible fallback table
+  const t=d3.select("#chart-hero").append("table").attr("class","fallback").style("display","none");
+  t.append("caption").text("Married vs not-married mean life satisfaction by country");
+  const hh=t.append("thead").append("tr"); ["Country","Not married","Married","Raw gap"].forEach(s=>hh.append("th").text(s));
+  const tb=t.append("tbody");
+  rows.forEach(d=>{const r=tb.append("tr"); r.append("td").text(d.country); r.append("td").text(f2(d.notmarried_mean)); r.append("td").text(f2(d.married_mean)); r.append("td").text(sgn(d.raw_gap));});
+})();
+
+/* ============================================================
+   CONTRAST — marital steps (left) vs flat children line (right)
+   ============================================================ */
+(function(){
+  const W=1060,H=420,M={t:24,r:24,b:60,l:50};
+  const gap=64;
+  const iw=W-M.l-M.r, ih=H-M.t-M.b;
+  const leftW=iw*0.46, rightW=iw-leftW-gap;
+  const yDom=[DATA.headline.contrast_y_lo,DATA.headline.contrast_y_hi];
+  const y=d3.scaleLinear().domain(yDom).range([ih,0]);
+  const svg=d3.select("#chart-contrast").append("svg").attr("viewBox",`0 0 ${W} ${H}`).attr("width","100%")
+    .attr("role","img").attr("aria-label","Two panels on the same scale: mean life satisfaction varies clearly by marital status but stays almost flat across number of children.");
+  svg.append("desc").text("Left panel shows married highest, then single, then divorced, then widowed. Right panel shows mean life satisfaction by number of children staying within a narrow band.");
+  const root=svg.append("g").attr("transform",`translate(${M.l},${M.t})`);
+
+  function yAxis(sel,w){
+    sel.append("g").selectAll("line").data(y.ticks(6)).join("line")
+      .attr("x1",0).attr("x2",w).attr("y1",d=>y(d)).attr("y2",d=>y(d)).attr("stroke","var(--hair-soft)");
+    sel.append("g").selectAll("text").data(y.ticks(6)).join("text").attr("class","axlab")
+      .attr("x",-9).attr("y",d=>y(d)+4).attr("text-anchor","end").text(d=>d.toFixed(1));
+  }
+
+  /* ---- LEFT: marital status (ordered, colored points + drop lines) ---- */
+  const L=root.append("g");
+  yAxis(L,leftW);
+  L.append("text").attr("class","smcap").attr("transform",`translate(-38,${ih/2}) rotate(-90)`).attr("text-anchor","middle").text(`mean life satisfaction — axis zoomed to ${yDom[0]}–${yDom[1]} of 1–10`);
+  // explicit broken-axis marker at the truncated floor
+  L.append("text").attr("class","smcap").attr("x",-9).attr("y",ih+2).attr("text-anchor","end").attr("fill","var(--ink-faint)").attr("font-size",13).text("⤓");
+  const morder=["Married","Single","Divorced/Separated","Widowed"];
+  const mlabel={"Married":"Married","Single":"Single","Divorced/Separated":"Divorced","Widowed":"Widowed"};
+  const mcol={"Married":C.married,"Single":C.single,"Divorced/Separated":C.divorced,"Widowed":C.widowed};
+  const mrows=morder.map(k=>DATA.satis_by_marital.find(d=>d.marital_status===k));
+  const xm=d3.scalePoint().domain(morder).range([leftW*0.12,leftW*0.92]).padding(0);
+  // No drop-lines to the (truncated) floor — they would exaggerate the gaps from an
+  // arbitrary baseline. Dots + 95% CI only; the truncated axis is labeled explicitly.
+  L.selectAll("line.ci").data(mrows).join("line").attr("class","ci")
+    .attr("x1",d=>xm(d.marital_status)).attr("x2",d=>xm(d.marital_status))
+    .attr("y1",d=>y(d.satis_lo)).attr("y2",d=>y(d.satis_hi)).attr("stroke",d=>mcol[d.marital_status]).attr("stroke-width",2.4).attr("opacity",.6);
+  L.selectAll("circle").data(mrows).join("circle")
+    .attr("cx",d=>xm(d.marital_status)).attr("cy",d=>y(d.satis_mean)).attr("r",7)
+    .attr("fill",d=>mcol[d.marital_status]).attr("stroke","var(--panel)").attr("stroke-width",1.8)
+    .attr("tabindex",0).attr("role","button").attr("aria-label",d=>`${mlabel[d.marital_status]}: ${f2(d.satis_mean)}`)
+    .on("mousemove",(ev,d)=>showTip(`<b class="hd">${mlabel[d.marital_status]}</b><div class="row"><span class="muted">life satisfaction</span><b>${f2(d.satis_mean)}</b></div><div class="row"><span class="muted">happiness (1–4)</span><b>${f2(d.happy_mean)}</b></div><div class="row"><span class="muted">N</span><b>${d.n.toLocaleString()}</b></div>`,ev))
+    .on("mouseleave",hideTip)
+    .on("focus",function(ev,d){const r=this.getBoundingClientRect();showTip(`<b>${mlabel[d.marital_status]}</b><div class="row"><span class="muted">life sat</span><b>${f2(d.satis_mean)}</b></div>`,{clientX:r.x+r.width/2,clientY:r.y});})
+    .on("blur",hideTip);
+  L.selectAll("text.val").data(mrows).join("text").attr("class","axlab").attr("font-weight",700)
+    .attr("x",d=>xm(d.marital_status)).attr("y",d=>y(d.satis_mean)-13).attr("text-anchor","middle")
+    .attr("fill",d=>mcol[d.marital_status]).text(d=>f2(d.satis_mean));
+  L.selectAll("text.cat").data(mrows).join("text").attr("class","axlab")
+    .attr("x",d=>xm(d.marital_status)).attr("y",ih+20).attr("text-anchor","middle").attr("fill","var(--ink-dim)").text(d=>mlabel[d.marital_status]);
+  L.append("text").attr("class","smcap").attr("x",leftW/2).attr("y",ih+42).attr("text-anchor","middle").attr("font-weight",700).attr("fill","var(--ink-dim)").text("BY MARITAL STATUS");
+
+  /* ---- RIGHT: children line (flat) ---- */
+  const R=root.append("g").attr("transform",`translate(${leftW+gap},0)`);
+  yAxis(R,rightW);
+  const kr=DATA.satis_by_kids;
+  const xk=d3.scalePoint().domain(kr.map(d=>d.n_children)).range([rightW*0.08,rightW*0.92]).padding(0);
+  // reference band = full vertical extent of the children means, to show how narrow it is
+  const kmin=d3.min(kr,d=>d.satis_mean), kmax=d3.max(kr,d=>d.satis_mean);
+  R.append("rect").attr("x",0).attr("y",y(kmax)).attr("width",rightW).attr("height",y(kmin)-y(kmax))
+    .attr("fill",C.kids).attr("opacity",.07);
+  // span callout sits in the clear space BELOW the band (below the lowest point's value
+  // label), left-aligned — well clear of the 4+ value label at top-right that it used to
+  // collide with. A thin tick ties the words to the band's lower edge.
+  const spanY = y(kmin)+34;
+  R.append("line").attr("x1",8).attr("x2",8).attr("y1",y(kmin)).attr("y2",spanY-11)
+    .attr("stroke",C.kids).attr("stroke-width",1).attr("opacity",.45);
+  R.append("text").attr("class","smcap").attr("x",8).attr("y",spanY).attr("text-anchor","start").attr("fill",C.kids).attr("font-weight",700)
+    .text(`whole line spans just ${DATA.headline.kids_span.toFixed(2)} pts`);
+  const area=d3.area().x(d=>xk(d.n_children)).y0(d=>y(d.satis_lo)).y1(d=>y(d.satis_hi)).curve(d3.curveMonotoneX);
+  const line=d3.line().x(d=>xk(d.n_children)).y(d=>y(d.satis_mean)).curve(d3.curveMonotoneX);
+  R.append("path").datum(kr).attr("fill",C.kids).attr("opacity",.16).attr("d",area);
+  R.append("path").datum(kr).attr("fill","none").attr("stroke",C.kids).attr("stroke-width",3.2).attr("d",line);
+  R.selectAll("circle").data(kr).join("circle")
+    .attr("cx",d=>xk(d.n_children)).attr("cy",d=>y(d.satis_mean)).attr("r",6)
+    .attr("fill","var(--panel)").attr("stroke",C.kids).attr("stroke-width",2.6)
+    .attr("tabindex",0).attr("role","button").attr("aria-label",d=>`${d.n_children} children: ${f2(d.satis_mean)}`)
+    .on("mousemove",(ev,d)=>showTip(`<b class="hd">${d.n_children==="4+"?"4 or more":d.n_children} ${d.n_children==="1"?"child":"children"}</b><div class="row"><span class="muted">life satisfaction</span><b>${f2(d.satis_mean)}</b></div><div class="row"><span class="muted">happiness (1–4)</span><b>${f2(d.happy_mean)}</b></div><div class="row"><span class="muted">N</span><b>${d.n.toLocaleString()}</b></div>`,ev))
+    .on("mouseleave",hideTip)
+    .on("focus",function(ev,d){const r=this.getBoundingClientRect();showTip(`<b>${d.n_children} children</b><div class="row"><span class="muted">life sat</span><b>${f2(d.satis_mean)}</b></div>`,{clientX:r.x+r.width/2,clientY:r.y});})
+    .on("blur",hideTip);
+  R.selectAll("text.kv").data(kr).join("text").attr("class","axlab").attr("font-weight",700)
+    .attr("x",d=>xk(d.n_children)).attr("y",d=>y(d.satis_mean)-13).attr("text-anchor","middle").attr("fill",C.kids).text(d=>f2(d.satis_mean));
+  R.selectAll("text.kc").data(kr).join("text").attr("class","axlab")
+    .attr("x",d=>xk(d.n_children)).attr("y",ih+20).attr("text-anchor","middle").attr("fill","var(--ink-dim)").text(d=>d.n_children);
+  R.append("text").attr("class","smcap").attr("x",rightW/2).attr("y",ih+42).attr("text-anchor","middle").attr("font-weight",700).attr("fill","var(--ink-dim)").text("BY NUMBER OF CHILDREN");
+
+  document.getElementById("cap-contrast").innerHTML=`Pooled weighted means with 95% intervals. Both panels share one vertical axis, <b>zoomed to ${yDom[0]}–${yDom[1]}</b> so the steps are comparable — note this is a roughly ${DATA.headline.contrast_y_window.toFixed(2)}-point window on the full 1–10 satisfaction scale, not the whole scale. Even within this magnified view, marriage and its loss open gaps of three quarters of a point and more, while the entire child-count line spans just ${DATA.headline.kids_span.toFixed(2)} of a point with no clear gradient. European Values Study (EVS), 1981–2017; weighted within country. Evaluative.`;
+})();
+
+/* ============================================================
+   GRID — 2x2 heatmap: marital(rows) x has-children(cols)
+   (derived purely from per-country aggregates already shipped)
+   ============================================================ */
+(function(){
+  // REAL measured 2x2: each cell is the equal-country average of the per-country
+  // weighted mean life satisfaction for that marital(2) x parenthood(2) combination.
+  // Computed in build_data.py (within-country weight, eff-N<50 cells suppressed)
+  // and shipped in DATA.grid_cells — no synthesis, no additivity assumption.
+  const cells=DATA.grid_cells.map(d=>({row:d.row,col:d.col,v:d.satis_mean,n:d.n}));
+  const gcell=(r,c)=>{const x=DATA.grid_cells.find(d=>d.row===r&&d.col===c);return x?x.satis_mean:null;};
+  const rowsK=["Married","Not married"], colsK=["No children","Has children"];
+  const W=1060,H=300,M={t:30,r:30,b:46,l:140};
+  const iw=W-M.l-M.r, ih=H-M.t-M.b;
+  const svg=d3.select("#chart-grid").append("svg").attr("viewBox",`0 0 ${W} ${H}`).attr("width","100%")
+    .attr("role","img").attr("aria-label","Two-by-two grid of measured mean life satisfaction by marital status and parenthood: the married rows sit above the not-married rows, and within each row childless adults sit above parents.");
+  svg.append("desc").text("Cells are darker where life satisfaction is higher. The married row is darker than the not-married row; within each row the no-children cell is somewhat darker than the has-children cell, and the not-married parents cell is the lightest.");
+  const g=svg.append("g").attr("transform",`translate(${M.l},${M.t})`);
+  const xb=d3.scaleBand().domain(colsK).range([0,iw]).padding(0.06);
+  const yb=d3.scaleBand().domain(rowsK).range([0,ih]).padding(0.08);
+  const ext=d3.extent(cells,d=>d.v);
+  const col=d3.scaleSequential().domain([ext[0]-0.25,ext[1]+0.05]).interpolator(d3.interpolateRgb("#f0e6d4",C.married));
+  g.selectAll("rect").data(cells).join("rect")
+    .attr("x",d=>xb(d.col)).attr("y",d=>yb(d.row)).attr("width",xb.bandwidth()).attr("height",yb.bandwidth())
+    .attr("rx",10).attr("fill",d=>col(d.v))
+    .attr("tabindex",0).attr("role","button").attr("aria-label",d=>`${d.row}, ${d.col}: ${f2(d.v)}`)
+    .on("mousemove",(ev,d)=>showTip(`<b class="hd">${d.row} · ${d.col.toLowerCase()}</b><div class="row"><span class="muted">life satisfaction</span><b>${f2(d.v)}</b></div><div class="row"><span class="muted">N</span><b>${d.n.toLocaleString()}</b></div>`,ev))
+    .on("mouseleave",hideTip)
+    .on("focus",function(ev,d){const r=this.getBoundingClientRect();showTip(`<b>${d.row} · ${d.col.toLowerCase()}</b><div class="row"><span class="muted">life sat</span><b>${f2(d.v)}</b></div>`,{clientX:r.x+r.width/2,clientY:r.y+r.height/2});})
+    .on("blur",hideTip);
+  g.selectAll("text.cv").data(cells).join("text").attr("class","cv")
+    .attr("x",d=>xb(d.col)+xb.bandwidth()/2).attr("y",d=>yb(d.row)+yb.bandwidth()/2+8)
+    .attr("text-anchor","middle").attr("font-family","var(--serif)").attr("font-size",30).attr("font-weight",700)
+    .attr("fill",d=>d.v>7.0?"#fff":"var(--ink)").attr("font-variant-numeric","tabular-nums").text(d=>f2(d.v));
+  g.selectAll("text.rl").data(rowsK).join("text").attr("class","axlab")
+    .attr("x",-14).attr("y",d=>yb(d)+yb.bandwidth()/2+4).attr("text-anchor","end").attr("font-size",14).attr("font-weight",700).attr("fill","var(--ink-dim)").text(d=>d);
+  g.selectAll("text.cl").data(colsK).join("text").attr("class","axlab")
+    .attr("x",d=>xb(d)+xb.bandwidth()/2).attr("y",ih+24).attr("text-anchor","middle").attr("font-size",14).attr("font-weight",700).attr("fill","var(--ink-dim)").text(d=>d);
+  // row-effect arrow annotation
+  g.append("text").attr("class","smcap").attr("x",iw+18).attr("y",yb("Married")+yb.bandwidth()/2)
+    .attr("transform",`rotate(90 ${iw+18} ${ih/2})`).attr("text-anchor","middle").attr("fill",C.married).attr("font-weight",700).text("marriage moves the rows");
+  document.getElementById("cap-grid").innerHTML=`Measured cells: each is the equal-country average of the per-country weighted mean life satisfaction for that combination of marital status and parenthood. The married row sits ${f2(DATA.headline.grid_row_effect)} of a point above the not-married row. The raw column gap looks almost as large (${f2(Math.abs(DATA.headline.grid_col_effect))} of a point) — but it is a <b>composition artifact</b>: the not-married/has-children cell (${f2(gcell("Not married","Has children"))}) is overwhelmingly widowed and divorced adults, who score low for reasons of loss, not parenthood. Hold marital status fixed and parenthood nearly disappears — among the married, having children moves life satisfaction by just ${sgn(DATA.headline.grid_married_kids_diff)} of a point (${f2(gcell("Married","Has children"))} vs ${f2(gcell("Married","No children"))}), in line with the +${f2(DATA.headline.child_slope_adj_mean)} age-adjusted per-child slope. European Values Study (EVS), 1981–2017; weighted within country, each country equal across; cells with effective N below 50 suppressed. Evaluative.`;
+})();
+</script>
+</body>
+</html>

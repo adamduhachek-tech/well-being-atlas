@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Losing My Religion</title>
+<style>
+  :root{
+    --ink:#211d2b; --ink-soft:#5b5468; --paper:#f4f1ea; --card:#fffdf9;
+    --rule:#ddd5c6; --line:#cabfa9;
+    --sr:#2e6e5c;       /* stable-religious  */
+    --cv:#b07c2b;       /* convert           */
+    --lv:#9a4a6b;       /* leaver            */
+    --sn:#7a6f86;       /* stable-none       */
+    --faith:#2e6e5c; --none:#9a4a6b;
+    --accent:#9a4a6b; --gold:#b07c2b;
+    --focus:#1c4f8f;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    line-height:1.64;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
+  .wrap{max-width:768px;margin:0 auto;padding:0 22px 96px;}
+  .kicker{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    text-transform:uppercase;letter-spacing:.18em;font-size:12px;font-weight:600;
+    color:var(--accent);margin:54px 0 16px;}
+  h1{font-size:clamp(2.2rem,6.2vw,3.5rem);line-height:1.03;font-weight:700;margin:0 0 18px;letter-spacing:-.015em;}
+  .dek{font-size:clamp(1.12rem,2.6vw,1.36rem);color:var(--ink-soft);font-style:italic;margin:0 0 30px;max-width:39em;}
+  .byline{font-family:ui-sans-serif,system-ui,sans-serif;font-size:13px;color:var(--ink-soft);
+    letter-spacing:.02em;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
+    padding:12px 0;margin:0 0 38px;}
+  h2{font-size:clamp(1.5rem,4vw,2rem);line-height:1.12;font-weight:700;margin:54px 0 14px;letter-spacing:-.01em;}
+  p{font-size:1.12rem;margin:0 0 20px;}
+  p.lead:first-letter{font-size:3.4em;line-height:.78;float:left;padding:6px 10px 0 0;color:var(--accent);font-weight:700;}
+  a{color:var(--focus);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:.5px;}
+  strong{font-weight:700;}
+  em.term{font-style:italic;color:var(--ink);}
+  figure{margin:34px 0;}
+  .fig-card{background:var(--card);border:1px solid var(--rule);border-radius:12px;
+    padding:20px 18px 16px;box-shadow:0 1px 0 rgba(33,29,43,.03);}
+  figcaption{font-family:ui-sans-serif,system-ui,sans-serif;font-size:13.5px;color:var(--ink-soft);
+    line-height:1.5;margin-top:12px;}
+  .fig-title{font-family:ui-sans-serif,system-ui,sans-serif;font-weight:600;font-size:15.5px;color:var(--ink);margin:0 0 2px;}
+  .fig-sub{font-family:ui-sans-serif,system-ui,sans-serif;font-size:13px;color:var(--ink-soft);margin:0 0 14px;}
+  svg{display:block;width:100%;height:auto;overflow:visible;}
+  .controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 14px;
+    font-family:ui-sans-serif,system-ui,sans-serif;}
+  .controls .lbl{font-size:12.5px;color:var(--ink-soft);margin-right:2px;}
+  button.tog{font-family:inherit;font-size:13px;border:1px solid var(--rule);background:var(--card);
+    color:var(--ink-soft);padding:6px 13px;border-radius:999px;cursor:pointer;transition:all .12s;}
+  button.tog[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600;}
+  button.tog:hover{border-color:var(--accent);color:var(--ink);}
+  button.tog[aria-pressed="true"]:hover{color:#fff;}
+  :focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:4px;}
+  .legend{display:flex;flex-wrap:wrap;gap:12px 18px;font-family:ui-sans-serif,system-ui,sans-serif;
+    font-size:12.5px;color:var(--ink-soft);margin:4px 0 8px;}
+  .legend span{display:inline-flex;align-items:center;gap:7px;}
+  .swatch{width:20px;height:0;border-top-width:3px;border-top-style:solid;display:inline-block;}
+  .swatch.box{height:12px;border:none;border-radius:3px;}
+  .swatch.dash{border-top-style:dashed;}
+  .tip{position:absolute;pointer-events:none;background:var(--ink);color:#f4f1ea;
+    font-family:ui-sans-serif,system-ui,sans-serif;font-size:12.5px;line-height:1.5;padding:9px 11px;
+    border-radius:8px;opacity:0;transition:opacity .1s;max-width:240px;z-index:5;box-shadow:0 4px 14px rgba(0,0,0,.22);}
+  .tip b{color:#fff;} .tip .k{color:#e8c79a;} .tip .muted{color:#bdb4cb;}
+  .holder{position:relative;}
+  .pull{font-family:ui-sans-serif,system-ui,sans-serif;font-size:clamp(1.2rem,3vw,1.5rem);
+    line-height:1.32;color:var(--accent);font-weight:600;border-left:4px solid var(--gold);
+    padding:6px 0 6px 20px;margin:34px 0;letter-spacing:-.01em;}
+  .stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:26px 0 6px;}
+  @media(max-width:620px){.stat-row{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:380px){.stat-row{grid-template-columns:1fr;}}
+  .stat{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:13px 14px;}
+  .stat .num{font-family:ui-sans-serif,system-ui,sans-serif;font-size:1.62rem;font-weight:700;letter-spacing:-.02em;}
+  .stat .cap{font-family:ui-sans-serif,system-ui,sans-serif;font-size:12px;color:var(--ink-soft);margin-top:3px;line-height:1.38;}
+  .notes{font-family:ui-sans-serif,system-ui,sans-serif;font-size:13.5px;color:var(--ink-soft);
+    line-height:1.62;border-top:2px solid var(--rule);margin-top:62px;padding-top:22px;}
+  .notes h2{font-size:1.05rem;letter-spacing:.04em;text-transform:uppercase;color:var(--ink);margin:0 0 12px;}
+  .notes p{font-size:13.5px;margin:0 0 12px;}
+  .notes a{color:var(--focus);}
+  .axis text{font-family:ui-sans-serif,system-ui,sans-serif;fill:var(--ink-soft);font-size:11px;}
+  .axis line,.axis path{stroke:var(--line);}
+  .gridline{stroke:var(--rule);stroke-dasharray:2 3;}
+  table.fallback{border-collapse:collapse;width:100%;font-family:ui-sans-serif,system-ui,sans-serif;font-size:12.5px;margin-top:10px;}
+  table.fallback caption{text-align:left;color:var(--ink-soft);font-size:12px;margin-bottom:6px;}
+  table.fallback th,table.fallback td{border:1px solid var(--rule);padding:4px 8px;text-align:right;}
+  table.fallback th:first-child,table.fallback td:first-child{text-align:left;}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);}
+  @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <p class="kicker">Faith &amp; well-being &middot; General Social Survey, 1972&ndash;2022</p>
+  <h1>Losing My Religion</h1>
+  <p class="dek">Americans leave the faith they were raised in at four times the rate they did fifty years ago. What that costs in happiness depends less on where you started than on where you stand now.</p>
+  <p class="byline">An analysis of 68,615 General Social Survey respondents with both a childhood and a current religion &middot; weighted estimates &middot; association, not causation</p>
+
+  <p class="lead">Run the country&rsquo;s religious life backward and you find a great migration. In the early 1970s, fewer than one American in ten claimed no religion; by the early 2020s it was more than one in four. That headline hides the actual movement underneath it &mdash; a churn between four life stories, sorted by what you were raised with and what you hold now. Some kept the faith of their childhood. Some left it. A smaller number, raised with nothing, found one. And a growing share were raised with no religion and have stayed that way.</p>
+
+  <p>Tag these four trajectories by <em class="term">religion at sixteen</em> against <em class="term">religion now</em>, both collapsed to <strong>faith</strong> or <strong>none</strong>, and a clean ordering of happiness falls out &mdash; one that says something blunt about belonging. Your <em class="term">current</em> affiliation matters more than your origin. Converts who moved in are happier than people who never left; leavers who moved out sit right alongside the lifelong unaffiliated. Leaving, in the averages, carries no extra penalty beyond simply being a none. Finding faith looks like a small gain.</p>
+
+  <div class="stat-row" id="stats" aria-hidden="true"></div>
+
+  <h2>Four ways through a religious life</h2>
+  <p>The centerpiece below is an origin-and-destination map. On the left, the two starting points: raised in a faith, or raised with none. On the right, the two endings. Each of the four ribbons is one trajectory; its color and the number riding on it encode that group&rsquo;s average happiness on the General Social Survey&rsquo;s three-point scale, and its label gives the share of all classified respondents who travel it. Hover &mdash; or tab to &mdash; any path for its mean, its very-happy share, and its sample size.</p>
+
+  <figure>
+    <div class="fig-card">
+      <p class="fig-title">Where you started &rarr; where you are, and how happy each path is</p>
+      <p class="fig-sub">Mean general happiness, 1 (not too happy) to 3 (very happy), GSS 1972&ndash;2022, weighted</p>
+      <div class="holder">
+        <div id="flow" role="img" aria-label="Flow diagram of four religious trajectories from religion at age sixteen to religion now, with each path colored by average happiness. Stable-religious is happiest at 2.21, converts 2.12, leavers 2.07, stable-none 2.05."></div>
+        <div class="tip" id="tip-flow"></div>
+      </div>
+      <div class="legend" aria-hidden="true">
+        <span><i class="swatch box" style="background:var(--sr)"></i>Stable-religious</span>
+        <span><i class="swatch box" style="background:var(--cv)"></i>Convert</span>
+        <span><i class="swatch box" style="background:var(--lv)"></i>Leaver</span>
+        <span><i class="swatch box" style="background:var(--sn)"></i>Stable-none</span>
+      </div>
+      <figcaption id="cap-flow"></figcaption>
+    </div>
+  </figure>
+
+  <p>The stable-religious are the happiest of the four, averaging <strong>2.21</strong>; about <strong>33%</strong> call themselves very happy. They are also, at five in six of the sample, by far the largest group &mdash; for most of this period, keeping your childhood faith was the unremarkable, default path. Converts come next at <strong>2.12</strong>. Then a near-tie at the bottom: leavers at <strong>2.07</strong> and the lifelong unaffiliated at <strong>2.05</strong>, with the same <strong>23%</strong> very-happy share. The arrow you traveled barely registers; the side you ended on is what shows.</p>
+
+  <h2>Does the ordering survive the people in it?</h2>
+  <p>Leavers and converts are not random draws on the population. The people who walk away from religion are younger, more educated, more urban, and more recent than those who stay; the unaffiliated as a whole skew that way too. Some of the happiness gap could be those differences wearing a religious costume. So fit the obvious controls &mdash; age, sex, race, education, family income, and survey year &mdash; in a weighted regression and watch what happens to the gaps.</p>
+
+  <figure>
+    <div class="fig-card">
+      <p class="fig-title">The happiness gap to the stable-religious, before and after controls</p>
+      <p class="fig-sub">Weighted least squares, points on the 1&ndash;3 scale; reference group = stable-religious</p>
+      <div class="controls" role="group" aria-label="Toggle raw versus composition-adjusted gaps">
+        <span class="lbl">Show:</span>
+        <button class="tog" id="t-raw" aria-pressed="true">Raw gap</button>
+        <button class="tog" id="t-adj" aria-pressed="false">Net of composition</button>
+      </div>
+      <div class="holder">
+        <div id="comp" role="img" aria-label="Bar chart of the happiness deficit of each trajectory group relative to the stable-religious, shown raw and after controls for age, sex, race, education, income and year."></div>
+        <div class="tip" id="tip-comp"></div>
+      </div>
+      <figcaption id="cap-comp"></figcaption>
+    </div>
+  </figure>
+
+  <p>The ordering holds. The convert gap stays the smallest &mdash; about <strong>0.04</strong> points after controls. The leaver deficit barely moves, from about <strong>0.14</strong> to <strong>0.12</strong>: who leavers are explains almost none of why they are less happy. The lifelong-none deficit shrinks the most, from <strong>0.15</strong> to about <strong>0.10</strong>, as their youth and schooling get netted out &mdash; but it stays the largest of the three. Composition rearranges nothing essential. What it cannot reach is the part of the religious advantage that runs through congregational life itself &mdash; the friends in the next pew, the casseroles, the standing invitation to show up. A companion study, <a href="../the-pew-not-the-prayer/">The Pew, Not the Prayer</a>, takes that mechanism apart; here it is enough to say the gap is mostly not about who these people are on paper.</p>
+
+  <p class="pull">Leaving doesn&rsquo;t cost you happiness beyond what being unaffiliated already does. The penalty is the destination, not the journey.</p>
+
+  <h2>The rise of leaving &mdash; and a penalty that thinned</h2>
+  <p>Half a century ago, walking away from your childhood faith was a deviant act. Among Americans raised in a religion, only about <strong>7%</strong> had become nones in the early 1970s; by 2021&ndash;22 that leave-rate had climbed to roughly <strong>22%</strong>. The left panel below tracks that climb. The right panel asks the harder question: as leaving went mainstream, did its happiness penalty fade? It draws the leaver line and the stable-religious line together, so you can see not just the gap but where the gap went.</p>
+
+  <figure>
+    <div class="fig-card">
+      <p class="fig-title">Leaving became common &mdash; and the leaver penalty narrowed</p>
+      <p class="fig-sub">Left: share now unaffiliated. Right: mean happiness of leavers vs the stable-religious, by period. GSS, weighted</p>
+      <div class="holder">
+        <div id="trend" role="img" aria-label="Two linked panels. Left: the share of Americans with no religion, and the leave-rate among those raised religious, both rising from the 1970s to the 2020s. Right: mean happiness of leavers and of the stable-religious over the same period, the gap between them narrowing while both lines, especially the stable-religious, decline after 2018."></div>
+        <div class="tip" id="tip-trend"></div>
+      </div>
+      <div class="legend" aria-hidden="true">
+        <span><i class="swatch" style="border-top-color:var(--none)"></i>Now unaffiliated (all)</span>
+        <span><i class="swatch dash" style="border-top-color:var(--gold)"></i>Leave-rate among raised</span>
+        <span><i class="swatch" style="border-top-color:var(--sr)"></i>Stable-religious happiness</span>
+        <span><i class="swatch dash" style="border-top-color:var(--lv)"></i>Leaver happiness</span>
+      </div>
+      <figcaption id="cap-trend"></figcaption>
+    </div>
+  </figure>
+
+  <p>The penalty did narrow. When leavers were rare, in the early 1970s, they trailed the stable-religious by about <strong>0.23</strong> points; by 2021&ndash;22 the gap was roughly <strong>0.12</strong>. That is the shape a social-norm story predicts: deviance costs less as it becomes common. But read the two lines honestly and the comfortable version collapses. The gap closed because the <em class="term">top came down</em>. The stable-religious fell from about <strong>2.24</strong> in the early 1970s to about <strong>2.04</strong> in 2021&ndash;22; the leavers did not rise to meet them &mdash; they drifted slightly lower too. Every bit of the narrowing comes from the religious themselves becoming less happy, not from leaving becoming painless. A penalty that shrinks because the comparison group is sinking is not the same as a penalty that has healed.</p>
+
+  <p>Two cautions sit on top of that. The last point spans 2021 and 2022, when the survey moved largely to the web after COVID; some of the late drop in both lines may be that mode change rather than mood. And the whole secularization is mostly generational, not a matter of individuals changing their minds in adulthood.</p>
+
+  <h2>A generational tide</h2>
+  <p>Sort the same respondents by the decade they were born and the engine of the change shows itself. Among Americans born in the 1920s, only about <strong>5%</strong> end up unaffiliated. Among those born in the 1990s, it is roughly <strong>38%</strong> &mdash; a near-eightfold rise across the cohorts. The nones are not, for the most part, older believers losing faith late; they are successive generations who arrive at adulthood already holding less.</p>
+
+  <figure>
+    <div class="fig-card">
+      <p class="fig-title">Each cohort arrives less religious than the last</p>
+      <p class="fig-sub">Share now unaffiliated, by birth-cohort decade, GSS 1972&ndash;2022, weighted</p>
+      <div class="holder">
+        <div id="cohort" role="img" aria-label="Bar chart of the share religiously unaffiliated by birth-cohort decade, rising steadily from about 4 percent for those born around 1900 to about 38 percent for those born in the 1990s."></div>
+        <div class="tip" id="tip-cohort"></div>
+      </div>
+      <figcaption id="cap-cohort"></figcaption>
+    </div>
+  </figure>
+
+  <h2>What this shows &mdash; and what it doesn&rsquo;t</h2>
+  <p>This is a cross-section, and the arrow of cause runs in directions it cannot separate. Religion may lend happiness through community and meaning; equally, unhappy people may drift out of congregations, or be pushed out, and leaving may itself cost the belonging that buoyed them. The data record the association, not its direction. The four-group ordering is robust to the obvious controls, but the controls are coarse and cannot capture the congregational <em class="term">social</em> channel that other work places at the center of the religious advantage. The narrowing penalty is real but confounded: it closed because the religious declined, so do not sell it as pure normalization. The categories are blunt &mdash; any faith against none &mdash; and the &ldquo;none&rdquo; bucket holds the spiritual-but-not-religious alongside the indifferent and the convinced. Childhood and current religion are reported together in adulthood, so memory and the late-2010s web-mode shift both leave fingerprints. And these are weighted GSS estimates of evaluative happiness, the trajectory itself a marker of eudaimonic and <em class="term">social</em> standing &mdash; not a controlled trial of what faith does to a life.</p>
+
+  <section class="notes" aria-label="Notes and data">
+    <h2>Notes &amp; data</h2>
+    <p><strong>Source.</strong> General Social Survey cumulative file, 1972&ndash;2022, the years in which both current religion (<code>relig</code>) and religion at age sixteen (<code>relig16</code>) are asked; the 2024 wave omits current religion. All estimates weighted with <code>wtssps</code>, which covers the full series. Sample sizes per year run from about 1,337 to 4,014.</p>
+    <p><strong>Trajectory groups.</strong> Each is defined by religion at sixteen versus religion now, both collapsed to faith or none, where &ldquo;none&rdquo; is the no-religion category. <em>Stable-religious</em>: raised in a faith, affiliated now (N&nbsp;=&nbsp;54,643). <em>Leaver</em>: raised in a faith, now unaffiliated (N&nbsp;=&nbsp;6,675). <em>Convert</em>: raised with no religion, affiliated now (N&nbsp;=&nbsp;1,697). <em>Stable-none</em>: raised with no religion, still unaffiliated (N&nbsp;=&nbsp;2,382). Classification covers 68,615 respondents; 65,397 also answered the happiness item.</p>
+    <p><strong>Method.</strong> Group means use the 1&ndash;3 happiness scale with 95% confidence intervals from 600 weighted bootstrap resamples (fixed seed). The composition gaps come from a weighted least-squares regression of happiness on trajectory dummies plus age, age-squared, sex, race, education, log family income (<code>coninc</code>) and survey year, with HC1 robust standard errors on an analytic sample of 58,420. Cells with an effective sample below 50 are suppressed. The mechanism behind the religious advantage &mdash; congregational social ties versus private belief &mdash; is taken up separately in <a href="../the-pew-not-the-prayer/">The Pew, Not the Prayer</a>.</p>
+    <p><strong>Construct labels.</strong> General happiness is an <em>evaluative</em> measure; religious trajectory and identity are markers of <em>eudaimonic</em> and <em>social</em> standing. Association, not causation: a cross-section cannot say whether faith lifts happiness or happier people keep the faith.</p>
+    <p><strong>Reading.</strong> Pew Research Center, <a href="https://www.pewresearch.org/religion/2022/09/13/modeling-the-future-of-religion-in-america/">Modeling the Future of Religion in America</a> (2022); Lim &amp; Putnam, <a href="https://doi.org/10.1177/0003122410386686">Religion, Social Networks, and Life Satisfaction</a> (2010); Hout &amp; Fischer on religious disaffiliation and the rise of &ldquo;no religion&rdquo; (2002, 2014); Stavrova, Schloesser &amp; Fetchenhauer (2013) on religion, social norms and well-being.</p>
+  </section>
+</main>
+
+<script type="module">
+import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+
+const DATA = {"meta":{"dataset":"General Social Survey (GSS) cumulative file, 1972-2022","weight":"wtssps","construct_outcome":"evaluative","construct_predictor":"eudaimonic/social (religious identity & trajectory)","relig_years":[1973,2022],"n_core":68615,"n_happy":65397,"analytic_n":58420,"n_per_year_min":1337,"n_per_year_max":4014,"effn_min":50,"bootstrap_reps":600,"control_set":["age","age^2","sex","race","degree","log(coninc)","year"],"groups":["STABLE-RELIGIOUS","CONVERT","LEAVER","STABLE-NONE"],"definitions":{"STABLE-RELIGIOUS":"raised in a faith (relig16 != None), affiliated now (relig != None)","LEAVER":"raised in a faith, now religiously unaffiliated (relig == None)","CONVERT":"raised with no religion (relig16 == None), affiliated now","STABLE-NONE":"raised with no religion, still unaffiliated now"}},"groups":[{"group":"STABLE-RELIGIOUS","mean":2.209,"mean_lo":2.203,"mean_hi":2.215,"vhappy":0.33,"n":54643,"effn":37863.9,"origin":"Faith","now":"Faith","share":0.8325},{"group":"CONVERT","mean":2.124,"mean_lo":2.086,"mean_hi":2.161,"vhappy":0.281,"n":1697,"effn":1173.1,"origin":"None","now":"Faith","share":0.0265},{"group":"LEAVER","mean":2.068,"mean_lo":2.05,"mean_hi":2.086,"vhappy":0.233,"n":6675,"effn":4330.6,"origin":"Faith","now":"None","share":0.1028},{"group":"STABLE-NONE","mean":2.052,"mean_lo":2.019,"mean_hi":2.08,"vhappy":0.233,"n":2382,"effn":1580.0,"origin":"None","now":"None","share":0.0382}],"composition":{"LEAVER":{"raw":-0.1443,"raw_se":0.0103,"adj":-0.1233,"adj_se":0.0105},"CONVERT":{"raw":-0.0702,"raw_se":0.0189,"adj":-0.0421,"adj_se":0.0185},"STABLE-NONE":{"raw":-0.1543,"raw_se":0.018,"adj":-0.0953,"adj_se":0.018},"STABLE-RELIGIOUS":{"raw":0.0,"raw_se":0.0,"adj":0.0,"adj_se":0.0}},"trend":[{"bin":"1972-76","x":1974.0,"now_none":0.076,"leave_rate":0.0673,"mean_sr":2.24,"mean_lv":2.007,"gap":-0.233,"n_all":5960,"n_raised":5793,"n_sr":5425,"n_lv":356,"mode_change":false},{"bin":"1977-82","x":1979.5,"now_none":0.0769,"leave_rate":0.0664,"mean_sr":2.245,"mean_lv":2.111,"gap":-0.133,"n_all":6354,"n_raised":6174,"n_sr":5777,"n_lv":374,"mode_change":false},{"bin":"1983-88","x":1985.5,"now_none":0.0764,"leave_rate":0.0611,"mean_sr":2.232,"mean_lv":2.094,"gap":-0.137,"n_all":9303,"n_raised":8999,"n_sr":8370,"n_lv":514,"mode_change":false},{"bin":"1989-94","x":1991.5,"now_none":0.0862,"leave_rate":0.069,"mean_sr":2.231,"mean_lv":2.103,"gap":-0.128,"n_all":8982,"n_raised":8594,"n_sr":7980,"n_lv":571,"mode_change":false},{"bin":"1995-00","x":1997.5,"now_none":0.132,"leave_rate":0.1001,"mean_sr":2.247,"mean_lv":2.121,"gap":-0.126,"n_all":8488,"n_raised":7953,"n_sr":7085,"n_lv":789,"mode_change":false},{"bin":"2001-06","x":2003.5,"now_none":0.1479,"leave_rate":0.111,"mean_sr":2.227,"mean_lv":2.063,"gap":-0.164,"n_all":8516,"n_raised":7846,"n_sr":4587,"n_lv":615,"mode_change":false},{"bin":"2007-12","x":2009.5,"now_none":0.1823,"leave_rate":0.1443,"mean_sr":2.175,"mean_lv":2.138,"gap":-0.036,"n_all":5986,"n_raised":5507,"n_sr":4707,"n_lv":782,"mode_change":false},{"bin":"2013-18","x":2015.5,"now_none":0.2204,"leave_rate":0.1779,"mean_sr":2.198,"mean_lv":2.136,"gap":-0.062,"n_all":7669,"n_raised":6977,"n_sr":5717,"n_lv":1246,"mode_change":false},{"bin":"2021-22","x":2021.5,"now_none":0.2855,"leave_rate":0.2225,"mean_sr":2.036,"mean_lv":1.92,"gap":-0.117,"n_all":7357,"n_raised":6458,"n_sr":4995,"n_lv":1428,"mode_change":true}],"cohort":[{"cohort":1900,"now_none":0.0356,"leave_rate":0.0317,"n":1865},{"cohort":1910,"now_none":0.0403,"leave_rate":0.0299,"n":3854},{"cohort":1920,"now_none":0.0419,"leave_rate":0.0365,"n":5641},{"cohort":1930,"now_none":0.0588,"leave_rate":0.0496,"n":6804},{"cohort":1940,"now_none":0.099,"leave_rate":0.0865,"n":10711},{"cohort":1950,"now_none":0.1277,"leave_rate":0.1076,"n":14008},{"cohort":1960,"now_none":0.1538,"leave_rate":0.1183,"n":10756},{"cohort":1970,"now_none":0.2164,"leave_rate":0.163,"n":6955},{"cohort":1980,"now_none":0.3031,"leave_rate":0.235,"n":4556},{"cohort":1990,"now_none":0.377,"leave_rate":0.3057,"n":2002},{"cohort":2000,"now_none":0.3737,"leave_rate":0.238,"n":268}],"headline":{"now_none_70s":0.076,"now_none_20s":0.2855,"leave_70s":0.0673,"leave_20s":0.2225,"gap_70s":-0.233,"gap_20s":-0.117,"sr_70s":2.24,"sr_20s":2.036,"lv_70s":2.007,"lv_20s":1.92,"gap_narrow":0.116,"sr_drop":0.204,"lv_change":-0.087,"share_from_sr_decline":1.759}};
+
+const COL = {"STABLE-RELIGIOUS":"#2e6e5c","CONVERT":"#b07c2b","LEAVER":"#9a4a6b","STABLE-NONE":"#7a6f86"};
+const SHORT = {"STABLE-RELIGIOUS":"Stable-religious","CONVERT":"Convert","LEAVER":"Leaver","STABLE-NONE":"Stable-none"};
+const fmt2 = d3.format(".2f");
+const fmtPct = v => Math.round(v*100) + "%";
+const fmtN = d3.format(",");
+const fmtGap = v => (v>0?"+":"") + fmt2(v);
+
+function showTip(tip, html, ev, holder){
+  tip.innerHTML = html;
+  tip.style.opacity = 1;
+  const hb = holder.getBoundingClientRect();
+  let x = ev.clientX - hb.left + 14, y = ev.clientY - hb.top + 12;
+  if (x + 250 > hb.width) x = ev.clientX - hb.left - 250;
+  if (x < 0) x = 6;
+  tip.style.left = x + "px";
+  tip.style.top = y + "px";
+}
+function hideTip(tip){ tip.style.opacity = 0; }
+
+/* ---------- stat cards ---------- */
+(function(){
+  const g = Object.fromEntries(DATA.groups.map(d=>[d.group,d]));
+  const cards = [
+    {k:"STABLE-RELIGIOUS", num:fmt2(g["STABLE-RELIGIOUS"].mean), cap:"Stable-religious mean happiness &mdash; the top"},
+    {k:"CONVERT", num:fmt2(g["CONVERT"].mean), cap:"Converts &mdash; moved into faith"},
+    {k:"LEAVER", num:fmt2(g["LEAVER"].mean), cap:"Leavers &mdash; left the faith they were raised in"},
+    {k:"STABLE-NONE", num:fmt2(g["STABLE-NONE"].mean), cap:"Lifelong nones &mdash; the floor"},
+  ];
+  const host = document.getElementById("stats");
+  host.innerHTML = cards.map(c=>
+    `<div class="stat"><div class="num" style="color:${COL[c.k]}">${c.num}</div><div class="cap">${c.cap}</div></div>`
+  ).join("");
+})();
+
+/* ---------- FIG 1 : trajectory flow ---------- */
+(function(){
+  const host = d3.select("#flow");
+  const tip = document.getElementById("tip-flow");
+  const holder = host.node().parentNode;
+  const W = 700, H = 360, M = {t:30,r:140,b:30,l:140};
+  const innerW = W - M.l - M.r, innerH = H - M.t - M.b;
+  const svg = host.append("svg").attr("viewBox", `0 0 ${W} ${H}`)
+    .attr("preserveAspectRatio","xMidYMid meet");
+  const g = svg.append("g").attr("transform",`translate(${M.l},${M.t})`);
+
+  // node y positions: origins (left), destinations (right)
+  const yTop = innerH*0.26, yBot = innerH*0.74;
+  const origins = {Faith:yTop, None:yBot};
+  const dests   = {Faith:yTop, None:yBot};
+  const xL = 0, xR = innerW;
+
+  // happiness -> stroke width scale (thicker = happier); share -> we annotate
+  const groups = DATA.groups;
+  const happyExtent = d3.extent(groups, d=>d.mean);
+  const wScale = d3.scaleLinear().domain([2.0,2.25]).range([6,30]);
+
+  // build a curved path origin->dest
+  function link(x0,y0,x1,y1){
+    const mx = (x0+x1)/2;
+    return `M${x0},${y0} C${mx},${y0} ${mx},${y1} ${x1},${y1}`;
+  }
+
+  // draw ribbons (sorted so the big one is under)
+  const ordered = groups.slice().sort((a,b)=>b.share-a.share);
+  const paths = g.selectAll("path.ribbon").data(ordered).join("path")
+    .attr("class","ribbon")
+    .attr("d", d=>link(xL, origins[d.origin], xR, dests[d.now]))
+    .attr("fill","none")
+    .attr("stroke", d=>COL[d.group])
+    .attr("stroke-width", d=>wScale(d.mean))
+    .attr("stroke-linecap","round")
+    .attr("opacity",0.82)
+    .attr("tabindex",0)
+    .attr("role","listitem")
+    .attr("aria-label", d=>`${SHORT[d.group]}: mean happiness ${fmt2(d.mean)}, ${fmtPct(d.share)} of respondents, N ${fmtN(d.n)}.`);
+
+  function ribbonTip(d, ev){
+    showTip(tip,
+      `<b>${SHORT[d.group]}</b><br>` +
+      `<span class="muted">raised ${d.origin.toLowerCase()} &rarr; now ${d.now.toLowerCase()}</span><br>` +
+      `mean happy <span class="k">${fmt2(d.mean)}</span> (1&ndash;3)<br>` +
+      `very happy <span class="k">${fmtPct(d.vhappy)}</span><br>` +
+      `share <span class="k">${fmtPct(d.share)}</span> &middot; N ${fmtN(d.n)}`, ev, holder);
+    paths.attr("opacity",x=>x===d?1:0.3);
+  }
+  function clearTip(){ hideTip(tip); paths.attr("opacity",0.82); }
+  paths.on("mousemove",(ev,d)=>ribbonTip(d,ev)).on("mouseleave",clearTip)
+    .on("focus",function(ev,d){ const r=this.getBBox(); const fe={clientX:holder.getBoundingClientRect().left+M.l+r.x+r.width*0.5,clientY:holder.getBoundingClientRect().top+M.t+r.y+r.height*0.5}; ribbonTip(d,fe); })
+    .on("blur",clearTip);
+
+  // label placement along each ribbon: pick an x-fraction and read the curve's y there
+  // so crossing ribbons (convert rising, leaver falling) get their labels apart.
+  const labPos = {
+    "STABLE-RELIGIOUS": {fx:0.5,  dy:-12},
+    "CONVERT":          {fx:0.72, dy:-12},
+    "LEAVER":           {fx:0.72, dy:14},
+    "STABLE-NONE":      {fx:0.5,  dy:14},
+  };
+  function curveY(d, fx){
+    const y0=origins[d.origin], y1=dests[d.now];
+    // cubic with control points sharing midpoint x => symmetric; sample by t≈fx
+    const t=fx, mt=1-t;
+    return mt*mt*mt*y0 + 3*mt*mt*t*y0 + 3*mt*t*t*y1 + t*t*t*y1;
+  }
+  g.selectAll("text.share").data(ordered).join("text")
+    .attr("class","share")
+    .attr("x", d=> innerW*labPos[d.group].fx)
+    .attr("y", d=> curveY(d, labPos[d.group].fx) + labPos[d.group].dy)
+    .attr("text-anchor","middle")
+    .attr("font-family","ui-sans-serif,system-ui,sans-serif")
+    .attr("font-size",12).attr("font-weight",600)
+    .attr("fill", d=>COL[d.group])
+    .attr("paint-order","stroke").attr("stroke","#fffdf9").attr("stroke-width",3.5)
+    .text(d=>`${SHORT[d.group]} · ${fmt2(d.mean)} · ${fmtPct(d.share)}`);
+
+  // node markers + labels
+  const nodeData = [
+    {x:xL,y:origins.Faith,txt:"Raised in a faith",col:"#2e6e5c",anchor:"end",side:-1},
+    {x:xL,y:origins.None,txt:"Raised with none",col:"#9a4a6b",anchor:"end",side:-1},
+    {x:xR,y:dests.Faith,txt:"Affiliated now",col:"#2e6e5c",anchor:"start",side:1},
+    {x:xR,y:dests.None,txt:"No religion now",col:"#9a4a6b",anchor:"start",side:1},
+  ];
+  g.selectAll("circle.node").data(nodeData).join("circle")
+    .attr("class","node").attr("cx",d=>d.x).attr("cy",d=>d.y).attr("r",6)
+    .attr("fill",d=>d.col);
+  g.selectAll("text.node").data(nodeData).join("text")
+    .attr("class","node")
+    .attr("x",d=>d.x + d.side*14).attr("y",d=>d.y)
+    .attr("dy","0.32em").attr("text-anchor",d=>d.anchor)
+    .attr("font-family","ui-sans-serif,system-ui,sans-serif")
+    .attr("font-size",13).attr("font-weight",600).attr("fill","#211d2b")
+    .text(d=>d.txt);
+
+  // axis captions
+  svg.append("text").attr("x",M.l).attr("y",16).attr("text-anchor","start")
+    .attr("font-family","ui-sans-serif,system-ui,sans-serif").attr("font-size",11)
+    .attr("fill","#5b5468").attr("letter-spacing","0.08em").text("AT AGE 16");
+  svg.append("text").attr("x",W-M.r).attr("y",16).attr("text-anchor","end")
+    .attr("font-family","ui-sans-serif,system-ui,sans-serif").attr("font-size",11)
+    .attr("fill","#5b5468").attr("letter-spacing","0.08em").text("NOW");
+
+  document.getElementById("cap-flow").innerHTML =
+    "Ribbon thickness and the number on each path both encode mean happiness; the percentage is the path&rsquo;s share of all respondents. The stable-religious ribbon carries five in six respondents. Hover or tab a path for details.";
+
+  // fallback table
+  const tbl = document.createElement("table");
+  tbl.className = "fallback";
+  tbl.innerHTML = "<caption>Happiness by trajectory (data table)</caption>" +
+    "<tr><th>Trajectory</th><th>Mean (1&ndash;3)</th><th>% very happy</th><th>Share</th><th>N</th></tr>" +
+    groups.map(d=>`<tr><td>${SHORT[d.group]}</td><td>${fmt2(d.mean)}</td><td>${fmtPct(d.vhappy)}</td><td>${fmtPct(d.share)}</td><td>${fmtN(d.n)}</td></tr>`).join("");
+  tbl.classList.add("sr");
+  host.node().parentNode.appendChild(tbl);
+})();
+
+/* ---------- FIG 2 : composition gaps ---------- */
+(function(){
+  const host = d3.select("#comp");
+  const tip = document.getElementById("tip-comp");
+  const holder = host.node().parentNode;
+  const order = ["CONVERT","LEAVER","STABLE-NONE"];
+  const comp = DATA.composition;
+  let mode = "raw";
+
+  const W=700,H=240,M={t:18,r:24,b:54,l:130};
+  const innerW=W-M.l-M.r, innerH=H-M.t-M.b;
+  const svg = host.append("svg").attr("viewBox",`0 0 ${W} ${H}`).attr("preserveAspectRatio","xMidYMid meet");
+  const g = svg.append("g").attr("transform",`translate(${M.l},${M.t})`);
+  const y = d3.scaleBand().domain(order).range([0,innerH]).padding(0.34);
+  const x = d3.scaleLinear().domain([-0.18,0.01]).range([0,innerW]);
+
+  g.append("g").attr("class","axis")
+    .call(d3.axisLeft(y).tickFormat(d=>SHORT[d]).tickSize(0)).select(".domain").remove();
+  const xa = g.append("g").attr("class","axis").attr("transform",`translate(0,${innerH})`)
+    .call(d3.axisBottom(x).ticks(5).tickFormat(d3.format("+.2f")));
+  svg.append("text").attr("x",M.l+innerW/2).attr("y",H-8).attr("text-anchor","middle")
+    .attr("font-family","ui-sans-serif,system-ui,sans-serif").attr("font-size",11).attr("fill","#5b5468")
+    .text("happiness gap to the stable-religious (1–3 scale)");
+  // zero line
+  g.append("line").attr("x1",x(0)).attr("x2",x(0)).attr("y1",0).attr("y2",innerH)
+    .attr("stroke","#211d2b").attr("stroke-width",1).attr("opacity",0.5);
+
+  const bars = g.selectAll("rect.bar").data(order).join("rect")
+    .attr("class","bar").attr("y",d=>y(d)).attr("height",y.bandwidth())
+    .attr("fill",d=>COL[d]).attr("opacity",0.85)
+    .attr("tabindex",0).attr("role","listitem");
+  const labels = g.selectAll("text.val").data(order).join("text")
+    .attr("class","val").attr("y",d=>y(d)+y.bandwidth()/2).attr("dy","0.32em")
+    .attr("text-anchor","end").attr("font-family","ui-sans-serif,system-ui,sans-serif")
+    .attr("font-size",12).attr("font-weight",600).attr("fill","#211d2b");
+
+  function val(d){ return comp[d][mode==="raw"?"raw":"adj"]; }
+  function render(){
+    bars.transition().duration(420)
+      .attr("x",d=>x(Math.min(0,val(d)))).attr("width",d=>Math.abs(x(val(d))-x(0)));
+    labels.transition().duration(420)
+      .attr("x",d=>x(val(d))-6).tween("t",function(d){
+        const node=this; const i=d3.interpolateNumber(+node.dataset.cur||0, val(d));
+        return t=>{ node.dataset.cur=i(t); node.textContent=fmtGap(i(t)); };
+      });
+    bars.attr("aria-label",d=>`${SHORT[d]}: gap ${fmtGap(val(d))} on the 1 to 3 scale, ${mode==="raw"?"before":"after"} controls.`);
+    document.getElementById("cap-comp").innerHTML =
+      mode==="raw"
+        ? "Raw gaps on the analytic sample. All three groups trail the stable-religious; leavers and lifelong nones most."
+        : "After age, sex, race, education, income and year. The ordering survives; the lifelong-none gap shrinks most but stays largest.";
+  }
+  function tipFor(d,ev){
+    showTip(tip,
+      `<b>${SHORT[d]}</b><br>` +
+      `raw gap <span class="k">${fmtGap(comp[d].raw)}</span><br>` +
+      `adjusted <span class="k">${fmtGap(comp[d].adj)}</span><br>` +
+      `<span class="muted">vs stable-religious, 1&ndash;3 scale</span>`, ev, holder);
+  }
+  bars.on("mousemove",(ev,d)=>tipFor(d,ev)).on("mouseleave",()=>hideTip(tip))
+    .on("focus",function(ev,d){ const b=holder.getBoundingClientRect(); tipFor(d,{clientX:b.left+M.l+x(val(d)),clientY:b.top+M.t+y(d)+18}); })
+    .on("blur",()=>hideTip(tip));
+
+  const bRaw=document.getElementById("t-raw"), bAdj=document.getElementById("t-adj");
+  bRaw.addEventListener("click",()=>{mode="raw";bRaw.setAttribute("aria-pressed","true");bAdj.setAttribute("aria-pressed","false");render();});
+  bAdj.addEventListener("click",()=>{mode="adj";bAdj.setAttribute("aria-pressed","true");bRaw.setAttribute("aria-pressed","false");render();});
+  render();
+})();
+
+/* ---------- FIG 3 : rise of leaving + gap over time (two panels) ---------- */
+(function(){
+  const host = d3.select("#trend");
+  const tip = document.getElementById("tip-trend");
+  const holder = host.node().parentNode;
+  const T = DATA.trend;
+  const W=700,H=330,gap=46;
+  const pw=(W-gap)/2;
+  const M={t:24,r:18,b:40,l:44};
+  const iw=pw-M.l-M.r, ih=H-M.t-M.b;
+  const svg=host.append("svg").attr("viewBox",`0 0 ${W} ${H}`).attr("preserveAspectRatio","xMidYMid meet");
+
+  const xExtent=d3.extent(T,d=>d.x);
+  const x=d3.scaleLinear().domain([xExtent[0]-1,xExtent[1]+1]).range([0,iw]);
+
+  /* --- LEFT panel: shares rising --- */
+  const gL=svg.append("g").attr("transform",`translate(${M.l},${M.t})`);
+  const yL=d3.scaleLinear().domain([0,0.32]).range([ih,0]);
+  gL.append("g").attr("class","axis").call(d3.axisLeft(yL).ticks(4).tickFormat(d3.format(".0%")));
+  gL.append("g").attr("class","axis").attr("transform",`translate(0,${ih})`)
+    .call(d3.axisBottom(x).ticks(4).tickFormat(d3.format("d")));
+  yL.ticks(4).forEach(t=>gL.append("line").attr("class","gridline").attr("x1",0).attr("x2",iw).attr("y1",yL(t)).attr("y2",yL(t)));
+  svg.append("text").attr("x",M.l).attr("y",16).attr("font-family","ui-sans-serif,system-ui,sans-serif")
+    .attr("font-size",12).attr("font-weight",600).attr("fill","#211d2b").text("The rise of the nones");
+
+  const lineNone=d3.line().x(d=>x(d.x)).y(d=>yL(d.now_none));
+  const lineLeave=d3.line().x(d=>x(d.x)).y(d=>yL(d.leave_rate));
+  gL.append("path").datum(T).attr("fill","none").attr("stroke","#9a4a6b").attr("stroke-width",2.6).attr("d",lineNone);
+  gL.append("path").datum(T).attr("fill","none").attr("stroke","#b07c2b").attr("stroke-width",2.6).attr("stroke-dasharray","6 4").attr("d",lineLeave);
+  gL.selectAll("circle.n1").data(T).join("circle").attr("class","n1").attr("cx",d=>x(d.x)).attr("cy",d=>yL(d.now_none)).attr("r",3).attr("fill","#9a4a6b");
+  gL.selectAll("circle.n2").data(T).join("circle").attr("class","n2").attr("cx",d=>x(d.x)).attr("cy",d=>yL(d.leave_rate)).attr("r",3).attr("fill","#b07c2b");
+
+  /* --- RIGHT panel: happiness lines, gap --- */
+  const xoff=pw+gap;
+  const gR=svg.append("g").attr("transform",`translate(${xoff+M.l},${M.t})`);
+  const yR=d3.scaleLinear().domain([1.88,2.28]).range([ih,0]);
+  gR.append("g").attr("class","axis").call(d3.axisLeft(yR).ticks(4).tickFormat(d3.format(".2f")));
+  gR.append("g").attr("class","axis").attr("transform",`translate(0,${ih})`)
+    .call(d3.axisBottom(x).ticks(4).tickFormat(d3.format("d")));
+  yR.ticks(4).forEach(t=>gR.append("line").attr("class","gridline").attr("x1",0).attr("x2",iw).attr("y1",yR(t)).attr("y2",yR(t)));
+  svg.append("text").attr("x",xoff+M.l).attr("y",16).attr("font-family","ui-sans-serif,system-ui,sans-serif")
+    .attr("font-size",12).attr("font-weight",600).attr("fill","#211d2b").text("…and a penalty that thinned from the top");
+
+  const lineSR=d3.line().x(d=>x(d.x)).y(d=>yR(d.mean_sr));
+  const lineLV=d3.line().x(d=>x(d.x)).y(d=>yR(d.mean_lv));
+  // shaded gap between the two
+  const area=d3.area().x(d=>x(d.x)).y0(d=>yR(d.mean_sr)).y1(d=>yR(d.mean_lv));
+  gR.append("path").datum(T).attr("fill","#9a4a6b").attr("opacity",0.10).attr("d",area);
+  gR.append("path").datum(T).attr("fill","none").attr("stroke","#2e6e5c").attr("stroke-width",2.6).attr("d",lineSR);
+  gR.append("path").datum(T).attr("fill","none").attr("stroke","#9a4a6b").attr("stroke-width",2.6).attr("stroke-dasharray","6 4").attr("d",lineLV);
+  gR.selectAll("circle.s").data(T).join("circle").attr("class","s").attr("cx",d=>x(d.x)).attr("cy",d=>yR(d.mean_sr)).attr("r",3).attr("fill","#2e6e5c");
+  gR.selectAll("circle.l").data(T).join("circle").attr("class","l").attr("cx",d=>x(d.x)).attr("cy",d=>yR(d.mean_lv)).attr("r",3).attr("fill","#9a4a6b");
+
+  // 2021 mode-change flag (last point) on right panel
+  const last=T[T.length-1];
+  gR.append("line").attr("x1",x(last.x)).attr("x2",x(last.x)).attr("y1",ih*0.34).attr("y2",ih)
+    .attr("stroke","#5b5468").attr("stroke-width",1).attr("stroke-dasharray","2 3").attr("opacity",0.7);
+  gR.append("text").attr("x",x(last.x)-6).attr("y",ih*0.34+10).attr("text-anchor","end")
+    .attr("font-family","ui-sans-serif,system-ui,sans-serif").attr("font-size",10).attr("fill","#5b5468")
+    .attr("paint-order","stroke").attr("stroke","#fffdf9").attr("stroke-width",3)
+    .text("◂ 2021–22 web mode");
+
+  // hover targets: vertical hit bands across both panels by bin
+  function nearest(mx, off){ // mx relative to panel inner
+    let best=T[0],bd=1e9; T.forEach(d=>{const dd=Math.abs(x(d.x)-mx);if(dd<bd){bd=dd;best=d;}}); return best;
+  }
+  function bind(panel, gpanel, off){
+    gpanel.append("rect").attr("x",0).attr("y",0).attr("width",iw).attr("height",ih)
+      .attr("fill","transparent").style("cursor","crosshair")
+      .on("mousemove",function(ev){
+        const mx=d3.pointer(ev,this)[0]; const d=nearest(mx);
+        showTip(tip,
+          `<b>${d.bin}</b>${d.mode_change?' <span class="muted">(web mode)</span>':''}<br>`+
+          `now unaffiliated <span class="k">${fmtPct(d.now_none)}</span><br>`+
+          `leave-rate (raised) <span class="k">${fmtPct(d.leave_rate)}</span><br>`+
+          (d.mean_sr!=null?`stable-religious <span class="k">${fmt2(d.mean_sr)}</span><br>`:"")+
+          (d.mean_lv!=null?`leavers <span class="k">${fmt2(d.mean_lv)}</span> (gap ${fmtGap(d.gap)})`:""),
+          ev, holder);
+      })
+      .on("mouseleave",()=>hideTip(tip));
+  }
+  bind("L",gL,0); bind("R",gR,xoff);
+
+  document.getElementById("cap-trend").innerHTML =
+    "Left: the unaffiliated share (solid) and the leave-rate among the raised-religious (dashed gold) both more than tripled. Right: the leaver line (dashed) trails the stable-religious (solid); the shaded gap narrows, but mostly because the stable-religious line falls. The 2021&ndash;22 point spans the survey&rsquo;s shift to web mode.";
+
+  // fallback table
+  const tbl=document.createElement("table"); tbl.className="fallback sr";
+  tbl.innerHTML="<caption>Trend by period (data table)</caption>"+
+    "<tr><th>Period</th><th>Now none</th><th>Leave-rate</th><th>Stable-relig.</th><th>Leavers</th><th>Gap</th></tr>"+
+    T.map(d=>`<tr><td>${d.bin}</td><td>${fmtPct(d.now_none)}</td><td>${fmtPct(d.leave_rate)}</td><td>${d.mean_sr!=null?fmt2(d.mean_sr):"–"}</td><td>${d.mean_lv!=null?fmt2(d.mean_lv):"–"}</td><td>${d.gap!=null?fmtGap(d.gap):"–"}</td></tr>`).join("");
+  host.node().parentNode.appendChild(tbl);
+})();
+
+/* ---------- FIG 4 : cohort ribbon ---------- */
+(function(){
+  const host=d3.select("#cohort");
+  const tip=document.getElementById("tip-cohort");
+  const holder=host.node().parentNode;
+  const C=DATA.cohort;
+  const W=700,H=240,M={t:18,r:18,b:46,l:44};
+  const iw=W-M.l-M.r, ih=H-M.t-M.b;
+  const svg=host.append("svg").attr("viewBox",`0 0 ${W} ${H}`).attr("preserveAspectRatio","xMidYMid meet");
+  const g=svg.append("g").attr("transform",`translate(${M.l},${M.t})`);
+  const x=d3.scaleBand().domain(C.map(d=>d.cohort)).range([0,iw]).padding(0.22);
+  const y=d3.scaleLinear().domain([0,0.4]).range([ih,0]);
+  g.append("g").attr("class","axis").call(d3.axisLeft(y).ticks(4).tickFormat(d3.format(".0%")));
+  g.append("g").attr("class","axis").attr("transform",`translate(0,${ih})`)
+    .call(d3.axisBottom(x).tickFormat(d=>"'"+String(d).slice(2)+"s").tickSize(0)).select(".domain").remove();
+  y.ticks(4).forEach(t=>g.append("line").attr("class","gridline").attr("x1",0).attr("x2",iw).attr("y1",y(t)).attr("y2",y(t)));
+  svg.append("text").attr("x",M.l+iw/2).attr("y",H-6).attr("text-anchor","middle")
+    .attr("font-family","ui-sans-serif,system-ui,sans-serif").attr("font-size",11).attr("fill","#5b5468")
+    .text("birth-cohort decade");
+
+  const grad="cohortGrad";
+  const lg=svg.append("defs").append("linearGradient").attr("id",grad).attr("x1","0").attr("x2","0").attr("y1","0").attr("y2","1");
+  lg.append("stop").attr("offset","0%").attr("stop-color","#9a4a6b");
+  lg.append("stop").attr("offset","100%").attr("stop-color","#7a6f86");
+
+  g.selectAll("rect.bar").data(C).join("rect").attr("class","bar")
+    .attr("x",d=>x(d.cohort)).attr("width",x.bandwidth())
+    .attr("y",d=>y(d.now_none)).attr("height",d=>ih-y(d.now_none))
+    .attr("fill",`url(#${grad})`).attr("rx",2)
+    .attr("tabindex",0).attr("role","listitem")
+    .attr("aria-label",d=>`Born ${d.cohort}s: ${fmtPct(d.now_none)} now unaffiliated, N ${fmtN(d.n)}.`)
+    .on("mousemove",function(ev,d){
+      showTip(tip,`<b>Born ${d.cohort}s</b><br>now unaffiliated <span class="k">${fmtPct(d.now_none)}</span><br>`+
+        (d.leave_rate!=null?`left a faith <span class="k">${fmtPct(d.leave_rate)}</span><br>`:"")+
+        `<span class="muted">N ${fmtN(d.n)}</span>`, ev, holder);
+    }).on("mouseleave",()=>hideTip(tip))
+    .on("focus",function(ev,d){const b=holder.getBoundingClientRect();showTip(tip,`<b>Born ${d.cohort}s</b><br>now unaffiliated <span class="k">${fmtPct(d.now_none)}</span>`,{clientX:b.left+M.l+x(d.cohort),clientY:b.top+M.t+y(d.now_none)},holder);})
+    .on("blur",()=>hideTip(tip));
+
+  g.selectAll("text.v").data(C.filter((d,i)=>i%2===0||i===C.length-1)).join("text")
+    .attr("class","v").attr("x",d=>x(d.cohort)+x.bandwidth()/2).attr("y",d=>y(d.now_none)-5)
+    .attr("text-anchor","middle").attr("font-family","ui-sans-serif,system-ui,sans-serif")
+    .attr("font-size",10.5).attr("fill","#5b5468").text(d=>fmtPct(d.now_none));
+
+  document.getElementById("cap-cohort").innerHTML =
+    "Each bar is the share of a birth cohort now religiously unaffiliated &mdash; from about 4% for those born around 1900 to roughly 38% for the 1990s. Secularization is overwhelmingly generational.";
+
+  const tbl=document.createElement("table"); tbl.className="fallback sr";
+  tbl.innerHTML="<caption>Unaffiliated share by cohort (data table)</caption>"+
+    "<tr><th>Born</th><th>Now none</th><th>N</th></tr>"+
+    C.map(d=>`<tr><td>${d.cohort}s</td><td>${fmtPct(d.now_none)}</td><td>${fmtN(d.n)}</td></tr>`).join("");
+  host.node().parentNode.appendChild(tbl);
+})();
+</script>
+<!--SL_BOOKNAV_START-->
+<style>
+.slbn{font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;background:#0f1417;border-top:1px solid #27313a;color:#9fb0ba;padding:24px 20px 40px;margin:48px 0 0}
+.slbn-in{max-width:1080px;margin:0 auto;display:flex;align-items:stretch;gap:12px}
+.slbn a{flex:1 1 0;min-width:0;text-decoration:none;color:inherit;border:1px solid #27313a;border-radius:10px;padding:13px 15px;display:flex;flex-direction:column;gap:4px;background:#161d22;transition:border-color .15s,transform .15s}
+.slbn a:hover{border-color:#3fa9a0;transform:translateY(-2px)}
+.slbn a:focus-visible{outline:2px solid #3fa9a0;outline-offset:2px}
+.slbn a.slbn-next{text-align:right;align-items:flex-end}
+.slbn a.slbn-toc{flex:0 0 auto;min-width:120px;justify-content:center;align-items:center;text-align:center}
+.slbn .slbn-dir{font:700 10px/1 inherit;letter-spacing:.13em;text-transform:uppercase;color:#6b7c87}
+.slbn .slbn-ttl{font:700 14px/1.3 inherit;color:#eef2f4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.slbn a.slbn-disabled{opacity:.38;pointer-events:none}
+@media(max-width:640px){.slbn-in{flex-wrap:wrap}.slbn a{flex:1 1 100%}.slbn a.slbn-next{text-align:left;align-items:flex-start}.slbn a.slbn-toc{order:-1}}
+</style>
+<nav class="slbn" aria-label="Book navigation"><div class="slbn-in"><a class="slbn-prev" href="../read.html?ch=the-pew-not-the-prayer" target="_top"><span class="slbn-dir">‹ Previous</span><span class="slbn-ttl">The Pew, Not the Prayer</span></a><a class="slbn-toc" href="../index.html#book" target="_top"><span class="slbn-dir">The Scissors</span><span class="slbn-ttl">Chapter 19 / 36</span></a><a class="slbn-next" href="../read.html?ch=does-generosity-pay" target="_top"><span class="slbn-dir">Next ›</span><span class="slbn-ttl">Does Generosity Pay — Everywhere?</span></a></div></nav>
+<!--SL_BOOKNAV_END-->
+</body>
+</html>

@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Does the Ring Still Matter?</title>
+<style>
+  :root{
+    --ink:#26211c; --ink-soft:#5d5446; --paper:#f6f1e8; --card:#fffdf8;
+    --rule:#dfd5c2; --raw:#7a3b86; --adj:#c79a3a; --band:#b98fc1;
+    --married:#7a3b86; --never:#2f7d72; --divorced:#c46a3a; --separated:#9a8a6a; --widowed:#5d6b8a;
+    --cohab:#2f7d72; --par:#7a3b86; --child:#9a8a6a;
+    --focus:#1c4f8f;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    line-height:1.62;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
+  .wrap{max-width:760px;margin:0 auto;padding:0 22px 96px;}
+  .kicker{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    text-transform:uppercase;letter-spacing:.18em;font-size:12px;font-weight:600;
+    color:var(--raw);margin:54px 0 16px;}
+  h1{font-size:clamp(2.2rem,6vw,3.4rem);line-height:1.04;font-weight:700;margin:0 0 18px;letter-spacing:-.01em;}
+  .dek{font-size:clamp(1.12rem,2.6vw,1.34rem);color:var(--ink-soft);font-style:italic;margin:0 0 30px;max-width:38em;}
+  .byline{font-family:ui-sans-serif,system-ui,sans-serif;font-size:13px;color:var(--ink-soft);
+    letter-spacing:.02em;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
+    padding:12px 0;margin:0 0 38px;}
+  h2{font-size:clamp(1.5rem,4vw,2rem);line-height:1.12;font-weight:700;margin:52px 0 14px;letter-spacing:-.01em;}
+  p{font-size:1.12rem;margin:0 0 20px;}
+  p.lead:first-letter{font-size:3.4em;line-height:.78;float:left;padding:6px 10px 0 0;color:var(--raw);font-weight:700;}
+  a{color:var(--focus);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:.5px;}
+  strong{font-weight:700;}
+  em.term{font-style:italic;color:var(--ink);}
+  figure{margin:34px 0;}
+  .fig-card{background:var(--card);border:1px solid var(--rule);border-radius:12px;
+    padding:20px 18px 14px;box-shadow:0 1px 0 rgba(38,33,28,.03);}
+  figcaption{font-family:ui-sans-serif,system-ui,sans-serif;font-size:13.5px;color:var(--ink-soft);
+    line-height:1.5;margin-top:12px;}
+  .fig-title{font-family:ui-sans-serif,system-ui,sans-serif;font-weight:600;font-size:15.5px;color:var(--ink);margin:0 0 2px;}
+  .fig-sub{font-family:ui-sans-serif,system-ui,sans-serif;font-size:13px;color:var(--ink-soft);margin:0 0 14px;}
+  svg{display:block;width:100%;height:auto;overflow:visible;}
+  .controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 14px;
+    font-family:ui-sans-serif,system-ui,sans-serif;}
+  .controls .lbl{font-size:12.5px;color:var(--ink-soft);margin-right:2px;}
+  button.tog{font-family:inherit;font-size:13px;border:1px solid var(--rule);background:var(--card);
+    color:var(--ink-soft);padding:6px 13px;border-radius:999px;cursor:pointer;transition:all .12s;}
+  button.tog[aria-pressed="true"]{background:var(--raw);border-color:var(--raw);color:#fff;font-weight:600;}
+  button.tog:hover{border-color:var(--raw);color:var(--ink);}
+  button.tog[aria-pressed="true"]:hover{color:#fff;}
+  :focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:4px;}
+  .legend{display:flex;flex-wrap:wrap;gap:14px 18px;font-family:ui-sans-serif,system-ui,sans-serif;
+    font-size:12.5px;color:var(--ink-soft);margin:2px 0 6px;}
+  .legend span{display:inline-flex;align-items:center;gap:7px;}
+  .swatch{width:22px;height:0;border-top-width:3px;border-top-style:solid;display:inline-block;}
+  .swatch.box{height:12px;border:none;border-radius:2px;}
+  .tip{position:absolute;pointer-events:none;background:var(--ink);color:#f6f1e8;
+    font-family:ui-sans-serif,system-ui,sans-serif;font-size:12.5px;line-height:1.45;padding:9px 11px;
+    border-radius:8px;opacity:0;transition:opacity .1s;max-width:230px;z-index:5;box-shadow:0 4px 14px rgba(0,0,0,.22);}
+  .tip b{color:#fff;}
+  .tip .r{color:#e2b9e9;} .tip .a{color:#f0d489;}
+  .holder{position:relative;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+  @media(max-width:620px){.grid2{grid-template-columns:1fr;}}
+  .pull{font-family:ui-sans-serif,system-ui,sans-serif;font-size:clamp(1.2rem,3vw,1.5rem);
+    line-height:1.3;color:var(--raw);font-weight:600;border-left:4px solid var(--adj);
+    padding:6px 0 6px 20px;margin:34px 0;letter-spacing:-.01em;}
+  .stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:26px 0 6px;}
+  @media(max-width:520px){.stat-row{grid-template-columns:1fr;}}
+  .stat{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:14px 16px;}
+  .stat .num{font-family:ui-sans-serif,system-ui,sans-serif;font-size:1.9rem;font-weight:700;color:var(--raw);letter-spacing:-.02em;}
+  .stat .cap{font-family:ui-sans-serif,system-ui,sans-serif;font-size:12.5px;color:var(--ink-soft);margin-top:3px;line-height:1.4;}
+  .notes{font-family:ui-sans-serif,system-ui,sans-serif;font-size:13.5px;color:var(--ink-soft);
+    line-height:1.6;border-top:2px solid var(--rule);margin-top:60px;padding-top:22px;}
+  .notes h2{font-size:1.05rem;letter-spacing:.04em;text-transform:uppercase;color:var(--ink);margin:0 0 12px;}
+  .notes p{font-size:13.5px;margin:0 0 12px;}
+  .notes a{color:var(--focus);}
+  .axis text{font-family:ui-sans-serif,system-ui,sans-serif;fill:var(--ink-soft);font-size:11px;}
+  .axis line,.axis path{stroke:var(--rule);}
+  .gridline{stroke:var(--rule);stroke-dasharray:2 3;}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <p class="kicker">Marriage &amp; well-being &middot; General Social Survey, 1972&ndash;2024</p>
+  <h1>Does the Ring Still Matter?</h1>
+  <p class="dek">For fifty years, married Americans have reported being happier than everyone else. The gap has barely budged &mdash; and most of it survives even after you account for who tends to marry.</p>
+  <p class="byline">An analysis of 70,869 General Social Survey respondents &middot; weighted estimates &middot; association, not causation</p>
+
+  <p class="lead">Marriage in America became, over half a century, a later and more selective thing. People marry older, marry richer, and increasingly only after they feel settled. If marriage were turning into a luxury good &mdash; something the already-advantaged opt into &mdash; you might expect the happiness gap between the married and everyone else to balloon, as the people walking down the aisle grew ever more sorted toward contentment.</p>
+
+  <p>That is not quite what the data show. In the General Social Survey, the share of married people who call themselves &ldquo;very happy&rdquo; led the unmarried by about <strong>21 points</strong> in the mid-1970s. Fifty years later, in 2021&ndash;24, it led by about <strong>17 points</strong>. The premium is remarkably durable &mdash; neither the runaway widening the luxury-good story predicts, nor the collapse the &ldquo;marriage doesn&rsquo;t matter anymore&rdquo; story predicts. It just persists.</p>
+
+  <p>The harder question is what the gap is made of. Married people are, on average, older, healthier, richer, and more educated than the unmarried &mdash; and all of those things track happiness on their own. So how much of the marriage premium is the marriage, and how much is simply <em class="term">who marries whom</em>? The chart below puts both numbers on the same axis.</p>
+
+  <figure>
+    <div class="fig-card">
+      <p class="fig-title" id="premTitle">The marriage premium, and the shadow that selection casts</p>
+      <p class="fig-sub">Married-minus-unmarried happiness gap, by multi-year bin. The shaded band is the part the bold line loses once you adjust for age, income, health, children and education.</p>
+      <div class="controls" role="group" aria-label="Choose happiness measure">
+        <span class="lbl">Measure:</span>
+        <button class="tog" id="mVH" aria-pressed="true">% &ldquo;very happy&rdquo;</button>
+        <button class="tog" id="mMean" aria-pressed="false">mean (1&ndash;3 scale)</button>
+      </div>
+      <div class="legend" id="premLegend">
+        <span><i class="swatch" style="border-top-color:var(--raw)"></i>Raw premium</span>
+        <span><i class="swatch" style="border-top-color:var(--adj);border-top-style:dashed"></i>Adjusted for who marries</span>
+        <span><i class="swatch box" style="background:var(--band);opacity:.5"></i>What selection explains</span>
+      </div>
+      <div class="holder">
+        <svg id="premChart" viewBox="0 0 760 430" role="img" aria-labelledby="premTitle premDesc"></svg>
+        <p id="premDesc" class="sr">A dual-line chart. The bold line is the raw married-minus-unmarried happiness gap across nine time bins from 1972 to 2024; it stays roughly flat. A lower dashed line is the same gap after adjusting for age, income, health, children and education. The shaded region between the two lines is the share of the gap explained by selection, which widens in the most recent bins.</p>
+        <div class="tip" id="premTip"></div>
+      </div>
+    </div>
+    <figcaption>GSS, weighted by <code>wtssps</code>. Bold = raw gap; dashed = adjusted gap from a weighted regression on the complete-control sample. The adjusted line runs only through 2021&ndash;22 because constant-dollar income (<code>coninc</code>) ends in 2022; the 2021&ndash;24 adjusted point rests on 2021&ndash;22 cases. Light band on the raw line is a 600-rep weighted bootstrap. Hover any bin for the raw gap, adjusted gap, selection share and N.</figcaption>
+  </figure>
+
+  <p class="pull">Net of age, income, health, children and education, the married still lead by 0.26 of a point on the 1&ndash;3 scale &mdash; about seven-eighths of the raw 0.30-point gap.</p>
+
+  <h2>How much is selection?</h2>
+  <p>Pool the whole half-century into one weighted regression and the raw married-minus-unmarried gap on the 1&ndash;3 happiness scale is about <strong>0.30</strong> points. Add the obvious confounders &mdash; age and its square, constant-dollar family income, self-rated health, number of children, and highest degree &mdash; and the gap shrinks to about <strong>0.26</strong>. That is the shadow line in the chart: only about <strong>13%</strong> of the raw gap is accounted for by those observable differences. The rest &mdash; the overwhelming majority &mdash; is something the controls do not see.</p>
+
+  <p>This is not the clean answer either camp wants. Thirteen percent is real attenuation: married people genuinely are richer and healthier, and that buys some of their reported happiness. But it is a long way from explaining the premium away. And note the shadow is not constant. In the earliest bins the raw and adjusted lines nearly touch &mdash; the controls barely move the 1970s gap. In the most recent bins they pull apart: the 2013&ndash;18 gap of <strong>0.32</strong> on the analytic sample falls to <strong>0.26</strong> once adjusted, and the 2021&ndash;22 gap of <strong>0.33</strong> falls to <strong>0.25</strong>. As marriage grew more selective, a larger slice of the premium became explainable by sorting &mdash; exactly the luxury-good mechanism, visible not in the headline gap but in its composition.</p>
+
+  <p>Even so, the honest verdict is restraint. The controls are crude; income is a bracket midpoint, health is self-rated, and none of them capture temperament, the very thing that makes some people both happier and more marriageable. Stutzer &amp; Frey, following German panel data, argued that <a href="https://www.sciencedirect.com/science/article/abs/pii/S1053535705001496">happier people are more likely to marry in the first place</a> &mdash; reverse causation our cross-section cannot rule out. The adjusted line narrows the gap; it cannot purify it. Read the band as &ldquo;at least this much is who-marries-whom,&rdquo; never as a clean causal estimate.</p>
+
+  <h2>Not all unmarried are alike</h2>
+  <p>Folding everyone who isn&rsquo;t married into one &ldquo;unmarried&rdquo; lump hides a lot. The never-married, the divorced, the separated and the widowed are very different groups, and they sit at different heights. The married line runs along the top of the next chart in every era; the separated tend to sit lowest. The whole panel drops in 2021&ndash;24 &mdash; partly a real post-pandemic dip, partly the artifact of the GSS&rsquo;s 2021 switch to web interviewing, which shifted measured happiness downward across the board.</p>
+
+  <figure>
+    <div class="fig-card">
+      <p class="fig-title">Five marital statuses, fifty years</p>
+      <p class="fig-sub">Share calling themselves &ldquo;very happy,&rdquo; by marital status and time bin. Married sits on top throughout; the gap to the rest is the premium.</p>
+      <div class="holder">
+        <svg id="catChart" viewBox="0 0 760 360" role="img" aria-labelledby="catDesc"></svg>
+        <p id="catDesc" class="sr">Five lines showing the share very happy for married, never-married, divorced, separated and widowed Americans across nine time bins. The married line is highest in every bin. All five fall in the final 2021 to 2024 bin.</p>
+        <div class="tip" id="catTip"></div>
+      </div>
+    </div>
+    <figcaption>GSS, weighted by <code>wtssps</code>. The dashed marker at 2021 flags the push-to-web mode change, which lowered measured happiness across all groups. Cells with effective N below 50 are suppressed.</figcaption>
+  </figure>
+
+  <h2>Does cohabitation now rival marriage?</h2>
+  <p>If the premium is partly a story about commitment, the natural follow-up is whether living together without the certificate delivers the same thing. Since 2012 the GSS has asked cohabitors to rate their relationship (<code>hapcohab</code>) on the same scale it has long asked the married to rate their marriages (<code>hapmar</code>). Across the seven years both questions exist, the answer is striking: cohabitors rate their relationships almost exactly as highly as married people rate their marriages.</p>
+
+  <div class="stat-row">
+    <div class="stat"><div class="num">2.58</div><div class="cap">Married rating their marriage (1&ndash;3 mean), 2012&ndash;24 pooled, N=9,040</div></div>
+    <div class="stat"><div class="num">2.55</div><div class="cap">Cohabitors rating their relationship, same years, N=1,807</div></div>
+    <div class="stat"><div class="num">60%</div><div class="cap">of cohabitors call their relationship &ldquo;very happy,&rdquo; vs 61% of the married</div></div>
+  </div>
+
+  <figure>
+    <div class="fig-card">
+      <p class="fig-title">Relationship happiness: married vs cohabiting</p>
+      <p class="fig-sub">How people in each union rate it, pooled across 2012&ndash;2024. Nearly identical &mdash; but read the caveat below.</p>
+      <div class="holder">
+        <svg id="cohabChart" viewBox="0 0 760 230" role="img" aria-labelledby="cohabDesc"></svg>
+        <p id="cohabDesc" class="sr">A small paired-bar chart comparing married and cohabiting respondents on the share rating their union very happy and the one-to-three mean. The two groups are nearly identical.</p>
+      </div>
+    </div>
+    <figcaption><strong>Survivorship caveat.</strong> Both items are asked only of people currently in the relationship: <code>hapmar</code> of the married, <code>hapcohab</code> of cohabitors. Neither sees the unions that already ended. Since cohabitations dissolve far more often than marriages, the surviving cohabitors are a more selected, happier remnant &mdash; so near-parity in ratings does not mean the two arrangements are equally durable or equally happy on average. GSS, weighted by <code>wtssps</code>; cohabitation asked in 2012, 2014, 2016, 2018, 2021, 2022, 2024 only.</figcaption>
+  </figure>
+
+  <h2>And the &ldquo;parenthood penalty&rdquo;?</h2>
+  <p>One more contested cut. A long line of research &mdash; <a href="https://www.journals.uchicago.edu/doi/10.1086/688892">Glass, Simon &amp; Andersson</a> on the cross-national happiness gap between parents and non-parents &mdash; warns that raising children can cost well-being, especially where support for parents is thin. In the raw GSS, though, parents come out slightly <em class="term">ahead</em>: about <strong>33%</strong> of people with children call themselves very happy, against <strong>26%</strong> of the childless, a gap of roughly <strong>0.08</strong> on the 1&ndash;3 scale.</p>
+
+  <p>Treat that with the same caution as the marriage premium. Parents are disproportionately married, older and settled &mdash; the very traits that carry happiness &mdash; so this raw edge is selection-soaked, not evidence that children make you happier. The honest reading is a small, persistent association that runs the opposite direction from the &ldquo;penalty&rdquo; headline, and that the controls in our marriage model would shrink. The gap also widens in 2021&ndash;24, but so does everything in that mode-shifted bin.</p>
+
+  <figure>
+    <div class="fig-card">
+      <p class="fig-title">Parents vs the childless, over time</p>
+      <p class="fig-sub">Share &ldquo;very happy&rdquo; by parenthood and time bin. Parents edge ahead in most eras &mdash; an association, heavily confounded.</p>
+      <div class="holder">
+        <svg id="parChart" viewBox="0 0 760 270" role="img" aria-labelledby="parDesc"></svg>
+        <p id="parDesc" class="sr">Two lines showing the share very happy among parents and among the childless across nine time bins. Parents sit slightly above the childless in most bins.</p>
+        <div class="tip" id="parTip"></div>
+      </div>
+    </div>
+    <figcaption>GSS, weighted by <code>wtssps</code>. Parent = at least one child ever; childless = none. The gap is descriptive and confounded by age and marital status. The 2021 mode change applies here too.</figcaption>
+  </figure>
+
+  <h2>What this does and doesn&rsquo;t show</h2>
+  <p>It shows a durable association and nothing more. The married report more happiness than the unmarried, by a margin that has held for fifty years and that observable advantages explain only a small slice of. That is consistent with the case Waite &amp; Gallagher made in <a href="https://www.amazon.com/Case-Marriage-Married-People-Financially/dp/0767906322">The Case for Marriage</a> &mdash; but it is equally consistent with the selection story they were arguing against. Happier, healthier, steadier people are more likely to marry and to stay married; our regression narrows that channel but cannot close it, and it cannot touch reverse causation or the parts of temperament no survey records.</p>
+
+  <p>The numbers are also modest in absolute terms, and we report them plainly: a few percentage points here, a few hundredths of a scale point there, on a three-point item. The 2021 switch to web interviewing lowered measured happiness across every group at once, so the recent dip is partly a ruler change, not only a mood change &mdash; which is why we annotate it rather than narrate it. And the cohabitation near-parity is real but survivorship-bound: we see the unions that lasted, not the ones that didn&rsquo;t. The ring, on this evidence, still travels with more reported happiness. Whether it <em class="term">causes</em> any of it is a question fifty years of cross-sections cannot settle.</p>
+
+  <section class="notes">
+    <h2>Notes &amp; data</h2>
+    <p><strong>Source.</strong> General Social Survey cumulative file, 1972&ndash;2024 (35 survey years). One row = one respondent. The happiness item (<code>happy</code>) is answered by 70,869 respondents; per-year N ranges from about 1,337 to 4,014. Construct: <em class="term">evaluative</em> well-being (<code>happy</code>, and the relationship-satisfaction items <code>hapmar</code> / <code>hapcohab</code>). Higher = happier on all three (the GSS&rsquo;s original 1&ndash;3 coding is reversed in this extract so 3 = very happy).</p>
+    <p><strong>Weighting.</strong> Every estimate is weighted by <code>wtssps</code>, the post-stratified weight covering all years 1972&ndash;2024. No unweighted figures are reported.</p>
+    <p><strong>Binning &amp; suppression.</strong> Years are pooled into nine stable multi-year bins for subgroup cuts; the final bin (2021&ndash;24) is isolated because it falls after the mode change. Cells with effective sample size below 50 &mdash; effN = (&Sigma;w)&sup2; / &Sigma;w&sup2; &mdash; are suppressed rather than plotted.</p>
+    <p><strong>Selection-adjusted model.</strong> Weighted least squares (statsmodels WLS, weights = <code>wtssps</code>, HC1 robust standard errors) of <code>happy</code> on a married indicator plus age, age&sup2;, log constant-dollar family income (<code>coninc</code>), self-rated health, number of children, and degree dummies, on the complete-control sample (analytic N = 46,218 pooled). The adjusted premium is the married coefficient. Because <code>coninc</code> ends in 2022, the adjusted line stops at its last covered bin; the 2021&ndash;24 adjusted point uses 2021&ndash;22 cases only, while the raw premium runs to 2024. Health is missing in three survey years, so the analytic sample is a subset of all happiness respondents. The income-feel bracket frame <code>income16</code> (2016&ndash;24 only) is deliberately not used as the across-time control.</p>
+    <p><strong>Uncertainty.</strong> The light band on the raw premium is a weighted bootstrap (600 resamples of respondents within each bin, 95% interval). No design-based standard errors are claimed; this is journalism, not a journal.</p>
+    <p><strong>Cohabitation.</strong> <code>hapcohab</code> exists in only seven survey years (2012, 2014, 2016, 2018, 2021, 2022, 2024; N = 1,807) and is treated as a recent pooled snapshot, never a trend. Both <code>hapmar</code> and <code>hapcohab</code> are conditional on being in the relationship &mdash; a survivorship filter, since dissolved unions are unobserved.</p>
+    <p><strong>Limits.</strong> Association, not causation. Happier people are more likely to marry and to stay married; the adjusted line narrows the gap but cannot eliminate selection or reverse causation. Effects are modest and reported as such. Census region is the only geography in the GSS public file; no state or county detail is used.</p>
+    <p><strong>Prior work.</strong> Waite &amp; Gallagher, <a href="https://www.amazon.com/Case-Marriage-Married-People-Financially/dp/0767906322"><em>The Case for Marriage</em></a> (2000); Stutzer &amp; Frey, <a href="https://www.sciencedirect.com/science/article/abs/pii/S1053535705001496">&ldquo;Does marriage make people happy, or do happy people get married?&rdquo;</a> (2006); Glass, Simon &amp; Andersson, <a href="https://www.journals.uchicago.edu/doi/10.1086/688892">&ldquo;Parenthood and happiness&rdquo;</a> (2016). On the GSS 2021 push-to-web mode change and its level effects, see the NORC GSS methodological documentation.</p>
+  </section>
+</main>
+
+<script type="module">
+import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+
+const DATA = {"meta":{"dataset":"General Social Survey (GSS) cumulative file, 1972-2024","weight":"wtssps","construct":"evaluative","n_happy":70869,"n_per_year_range":[1337,4014],"effn_min":50,"bins":["1972-76","1977-82","1983-88","1989-94","1995-00","2001-06","2007-12","2013-18","2021-24"],"bootstrap_reps":600,"control_set":["age","age^2","log(coninc)","health","childs","degree"],"analytic_n_pooled":46218,"income_last_year":2022,"hapcohab_years":[2012,2014,2016,2018,2021,2022,2024]},"premium":[{"bin":"1972-76","x":1974.0,"vh_married":0.4054,"vh_unmarried":0.1971,"vh_premium":0.2083,"mean_married":2.308,"mean_unmarried":1.9792,"mean_premium":0.3287,"n_married":5267,"n_unmarried":2303,"effn_married":4701.7,"effn_unmarried":1663.3,"suppressed":false,"vh_premium_lo":0.1835,"vh_premium_hi":0.2298},{"bin":"1977-82","x":1979.5,"vh_married":0.4035,"vh_unmarried":0.2362,"vh_premium":0.1672,"mean_married":2.3217,"mean_unmarried":2.0781,"mean_premium":0.2437,"n_married":3806,"n_unmarried":2554,"effn_married":2704.5,"effn_unmarried":1488.4,"suppressed":false,"vh_premium_lo":0.139,"vh_premium_hi":0.1941},{"bin":"1983-88","x":1985.5,"vh_married":0.3915,"vh_unmarried":0.2347,"vh_premium":0.1568,"mean_married":2.3146,"mean_unmarried":2.0717,"mean_premium":0.2428,"n_married":5147,"n_unmarried":4095,"effn_married":3952.6,"effn_unmarried":2364.8,"suppressed":false,"vh_premium_lo":0.134,"vh_premium_hi":0.1781},{"bin":"1989-94","x":1991.5,"vh_married":0.3873,"vh_unmarried":0.2242,"vh_premium":0.1631,"mean_married":2.3164,"mean_unmarried":2.0778,"mean_premium":0.2387,"n_married":4755,"n_unmarried":4212,"effn_married":4163.7,"effn_unmarried":2838.8,"suppressed":false,"vh_premium_lo":0.1418,"vh_premium_hi":0.183},{"bin":"1995-00","x":1997.5,"vh_married":0.4257,"vh_unmarried":0.2106,"vh_premium":0.2151,"mean_married":2.3682,"mean_unmarried":2.0443,"mean_premium":0.3239,"n_married":3991,"n_unmarried":4475,"effn_married":3474.8,"effn_unmarried":3274.7,"suppressed":false,"vh_premium_lo":0.1944,"vh_premium_hi":0.2364},{"bin":"2001-06","x":2003.5,"vh_married":0.4158,"vh_unmarried":0.2152,"vh_premium":0.2005,"mean_married":2.3499,"mean_unmarried":2.0323,"mean_premium":0.3175,"n_married":2696,"n_unmarried":2995,"effn_married":2137.7,"effn_unmarried":1895.0,"suppressed":false,"vh_premium_lo":0.1726,"vh_premium_hi":0.2271},{"bin":"2007-12","x":2009.5,"vh_married":0.4012,"vh_unmarried":0.197,"vh_premium":0.2042,"mean_married":2.3197,"mean_unmarried":1.9995,"mean_premium":0.3202,"n_married":2752,"n_unmarried":3260,"effn_married":2009.4,"effn_unmarried":2022.4,"suppressed":false,"vh_premium_lo":0.1776,"vh_premium_hi":0.2338},{"bin":"2013-18","x":2015.5,"vh_married":0.4053,"vh_unmarried":0.2197,"vh_premium":0.1857,"mean_married":2.3327,"mean_unmarried":2.026,"mean_premium":0.3067,"n_married":3359,"n_unmarried":4367,"effn_married":2568.9,"effn_unmarried":2605.7,"suppressed":false,"vh_premium_lo":0.1613,"vh_premium_hi":0.2106},{"bin":"2021-24","x":2022.5,"vh_married":0.3102,"vh_unmarried":0.1362,"vh_premium":0.174,"mean_married":2.1799,"mean_unmarried":1.8316,"mean_premium":0.3483,"n_married":4802,"n_unmarried":5977,"effn_married":2729.2,"effn_unmarried":2649.3,"suppressed":false,"vh_premium_lo":0.1515,"vh_premium_hi":0.1943}],"categories":[{"bin":"1972-76","x":1974.0,"married_vh":0.4054,"married_mean":2.308,"married_n":5267,"married_effn":4701.7,"never_vh":0.2027,"never_mean":2.0261,"never_n":1002,"never_effn":775.7,"divorced_vh":0.1706,"divorced_mean":1.8921,"divorced_n":383,"divorced_effn":286.5,"separated_vh":0.1476,"separated_mean":1.7634,"separated_n":227,"separated_effn":168.4,"widowed_vh":0.2175,"widowed_mean":1.997,"widowed_n":691,"widowed_effn":510.8},{"bin":"1977-82","x":1979.5,"married_vh":0.4035,"married_mean":2.3217,"married_n":3806,"married_effn":2704.5,"never_vh":0.2364,"never_mean":2.109,"never_n":1046,"never_effn":654.9,"divorced_vh":0.2035,"divorced_mean":2.0378,"divorced_n":562,"divorced_effn":325.5,"separated_vh":0.2145,"separated_mean":1.9413,"separated_n":244,"separated_effn":141.0,"widowed_vh":0.2715,"widowed_mean":2.0814,"widowed_n":702,"widowed_effn":450.7},{"bin":"1983-88","x":1985.5,"married_vh":0.3915,"married_mean":2.3146,"married_n":5147,"married_effn":3952.6,"never_vh":0.2536,"never_mean":2.1228,"never_n":1726,"never_effn":1034.5,"divorced_vh":0.1826,"divorced_mean":1.9932,"divorced_n":1022,"divorced_effn":615.7,"separated_vh":0.1492,"separated_mean":1.8758,"separated_n":344,"separated_effn":216.8,"widowed_vh":0.2724,"widowed_mean":2.0878,"widowed_n":1003,"widowed_effn":657.4},{"bin":"1989-94","x":1991.5,"married_vh":0.3873,"married_mean":2.3164,"married_n":4755,"married_effn":4163.7,"never_vh":0.2499,"never_mean":2.1416,"never_n":1795,"never_effn":1231.3,"divorced_vh":0.1856,"divorced_mean":2.0134,"divorced_n":1186,"divorced_effn":877.9,"separated_vh":0.1517,"separated_mean":1.8869,"separated_n":286,"separated_effn":219.5,"widowed_vh":0.2214,"widowed_mean":2.0296,"widowed_n":945,"widowed_effn":737.2},{"bin":"1995-00","x":1997.5,"married_vh":0.4257,"married_mean":2.3682,"married_n":3991,"married_effn":3474.8,"never_vh":0.1972,"never_mean":2.0492,"never_n":2001,"never_effn":1442.8,"divorced_vh":0.2106,"divorced_mean":2.0501,"divorced_n":1331,"divorced_effn":1020.3,"separated_vh":0.1565,"separated_mean":1.8811,"separated_n":317,"separated_effn":240.4,"widowed_vh":0.2709,"widowed_mean":2.0794,"widowed_n":826,"widowed_effn":667.0},{"bin":"2001-06","x":2003.5,"married_vh":0.4158,"married_mean":2.3499,"married_n":2696,"married_effn":2137.7,"never_vh":0.2319,"never_mean":2.0699,"never_n":1409,"never_effn":870.3,"divorced_vh":0.1875,"divorced_mean":1.9986,"divorced_n":901,"divorced_effn":666.2,"separated_vh":0.1605,"separated_mean":1.8435,"separated_n":200,"separated_effn":120.9,"widowed_vh":0.2244,"widowed_mean":2.0319,"widowed_n":485,"widowed_effn":339.2},{"bin":"2007-12","x":2009.5,"married_vh":0.4012,"married_mean":2.3197,"married_n":2752,"married_effn":2009.4,"never_vh":0.2075,"never_mean":2.0235,"never_n":1618,"never_effn":1007.1,"divorced_vh":0.1868,"divorced_mean":1.9849,"divorced_n":936,"divorced_effn":638.6,"separated_vh":0.1275,"separated_mean":1.807,"separated_n":201,"separated_effn":112.4,"widowed_vh":0.2026,"widowed_mean":2.0101,"widowed_n":505,"widowed_effn":346.4},{"bin":"2013-18","x":2015.5,"married_vh":0.4053,"married_mean":2.3327,"married_n":3359,"married_effn":2568.9,"never_vh":0.2188,"never_mean":2.0476,"never_n":2144,"never_effn":1277.7,"divorced_vh":0.2054,"divorced_mean":1.992,"divorced_n":1309,"divorced_effn":833.5,"separated_vh":0.2084,"separated_mean":1.9039,"separated_n":256,"separated_effn":145.1,"widowed_vh":0.2598,"widowed_mean":2.0526,"widowed_n":658,"widowed_effn":438.6},{"bin":"2021-24","x":2022.5,"married_vh":0.3102,"married_mean":2.1799,"married_n":4802,"married_effn":2729.2,"never_vh":0.1355,"never_mean":1.8255,"never_n":3108,"never_effn":1373.1,"divorced_vh":0.1457,"divorced_mean":1.8558,"divorced_n":1770,"divorced_effn":865.1,"separated_vh":0.087,"separated_mean":1.7912,"separated_n":301,"separated_effn":144.3,"widowed_vh":0.1407,"widowed_mean":1.8282,"widowed_n":798,"widowed_effn":377.2}],"adjusted":[{"bin":"1972-76","x":1974.0,"adj_premium":0.3105,"adj_se":0.0202,"raw_premium":0.3252,"analytic_n":6937,"covered":true,"analytic_years":[1972,1973,1974,1975,1976]},{"bin":"1977-82","x":1979.5,"adj_premium":0.2072,"adj_se":0.0253,"raw_premium":0.2476,"analytic_n":4387,"covered":true,"analytic_years":[1977,1980,1982]},{"bin":"1983-88","x":1985.5,"adj_premium":0.2294,"adj_se":0.0216,"raw_premium":0.233,"analytic_n":5224,"covered":true,"analytic_years":[1984,1985,1987,1988]},{"bin":"1989-94","x":1991.5,"adj_premium":0.2066,"adj_se":0.0212,"raw_premium":0.2275,"analytic_n":5356,"covered":true,"analytic_years":[1989,1990,1991,1993,1994]},{"bin":"1995-00","x":1997.5,"adj_premium":0.2831,"adj_se":0.0184,"raw_premium":0.3276,"analytic_n":6577,"covered":true,"analytic_years":[1996,1998,2000]},{"bin":"2001-06","x":2003.5,"adj_premium":0.3057,"adj_se":0.027,"raw_premium":0.3423,"analytic_n":3312,"covered":true,"analytic_years":[2002,2004,2006]},{"bin":"2007-12","x":2009.5,"adj_premium":0.3051,"adj_se":0.0276,"raw_premium":0.3518,"analytic_n":3468,"covered":true,"analytic_years":[2008,2010,2012]},{"bin":"2013-18","x":2015.5,"adj_premium":0.2551,"adj_se":0.0239,"raw_premium":0.3164,"analytic_n":4700,"covered":true,"analytic_years":[2014,2016,2018]},{"bin":"2021-24","x":2022.5,"adj_premium":0.2529,"adj_se":0.0245,"raw_premium":0.3302,"analytic_n":6257,"covered":true,"analytic_years":[2021,2022]}],"pooled_model":{"raw":0.3048,"raw_se":0.0071,"adjusted":0.2641,"adjusted_se":0.0076,"selection_share":0.1335,"analytic_n":46218},"cohab":{"years":[2012,2014,2016,2018,2021,2022,2024],"hapmar_mean":2.5784,"hapcohab_mean":2.5537,"hapmar_vh":0.6142,"hapcohab_vh":0.5954,"n_hapmar":9040,"n_hapcohab":1807},"parenthood":[{"bin":"1972-76","x":1974.0,"vh_parent":0.3612,"vh_childless":0.2821,"vh_gap":0.0791,"mean_parent":2.233,"mean_childless":2.1266,"n_parent":5690,"n_childless":1857},{"bin":"1977-82","x":1979.5,"vh_parent":0.3622,"vh_childless":0.2973,"vh_gap":0.0648,"mean_parent":2.25,"mean_childless":2.1931,"n_parent":4664,"n_childless":1676},{"bin":"1983-88","x":1985.5,"vh_parent":0.3414,"vh_childless":0.3036,"vh_gap":0.0378,"mean_parent":2.2307,"mean_childless":2.1935,"n_parent":6655,"n_childless":2561},{"bin":"1989-94","x":1991.5,"vh_parent":0.3305,"vh_childless":0.2966,"vh_gap":0.0339,"mean_parent":2.2231,"mean_childless":2.2083,"n_parent":6458,"n_childless":2493},{"bin":"1995-00","x":1997.5,"vh_parent":0.3583,"vh_childless":0.2734,"vh_gap":0.0849,"mean_parent":2.2566,"mean_childless":2.1641,"n_parent":6028,"n_childless":2409},{"bin":"2001-06","x":2003.5,"vh_parent":0.3386,"vh_childless":0.2876,"vh_gap":0.051,"mean_parent":2.2205,"mean_childless":2.164,"n_parent":4062,"n_childless":1620},{"bin":"2007-12","x":2009.5,"vh_parent":0.3186,"vh_childless":0.2606,"vh_gap":0.058,"mean_parent":2.1832,"mean_childless":2.1169,"n_parent":4396,"n_childless":1614},{"bin":"2013-18","x":2015.5,"vh_parent":0.3342,"vh_childless":0.2631,"vh_gap":0.071,"mean_parent":2.2025,"mean_childless":2.1261,"n_parent":5554,"n_childless":2161},{"bin":"2021-24","x":2022.5,"vh_parent":0.2514,"vh_childless":0.1624,"vh_gap":0.089,"mean_parent":2.0582,"mean_childless":1.8972,"n_parent":7456,"n_childless":3276}],"parenthood_overall":{"vh_parent":0.3299,"vh_childless":0.2643,"vh_gap":0.0655,"mean_parent":2.2015,"mean_childless":2.1211,"mean_gap":0.0804,"n_parent":50963,"n_childless":19667},"headline":{"raw_70s_vh":0.2083,"raw_10s_vh":0.1857,"raw_20s_vh":0.174,"raw_70s_mean":0.3287,"raw_10s_mean":0.3067,"raw_20s_mean":0.3483}};
+
+const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const css = (n)=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const fmtPct = (v)=> (v*100).toFixed(0)+"%";
+const fmtPctTip = (v)=> (v*100).toFixed(1)+" pts";
+const fmtMean = (v)=> v.toFixed(3);
+
+/* ---------- PREMIUM dual-line chart ---------- */
+(function premium(){
+  const svg = d3.select("#premChart");
+  const W=760,H=430, m={t:18,r:20,b:46,l:54};
+  const iw=W-m.l-m.r, ih=H-m.t-m.b;
+  const g = svg.append("g").attr("transform",`translate(${m.l},${m.t})`);
+  const prem = DATA.premium, adj = DATA.adjusted;
+  const x = d3.scalePoint().domain(prem.map(d=>d.bin)).range([0,iw]).padding(0.5);
+  let mode = "vh"; // or "mean"
+
+  const yScales = {
+    vh: d3.scaleLinear().domain([0,0.30]).range([ih,0]),
+    mean:d3.scaleLinear().domain([0,0.42]).range([ih,0])
+  };
+
+  const tip = d3.select("#premTip");
+  const gy = g.append("g");
+  const gx = g.append("g").attr("class","axis").attr("transform",`translate(0,${ih})`);
+  const bandPath = g.append("path").attr("fill",css("--band")).attr("opacity",0.42);
+  const bootPath = g.append("path").attr("fill",css("--raw")).attr("opacity",0.13);
+  const adjLine = g.append("path").attr("fill","none").attr("stroke",css("--adj"))
+      .attr("stroke-width",2.4).attr("stroke-dasharray","6 5").attr("stroke-linecap","round");
+  const rawLine = g.append("path").attr("fill","none").attr("stroke",css("--raw"))
+      .attr("stroke-width",3.4).attr("stroke-linecap","round").attr("stroke-linejoin","round");
+  const adjDots = g.append("g");
+  const rawDots = g.append("g");
+  const annot = g.append("g");
+  const hover = g.append("g");
+
+  // y axis title
+  const yTitle = svg.append("text").attr("class","axis").attr("transform","rotate(-90)")
+     .attr("x",-(m.t+ih/2)).attr("y",15).attr("text-anchor","middle")
+     .style("font-size","12px").style("fill",css("--ink-soft"));
+
+  function rawVal(d){ return mode==="vh"? d.vh_premium : d.mean_premium; }
+  function adjOf(bin){ const a=adj.find(z=>z.bin===bin); return a; }
+
+  function draw(animate){
+    const y = yScales[mode];
+    yTitle.text(mode==="vh"? "Premium (percentage points)" : "Premium (1–3 scale points)");
+    // gridlines + y axis
+    const ticks = mode==="vh"? [0,0.05,0.10,0.15,0.20,0.25,0.30] : [0,0.1,0.2,0.3,0.4];
+    const gsel = gy.selectAll("g.tk").data(ticks);
+    const ge = gsel.enter().append("g").attr("class","tk");
+    ge.append("line").attr("class","gridline");
+    ge.append("text").attr("class","axis").attr("x",-9).attr("dy","0.32em").attr("text-anchor","end");
+    const gm = ge.merge(gsel);
+    gm.select("line").attr("x1",0).attr("x2",iw).attr("y1",d=>y(d)).attr("y2",d=>y(d));
+    gm.select("text").attr("y",d=>y(d)).text(d=> mode==="vh"? Math.round(d*100) : d.toFixed(2));
+    gsel.exit().remove();
+    gx.call(d3.axisBottom(x).tickSize(0).tickPadding(9));
+    gx.selectAll(".domain").attr("stroke",css("--rule"));
+
+    // raw line over all bins; adjusted line + band over covered bins.
+    // The adjusted line is expressed in the SAME units as the metric on screen:
+    //  - mean metric: the WLS married coefficient (1-3 scale points) directly;
+    //  - vh metric: the raw vh premium scaled down by the bin's selection share,
+    //    i.e. the vh-equivalent that survives adjustment (the band's lower edge).
+    const adjCovered = adj.filter(a=>a.covered);
+    const bandData = adjCovered.map(a=>{
+      const p = prem.find(z=>z.bin===a.bin);
+      const share = (a.raw_premium - a.adj_premium)/a.raw_premium; // selection share (mean-scale)
+      const rawTop = mode==="vh"? p.vh_premium : p.mean_premium;   // hug the displayed raw line
+      const adjBottom = rawTop*(1-share);                          // surviving share, in display units
+      return {bin:a.bin, top:rawTop, bottom:adjBottom, share:share};
+    });
+    const lineRaw = d3.line().x(d=>x(d.bin)).y(d=>y(rawVal(d))).curve(d3.curveMonotoneX);
+    const lineAdj = d3.line().x(d=>x(d.bin)).y(d=>y(d.bottom)).curve(d3.curveMonotoneX);
+    const area = d3.area().x(d=>x(d.bin)).y0(d=>y(d.bottom)).y1(d=>y(d.top)).curve(d3.curveMonotoneX);
+    bandPath.datum(bandData).attr("d",area);
+
+    // bootstrap band (vh metric only)
+    if(mode==="vh"){
+      const bd = d3.area().x(d=>x(d.bin)).y0(d=>y(d.vh_premium_lo)).y1(d=>y(d.vh_premium_hi)).curve(d3.curveMonotoneX);
+      bootPath.datum(prem).attr("d",bd).style("display",null);
+    } else { bootPath.style("display","none"); }
+
+    const draws=[
+      ()=>rawLine.datum(prem).attr("d",lineRaw),
+      ()=>adjLine.datum(bandData).attr("d",lineAdj)
+    ];
+    if(animate && !reduceMotion){
+      rawLine.datum(prem).attr("d",lineRaw);
+      const L = rawLine.node().getTotalLength();
+      rawLine.attr("stroke-dasharray",`${L} ${L}`).attr("stroke-dashoffset",L)
+        .transition().duration(900).ease(d3.easeCubicOut).attr("stroke-dashoffset",0)
+        .on("end",()=>rawLine.attr("stroke-dasharray",null));
+      adjLine.datum(bandData).attr("d",lineAdj).attr("opacity",0)
+        .transition().delay(500).duration(600).attr("opacity",1);
+      bandPath.attr("opacity",0).transition().delay(700).duration(500).attr("opacity",0.42);
+    } else { draws.forEach(f=>f()); rawLine.attr("stroke-dasharray",null).attr("stroke-dashoffset",null);
+             adjLine.attr("opacity",1); bandPath.attr("opacity",0.42); }
+
+    // dots
+    const rD = rawDots.selectAll("circle").data(prem);
+    rD.enter().append("circle").attr("r",4.5).attr("fill",css("--raw")).attr("stroke","#fffdf8").attr("stroke-width",1.5)
+      .merge(rD).attr("cx",d=>x(d.bin)).attr("cy",d=>y(rawVal(d)));
+    const aD = adjDots.selectAll("circle").data(bandData);
+    aD.enter().append("circle").attr("r",3.6).attr("fill",css("--adj")).attr("stroke","#fffdf8").attr("stroke-width",1.4)
+      .merge(aD).attr("cx",d=>x(d.bin)).attr("cy",d=>y(d.bottom));
+
+    // mode-change annotation at 2021-24
+    annot.selectAll("*").remove();
+    const xm = x("2021-24");
+    annot.append("line").attr("x1",xm).attr("x2",xm).attr("y1",0).attr("y2",ih)
+      .attr("stroke",css("--ink-soft")).attr("stroke-dasharray","3 3").attr("opacity",0.5);
+    annot.append("text").attr("x",xm-6).attr("y",12).attr("text-anchor","end")
+      .style("font-family","ui-sans-serif,system-ui,sans-serif").style("font-size","10.5px")
+      .style("fill",css("--ink-soft")).text("← 2021 mode change");
+
+    // "what selection explains" callout near a wide band point (2013-18)
+    const cb = bandData.find(z=>z.bin==="2013-18");
+    if(cb){
+      const cx=x("2013-18"), cyMid=y((cb.top+cb.bottom)/2);
+      annot.append("text").attr("x",cx).attr("y",cyMid).attr("dy","0.32em").attr("text-anchor","middle")
+        .style("font-family","ui-sans-serif,system-ui,sans-serif").style("font-size","10.5px")
+        .style("font-weight","600").style("fill",css("--married")).attr("opacity",0.0)
+        .text("selection")
+        .transition().delay(reduceMotion?0:1000).duration(400).attr("opacity",0.85);
+    }
+  }
+
+  // hover overlay
+  const hoverLine = hover.append("line").attr("y1",0).attr("y2",ih).attr("stroke",css("--ink-soft"))
+     .attr("stroke-width",1).attr("opacity",0);
+  g.append("rect").attr("width",iw).attr("height",ih).attr("fill","transparent")
+   .on("mousemove",function(ev){
+      const [mx]=d3.pointer(ev);
+      let best=null,bd=1e9;
+      prem.forEach(d=>{const dx=Math.abs(x(d.bin)-mx); if(dx<bd){bd=dx;best=d;}});
+      if(!best)return;
+      const a=adjOf(best.bin);
+      const y=yScales[mode];
+      hoverLine.attr("x1",x(best.bin)).attr("x2",x(best.bin)).attr("opacity",0.4);
+      const share = a&&a.covered ? (a.raw_premium-a.adj_premium)/a.raw_premium : null;
+      const rawDisp = mode==="vh"? best.vh_premium : best.mean_premium;
+      const rawTxt = mode==="vh"? fmtPctTip(rawDisp) : fmtMean(rawDisp);
+      const adjTxt = a&&a.covered ? (mode==="vh"? fmtPctTip(rawDisp*(1-share)) : fmtMean(rawDisp*(1-share))) : "—";
+      const html = `<b>${best.bin}</b><br><span class="r">Raw gap: ${rawTxt}</span><br>`+
+        `<span class="a">Adjusted: ${adjTxt}</span><br>`+
+        (share!=null? `Selection explains ~${Math.round(share*100)}%<br>`:"")+
+        `N = ${(best.n_married+best.n_unmarried).toLocaleString()}`;
+      tip.html(html).style("opacity",1);
+      const rect = svg.node().getBoundingClientRect();
+      const sx = rect.width/W;
+      let lx=(m.l+x(best.bin))*sx+14, ly=20;
+      if(lx> rect.width-150) lx=(m.l+x(best.bin))*sx-160;
+      tip.style("left",lx+"px").style("top",ly+"px");
+   })
+   .on("mouseleave",()=>{tip.style("opacity",0);hoverLine.attr("opacity",0);});
+
+  function setMode(m2){
+    mode=m2;
+    d3.select("#mVH").attr("aria-pressed",m2==="vh");
+    d3.select("#mMean").attr("aria-pressed",m2==="mean");
+    draw(false);
+  }
+  d3.select("#mVH").on("click",()=>setMode("vh"));
+  d3.select("#mMean").on("click",()=>setMode("mean"));
+  draw(true);
+})();
+
+/* ---------- CATEGORY multi-line ---------- */
+(function cats(){
+  const svg=d3.select("#catChart");
+  const W=760,H=360,m={t:14,r:96,b:42,l:46};
+  const iw=W-m.l-m.r, ih=H-m.t-m.b;
+  const g=svg.append("g").attr("transform",`translate(${m.l},${m.t})`);
+  const series=[
+    {key:"married_vh",label:"Married",c:css("--married")},
+    {key:"widowed_vh",label:"Widowed",c:css("--widowed")},
+    {key:"never_vh",label:"Never married",c:css("--never")},
+    {key:"divorced_vh",label:"Divorced",c:css("--divorced")},
+    {key:"separated_vh",label:"Separated",c:css("--separated")}
+  ];
+  const data=DATA.categories;
+  const x=d3.scalePoint().domain(data.map(d=>d.bin)).range([0,iw]).padding(0.5);
+  const y=d3.scaleLinear().domain([0.05,0.45]).range([ih,0]);
+  [0.1,0.2,0.3,0.4].forEach(t=>{
+    g.append("line").attr("class","gridline").attr("x1",0).attr("x2",iw).attr("y1",y(t)).attr("y2",y(t));
+    g.append("text").attr("class","axis").attr("x",-9).attr("y",y(t)).attr("dy","0.32em").attr("text-anchor","end").text(Math.round(t*100));
+  });
+  g.append("g").attr("class","axis").attr("transform",`translate(0,${ih})`).call(d3.axisBottom(x).tickSize(0).tickPadding(9))
+    .select(".domain").attr("stroke",css("--rule"));
+  // mode change marker
+  const xm=x("2021-24");
+  g.append("line").attr("x1",xm).attr("x2",xm).attr("y1",0).attr("y2",ih).attr("stroke",css("--ink-soft")).attr("stroke-dasharray","3 3").attr("opacity",0.45);
+  g.append("text").attr("x",xm-6).attr("y",12).attr("text-anchor","end").style("font-family","ui-sans-serif,system-ui,sans-serif").style("font-size","10.5px").style("fill",css("--ink-soft")).text("← 2021 mode change");
+
+  const tip=d3.select("#catTip");
+  series.forEach((s,i)=>{
+    const line=d3.line().defined(d=>d[s.key]!=null).x(d=>x(d.bin)).y(d=>y(d[s.key])).curve(d3.curveMonotoneX);
+    const path=g.append("path").datum(data).attr("fill","none").attr("stroke",s.c)
+      .attr("stroke-width",s.key==="married_vh"?3.4:2).attr("stroke-linecap","round").attr("d",line);
+    if(!reduceMotion){
+      const L=path.node().getTotalLength();
+      path.attr("stroke-dasharray",`${L} ${L}`).attr("stroke-dashoffset",L)
+        .transition().delay(i*90).duration(800).ease(d3.easeCubicOut).attr("stroke-dashoffset",0)
+        .on("end",()=>path.attr("stroke-dasharray",null));
+    }
+    g.selectAll(".d"+i).data(data.filter(d=>d[s.key]!=null)).enter().append("circle")
+      .attr("r",s.key==="married_vh"?3.5:2.6).attr("fill",s.c).attr("cx",d=>x(d.bin)).attr("cy",d=>y(d[s.key]))
+      .on("mousemove",function(ev,d){
+        tip.html(`<b>${s.label}</b><br>${d.bin}<br>${(d[s.key]*100).toFixed(1)}% very happy`).style("opacity",1);
+        const rect=svg.node().getBoundingClientRect(),sx=rect.width/W;
+        tip.style("left",((m.l+x(d.bin))*sx+12)+"px").style("top",((m.t+y(d[s.key]))*sx-10)+"px");
+      }).on("mouseleave",()=>tip.style("opacity",0));
+    const last=data[data.length-1];
+    g.append("text").attr("x",iw+8).attr("y",y(last[s.key])).attr("dy","0.32em")
+      .style("font-family","ui-sans-serif,system-ui,sans-serif").style("font-size","11.5px")
+      .style("font-weight",s.key==="married_vh"?"700":"500").style("fill",s.c).text(s.label);
+  });
+})();
+
+/* ---------- COHAB paired bars ---------- */
+(function cohab(){
+  const svg=d3.select("#cohabChart");
+  const W=760,H=230,m={t:16,r:24,b:34,l:120};
+  const iw=W-m.l-m.r, ih=H-m.t-m.b;
+  const g=svg.append("g").attr("transform",`translate(${m.l},${m.t})`);
+  const c=DATA.cohab;
+  const rows=[
+    {label:"% “very happy”",mar:c.hapmar_vh,coh:c.hapcohab_vh,fmt:v=>(v*100).toFixed(0)+"%",dom:[0,0.75]},
+    {label:"mean (1–3)",mar:(c.hapmar_mean-1)/2,coh:(c.hapcohab_mean-1)/2,raw:[c.hapmar_mean,c.hapcohab_mean],fmt:null,dom:[0,1]}
+  ];
+  const yBand=d3.scaleBand().domain(rows.map(r=>r.label)).range([0,ih]).padding(0.45);
+  const sub=d3.scaleBand().domain(["mar","coh"]).range([0,yBand.bandwidth()]).padding(0.25);
+  const x=d3.scaleLinear().domain([0,1]).range([0,iw]);
+  rows.forEach(r=>{
+    const gy=g.append("g").attr("transform",`translate(0,${yBand(r.label)})`);
+    g.append("text").attr("x",-12).attr("y",yBand(r.label)+yBand.bandwidth()/2).attr("dy","0.32em")
+      .attr("text-anchor","end").style("font-family","ui-sans-serif,system-ui,sans-serif")
+      .style("font-size","12.5px").style("fill",css("--ink-soft")).text(r.label);
+    [["mar",c.hapmar_mean,r.mar,css("--married"),"Married"],["coh",c.hapcohab_mean,r.coh,css("--cohab"),"Cohabiting"]].forEach((d,i)=>{
+      const key=d[0],val=d[2],color=d[3];
+      const bw=Math.max(0, (r.label.indexOf("mean")>=0? val: val)*iw);
+      const rect=gy.append("rect").attr("x",0).attr("y",sub(key)).attr("height",sub.bandwidth())
+        .attr("rx",3).attr("fill",color).attr("width",0);
+      rect.transition().delay(reduceMotion?0:i*160).duration(reduceMotion?0:700).attr("width", x(val));
+      const disp = r.label.indexOf("mean")>=0 ? (key==="mar"? c.hapmar_mean.toFixed(2): c.hapcohab_mean.toFixed(2))
+                                              : (val*100).toFixed(0)+"%";
+      gy.append("text").attr("x", x(val)+7).attr("y",sub(key)+sub.bandwidth()/2).attr("dy","0.32em")
+        .style("font-family","ui-sans-serif,system-ui,sans-serif").style("font-size","12px")
+        .style("font-weight","600").style("fill",color).attr("opacity",0)
+        .text(disp).transition().delay(reduceMotion?0:i*160+500).duration(300).attr("opacity",1);
+      gy.append("text").attr("x",6).attr("y",sub(key)+sub.bandwidth()/2).attr("dy","0.32em")
+        .style("font-family","ui-sans-serif,system-ui,sans-serif").style("font-size","11px")
+        .style("fill","#fffdf8").text(d[4]);
+    });
+  });
+})();
+
+/* ---------- PARENTHOOD mini ---------- */
+(function par(){
+  const svg=d3.select("#parChart");
+  const W=760,H=270,m={t:16,r:84,b:42,l:46};
+  const iw=W-m.l-m.r, ih=H-m.t-m.b;
+  const g=svg.append("g").attr("transform",`translate(${m.l},${m.t})`);
+  const data=DATA.parenthood;
+  const x=d3.scalePoint().domain(data.map(d=>d.bin)).range([0,iw]).padding(0.5);
+  const y=d3.scaleLinear().domain([0.12,0.40]).range([ih,0]);
+  [0.15,0.20,0.25,0.30,0.35,0.40].forEach(t=>{
+    g.append("line").attr("class","gridline").attr("x1",0).attr("x2",iw).attr("y1",y(t)).attr("y2",y(t));
+    g.append("text").attr("class","axis").attr("x",-9).attr("y",y(t)).attr("dy","0.32em").attr("text-anchor","end").text(Math.round(t*100));
+  });
+  g.append("g").attr("class","axis").attr("transform",`translate(0,${ih})`).call(d3.axisBottom(x).tickSize(0).tickPadding(9))
+    .select(".domain").attr("stroke",css("--rule"));
+  const xm=x("2021-24");
+  g.append("line").attr("x1",xm).attr("x2",xm).attr("y1",0).attr("y2",ih).attr("stroke",css("--ink-soft")).attr("stroke-dasharray","3 3").attr("opacity",0.45);
+  g.append("text").attr("x",xm-6).attr("y",12).attr("text-anchor","end").style("font-family","ui-sans-serif,system-ui,sans-serif").style("font-size","10.5px").style("fill",css("--ink-soft")).text("← 2021 mode change");
+  const tip=d3.select("#parTip");
+  const ss=[{k:"vh_parent",label:"Parents",c:css("--par")},{k:"vh_childless",label:"Childless",c:css("--child")}];
+  ss.forEach((s,i)=>{
+    const line=d3.line().x(d=>x(d.bin)).y(d=>y(d[s.k])).curve(d3.curveMonotoneX);
+    const path=g.append("path").datum(data).attr("fill","none").attr("stroke",s.c).attr("stroke-width",2.6).attr("stroke-linecap","round").attr("d",line);
+    if(!reduceMotion){const L=path.node().getTotalLength();
+      path.attr("stroke-dasharray",`${L} ${L}`).attr("stroke-dashoffset",L).transition().delay(i*120).duration(800).attr("stroke-dashoffset",0).on("end",()=>path.attr("stroke-dasharray",null));}
+    g.selectAll(".pd"+i).data(data).enter().append("circle").attr("r",3).attr("fill",s.c)
+      .attr("cx",d=>x(d.bin)).attr("cy",d=>y(d[s.k]))
+      .on("mousemove",function(ev,d){
+        tip.html(`<b>${s.label}</b><br>${d.bin}<br>${(d[s.k]*100).toFixed(1)}% very happy`).style("opacity",1);
+        const rect=svg.node().getBoundingClientRect(),sx=rect.width/W;
+        tip.style("left",((m.l+x(d.bin))*sx+12)+"px").style("top",((m.t+y(d[s.k]))*sx-10)+"px");
+      }).on("mouseleave",()=>tip.style("opacity",0));
+    const last=data[data.length-1];
+    g.append("text").attr("x",iw+8).attr("y",y(last[s.k])).attr("dy","0.32em")
+      .style("font-family","ui-sans-serif,system-ui,sans-serif").style("font-size","11.5px").style("font-weight","600").style("fill",s.c).text(s.label);
+  });
+})();
+</script>
+<!--SL_BOOKNAV_START-->
+<style>
+.slbn{font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;background:#0f1417;border-top:1px solid #27313a;color:#9fb0ba;padding:24px 20px 40px;margin:48px 0 0}
+.slbn-in{max-width:1080px;margin:0 auto;display:flex;align-items:stretch;gap:12px}
+.slbn a{flex:1 1 0;min-width:0;text-decoration:none;color:inherit;border:1px solid #27313a;border-radius:10px;padding:13px 15px;display:flex;flex-direction:column;gap:4px;background:#161d22;transition:border-color .15s,transform .15s}
+.slbn a:hover{border-color:#3fa9a0;transform:translateY(-2px)}
+.slbn a:focus-visible{outline:2px solid #3fa9a0;outline-offset:2px}
+.slbn a.slbn-next{text-align:right;align-items:flex-end}
+.slbn a.slbn-toc{flex:0 0 auto;min-width:120px;justify-content:center;align-items:center;text-align:center}
+.slbn .slbn-dir{font:700 10px/1 inherit;letter-spacing:.13em;text-transform:uppercase;color:#6b7c87}
+.slbn .slbn-ttl{font:700 14px/1.3 inherit;color:#eef2f4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.slbn a.slbn-disabled{opacity:.38;pointer-events:none}
+@media(max-width:640px){.slbn-in{flex-wrap:wrap}.slbn a{flex:1 1 100%}.slbn a.slbn-next{text-align:left;align-items:flex-start}.slbn a.slbn-toc{order:-1}}
+</style>
+<nav class="slbn" aria-label="Book navigation"><div class="slbn-in"><a class="slbn-prev" href="../read.html?ch=the-freedom-to-be-happy" target="_top"><span class="slbn-dir">‹ Previous</span><span class="slbn-ttl">The Freedom to Be Happy</span></a><a class="slbn-toc" href="../index.html#book" target="_top"><span class="slbn-dir">The Scissors</span><span class="slbn-ttl">Chapter 8 / 36</span></a><a class="slbn-next" href="../read.html?ch=the-mood-that-didnt-lift" target="_top"><span class="slbn-dir">Next ›</span><span class="slbn-ttl">The Mood That Didn't Lift</span></a></div></nav>
+<!--SL_BOOKNAV_END-->
+</body>
+</html>

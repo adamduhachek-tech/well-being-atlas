@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Money Buys Calm, Not Joy — Two Faces of American Well-Being</title>
+<meta name="description" content="Gallup US data, 2008–2012: income keeps raising how Americans rate their lives, but past poverty it buys little extra daily enjoyment and no relief from stress. Its clearest emotional dividend is less worry.">
+<style>
+  :root{
+    --paper:#faf6ee;
+    --paper-deep:#f3ecdd;
+    --ink:#26221a;
+    --ink-soft:#564f41;
+    --ink-faint:#7d7565;
+    --rule:#d9d0bc;
+    --card:#fffdf8;
+    /* Okabe–Ito, colorblind-safe */
+    --c-ladder:#0072b2;      /* blue  — evaluative */
+    --c-ladder-dk:#005586;
+    --c-enjoy:#e69f00;       /* orange — experiential */
+    --c-enjoy-dk:#8f6200;
+    --c-worry:#cc79a7;       /* reddish purple — experiential */
+    --c-worry-dk:#94436f;
+    --c-stress:#d55e00;      /* vermillion — experiential */
+    --c-stress-dk:#a34800;
+    --serif:Georgia,"Iowan Old Style","Times New Roman",serif;
+    --sans:"Segoe UI",-apple-system,"Helvetica Neue",Arial,sans-serif;
+    --maxw:760px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:var(--serif);font-size:18px;line-height:1.62;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--c-ladder-dk)}
+  a:focus-visible,button:focus-visible,[tabindex]:focus-visible{
+    outline:3px solid var(--c-ladder);outline-offset:2px;border-radius:2px;
+  }
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+  .wide{max-width:980px;margin:0 auto;padding:0 20px}
+
+  /* ---------- header ---------- */
+  header.hero{
+    border-bottom:1px solid var(--rule);
+    padding:3.2rem 0 2.2rem;
+    background:
+      linear-gradient(180deg, var(--paper-deep) 0%, var(--paper) 90%);
+  }
+  .kicker{
+    font-family:var(--sans);font-size:.78rem;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--ink-faint);margin:0 0 1rem;
+  }
+  .kicker b{color:var(--c-stress-dk);font-weight:600}
+  h1{
+    font-size:clamp(2rem,5.4vw,3.3rem);line-height:1.07;margin:0 0 1rem;
+    font-weight:700;letter-spacing:-.01em;
+  }
+  h1 .calm{color:var(--c-ladder-dk)}
+  h1 .joy{color:var(--c-enjoy-dk)}
+  .dek{
+    font-size:clamp(1.05rem,2.6vw,1.3rem);line-height:1.5;color:var(--ink-soft);
+    max-width:46ch;margin:0 0 1.4rem;
+  }
+  .byline{
+    font-family:var(--sans);font-size:.82rem;color:var(--ink-faint);
+    display:flex;flex-wrap:wrap;gap:.35rem .9rem;
+  }
+  .byline span+span::before{content:"·";margin-right:.9rem;color:var(--rule)}
+
+  /* ---------- stat strip ---------- */
+  .stats{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:10px;
+    margin:2rem auto 0;
+  }
+  .stat{
+    background:var(--card);border:1px solid var(--rule);border-radius:10px;
+    padding:.85rem .9rem;position:relative;overflow:hidden;
+  }
+  .stat::before{
+    content:"";position:absolute;left:0;top:0;bottom:0;width:5px;
+    background:var(--accent,var(--rule));
+  }
+  .stat .num{
+    font-family:var(--sans);font-weight:700;font-size:clamp(1.15rem,2.6vw,1.55rem);
+    letter-spacing:-.02em;display:block;color:var(--accent-dk,var(--ink));
+  }
+  .stat .lbl{
+    font-family:var(--sans);font-size:.72rem;line-height:1.35;color:var(--ink-soft);
+    display:block;margin-top:.2rem;
+  }
+  @media (max-width:680px){.stats{grid-template-columns:repeat(2,1fr)}}
+
+  /* ---------- prose ---------- */
+  main{padding:2.4rem 0 1rem}
+  h2{
+    font-size:clamp(1.35rem,3.4vw,1.7rem);line-height:1.2;margin:2.6rem 0 .9rem;
+    letter-spacing:-.01em;
+  }
+  p{margin:0 0 1.15rem}
+  .drop::first-letter{
+    float:left;font-size:3.4em;line-height:.86;padding:.04em .08em 0 0;
+    font-weight:700;color:var(--c-stress-dk);
+  }
+  strong{font-weight:700}
+  .ev{color:var(--c-ladder-dk);font-weight:700}
+  .ex-joy{color:var(--c-enjoy-dk);font-weight:700}
+  .ex-worry{color:var(--c-worry-dk);font-weight:700}
+  .ex-stress{color:var(--c-stress-dk);font-weight:700}
+
+  /* ---------- construct explainer ---------- */
+  .constructs{
+    display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:1.6rem 0 1.8rem;
+  }
+  .construct{
+    background:var(--card);border:1px solid var(--rule);border-radius:10px;
+    padding:1rem 1.1rem;font-size:.92rem;line-height:1.55;
+  }
+  .construct h3{
+    font-family:var(--sans);font-size:.74rem;letter-spacing:.16em;
+    text-transform:uppercase;margin:0 0 .45rem;
+  }
+  .construct.evaluative h3{color:var(--c-ladder-dk)}
+  .construct.experiential h3{color:var(--c-stress-dk)}
+  .construct .q{font-style:italic;color:var(--ink-soft)}
+  @media (max-width:560px){.constructs{grid-template-columns:1fr}}
+
+  /* ---------- figure ---------- */
+  figure{margin:2.2rem 0}
+  .fig-head{
+    display:flex;flex-wrap:wrap;align-items:baseline;gap:.6rem 1rem;
+    justify-content:space-between;margin-bottom:.4rem;
+  }
+  .fig-title{
+    font-family:var(--sans);font-weight:700;font-size:1.02rem;margin:0;
+  }
+  .fig-sub{
+    font-family:var(--sans);font-size:.8rem;color:var(--ink-soft);margin:.15rem 0 .8rem;
+  }
+  .toggle{
+    display:inline-flex;border:1px solid var(--rule);border-radius:999px;
+    background:var(--card);padding:3px;font-family:var(--sans);
+  }
+  .toggle button{
+    border:0;background:transparent;border-radius:999px;cursor:pointer;
+    font-family:var(--sans);font-size:.82rem;font-weight:600;color:var(--ink-soft);
+    padding:.38rem .95rem;transition:background .15s,color .15s;
+  }
+  .toggle button[aria-pressed="true"]{
+    background:var(--ink);color:var(--paper);
+  }
+  .legend{
+    display:flex;flex-wrap:wrap;gap:.4rem 1.1rem;font-family:var(--sans);
+    font-size:.78rem;color:var(--ink-soft);margin:.2rem 0 .5rem;
+  }
+  .legend .key{display:inline-flex;align-items:center;gap:.4rem}
+  .legend .swatch{width:18px;height:0;border-top-width:3.5px;border-top-style:solid;display:inline-block;border-radius:2px}
+  .legend .swatch.dashed{border-top-style:dashed}
+  .chart-shell{position:relative;overflow:hidden;background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:10px 6px 4px}
+  .chart-shell:focus-visible{outline:3px solid var(--c-ladder);outline-offset:2px}
+  #tooltip{
+    position:absolute;pointer-events:none;opacity:0;z-index:5;
+    background:#fffefb;border:1px solid var(--rule);border-radius:8px;
+    box-shadow:0 4px 14px rgba(40,30,10,.14);
+    font-family:var(--sans);font-size:.78rem;line-height:1.5;
+    padding:.55rem .7rem;min-width:172px;transition:opacity .12s;
+  }
+  #tooltip .tt-head{font-weight:700;font-size:.84rem;margin-bottom:.15rem}
+  #tooltip .tt-n{color:var(--ink-faint);margin-bottom:.35rem}
+  #tooltip .tt-row{display:flex;justify-content:space-between;gap:1rem}
+  #tooltip .tt-row .name{display:inline-flex;align-items:center;gap:.38rem}
+  #tooltip .dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+  figcaption{
+    font-family:var(--sans);font-size:.8rem;color:var(--ink-soft);
+    line-height:1.55;margin-top:.7rem;
+  }
+  .kbd-hint{display:block;margin-top:.35rem;color:var(--ink-faint)}
+  svg text{font-family:var(--sans)}
+
+  .flip-link{
+    background:none;border:none;padding:0;font:inherit;cursor:pointer;
+    color:var(--c-ladder-dk);text-decoration:underline;
+  }
+
+  /* ---------- aside / caveat ---------- */
+  .caveat{
+    border-left:5px solid var(--c-stress);background:var(--card);
+    border-radius:0 10px 10px 0;padding:1rem 1.2rem;margin:1.8rem 0;
+    font-size:.93rem;line-height:1.6;
+  }
+  .caveat h3{
+    font-family:var(--sans);font-size:.74rem;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--c-stress-dk);margin:0 0 .4rem;
+  }
+
+  /* ---------- footer ---------- */
+  footer{
+    border-top:1px solid var(--rule);margin-top:3rem;
+    background:var(--paper-deep);padding:2.4rem 0 3rem;
+  }
+  footer h2{margin-top:0;font-size:1.25rem}
+  footer .notes{font-size:.88rem;line-height:1.65;color:var(--ink-soft)}
+  footer .notes dt{
+    font-family:var(--sans);font-weight:700;font-size:.72rem;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--ink);
+    margin-top:1.05rem;
+  }
+  footer .notes dd{margin:0.2rem 0 0}
+  footer cite{font-style:normal}
+  .refs{padding-left:1.2rem;margin:.3rem 0 0}
+  .refs li{margin-bottom:.45rem}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="kicker">Well-Being in Numbers — <b>Evaluative vs. Experiential</b></p>
+    <h1>Money buys <span class="calm">calm</span>,<br>not <span class="joy">joy</span></h1>
+    <p class="dek">Income keeps raising how Americans <em>rate</em> their lives. But past poverty, it buys little extra daily enjoyment and no relief from stress. Its clearest emotional dividend is less worry.</p>
+    <p class="byline">
+      <span>Gallup US Daily, 2008–2012</span>
+      <span>1,769,079 interviews, unweighted</span>
+      <span>Cross-sectional means</span>
+    </p>
+    <div class="stats" role="list" aria-label="Headline findings, lowest income bracket versus highest">
+      <div class="stat" role="listitem" style="--accent:var(--c-ladder);--accent-dk:var(--c-ladder-dk)">
+        <span class="num">6.19 → 7.51</span>
+        <span class="lbl">Life rating (0–10 ladder), &lt;$23k → $90k+. Climbs the whole way.</span>
+      </div>
+      <div class="stat" role="listitem" style="--accent:var(--c-enjoy);--accent-dk:var(--c-enjoy-dk)">
+        <span class="num">77% → 89%</span>
+        <span class="lbl">Felt enjoyment yesterday. Most of the gain arrives by $24–36k.</span>
+      </div>
+      <div class="stat" role="listitem" style="--accent:var(--c-worry);--accent-dk:var(--c-worry-dk)">
+        <span class="num">41% → 26%</span>
+        <span class="lbl">Worried a lot yesterday. Falls steadily with income.</span>
+      </div>
+      <div class="stat" role="listitem" style="--accent:var(--c-stress);--accent-dk:var(--c-stress-dk)">
+        <span class="num">43% → 37%</span>
+        <span class="lbl">Stressed a lot yesterday. Barely moves — and ticks up at the top.</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <p class="drop">Ask Americans to stand back and grade their lives on a ladder from zero to ten, and money looks like a straightforward escalator. In 1.77 million Gallup interviews from 2008 through 2012, households earning under $23,000 placed themselves at <strong>6.19</strong> on average; households at $90,000 and above stood at <strong>7.51</strong> — a climb of about <strong>1.3 rungs</strong> that never stalls, bracket after bracket. Then ask a different question — not how life is going, but how <em>yesterday</em> felt — and the escalator mostly stops at the lobby.</p>
+
+    <p>Whether respondents experienced <span class="ex-joy">enjoyment</span> &ldquo;a lot of the day yesterday&rdquo; jumps from <strong>77%</strong> in the poorest bracket to <strong>84%</strong> in the next one up — and then creeps to just <strong>89%</strong> at $90k+. More than half of the total enjoyment gain — about seven of its twelve points — closes in that single first step, the act of escaping poverty; the remaining four brackets together add only five more. Reports of <span class="ex-stress">stress</span> barely respond to income at all — <strong>43%</strong> of the poorest felt a lot of it yesterday, around 36% of the middle brackets did, and <strong>37%</strong> of the highest earners did, a slight uptick from the middle. High earners report stress at nearly 90% of the poorest&rsquo;s rate — and more than the middle brackets do.</p>
+
+    <p>One feeling, though, tracks income almost as faithfully as the ladder does: <span class="ex-worry">worry</span>. It falls from <strong>41%</strong> in the lowest bracket to <strong>26%</strong> at the top, dropping in every step along the way. Above the poverty line, what additional money most reliably buys in daily emotional life is not more pleasure — it is fewer hours spent worrying. Calm, not joy.</p>
+
+    <h2>Two questions, two constructs</h2>
+    <p>None of this is a contradiction. It is the difference between two psychologically distinct measurements that surveys — and headlines — routinely blur. This piece keeps them separate everywhere, including on the chart below, where each gets its own labeled scale.</p>
+
+    <div class="constructs">
+      <div class="construct evaluative">
+        <h3>Evaluative — the ladder</h3>
+        <p class="q">&ldquo;On which step of the ladder, from 0 to 10, would you say you personally stand at this time?&rdquo;</p>
+        <p>A reflective <strong>judgment</strong> of one&rsquo;s life as a whole (the Cantril ladder). Inviting comparison — to others, to one&rsquo;s past, to one&rsquo;s ambitions — it is exactly the kind of measure income should move, and does.</p>
+      </div>
+      <div class="construct experiential">
+        <h3>Experiential — yesterday&rsquo;s affect</h3>
+        <p class="q">&ldquo;Did you experience enjoyment / worry / stress during a lot of the day yesterday?&rdquo;</p>
+        <p>A <strong>yes/no report of lived feeling</strong> on a specific day — not an intensity scale. Charted here as the share of respondents answering yes. This is well-being as it is actually experienced, hour by hour.</p>
+      </div>
+    </div>
+
+    <p>Daniel Kahneman and Angus Deaton drew this line famously in 2010, using these same Gallup instruments: evaluative well-being rose with the logarithm of income indefinitely, while emotional well-being largely stopped improving around $75,000. The pattern below is that finding&rsquo;s anatomy — which specific feelings keep responding to money, and which never really started.</p>
+  </div>
+
+  <div class="wide">
+    <figure aria-labelledby="fig1-title">
+      <div class="fig-head">
+        <div>
+          <p class="fig-title" id="fig1-title">The ladder climbs; feelings choose their own paths</p>
+          <p class="fig-sub" id="fig1-sub">Gallup US, 2008–2012, unweighted. Two panels, two scales — never one axis.</p>
+        </div>
+        <div class="toggle" role="group" aria-label="Group the chart by income or by age">
+          <button type="button" id="btn-income" aria-pressed="true">By income</button>
+          <button type="button" id="btn-age" aria-pressed="false">By age</button>
+        </div>
+      </div>
+      <div class="legend" aria-hidden="true">
+        <span class="key"><span class="swatch" style="border-top-color:var(--c-ladder)"></span>Life rating (ladder, 0–10) — evaluative</span>
+        <span class="key"><span class="swatch dashed" style="border-top-color:var(--c-enjoy)"></span>Enjoyment yesterday — experiential</span>
+        <span class="key"><span class="swatch dashed" style="border-top-color:var(--c-worry)"></span>Worry yesterday</span>
+        <span class="key"><span class="swatch dashed" style="border-top-color:var(--c-stress)"></span>Stress yesterday</span>
+      </div>
+      <div class="chart-shell" id="chart" tabindex="0"
+           aria-label="Interactive chart. Top panel: average Cantril ladder rating by group. Bottom panel: percent reporting enjoyment, worry, and stress a lot of the day yesterday. Use left and right arrow keys to step through groups.">
+        <div id="tooltip" role="status" aria-live="polite"></div>
+      </div>
+      <figcaption>
+        <span id="fig1-cap"></span>
+        <span class="kbd-hint">Hover, tap, or focus the chart and use ← → arrow keys to read exact values. The ladder panel zooms to 5.4–7.8 of its 0–10 scale (marked on the axis); the affect panel shows the full 0–100% range.</span>
+      </figcaption>
+    </figure>
+  </div>
+
+  <div class="wrap">
+    <h2>What each dollar bracket actually changes</h2>
+    <p>Read the bottom panel left to right. The first step — out of the under-$23k bracket — is the only place where every line moves at once: enjoyment up seven points, worry down nine, stress down six, and the ladder up 0.42 rungs, the largest single-bracket jump for every one of the four measures. <strong>Poverty in this data is distinctly bad on every axis of well-being at once.</strong> That deserves as much emphasis as any plateau: the poorest Americans rate their lives the lowest <em>and</em> feel the least enjoyment, the most worry, and the most stress.</p>
+
+    <p>Above that line, the four measures part ways. The <span class="ev">ladder</span> keeps climbing in every bracket — there is no income level in this window where more money stops improving the grade people give their lives. <span class="ex-joy">Enjoyment</span> gains a total of about five points across the entire span from $24k to $90k+, a visible but shallow drift. <span class="ex-worry">Worry</span> keeps falling — from 32% at $24–36k down to 26% at the top, a real and steady experiential return. And <span class="ex-stress">stress</span> simply opts out: flat near 35–37% through the middle brackets, then slightly <em>higher</em> at $90k+ (37.4%) than at $60–90k (35.9%). Whatever high incomes are doing for daily life, they are not removing the feeling of being under pressure — plausibly because the jobs that pay $90,000+ also generate it.</p>
+
+    <figure aria-labelledby="fig2-title">
+      <div class="fig-head">
+        <div>
+          <p class="fig-title" id="fig2-title">The income dividend, measure by measure</p>
+          <p class="fig-sub">Change from the lowest bracket (&lt;$23k, open dot) to the highest ($90k+, solid dot). Ladder on its own 0–10 scale; affect on 0–100%.</p>
+        </div>
+      </div>
+      <div class="chart-shell" id="dividend"
+           aria-label="Dumbbell chart. Life rating rises 1.31 points on the 0 to 10 ladder from the lowest to highest income bracket. Enjoyment rises 12 percentage points, worry falls 15 percentage points, and stress falls only 6 percentage points."></div>
+      <figcaption>Gallup US Daily, 2008–2012, unweighted. The two scales are drawn separately because a 0–10 rating and a yes/no share are not comparable units.</figcaption>
+    </figure>
+
+    <h2>The aging paradox: the same split, sharper</h2>
+    <p>If the income view shows evaluation and experience drifting apart, regrouping the very same respondents by age shows them moving in <em>opposite directions</em> — <button type="button" class="flip-link" id="flip-age">flip the chart above to the age view</button> to watch it happen. Life ratings trace the familiar U: from 7.03 at 18–24 they sag to a midlife low of <strong>6.71</strong> at 45–54, then recover and keep rising to <strong>7.38</strong> at 85 and older — the oldest Americans in this extract grade their lives higher than any income bracket below $90k does.</p>
+
+    <p>Daily feeling, meanwhile, does not dip and recover. It just gets calmer, decade after decade. <span class="ex-stress">Stress</span> falls off a cliff with age: <strong>48%</strong> of 25–34-year-olds felt a lot of it yesterday, against <strong>15%</strong> of those 85+ — a steeper experiential gradient than income produces anywhere in this data. <span class="ex-worry">Worry</span> falls from 33% to 17% over the same span. The young, who rate their lives reasonably well, are far and away the most stressed; the very old both rate life highly <em>and</em> feel the calmest. Whatever discount stress refuses to give to money, it grants freely to age.</p>
+
+    <h2>Reconciling the plateau</h2>
+    <p>This split has its own small literature. Kahneman &amp; Deaton (2010) reported the canonical version: in Gallup data, life evaluation rises with log income without limit, while measures of experienced affect flatten near $75,000. Matthew Killingsworth (2021), using real-time smartphone sampling rather than yesterday-recall, found experienced well-being continuing to rise well past that point — an apparent contradiction. Their adversarial collaboration (Killingsworth, Kahneman &amp; Mellers, 2023) largely resolved it: experienced happiness does keep rising with income for most people, but flattens for an unhappy minority, whose plateau dominated the earlier measure&rsquo;s thresholded items.</p>
+
+    <p>The patterns here are consistent with that reconciliation, with a caveat the binary instrument imposes: a yes/no question about &ldquo;a lot of the day yesterday&rdquo; can saturate — once 89% of a group says yes to enjoyment, there is little headroom left to detect further gains, which is part of why these items flatten where continuous measures may not. That is precisely why the disaggregation matters. Enjoyment&rsquo;s ceiling is real but partly an artifact of the question; <strong>stress&rsquo;s refusal to fall is not a ceiling problem at all</strong> — it sits mid-scale with abundant room to drop, and declines steeply with age in the very same data. Money genuinely does not buy relief from stress here. And worry — also mid-scale, also free to move — falls with income, steadily. The honest summary is not &ldquo;money stops mattering for feelings.&rdquo; It is narrower and stranger: past poverty, money keeps improving the life you <em>evaluate</em>, keeps shrinking the share of days shadowed by <em>worry</em>, adds only a little lived <em>enjoyment</em>, and leaves <em>stress</em> almost exactly where it found it.</p>
+
+    <div class="caveat">
+      <h3>Why every figure stops at 2012</h3>
+      <p>Gallup changed how the &ldquo;yesterday&rdquo; affect items were administered in <strong>2013</strong> — the sample asked these items was roughly halved and endorsement rates shifted discontinuously, so affect levels before and after the break are not comparable. Every number and chart in this piece therefore uses one clean window, <strong>2008–2012</strong>, for all measures, evaluative and experiential alike. The affect items are <strong>binary</strong> — &ldquo;a lot of the day yesterday,&rdquo; yes or no — not intensity scales; percentages are shares of respondents answering yes. The extract is <strong>unweighted</strong>, so levels describe this sample of interviews, not population benchmarks.</p>
+    </div>
+
+    <p>The practical upshot fits on an index card. If well-being policy targets the worst-off, the case is unambiguous: below roughly $23,000, everything is worse at once, and the first escape from poverty is the single biggest well-being event money is associated with in this data. Above that line, buyers should know what the product is. More income will keep raising the number you give your life when someone asks — and it will keep buying down the worry. It will not, on the evidence of 1.77 million American yesterdays, make the days feel much more delightful, and it will not take the pressure off. For that, apparently, you wait.</p>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <h2>Notes &amp; data</h2>
+    <dl class="notes">
+      <dt>Source</dt>
+      <dd>Gallup US Daily survey (&ldquo;Motherlode&rdquo; extract), pooled <strong>2008–2012</strong>. Cross-sectional: each point pools five years of independent daily interviews; nothing here follows individuals over time, and age patterns mix cohort and life-cycle effects.</dd>
+      <dt>Weighting</dt>
+      <dd><strong>Unweighted — this extract has no survey weight.</strong> Means and shares describe respondents in this extract and should not be read as population benchmarks; the bracket-to-bracket <em>contrasts</em> are the substance of the piece.</dd>
+      <dt>Sample sizes</dt>
+      <dd>N = 1,769,079 interviews overall. Income brackets range from N = 151,597 ($48–60k) to N = 317,040 ($90k+); age groups from N = 39,293 (85+) to N = 381,487 (55–64). At these sizes, sampling error is negligible relative to the differences shown; non-sampling error (coverage, nonresponse, the absence of weights) is the relevant uncertainty.</dd>
+      <dt>The 2013 break</dt>
+      <dd>Gallup&rsquo;s methodology for the &ldquo;yesterday&rdquo; affect items changed in 2013: the subsample asked these items was cut roughly in half and endorsement rates shifted. To avoid splicing incompatible regimes, every figure — affect and ladder alike — uses the single pre-break window, 2008–2012.</dd>
+      <dt>Constructs — kept separate throughout</dt>
+      <dd><strong>Evaluative</strong> well-being = the Cantril ladder, a 0–10 rating of one&rsquo;s current life. <strong>Experiential</strong> well-being = binary reports of having felt enjoyment, worry, or stress &ldquo;a lot of the day yesterday&rdquo; (yes/no, not intensity). They are compared side by side but never combined, averaged together, or placed on a shared axis; the main chart draws them in separate panels with separately labeled scales (the ladder panel zooms to 5.4–7.8 of 0–10, as marked; the affect panel spans the full 0–100%).</dd>
+      <dt>Citations</dt>
+      <dd><ol class="refs">
+        <li><cite>Kahneman, D., &amp; Deaton, A. (2010). High income improves evaluation of life but not emotional well-being. <em>PNAS</em>, 107(38), 16489–16493.</cite></li>
+        <li><cite>Killingsworth, M. A. (2021). Experienced well-being rises with income, even above $75,000 per year. <em>PNAS</em>, 118(4), e2016976118.</cite></li>
+        <li><cite>Killingsworth, M. A., Kahneman, D., &amp; Mellers, B. (2023). Income and emotional well-being: A conflict resolved. <em>PNAS</em>, 120(10), e2208661120.</cite></li>
+      </ol></dd>
+    </dl>
+  </div>
+</footer>
+
+<script type="module">
+import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+
+const DATA = {"meta":{"title":"Money Buys Calm, Not Joy","dataset":"Gallup US Daily ('Motherlode' extract)","years":"2008-2012","weight":"unweighted (Gallup US has no survey weight)","regime_note":"affect items fully asked 2008-2012 (pre-2013 break)","construct":"evaluative (ladder 0-10) vs experiential (binary 'yesterday' affect); compared, never conflated","affect_items":"enjoyment/worry/stress = experienced 'a lot of the day yesterday' (binary yes/no)","ladder_scale":"Cantril ladder, current life, 0-10 (evaluative)"},"national":{"n":1769079,"ladder":6.968,"enjoy":0.8551,"worry":0.293,"stress":0.3598},"by_income":[{"income":"< 23K","label":"<$23k","order":0,"n":305826,"ladder":6.191,"enjoy":0.7712,"happy_yest":0.8085,"worry":0.4085,"stress":0.4303},{"income":"$24,000 to $35,999","label":"$24-36k","order":1,"n":190892,"ladder":6.612,"enjoy":0.8405,"happy_yest":0.8714,"worry":0.3181,"stress":0.368},{"income":"$36,000 to $47,999","label":"$36-48k","order":2,"n":170369,"ladder":6.86,"enjoy":0.864,"happy_yest":0.8937,"worry":0.2874,"stress":0.3537},{"income":"$48,000 to $59,999","label":"$48-60k","order":3,"n":151597,"ladder":7.036,"enjoy":0.8736,"happy_yest":0.9044,"worry":0.2727,"stress":0.3554},{"income":"$60,000 to $89,999","label":"$60-90k","order":4,"n":253323,"ladder":7.222,"enjoy":0.8854,"happy_yest":0.9143,"worry":0.2611,"stress":0.3585},{"income":"$90,000+","label":"$90k+","order":5,"n":317040,"ladder":7.505,"enjoy":0.8925,"happy_yest":0.9194,"worry":0.2583,"stress":0.3742}],"by_age":[{"age":"18-24","order":0,"n":98574,"ladder":7.034,"enjoy":0.8837,"happy_yest":0.9157,"worry":0.3065,"stress":0.456},{"age":"25-34","order":1,"n":190077,"ladder":6.913,"enjoy":0.854,"happy_yest":0.9005,"worry":0.3349,"stress":0.4816},{"age":"35-44","order":2,"n":235598,"ladder":6.841,"enjoy":0.8353,"happy_yest":0.8848,"worry":0.3517,"stress":0.4712},{"age":"45-54","order":3,"n":336136,"ladder":6.705,"enjoy":0.8217,"happy_yest":0.8607,"worry":0.3593,"stress":0.4418},{"age":"55-64","order":4,"n":381487,"ladder":6.908,"enjoy":0.8503,"happy_yest":0.8707,"worry":0.2999,"stress":0.3481},{"age":"65-74","order":5,"n":285395,"ladder":7.211,"enjoy":0.8915,"happy_yest":0.9007,"worry":0.21,"stress":0.2174},{"age":"75-84","order":6,"n":172028,"ladder":7.288,"enjoy":0.8822,"happy_yest":0.8959,"worry":0.1884,"stress":0.18},{"age":"85+","order":7,"n":39293,"ladder":7.377,"enjoy":0.8622,"happy_yest":0.8841,"worry":0.1724,"stress":0.1513}]};
+
+const COLORS = {
+  ladder: { line: "#0072b2", text: "#005586", name: "Life rating (0–10)" },
+  enjoy:  { line: "#e69f00", text: "#8f6200", name: "Enjoyment" },
+  worry:  { line: "#cc79a7", text: "#94436f", name: "Worry" },
+  stress: { line: "#d55e00", text: "#a34800", name: "Stress" }
+};
+const AFFECT_KEYS = ["enjoy", "worry", "stress"];
+const fmtPct = d3.format(".0%");
+const fmtPct1 = d3.format(".1%");
+const fmtLad = v => (Math.round(v * 100 + 1e-6) / 100).toFixed(2);
+const fmtN = d3.format(",");
+
+const CAPTIONS = {
+  income: 'Across six household-income brackets, the average ladder rating (top) rises in every step, +1.3 points end to end. Below, the share feeling each emotion "a lot of the day yesterday": enjoyment jumps leaving the lowest bracket, then drifts; worry falls steadily; stress stays near 35–43% everywhere and ticks up in the top bracket.',
+  age:    'Regrouped by age, the ladder (top) dips to its midlife low of 6.71 at 45–54, then rises to 7.38 at 85+. Below, stress collapses with age — 48% at 25–34 down to 15% at 85+ — and worry falls from 33% to 17%, while enjoyment stays in a narrow 82–89% band. The old rate life highly and feel calmest.',
+};
+
+if (!DATA) {
+  const err = document.createElement("p");
+  err.style.cssText = "font-family:var(--sans);padding:1rem";
+  err.textContent = "Data failed to load.";
+  document.getElementById("chart").appendChild(err);
+} else {
+  init();
+}
+
+function rowsFor(mode) {
+  const src = mode === "income" ? DATA.by_income : DATA.by_age;
+  return src.map(d => ({
+    key: mode === "income" ? d.label : d.age,
+    long: mode === "income" ? d.income : ("ages " + d.age),
+    n: d.n, ladder: d.ladder, enjoy: d.enjoy, worry: d.worry, stress: d.stress
+  }));
+}
+
+function init() {
+  const shell = d3.select("#chart");
+  const tooltip = d3.select("#tooltip");
+  const cap = document.getElementById("fig1-cap");
+  let mode = "income";
+  let focusIdx = null;
+
+  const btnIncome = document.getElementById("btn-income");
+  const btnAge = document.getElementById("btn-age");
+
+  function setMode(m) {
+    if (m === mode) return;
+    mode = m;
+    focusIdx = null;
+    btnIncome.setAttribute("aria-pressed", String(m === "income"));
+    btnAge.setAttribute("aria-pressed", String(m === "age"));
+    document.getElementById("fig1-sub").textContent =
+      m === "income"
+        ? "Gallup US, 2008–2012, unweighted. Two panels, two scales — never one axis."
+        : "Same respondents, same window, regrouped by age. Two panels, two scales.";
+    render(true);
+  }
+  btnIncome.addEventListener("click", () => setMode("income"));
+  btnAge.addEventListener("click", () => setMode("age"));
+  const flip = document.getElementById("flip-age");
+  if (flip) flip.addEventListener("click", () => {
+    setMode("age");
+    document.getElementById("chart").scrollIntoView({ behavior: "smooth", block: "center" });
+  });
+
+  // keyboard access
+  shell.on("keydown", (event) => {
+    const rows = rowsFor(mode);
+    if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
+      event.preventDefault();
+      const step = event.key === "ArrowRight" ? 1 : -1;
+      focusIdx = focusIdx === null
+        ? (step === 1 ? 0 : rows.length - 1)
+        : Math.max(0, Math.min(rows.length - 1, focusIdx + step));
+      showFocus();
+    } else if (event.key === "Escape") {
+      focusIdx = null;
+      hideHover();
+    }
+  });
+  shell.on("blur", () => { focusIdx = null; hideHover(); });
+
+  let geo = null; // populated by render: scales + svg refs for hover
+
+  function showFocus() {
+    if (geo && focusIdx !== null) geo.showIdx(focusIdx);
+  }
+  function hideHover() {
+    if (geo) geo.hide();
+  }
+
+  function render(animate) {
+    const node = shell.node();
+    const W = Math.max(320, node.clientWidth - 12);
+    const narrow = W < 520;
+    const rows = rowsFor(mode);
+
+    const m = {
+      top: 26,
+      right: narrow ? 18 : 150,
+      bottom: 34,
+      left: narrow ? 44 : 52
+    };
+    const hTop = narrow ? 168 : 196;
+    const gap = 54;
+    const hBot = narrow ? 210 : 248;
+    const H = m.top + hTop + gap + hBot + m.bottom;
+    const iw = W - m.left - m.right;
+
+    shell.selectAll("svg").remove();
+    const svg = shell.append("svg")
+      .attr("viewBox", `0 0 ${W} ${H}`)
+      .attr("width", "100%")
+      .attr("role", "img")
+      .style("display", "block");
+
+    svg.append("title").text(
+      mode === "income"
+        ? "Life rating and yesterday's emotions by household income, Gallup US 2008–2012"
+        : "Life rating and yesterday's emotions by age group, Gallup US 2008–2012");
+    svg.append("desc").text(
+      mode === "income"
+        ? "Top panel: average Cantril ladder rises from 6.19 under $23k to 7.51 at $90k and above. Bottom panel: enjoyment rises from 77% to 89% with most of the gain by $24–36k; worry falls from 41% to 26%; stress stays between 35% and 43% and is 37% in the top bracket."
+        : "Top panel: average Cantril ladder dips to 6.71 at ages 45–54 and rises to 7.38 at 85 and older. Bottom panel: stress falls from 48% at 25–34 to 15% at 85 and older; worry falls from 33% to 17%; enjoyment stays between 82% and 89%.");
+
+    const x = d3.scalePoint().domain(rows.map(d => d.key)).range([0, iw]).padding(0.35);
+    const yLad = d3.scaleLinear().domain([5.4, 7.8]).range([hTop, 0]);
+    const yAff = d3.scaleLinear().domain([0, 1]).range([hBot, 0]);
+
+    const gTop = svg.append("g").attr("transform", `translate(${m.left},${m.top})`);
+    const gBot = svg.append("g").attr("transform", `translate(${m.left},${m.top + hTop + gap})`);
+
+    // ---- panel labels ----
+    gTop.append("text")
+      .attr("x", -m.left + 6).attr("y", -10)
+      .attr("font-size", 11.5).attr("font-weight", 700).attr("fill", COLORS.ladder.text)
+      .text("EVALUATIVE — average ladder rating (0–10 scale, axis shows 5.4–7.8)");
+    gBot.append("text")
+      .attr("x", -m.left + 6).attr("y", -12)
+      .attr("font-size", 11.5).attr("font-weight", 700).attr("fill", COLORS.stress.text)
+      .text("EXPERIENTIAL — % who felt it “a lot of the day yesterday” (0–100%)");
+
+    // ---- gridlines + axes ----
+    const ladTicks = [5.5, 6, 6.5, 7, 7.5];
+    gTop.selectAll(".grid-l").data(ladTicks).join("line")
+      .attr("x1", 0).attr("x2", iw)
+      .attr("y1", d => yLad(d)).attr("y2", d => yLad(d))
+      .attr("stroke", "#e6ddc8").attr("stroke-width", 1);
+    gTop.selectAll(".tick-l").data(ladTicks).join("text")
+      .attr("x", -8).attr("y", d => yLad(d) + 4)
+      .attr("text-anchor", "end").attr("font-size", 11).attr("fill", "#7d7565")
+      .text(d => d.toFixed(1));
+
+    const affTicks = [0, 0.25, 0.5, 0.75, 1];
+    gBot.selectAll(".grid-a").data(affTicks).join("line")
+      .attr("x1", 0).attr("x2", iw)
+      .attr("y1", d => yAff(d)).attr("y2", d => yAff(d))
+      .attr("stroke", "#e6ddc8").attr("stroke-width", 1);
+    gBot.selectAll(".tick-a").data(affTicks).join("text")
+      .attr("x", -8).attr("y", d => yAff(d) + 4)
+      .attr("text-anchor", "end").attr("font-size", 11).attr("fill", "#7d7565")
+      .text(d => fmtPct(d));
+
+    // x labels (bottom panel only; light ticks on top panel)
+    const xLab = gBot.append("g");
+    xLab.selectAll("text").data(rows).join("text")
+      .attr("x", d => x(d.key))
+      .attr("y", hBot + (narrow ? 16 : 20))
+      .attr("text-anchor", narrow ? "end" : "middle")
+      .attr("transform", d => narrow ? `rotate(-32 ${x(d.key)} ${hBot + 16})` : null)
+      .attr("font-size", narrow ? 10 : 11.5)
+      .attr("fill", "#564f41")
+      .text(d => d.key);
+    gTop.selectAll(".xtick").data(rows).join("line")
+      .attr("x1", d => x(d.key)).attr("x2", d => x(d.key))
+      .attr("y1", hTop).attr("y2", hTop + 5)
+      .attr("stroke", "#cdc3aa");
+    gBot.selectAll(".xtick").data(rows).join("line")
+      .attr("x1", d => x(d.key)).attr("x2", d => x(d.key))
+      .attr("y1", hBot).attr("y2", hBot + 5)
+      .attr("stroke", "#cdc3aa");
+
+    svg.append("text")
+      .attr("x", m.left + iw / 2).attr("y", H - 6)
+      .attr("text-anchor", "middle").attr("font-size", 11).attr("fill", "#7d7565")
+      .text(mode === "income" ? "Annual household income, six Gallup brackets" : "Age group");
+
+    // ---- series ----
+    const drawLayer = svg.append("g");
+
+    function drawSeries(g, key, yScale, dashed) {
+      const c = COLORS[key];
+      const line = d3.line()
+        .x(d => x(d.key))
+        .y(d => yScale(d[key]))
+        .curve(d3.curveMonotoneX);
+      const path = g.append("path")
+        .datum(rows)
+        .attr("fill", "none")
+        .attr("stroke", c.line)
+        .attr("stroke-width", key === "ladder" ? 4 : 2.6)
+        .attr("stroke-linecap", "round")
+        .attr("d", line);
+      if (dashed) path.attr("stroke-dasharray", "7 4");
+
+      g.selectAll(null).data(rows).join("circle")
+        .attr("cx", d => x(d.key))
+        .attr("cy", d => yScale(d[key]))
+        .attr("r", key === "ladder" ? 4.5 : 3.6)
+        .attr("fill", c.line)
+        .attr("stroke", "#fffdf8")
+        .attr("stroke-width", 1.5);
+
+      if (!narrow) {
+        const last = rows[rows.length - 1];
+        g.append("text")
+          .attr("x", x(last.key) + 12)
+          .attr("y", yScale(last[key]) + 4)
+          .attr("font-size", 11.5).attr("font-weight", 700)
+          .attr("fill", c.text)
+          .text(key === "ladder"
+            ? `${c.name}: ${fmtLad(last.ladder)}`
+            : `${c.name}: ${fmtPct(last[key])}`);
+      }
+      if (animate) {
+        const len = path.node().getTotalLength();
+        path.attr("stroke-dasharray", dashed ? "7 4" : `${len}`)
+            .attr("stroke-dashoffset", dashed ? 0 : len);
+        if (!dashed) path.transition().duration(700).ease(d3.easeCubicOut)
+          .attr("stroke-dashoffset", 0)
+          .on("end", () => path.attr("stroke-dasharray", null));
+      }
+    }
+
+    const gTopS = gTop.append("g");
+    const gBotS = gBot.append("g");
+    drawSeries(gTopS, "ladder", yLad, false);
+    drawSeries(gBotS, "enjoy", yAff, true);
+    drawSeries(gBotS, "worry", yAff, true);
+    drawSeries(gBotS, "stress", yAff, true);
+
+    // ---- mode-specific in-chart annotation ----
+    if (!narrow) {
+      if (mode === "income") {
+        const sMid = rows[3];
+        gBot.append("text")
+          .attr("x", x(sMid.key)).attr("y", yAff(sMid.stress) + 26)
+          .attr("text-anchor", "middle").attr("font-size", 11)
+          .attr("font-style", "italic").attr("fill", COLORS.stress.text)
+          .text("stress barely moves with income");
+        const e1 = rows[1];
+        gBot.append("text")
+          .attr("x", x(e1.key)).attr("y", yAff(e1.enjoy) - 14)
+          .attr("text-anchor", "middle").attr("font-size", 11)
+          .attr("font-style", "italic").attr("fill", COLORS.enjoy.text)
+          .text("most of the joy gain: escaping poverty");
+      } else {
+        const mid = rows[3]; // 45-54
+        gTop.append("text")
+          .attr("x", x(mid.key)).attr("y", yLad(mid.ladder) + 22)
+          .attr("text-anchor", "middle").attr("font-size", 11)
+          .attr("font-style", "italic").attr("fill", COLORS.ladder.text)
+          .text("midlife dip: 6.71 at 45–54");
+        const yng = rows[1]; // 25-34
+        gBot.append("text")
+          .attr("x", x(yng.key) + 6).attr("y", yAff(yng.stress) - 12)
+          .attr("text-anchor", "middle").attr("font-size", 11)
+          .attr("font-style", "italic").attr("fill", COLORS.stress.text)
+          .text("stress peaks young: 48%");
+      }
+    }
+
+    // ---- hover machinery ----
+    const cross = drawLayer.append("line")
+      .attr("stroke", "#26221a").attr("stroke-width", 1)
+      .attr("stroke-dasharray", "3 3").attr("opacity", 0)
+      .attr("y1", m.top - 4).attr("y2", m.top + hTop + gap + hBot);
+
+    const haloTop = gTop.append("circle").attr("r", 7).attr("fill", "none")
+      .attr("stroke", COLORS.ladder.line).attr("stroke-width", 2).attr("opacity", 0);
+    const halosBot = AFFECT_KEYS.map(k =>
+      gBot.append("circle").attr("r", 6).attr("fill", "none")
+        .attr("stroke", COLORS[k].line).attr("stroke-width", 2).attr("opacity", 0));
+
+    function showIdx(i, pointerX) {
+      const d = rows[i];
+      const px = m.left + x(d.key);
+      cross.attr("x1", px).attr("x2", px).attr("opacity", 0.55);
+      haloTop.attr("cx", x(d.key)).attr("cy", yLad(d.ladder)).attr("opacity", 1);
+      AFFECT_KEYS.forEach((k, j) =>
+        halosBot[j].attr("cx", x(d.key)).attr("cy", yAff(d[k])).attr("opacity", 1));
+
+      tooltip.html(
+        `<div class="tt-head">${d.long}</div>` +
+        `<div class="tt-n">N = ${fmtN(d.n)} (unweighted)</div>` +
+        `<div class="tt-row"><span class="name"><span class="dot" style="background:${COLORS.ladder.line}"></span>Ladder (0–10)</span><strong>${fmtLad(d.ladder)}</strong></div>` +
+        AFFECT_KEYS.map(k =>
+          `<div class="tt-row"><span class="name"><span class="dot" style="background:${COLORS[k].line}"></span>${COLORS[k].name}</span><strong>${fmtPct1(d[k])}</strong></div>`
+        ).join("")
+      );
+      const ttW = 190;
+      const left = Math.max(8, Math.min(node.clientWidth - ttW - 8,
+        (pointerX !== undefined ? pointerX : px) - ttW / 2));
+      tooltip.style("left", left + "px")
+             .style("top", (m.top + hTop + gap / 2 - 40) + "px")
+             .style("opacity", 1);
+    }
+    function hide() {
+      cross.attr("opacity", 0);
+      haloTop.attr("opacity", 0);
+      halosBot.forEach(h => h.attr("opacity", 0));
+      tooltip.style("opacity", 0);
+    }
+
+    svg.append("rect")
+      .attr("x", m.left).attr("y", 0)
+      .attr("width", iw).attr("height", H)
+      .attr("fill", "transparent")
+      .style("touch-action", "pan-y")
+      .on("pointermove pointerdown", (event) => {
+        const [mx] = d3.pointer(event, svg.node());
+        const xi = mx - m.left;
+        let best = 0, bd = Infinity;
+        rows.forEach((r, i) => {
+          const dd = Math.abs(x(r.key) - xi);
+          if (dd < bd) { bd = dd; best = i; }
+        });
+        focusIdx = best;
+        showIdx(best, mx);
+      })
+      .on("pointerleave", () => { focusIdx = null; hide(); });
+
+    geo = { showIdx, hide };
+    cap.textContent = CAPTIONS[mode];
+    if (focusIdx !== null && focusIdx < rows.length) showIdx(focusIdx);
+  }
+
+  // ---------- dividend dumbbell figure ----------
+  function renderDividend() {
+    const host = d3.select("#dividend");
+    host.selectAll("svg").remove();
+    const node = host.node();
+    const W = Math.max(320, node.clientWidth - 12);
+    const narrow = W < 520;
+    const m = { top: 8, right: narrow ? 64 : 86, bottom: 8, left: narrow ? 92 : 130 };
+    const rowH = 46, scaleH = 30, gap = 26;
+    const lo = DATA.by_income[0], hi = DATA.by_income[DATA.by_income.length - 1];
+
+    const affRows = [
+      { key: "enjoy", lo: lo.enjoy, hi: hi.enjoy },
+      { key: "worry", lo: lo.worry, hi: hi.worry },
+      { key: "stress", lo: lo.stress, hi: hi.stress }
+    ];
+    const H = m.top + rowH + scaleH + gap + affRows.length * rowH + scaleH + m.bottom;
+    const iw = W - m.left - m.right;
+
+    const svg = host.append("svg")
+      .attr("viewBox", `0 0 ${W} ${H}`)
+      .attr("width", "100%")
+      .attr("role", "img")
+      .style("display", "block");
+    svg.append("title").text("What moving from the lowest to the highest income bracket changes, for each well-being measure");
+    svg.append("desc").text("Life rating rises from 6.19 to 7.51 on the 0 to 10 ladder. Enjoyment rises from 77% to 89%, worry falls from 41% to 26%, stress falls only from 43% to 37%.");
+
+    const g = svg.append("g").attr("transform", `translate(${m.left},${m.top})`);
+
+    function dumbbell(gy, c, xScale, vLo, vHi, fmt, deltaText) {
+      const row = g.append("g").attr("transform", `translate(0,${gy})`);
+      row.append("line")
+        .attr("x1", xScale(vLo)).attr("x2", xScale(vHi))
+        .attr("y1", 0).attr("y2", 0)
+        .attr("stroke", c.line).attr("stroke-width", 3).attr("opacity", 0.55);
+      row.append("circle").attr("cx", xScale(vLo)).attr("cy", 0).attr("r", 6.5)
+        .attr("fill", "#fffdf8").attr("stroke", c.line).attr("stroke-width", 2.5);
+      row.append("circle").attr("cx", xScale(vHi)).attr("cy", 0).attr("r", 6.5)
+        .attr("fill", c.line);
+      row.append("text")
+        .attr("x", xScale(vLo) + (vHi >= vLo ? -10 : 10))
+        .attr("text-anchor", vHi >= vLo ? "end" : "start")
+        .attr("y", 4).attr("font-size", 11).attr("fill", "#7d7565")
+        .text(fmt(vLo));
+      row.append("text")
+        .attr("x", xScale(vHi) + (vHi >= vLo ? 10 : -10))
+        .attr("text-anchor", vHi >= vLo ? "start" : "end")
+        .attr("y", 4).attr("font-size", 11.5).attr("font-weight", 700).attr("fill", c.text)
+        .text(fmt(vHi));
+      row.append("text")
+        .attr("x", iw + (narrow ? 8 : 14)).attr("y", 4)
+        .attr("font-size", narrow ? 10.5 : 11.5).attr("font-weight", 700).attr("fill", c.text)
+        .text(deltaText);
+      return row;
+    }
+    function rowLabel(gy, text, c) {
+      g.append("text")
+        .attr("x", -12).attr("y", gy + 4)
+        .attr("text-anchor", "end")
+        .attr("font-size", narrow ? 10.5 : 12).attr("font-weight", 700).attr("fill", c.text)
+        .text(text);
+    }
+    function miniAxis(gy, scale, ticks, fmt, label) {
+      const ax = g.append("g").attr("transform", `translate(0,${gy})`);
+      ax.append("line").attr("x1", 0).attr("x2", iw).attr("y1", 0).attr("y2", 0)
+        .attr("stroke", "#cdc3aa");
+      ticks.forEach(t => {
+        ax.append("line").attr("x1", scale(t)).attr("x2", scale(t))
+          .attr("y1", 0).attr("y2", 5).attr("stroke", "#cdc3aa");
+        ax.append("text").attr("x", scale(t)).attr("y", 17)
+          .attr("text-anchor", "middle").attr("font-size", 10).attr("fill", "#7d7565")
+          .text(fmt(t));
+      });
+      ax.append("text").attr("x", iw + (narrow ? 8 : 14)).attr("y", 17)
+        .attr("font-size", 10).attr("fill", "#7d7565").text(label);
+    }
+
+    // ladder block: its own 0–10 scale
+    const xLad = d3.scaleLinear().domain([0, 10]).range([0, iw]);
+    rowLabel(rowH / 2, narrow ? "Ladder (0–10)" : "Life rating (ladder)", COLORS.ladder);
+    dumbbell(rowH / 2, COLORS.ladder, xLad, lo.ladder, hi.ladder, fmtLad,
+      `+${(hi.ladder - lo.ladder).toFixed(2)} pts`);
+    miniAxis(rowH, xLad, [0, 2, 4, 6, 8, 10], d3.format("d"), "0–10 ladder");
+
+    // affect block: shared 0–100% scale
+    const y0 = rowH + scaleH + gap;
+    const xAff = d3.scaleLinear().domain([0, 1]).range([0, iw]);
+    affRows.forEach((r, i) => {
+      const cy = y0 + i * rowH + rowH / 2;
+      const c = COLORS[r.key];
+      rowLabel(cy, c.name + (narrow ? "" : " yesterday"), c);
+      const dpp = Math.round((r.hi - r.lo) * 100);
+      dumbbell(cy, c, xAff, r.lo, r.hi, fmtPct,
+        `${dpp >= 0 ? "+" : "−"}${Math.abs(dpp)} pp`);
+    });
+    miniAxis(y0 + affRows.length * rowH, xAff, [0, 0.25, 0.5, 0.75, 1], fmtPct, "% “yes”");
+  }
+
+  // initial paint + responsive re-render (width-change guarded to avoid loops)
+  render(true);
+  renderDividend();
+  let lastW = shell.node().clientWidth;
+  let timer = null;
+  function scheduleRender() {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      const w = shell.node().clientWidth;
+      if (w !== lastW) {
+        lastW = w;
+        render(false);
+        renderDividend();
+      }
+    }, 90);
+  }
+  const ro = new ResizeObserver(scheduleRender);
+  ro.observe(document.getElementById("chart"));
+  window.addEventListener("resize", scheduleRender);
+}
+</script>
+<!--SL_BOOKNAV_START-->
+<style>
+.slbn{font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;background:#0f1417;border-top:1px solid #27313a;color:#9fb0ba;padding:24px 20px 40px;margin:48px 0 0}
+.slbn-in{max-width:1080px;margin:0 auto;display:flex;align-items:stretch;gap:12px}
+.slbn a{flex:1 1 0;min-width:0;text-decoration:none;color:inherit;border:1px solid #27313a;border-radius:10px;padding:13px 15px;display:flex;flex-direction:column;gap:4px;background:#161d22;transition:border-color .15s,transform .15s}
+.slbn a:hover{border-color:#3fa9a0;transform:translateY(-2px)}
+.slbn a:focus-visible{outline:2px solid #3fa9a0;outline-offset:2px}
+.slbn a.slbn-next{text-align:right;align-items:flex-end}
+.slbn a.slbn-toc{flex:0 0 auto;min-width:120px;justify-content:center;align-items:center;text-align:center}
+.slbn .slbn-dir{font:700 10px/1 inherit;letter-spacing:.13em;text-transform:uppercase;color:#6b7c87}
+.slbn .slbn-ttl{font:700 14px/1.3 inherit;color:#eef2f4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.slbn a.slbn-disabled{opacity:.38;pointer-events:none}
+@media(max-width:640px){.slbn-in{flex-wrap:wrap}.slbn a{flex:1 1 100%}.slbn a.slbn-next{text-align:left;align-items:flex-start}.slbn a.slbn-toc{order:-1}}
+</style>
+<nav class="slbn" aria-label="Book navigation"><div class="slbn-in"><a class="slbn-prev" href="../read.html?ch=plateau-in-the-tail" target="_top"><span class="slbn-dir">‹ Previous</span><span class="slbn-ttl">The Plateau Is in the Tail, Not the Mean</span></a><a class="slbn-toc" href="../index.html#book" target="_top"><span class="slbn-dir">The Scissors</span><span class="slbn-ttl">Chapter 3 / 36</span></a><a class="slbn-next" href="../read.html?ch=income-life-vs-mood" target="_top"><span class="slbn-dir">Next ›</span><span class="slbn-ttl">Money Moves Your Life Rating More Than Your Mood</span></a></div></nav>
+<!--SL_BOOKNAV_END-->
+</body>
+</html>

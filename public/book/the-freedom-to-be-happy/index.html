@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Freedom to Be Happy — Perceived Control and Life Satisfaction Across 100 Countries</title>
+<style>
+  :root{
+    --bg:#f4f7f5;
+    --bg-deep:#e4ece8;
+    --panel:#fdfefc;
+    --ink:#15201c;
+    --ink-dim:#46514c;
+    --ink-faint:#83918a;
+    --hair:rgba(21,32,28,.14);
+    --hair-soft:rgba(21,32,28,.07);
+    --free:#1f7a6d;
+    --free-deep:#0f5247;
+    --free-soft:rgba(31,122,109,.14);
+    --health:#c98a2b;
+    --income:#8c93a0;
+    --accent:#c4452f;
+    --rule:#9bb0a8;
+    --serif:'Hoefler Text','Iowan Old Style',Georgia,'Times New Roman',serif;
+    --sans:'Avenir Next',system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+    --mono:'SFMono-Regular',ui-monospace,'Cascadia Mono',Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--serif); font-size:18.5px; line-height:1.64; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility}
+  a{color:var(--free-deep); text-decoration:none; border-bottom:1px solid rgba(15,82,71,.4)}
+  a:hover,a:focus-visible{color:var(--accent); border-bottom-color:var(--accent)}
+  a:focus-visible,button:focus-visible{outline:2.5px solid var(--accent); outline-offset:2px; border-radius:3px}
+  .wrap{max-width:716px; margin:0 auto; padding:0 22px}
+  .wide{max-width:1040px; margin:0 auto; padding:0 22px}
+  header{padding:74px 0 22px}
+  .kicker{font-family:var(--sans); font-size:12px; letter-spacing:.28em; text-transform:uppercase; color:var(--accent); margin:0 0 20px; font-weight:600}
+  h1{font-size:clamp(34px,6vw,60px); line-height:1.02; margin:0 0 22px; font-weight:700; letter-spacing:-.02em}
+  .dek{font-size:clamp(18px,2.5vw,23px); font-style:italic; color:var(--ink-dim); max-width:660px; margin:0 0 26px; line-height:1.46}
+  .byline{font-family:var(--sans); font-size:13px; color:var(--ink-faint); letter-spacing:.04em}
+  .byline b{color:var(--ink-dim); font-weight:600}
+  main p{margin:0 0 1.34em}
+  h2{font-size:clamp(24px,3.5vw,34px); line-height:1.13; margin:2.0em 0 .5em; letter-spacing:-.013em; font-weight:700}
+  .lead{font-size:clamp(19px,2.4vw,22px); line-height:1.5; color:var(--ink)}
+  .drop::first-letter{float:left; font-size:3.55em; line-height:.8; padding:9px 11px 0 0; color:var(--accent); font-weight:700; font-family:var(--serif)}
+  strong{font-weight:700}
+  .free-t{color:var(--free-deep); font-weight:700}
+  .figwrap{margin:42px auto 16px}
+  figure{margin:0; background:var(--panel); border:1px solid var(--hair); border-radius:14px; padding:24px 22px 16px; box-shadow:0 1px 0 rgba(21,32,28,.04)}
+  figure h4{font-family:var(--sans); font-size:18.5px; margin:0 0 5px; font-weight:700; color:var(--ink); letter-spacing:-.01em}
+  figure .sub{font-family:var(--sans); font-size:13.5px; color:var(--ink-dim); margin:0 0 14px; line-height:1.5}
+  figcaption{font-family:var(--sans); font-size:12.5px; color:var(--ink-faint); line-height:1.55; margin-top:12px; border-top:1px solid var(--hair-soft); padding-top:11px}
+  svg{width:100%; height:auto; display:block; overflow:visible}
+  text{font-family:var(--sans)}
+  .legend{display:flex; flex-wrap:wrap; gap:6px 14px; font-family:var(--sans); font-size:12px; color:var(--ink-dim); margin:0 0 10px}
+  .legend span.li{display:inline-flex; align-items:center; gap:6px}
+  .dot{width:11px; height:11px; border-radius:50%; display:inline-block}
+  .tip{position:absolute; pointer-events:none; opacity:0; background:var(--ink); color:#fff; font-family:var(--sans); font-size:12.5px; line-height:1.5; padding:10px 12px; border-radius:8px; max-width:250px; z-index:30; transition:opacity .08s; box-shadow:0 6px 22px rgba(21,32,28,.32)}
+  .tip b{color:#fff; font-weight:700}
+  .tip .row{display:flex; justify-content:space-between; gap:14px; font-variant-numeric:tabular-nums}
+  .tip .muted{color:#a9b6af}
+  .smcap{font-family:var(--sans); font-size:11px; letter-spacing:.04em; fill:var(--ink-faint)}
+  .axlab{font-family:var(--sans); font-size:12px; fill:var(--ink-faint)}
+  .note{font-family:var(--sans); font-size:14px; line-height:1.5; color:var(--ink-dim); background:var(--bg-deep); border-left:3px solid var(--rule); border-radius:0 8px 8px 0; padding:14px 16px; margin:26px 0}
+  table.fallback{border-collapse:collapse; width:100%; font-family:var(--sans); font-size:12.5px; margin-top:8px}
+  table.fallback caption{text-align:left; color:var(--ink-faint); font-size:12px; margin-bottom:6px}
+  table.fallback th,table.fallback td{border:1px solid var(--hair-soft); padding:4px 8px; text-align:right}
+  table.fallback th:first-child,table.fallback td:first-child{text-align:left}
+  footer{font-family:var(--sans); font-size:13.5px; color:var(--ink-dim); line-height:1.62; padding:30px 0 80px}
+  footer h2{font-family:var(--sans); font-size:15px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint); margin:0 0 14px; font-weight:700}
+  footer p{margin:0 0 1em; max-width:720px}
+  footer a{color:var(--free-deep)}
+  hr.sep{border:0; border-top:1px solid var(--hair); max-width:1040px; margin:46px auto 0}
+  .pill{font-family:var(--sans); font-size:11px; letter-spacing:.08em; text-transform:uppercase; font-weight:600; padding:2px 8px; border-radius:20px; display:inline-block; vertical-align:middle}
+  .pill-aut{background:var(--free-soft); color:var(--free-deep)}
+  .pill-eval{background:rgba(196,69,47,.12); color:var(--accent)}
+  @media (prefers-reduced-motion: reduce){*{transition:none!important; animation:none!important}}
+</style>
+</head>
+<body>
+<header class="wrap">
+  <p class="kicker">Values Surveys · Autonomy &amp; well-being</p>
+  <h1>The Freedom to Be Happy</h1>
+  <p class="dek">Across a hundred countries and forty years, the strongest thing tying together how satisfied people are with their lives is not their income, and not even their health. It is how much freedom and control they feel they have.</p>
+  <p class="byline">By the numbers · <b>Integrated EVS–WVS, 1981–2022</b> · weighted (<span style="font-family:var(--mono)">S017</span>)</p>
+</header>
+
+<main>
+<div class="wrap">
+  <p class="lead drop">The World and European Values Surveys have asked more than half a million people, in over a hundred countries since 1981, a deceptively simple question: <em>how much freedom of choice and control do you feel you have over the way your life turns out?</em> Score it from 1 to 10. The answer turns out to be one of the best single predictors of whether the same person is satisfied with their life at all — better than knowing their income, better than knowing their health.</p>
+
+  <p>Lined up against life satisfaction, the gradient is almost a straight diagonal. Among people who feel they have the least control over their lives, mean life satisfaction sits at <strong>4.8</strong> on the 0–10 scale. Among those who feel they have the most, it reaches <strong>7.9</strong> — a span of more than <strong>three full points</strong>, the difference between a glum country and a thriving one, running entirely along a single axis of felt agency.</p>
+</div>
+
+<div class="figwrap wide">
+  <figure>
+    <h4>The more control people feel, the more satisfied they are with life</h4>
+    <p class="sub">Weighted mean life satisfaction (0–10) at each level of the sense of freedom and control. Band is the 95% bootstrap interval; the line covers 637,215 responses.</p>
+    <div id="chart-grad" style="position:relative"></div>
+    <figcaption id="cap-grad"></figcaption>
+  </figure>
+</div>
+
+<div class="wrap">
+  <p>A gradient like that could be an illusion of arithmetic — maybe the people who feel free are simply the rich and the healthy, and freedom is just their good fortune talking. So put the three in a single race. Standardize each measure, compare people <em>within the same country</em> (so national differences in wealth or temperament can't drive it), and ask which moves life satisfaction most.</p>
+</div>
+
+<div class="figwrap wide">
+  <figure>
+    <h4>In a fair race, the sense of freedom wins</h4>
+    <p class="sub">Standardized coefficients from one within-country model of life satisfaction. Each bar is the change in life satisfaction (in standard deviations) per standard-deviation rise in that factor, holding the other two fixed.</p>
+    <div id="chart-race" style="position:relative"></div>
+    <figcaption id="cap-race"></figcaption>
+  </figure>
+</div>
+
+<div class="wrap">
+  <p>The <span class="free-t">sense of freedom</span> carries a standardized coefficient of about <strong>0.30</strong> — larger than self-rated <strong>health</strong> at <strong>0.20</strong>, and more than double subjective <strong>income</strong> at <strong>0.13</strong>. Money and health matter, as they always do. But the feeling of authorship over your own life matters more, and it does so net of both.</p>
+
+  <p>It also matters <em>more</em> the richer a country gets. In the poorest economies the three factors run nearly neck and neck — when survival is precarious, money and health press hard, and freedom's edge is slim (a coefficient near <strong>0.20</strong>). By the high-income world freedom pulls clearly ahead, to about <strong>0.36</strong>. As material wants recede, agency becomes the thing that distinguishes a satisfying life — a pattern this gallery follows further in <a href="../the-changing-recipe/index.html">The Changing Recipe of a Good Life</a>.</p>
+
+  <h2>The same shape between nations</h2>
+  <p>What holds between people holds between whole countries. Average each nation's sense of freedom and its life satisfaction, and the two line up at a correlation of <strong>0.77</strong> across <strong>107</strong> countries — among the tightest country-level relationships in all of well-being research.</p>
+</div>
+
+<div class="figwrap wide">
+  <figure>
+    <h4>Freer-feeling nations are more satisfied nations</h4>
+    <p class="sub">Each dot is a country: mean sense of freedom against mean life satisfaction, pooled across all waves. Colored by world region; the line is the cross-country fit. Hover for detail; labelled countries sit furthest above or below the line.</p>
+    <div class="legend" id="leg-scatter"></div>
+    <div id="chart-scatter" style="position:relative"></div>
+    <figcaption id="cap-scatter"></figcaption>
+  </figure>
+</div>
+
+<div class="wrap">
+  <p>The line is not destiny. A handful of countries sit notably <em>above</em> it — the Netherlands, Japan, Italy, Switzerland — wringing more satisfaction out of life than their average sense of control would predict, on the strength of wealth, security and dense social ties. Others fall well below: places like Tanzania, Zimbabwe and Moldova report more felt freedom than their hard circumstances reward. Freedom is a powerful ingredient, not the only one.</p>
+
+  <h2>What this does, and does not, show</h2>
+  <p><strong>Two feelings, not a lever.</strong> The sense of freedom and life satisfaction are both self-reports gathered in the same breath, and a buoyant temperament can lift both. The race shows that perceived control travels with satisfaction more tightly than income or health do; it cannot prove that handing someone a greater sense of control would manufacture the satisfaction. Read it as association.</p>
+  <p><strong>Perceived, not measured, freedom.</strong> This is how free people <em>feel</em>, which is related to but not the same as legal or political liberty. Two people under identical rules can feel very differently in command of their lives, and it is the feeling that tracks satisfaction here.</p>
+  <p><strong>Evaluative only.</strong> The Values Surveys carry life satisfaction and a four-point happiness item — both global, reflective judgments — but no “yesterday” measures of daily mood. Everything here is about how people <em>evaluate</em> their lives, not the texture of their days; no claim is made about momentary feeling.</p>
+  <p><strong>A structural portrait.</strong> The surveys are an unbalanced patchwork of countries and years, pooled here to draw the shape of the relationship rather than its movement over time. For the movement — how the world's satisfaction has shifted since 1981 — see <a href="../the-great-convergence/index.html">The Great Convergence</a>.</p>
+</div>
+
+<hr class="sep">
+<div class="wide">
+<footer>
+  <h2>Notes &amp; data</h2>
+  <p><strong>Source.</strong> Integrated European Values Study &amp; World Values Survey (the “Values Surveys”), waves 1–7, fieldwork 1981–2022, across more than a hundred countries. The freedom item asks “how much freedom of choice and control you feel you have over the way your life turns out,” from 1 (none at all) to 10 (a great deal). Life satisfaction is the standard “all things considered” item, 1–10. Every figure is weighted by the survey weight <span style="font-family:var(--mono)">S017</span>; estimates are never reported unweighted. The freedom–satisfaction gradient rests on 637,215 paired responses.</p>
+  <p><strong>Constructs.</strong> Life satisfaction (and the four-point happiness item) are <strong>evaluative</strong> well-being. The freedom item is <strong>perceived autonomy / control</strong> — an antecedent and correlate, kept distinct and never treated as the same thing as satisfaction. Income (subjective decile) and health (self-rated, 1–5) are circumstances. The surveys contain no experiential “yesterday” affect items, so no experiential claim is made.</p>
+  <p><strong>Method.</strong> The gradient is the weighted mean of life satisfaction at each freedom level. The horse race is a standardized weighted least-squares model — life satisfaction on the sense of freedom, self-rated health and subjective income, each standardized to mean 0 and SD 1 and then country-demeaned, so the coefficients compare people within the same country (N ≈ 382,096). The same model run inside each World-Bank income tier gives the freedom coefficient rising from about 0.20 to 0.36. The scatter plots each country's weighted means (countries with effective N below 100 are dropped, leaving 107), weighting every country equally; the labelled countries are the largest positive and negative residuals from the cross-country fit. Effective N = (Σw)² ⁄ Σw². Bands are 95% percentile intervals from a weighted bootstrap with a fixed seed.</p>
+  <p><strong>Further reading.</strong> Ronald Inglehart, Roberto Foa, Christopher Peterson &amp; Christian Welzel, <a href="https://doi.org/10.1111/j.1745-6924.2008.00078.x">“Development, freedom, and rising happiness”</a> (<em>Perspectives on Psychological Science</em>, 2008); Christian Welzel, <em>Freedom Rising</em> (2013); and Paolo Verme, <a href="https://doi.org/10.1016/j.jebo.2009.04.011">“Happiness, freedom and control”</a> (<em>JEBO</em>, 2009).</p>
+  <p style="color:var(--ink-faint)">Construct labels — <span class="pill pill-aut">autonomy</span> sense of freedom &amp; control · <span class="pill pill-eval">evaluative</span> life satisfaction. Association, not causation.</p>
+</footer>
+</div>
+</main>
+
+<div class="tip" id="tip" role="status" aria-live="polite"></div>
+
+<script type="module">
+import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+const DATA = {"meta":{"slug":"the-freedom-to-be-happy","title":"The Freedom to Be Happy","dek":"Across a hundred countries and forty years, the strongest predictor of how satisfied people are with their lives is not their income or even their health \u2014 it is how much freedom and control they feel they have over their own lives.","dataset":"Integrated EVS-WVS (Values Surveys), 1981-2022","weight":"S017 within-country survey weight (`weight`); cross-country scatter weights each country equally","constructs":{"satis_your_life":"evaluative (life satisfaction, 0-10)","happy":"evaluative (global happiness, 4-point)","freedom":"perceived autonomy/control (1-10) \u2014 an antecedent, not a well-being outcome","income_decile":"subjective income rank (1-10)","health":"self-rated health (1-5)"},"endogeneity_note":"Perceived freedom and life satisfaction are both self-reports; a positive disposition can lift both, so the horse race shows which travels most tightly with satisfaction, not what causes it.","panel_note":"EVS-WVS is an unbalanced panel; this piece pools waves for a structural portrait, not a trend.","suppression":"cells/countries with effective N<50 (gradient) or <100 (country scatter) suppressed; effN=(sum w)^2/sum(w^2)","bootstrap":"life-satisfaction-mean 95% CI from 1500 weighted bootstrap resamples within freedom level (seed 20240614)","tiers":["Low income","Lower middle income","Upper middle income","High income"],"colors":{"free":"#1f7a6d","free_deep":"#0f5247","health":"#c98a2b","income":"#9aa0a6","life":"#1f7a6d","accent":"#c4452f","grid":"rgba(20,30,28,.08)","region":{"Europe & Central Asia":"#4a6fa5","Latin America & Caribbean":"#d98a3a","Sub-Saharan Africa":"#cf5b4e","East Asia & Pacific":"#5aa06f","Middle East & North Africa":"#9c6fb0","South Asia":"#c9a13b","North America":"#3f87a6"}}},"grad":[{"level":1,"life":4.828,"lo":4.78,"hi":4.881,"happy":2.695,"n":21086},{"level":2,"life":4.701,"lo":4.65,"hi":4.751,"happy":2.674,"n":13014},{"level":3,"life":5.028,"lo":4.994,"hi":5.06,"happy":2.698,"n":24186},{"level":4,"life":5.404,"lo":5.377,"hi":5.43,"happy":2.793,"n":31176},{"level":5,"life":5.975,"lo":5.957,"hi":5.991,"happy":2.933,"n":86267},{"level":6,"life":6.452,"lo":6.436,"hi":6.467,"happy":3.008,"n":72029},{"level":7,"life":6.961,"lo":6.948,"hi":6.972,"happy":3.089,"n":98578},{"level":8,"life":7.471,"lo":7.459,"hi":7.481,"happy":3.182,"n":120595},{"level":9,"life":7.766,"lo":7.749,"hi":7.782,"happy":3.245,"n":64841},{"level":10,"life":7.928,"lo":7.912,"hi":7.945,"happy":3.281,"n":105443}],"hr_overall":{"free":0.298,"health":0.195,"income":0.133,"n":382096,"r2":0.198},"hr_tier":[{"tier":"Low income","free":0.204,"health":0.221,"income":0.189,"n":16618,"r2":0.169},{"tier":"Lower middle income","free":0.277,"health":0.18,"income":0.166,"n":88083,"r2":0.181},{"tier":"Upper middle income","free":0.296,"health":0.19,"income":0.131,"n":148285,"r2":0.193},{"tier":"High income","free":0.36,"health":0.216,"income":0.105,"n":124790,"r2":0.243}],"country_pts":[{"country":"Albania","free":6.004,"life":6.024,"region":"Europe & Central Asia","income_group":"Upper middle income","gni":11886.0,"n":4933,"resid":0.267},{"country":"Algeria","free":6.66,"life":5.975,"region":"Middle East & North Africa","income_group":"Upper middle income","gni":13802.0,"n":2435,"resid":-0.464},{"country":"Andorra","free":7.621,"life":7.335,"region":"Europe & Central Asia","income_group":"High income","gni":47574.0,"n":2005,"resid":-0.103},{"country":"Argentina","free":7.404,"life":7.321,"region":"Latin America & Caribbean","income_group":"High income","gni":18461.0,"n":7328,"resid":0.109},{"country":"Armenia","free":6.636,"life":5.56,"region":"Europe & Central Asia","income_group":"Upper middle income","gni":9144.0,"n":7274,"resid":-0.854},{"country":"Australia","free":7.517,"life":7.428,"region":"East Asia & Pacific","income_group":"High income","gni":43560.0,"n":7934,"resid":0.098},{"country":"Azerbaijan","free":6.266,"life":6.024,"region":"Europe & Central Asia","income_group":"Upper middle income","gni":15600.0,"n":4729,"resid":-0.005},{"country":"Bangladesh","free":6.396,"life":6.528,"region":"South Asia","income_group":"Lower middle income","gni":3677.0,"n":4176,"resid":0.364},{"country":"Belarus","free":6.027,"life":5.537,"region":"Europe & Central Asia","income_group":"Upper middle income","gni":16323.0,"n":8588,"resid":-0.244},{"country":"Bolivia","free":7.477,"life":7.474,"region":"Latin America & Caribbean","income_group":"Lower middle income","gni":6714.0,"n":2058,"resid":0.186},{"country":"Bosnia Herzegovina","free":6.78,"life":6.656,"region":"Europe & Central Asia","income_group":"Upper middle income","gni":11716.0,"n":5616,"resid":0.092},{"country":"Brazil","free":7.529,"life":7.528,"region":"Latin America & Caribbean","income_group":"Upper middle income","gni":13755.0,"n":7641,"resid":0.186},{"country":"Bulgaria","free":5.872,"life":5.471,"region":"Europe & Central Asia","income_group":"Upper middle income","gni":18740.0,"n":7024,"resid":-0.149},{"country":"Burkina Faso","free":5.704,"life":5.57,"region":"Sub-Saharan Africa","income_group":"Low income","gni":1650.0,"n":1499,"resid":0.125},{"country":"Canada","free":7.486,"life":7.508,"region":"North America","income_group":"High income","gni":43433.0,"n":11081,"resid":0.211},{"country":"Chile","free":7.178,"life":7.199,"region":"Latin America & Caribbean","income_group":"High income","gni":21910.0,"n":6657,"resid":0.222},{"country":"China","free":7.08,"life":6.988,"region":"East Asia & Pacific","income_group":"Upper middle income","gni":15270.0,"n":10695,"resid":0.113},{"country":"Colombia","free":8.024,"life":8.302,"region":"Latin America & Caribbean","income_group":"Upper middle income","gni":12938.0,"n":12054,"resid":0.445},{"country":"Croatia","free":6.989,"life":6.85,"region":"Europe & Central Asia","income_group":"High income","gni":22162.0,"n":5186,"resid":0.069},{"country":"Cyprus","free":7.343,"life":7.205,"region":"Europe & Central Asia","income_group":"High income","gni":31568.0,"n":4037,"resid":0.056},{"country":"Czechia","free":6.782,"life":6.981,"region":"Europe & Central Asia","income_group":"High income","gni":30588.0,"n":10867,"resid":0.415},{"country":"Dominican Rep.","free":7.373,"life":7.127,"region":"Latin America & Caribbean","income_group":"Upper middle income","gni":13921.0,"n":410,"resid":-0.053},{"country":"Ecuador","free":7.715,"life":7.852,"region":"Latin America & Caribbean","income_group":"Upper middle income","gni":10347.0,"n":2400,"resid":0.317},{"country":"Egypt","free":5.979,"life":5.472,"region":"Middle East & North Africa","income_group":"Lower middle income","gni":10355.0,"n":8768,"resid":-0.259},{"country":"El Salvador","free":7.496,"life":7.496,"region":"Latin America & Caribbean","income_group":"Lower middle income","gni":6868.0,"n":1229,"resid":0.188},{"country":"Estonia","free":6.428,"life":6.258,"region":"Europe & Central Asia","income_group":"High income","gni":28993.0,"n":7346,"resid":0.06},{"country":"Ethiopia","free":6.758,"life":5.349,"region":"Sub-Saharan Africa","income_group":"Low income","gni":1719.0,"n":2719,"resid":-1.192},{"country":"Finland","free":7.611,"life":7.822,"region":"Europe & Central Asia","income_group":"High income","gni":41002.0,"n":6924,"resid":0.395},{"country":"France","free":6.518,"life":6.975,"region":"Europe & Central Asia","income_group":"High income","gni":39254.0,"n":8157,"resid":0.684},{"country":"Georgia","free":6.227,"life":5.517,"region":"Europe & Central Asia","income_group":"Lower middle income","gni":9186.0,"n":8349,"resid":-0.472},{"country":"Germany","free":6.99,"life":7.295,"region":"Europe & Central Asia","income_group":"High income","gni":46136.0,"n":18591,"resid":0.513},{"country":"Ghana","free":7.192,"life":6.131,"region":"Sub-Saharan Africa","income_group":"Lower middle income","gni":4096.0,"n":3080,"resid":-0.861},{"country":"Greece","free":6.607,"life":6.611,"region":"Europe & Central Asia","income_group":"High income","gni":24648.0,"n":3829,"resid":0.227},{"country":"Guatemala","free":7.611,"life":7.691,"region":"Latin America & Caribbean","income_group":"Upper middle income","gni":7278.0,"n":2228,"resid":0.264},{"country":"Haiti","free":5.023,"life":5.589,"region":"Latin America & Caribbean","income_group":"Low income","gni":1665.0,"n":1985,"resid":0.852},{"country":"Hong Kong SAR","free":6.602,"life":6.629,"region":"East Asia & Pacific","income_group":"High income","gni":58420.0,"n":4315,"resid":0.25},{"country":"Hungary","free":6.509,"life":6.376,"region":"Europe & Central Asia","income_group":"High income","gni":25393.0,"n":8096,"resid":0.094},{"country":"India","free":6.619,"life":6.339,"region":"South Asia","income_group":"Lower middle income","gni":6353.0,"n":14061,"resid":-0.057},{"country":"Indonesia","free":7.512,"life":7.259,"region":"East Asia & Pacific","income_group":"Lower middle income","gni":10846.0,"n":6092,"resid":-0.065},{"country":"Iran","free":6.869,"life":6.357,"region":"Middle East & North Africa","income_group":"Upper middle income","gni":19130.0,"n":6669,"resid":-0.299},{"country":"Iraq","free":5.976,"life":4.937,"region":"Middle East & North Africa","income_group":"Upper middle income","gni":17789.0,"n":7386,"resid":-0.791},{"country":"Italy","free":6.293,"life":7.118,"region":"Europe & Central Asia","income_group":"High income","gni":35299.0,"n":10099,"resid":1.061},{"country":"Japan","free":5.81,"life":6.725,"region":"East Asia & Pacific","income_group":"High income","gni":38986.0,"n":9248,"resid":1.17},{"country":"Jordan","free":7.382,"life":6.557,"region":"Middle East & North Africa","income_group":"Upper middle income","gni":8288.0,"n":4816,"resid":-0.632},{"country":"Kazakhstan","free":6.865,"life":7.089,"region":"Europe & Central Asia","income_group":"Upper middle income","gni":22626.0,"n":2761,"resid":0.437},{"country":"Kenya","free":7.026,"life":5.875,"region":"Sub-Saharan Africa","income_group":"Lower middle income","gni":2961.0,"n":1256,"resid":-0.944},{"country":"Kuwait","free":7.965,"life":7.209,"region":"Middle East & North Africa","income_group":"High income","gni":70524.0,"n":1266,"resid":-0.586},{"country":"Kyrgyzstan","free":7.375,"life":7.289,"region":"Europe & Central Asia","income_group":"Lower middle income","gni":3255.0,"n":3731,"resid":0.107},{"country":"Latvia","free":6.126,"life":5.907,"region":"Europe & Central Asia","income_group":"High income","gni":25002.0,"n":5882,"resid":0.023},{"country":"Lebanon","free":6.424,"life":6.594,"region":"Middle East & North Africa","income_group":"Upper middle income","gni":13378.0,"n":2393,"resid":0.4},{"country":"Libya","free":7.409,"life":7.493,"region":"Middle East & North Africa","income_group":"Upper middle income","gni":11100.0,"n":3279,"resid":0.276},{"country":"Lithuania","free":6.736,"life":5.971,"region":"Europe & Central Asia","income_group":"High income","gni":28314.0,"n":5870,"resid":-0.547},{"country":"Macau SAR","free":6.475,"life":6.46,"region":"East Asia & Pacific","income_group":"High income","gni":null,"n":1022,"resid":0.213},{"country":"Malaysia","free":7.33,"life":6.991,"region":"East Asia & Pacific","income_group":"Upper middle income","gni":26107.0,"n":3813,"resid":-0.144},{"country":"Maldives","free":8.124,"life":7.302,"region":"South Asia","income_group":"Upper middle income","gni":13567.0,"n":1037,"resid":-0.659},{"country":"Mali","free":6.123,"life":6.092,"region":"Sub-Saharan Africa","income_group":"Low income","gni":1953.0,"n":1430,"resid":0.211},{"country":"Mexico","free":7.954,"life":8.036,"region":"Latin America & Caribbean","income_group":"Upper middle income","gni":16944.0,"n":11597,"resid":0.252},{"country":"Moldova","free":6.488,"life":5.27,"region":"Europe & Central Asia","income_group":"Lower middle income","gni":5554.0,"n":4527,"resid":-0.99},{"country":"Mongolia","free":6.4,"life":6.551,"region":"East Asia & Pacific","income_group":"Lower middle income","gni":10103.0,"n":1638,"resid":0.382},{"country":"Montenegro","free":7.181,"life":6.896,"region":"Europe & Central Asia","income_group":"Upper middle income","gni":16779.0,"n":3754,"resid":-0.084},{"country":"Morocco","free":6.108,"life":5.928,"region":"Middle East & North Africa","income_group":"Lower middle income","gni":7340.0,"n":4821,"resid":0.063},{"country":"Myanmar","free":6.718,"life":7.2,"region":"East Asia & Pacific","income_group":"Lower middle income","gni":5567.0,"n":1200,"resid":0.701},{"country":"Netherlands","free":6.714,"life":7.701,"region":"Europe & Central Asia","income_group":"High income","gni":47900.0,"n":12157,"resid":1.206},{"country":"New Zealand","free":7.807,"life":7.695,"region":"East Asia & Pacific","income_group":"High income","gni":33970.0,"n":3953,"resid":0.064},{"country":"Nicaragua","free":7.995,"life":7.943,"region":"Latin America & Caribbean","income_group":"Lower middle income","gni":5157.0,"n":1200,"resid":0.117},{"country":"Nigeria","free":6.964,"life":6.434,"region":"Sub-Saharan Africa","income_group":"Lower middle income","gni":5231.0,"n":8003,"resid":-0.321},{"country":"North Macedonia","free":6.71,"life":6.31,"region":"Europe & Central Asia","income_group":"Upper middle income","gni":12505.0,"n":4575,"resid":-0.181},{"country":"Northern Ireland","free":7.282,"life":7.863,"region":"Europe & Central Asia","income_group":"High income","gni":39116.0,"n":2552,"resid":0.778},{"country":"Norway","free":7.323,"life":7.877,"region":"Europe & Central Asia","income_group":"High income","gni":68012.0,"n":6638,"resid":0.749},{"country":"Pakistan","free":6.614,"life":6.66,"region":"South Asia","income_group":"Lower middle income","gni":5311.0,"n":4877,"resid":0.269},{"country":"Palestine","free":6.859,"life":5.622,"region":"Middle East & North Africa","income_group":"Lower middle income","gni":5055.0,"n":995,"resid":-1.024},{"country":"Peru","free":7.279,"life":6.931,"region":"Latin America & Caribbean","income_group":"Upper middle income","gni":11789.0,"n":6773,"resid":-0.151},{"country":"Philippines","free":6.989,"life":7.059,"region":"East Asia & Pacific","income_group":"Lower middle income","gni":9154.0,"n":4799,"resid":0.278},{"country":"Poland","free":6.538,"life":6.892,"region":"Europe & Central Asia","income_group":"High income","gni":26150.0,"n":8916,"resid":0.58},{"country":"Puerto Rico","free":8.331,"life":8.308,"region":"Latin America & Caribbean","income_group":"High income","gni":null,"n":2997,"resid":0.132},{"country":"Qatar","free":7.933,"life":7.999,"region":"Middle East & North Africa","income_group":"High income","gni":116818.0,"n":1059,"resid":0.237},{"country":"Romania","free":7.249,"life":6.293,"region":"Europe & Central Asia","income_group":"Upper middle income","gni":22646.0,"n":10916,"resid":-0.758},{"country":"Russia","free":6.23,"life":5.727,"region":"Europe & Central Asia","income_group":"Upper middle income","gni":24233.0,"n":15975,"resid":-0.265},{"country":"Rwanda","free":6.685,"life":5.722,"region":"Sub-Saharan Africa","income_group":"Low income","gni":1811.0,"n":3030,"resid":-0.743},{"country":"Saudi Arabia","free":6.604,"life":7.282,"region":"Middle East & North Africa","income_group":"High income","gni":49680.0,"n":1494,"resid":0.901},{"country":"Serbia","free":6.515,"life":6.268,"region":"Europe & Central Asia","income_group":"Upper middle income","gni":13019.0,"n":7646,"resid":-0.02},{"country":"Singapore","free":6.875,"life":7.018,"region":"East Asia & Pacific","income_group":"High income","gni":82503.0,"n":5492,"resid":0.356},{"country":"Slovakia","free":6.765,"life":6.72,"region":"Europe & Central Asia","income_group":"High income","gni":29467.0,"n":8104,"resid":0.172},{"country":"Slovenia","free":7.27,"life":7.141,"region":"Europe & Central Asia","income_group":"High income","gni":30594.0,"n":7559,"resid":0.068},{"country":"South Africa","free":6.866,"life":6.316,"region":"Sub-Saharan Africa","income_group":"Upper middle income","gni":11923.0,"n":16675,"resid":-0.337},{"country":"South Korea","free":6.734,"life":6.343,"region":"East Asia & Pacific","income_group":"High income","gni":35945.0,"n":6971,"resid":-0.173},{"country":"Spain","free":6.778,"life":7.032,"region":"Europe & Central Asia","income_group":"High income","gni":34258.0,"n":15071,"resid":0.471},{"country":"Sweden","free":7.499,"life":7.736,"region":"Europe & Central Asia","income_group":"High income","gni":47766.0,"n":8574,"resid":0.425},{"country":"Switzerland","free":7.363,"life":8.096,"region":"Europe & Central Asia","income_group":"High income","gni":57625.0,"n":8271,"resid":0.926},{"country":"Taiwan ROC","free":7.369,"life":6.787,"region":null,"income_group":null,"gni":null,"n":4444,"resid":-0.389},{"country":"Tajikistan","free":7.484,"life":7.949,"region":"Europe & Central Asia","income_group":"Low income","gni":3317.0,"n":1200,"resid":0.654},{"country":"Tanzania","free":5.8,"life":3.866,"region":"Sub-Saharan Africa","income_group":"Low income","gni":2655.0,"n":1145,"resid":-1.679},{"country":"Thailand","free":6.817,"life":7.091,"region":"East Asia & Pacific","income_group":"Upper middle income","gni":15516.0,"n":4223,"resid":0.489},{"country":"Trinidad and Tobago","free":8.052,"life":7.396,"region":"Latin America & Caribbean","income_group":"High income","gni":28622.0,"n":1997,"resid":-0.49},{"country":"Tunisia","free":6.406,"life":5.552,"region":"Middle East & North Africa","income_group":"Lower middle income","gni":10275.0,"n":2405,"resid":-0.623},{"country":"Turkey","free":6.024,"life":6.357,"region":"Europe & Central Asia","income_group":"Upper middle income","gni":24804.0,"n":15261,"resid":0.579},{"country":"Uganda","free":6.777,"life":5.619,"region":"Sub-Saharan Africa","income_group":"Low income","gni":1658.0,"n":1002,"resid":-0.941},{"country":"Ukraine","free":5.994,"life":5.339,"region":"Europe & Central Asia","income_group":"Lower middle income","gni":8130.0,"n":10665,"resid":-0.408},{"country":"United Kingdom","free":7.166,"life":7.517,"region":"Europe & Central Asia","income_group":"High income","gni":39116.0,"n":11690,"resid":0.552},{"country":"United States","free":7.653,"life":7.517,"region":"North America","income_group":"High income","gni":54941.0,"n":12924,"resid":0.046},{"country":"Uruguay","free":7.69,"life":7.581,"region":"Latin America & Caribbean","income_group":"High income","gni":19930.0,"n":3979,"resid":0.072},{"country":"Uzbekistan","free":7.587,"life":7.486,"region":"Europe & Central Asia","income_group":"Lower middle income","gni":6470.0,"n":2637,"resid":0.084},{"country":"Venezuela","free":7.999,"life":7.087,"region":"Latin America & Caribbean","income_group":"Upper middle income","gni":10672.0,"n":3575,"resid":-0.744},{"country":"Vietnam","free":7.511,"life":7.243,"region":"East Asia & Pacific","income_group":"Lower middle income","gni":5859.0,"n":3674,"resid":-0.08},{"country":"Yemen","free":6.403,"life":5.887,"region":"Middle East & North Africa","income_group":"Low income","gni":1239.0,"n":985,"resid":-0.285},{"country":"Zambia","free":7.2,"life":6.059,"region":"Sub-Saharan Africa","income_group":"Lower middle income","gni":3557.0,"n":1463,"resid":-0.941},{"country":"Zimbabwe","free":6.546,"life":5.023,"region":"Sub-Saharan Africa","income_group":"Low income","gni":1683.0,"n":3714,"resid":-1.297}],"fit":{"slope":1.039,"intercept":-0.484,"r":0.773,"n_countries":107,"x0":5.023,"x1":8.331,"over":["Netherlands","Japan","Italy","Switzerland","Saudi Arabia"],"under":["Tanzania","Zimbabwe","Ethiopia","Palestine","Moldova"]},"headline":{"life_lo":4.828,"life_hi":7.928,"life_span":3.1,"hr_free":0.298,"hr_health":0.195,"hr_income":0.133,"hr_n":382096,"r_country":0.773,"n_countries":107,"free_tier_lo":0.204,"free_tier_hi":0.36,"n_total":637215}};
+const C = DATA.meta.colors;
+const tip = document.getElementById("tip");
+function showTip(html, ev){
+  tip.innerHTML = html; tip.style.opacity = 1;
+  const pad=14, w=tip.offsetWidth, h=tip.offsetHeight;
+  let x=ev.clientX+pad, y=ev.clientY+pad;
+  if(x+w>window.innerWidth-6) x=ev.clientX-w-pad;
+  if(y+h>window.innerHeight-6) y=ev.clientY-h-pad;
+  tip.style.left=x+"px"; tip.style.top=y+"px";
+}
+function hideTip(){ tip.style.opacity=0; }
+
+/* ===== GRADIENT ===== */
+(function(){
+  const W=1000,H=430,M={t:24,r:40,b:56,l:52};
+  const svg=d3.select("#chart-grad").append("svg").attr("viewBox",`0 0 ${W} ${H}`).attr("width","100%")
+    .attr("role","img").attr("aria-label","Line: life satisfaction rises steeply with the sense of freedom and control.");
+  const g=svg.append("g").attr("transform",`translate(${M.l},${M.t})`);
+  const iw=W-M.l-M.r, ih=H-M.t-M.b;
+  const x=d3.scaleLinear().domain([1,10]).range([0,iw]);
+  const y=d3.scaleLinear().domain([4,8.3]).range([ih,0]);
+  g.append("g").selectAll("line").data(y.ticks(5)).join("line").attr("x1",0).attr("x2",iw)
+    .attr("y1",d=>y(d)).attr("y2",d=>y(d)).attr("stroke","var(--hair-soft)");
+  g.append("g").selectAll("text.yl").data(y.ticks(5)).join("text").attr("class","axlab")
+    .attr("x",-10).attr("y",d=>y(d)+4).attr("text-anchor","end").text(d=>d.toFixed(0));
+  g.append("text").attr("class","smcap").attr("transform",`translate(-38,${ih/2}) rotate(-90)`).attr("text-anchor","middle").text("mean life satisfaction (0–10) →");
+  g.append("g").selectAll("text.xl").data([1,2,3,4,5,6,7,8,9,10]).join("text").attr("class","axlab")
+    .attr("x",d=>x(d)).attr("y",ih+22).attr("text-anchor","middle").text(d=>d);
+  g.append("text").attr("class","smcap").attr("x",0).attr("y",ih+44).text("← feel no control            sense of freedom &amp; control (1–10)            feel in full control →");
+  const rows=DATA.grad;
+  const area=d3.area().x(d=>x(d.level)).y0(d=>y(d.lo)).y1(d=>y(d.hi)).curve(d3.curveMonotoneX);
+  const line=d3.line().x(d=>x(d.level)).y(d=>y(d.life)).curve(d3.curveMonotoneX);
+  g.append("path").datum(rows).attr("fill",C.free).attr("opacity",.14).attr("d",area);
+  g.append("path").datum(rows).attr("fill","none").attr("stroke",C.free_deep).attr("stroke-width",3.6).attr("d",line);
+  g.selectAll("circle").data(rows).join("circle").attr("cx",d=>x(d.level)).attr("cy",d=>y(d.life)).attr("r",5)
+    .attr("fill","var(--panel)").attr("stroke",C.free_deep).attr("stroke-width",2.6)
+    .attr("tabindex",0).attr("role","button").attr("aria-label",d=>`freedom ${d.level}: life satisfaction ${d.life.toFixed(2)}`)
+    .on("mousemove",(ev,d)=>showTip(`<b>Freedom level ${d.level}</b>`+
+      `<div class="row"><span class="muted">life satisfaction</span><b>${d.life.toFixed(2)}</b></div>`+
+      `<div class="row"><span class="muted">happiness (1–4)</span><b>${d.happy.toFixed(2)}</b></div>`+
+      `<div class="row"><span class="muted">N</span><b>${d.n.toLocaleString()}</b></div>`,ev))
+    .on("mouseleave",hideTip)
+    .on("focus",function(ev,d){const r=this.getBoundingClientRect();showTip(`<b>Freedom ${d.level}</b><div class="row"><span class="muted">life sat</span><b>${d.life.toFixed(2)}</b></div>`,{clientX:r.x+r.width/2,clientY:r.y});})
+    .on("blur",hideTip);
+  [rows[0],rows[rows.length-1]].forEach((d,i)=>g.append("text").attr("class","smcap").attr("fill",C.free_deep).attr("font-weight",700)
+    .attr("x",x(d.level)).attr("y",y(d.life)+(i?-14:22)).attr("text-anchor","middle").text(d.life.toFixed(1)));
+  document.getElementById("cap-grad").innerHTML=`Life satisfaction climbs from ${DATA.grad[0].life.toFixed(1)} at the lowest sense of control to ${DATA.grad[DATA.grad.length-1].life.toFixed(1)} at the highest — a ${DATA.headline.life_span.toFixed(1)}-point rise. Weighted by S017; pooled 1981–2022.`;
+  const t=d3.select("#chart-grad").append("table").attr("class","fallback").style("display","none");
+  t.append("caption").text("Mean life satisfaction by sense of freedom"); const hr=t.append("thead").append("tr");
+  ["Freedom","Life satisfaction","N"].forEach(s=>hr.append("th").text(s)); const tb=t.append("tbody");
+  rows.forEach(d=>{const r=tb.append("tr"); r.append("td").text(d.level); r.append("td").text(d.life.toFixed(2)); r.append("td").text(d.n);});
+})();
+
+/* ===== HORSE RACE ===== */
+(function(){
+  const W=1000,H=230,M={t:18,r:60,b:44,l:150};
+  const svg=d3.select("#chart-race").append("svg").attr("viewBox",`0 0 ${W} ${H}`).attr("width","100%")
+    .attr("role","img").attr("aria-label","Bar chart: standardized coefficients — sense of freedom largest, then health, then income.");
+  const g=svg.append("g").attr("transform",`translate(${M.l},${M.t})`);
+  const iw=W-M.l-M.r, ih=H-M.t-M.b;
+  const hr=DATA.hr_overall;
+  const bars=[{k:"free",label:"Sense of freedom & control",v:hr.free,c:C.free},
+              {k:"health",label:"Health",v:hr.health,c:C.health},
+              {k:"income",label:"Income (subjective)",v:hr.income,c:C.income}];
+  const x=d3.scaleLinear().domain([0,0.35]).range([0,iw]);
+  const y=d3.scaleBand().domain(bars.map(b=>b.label)).range([0,ih]).padding(0.34);
+  g.append("g").selectAll("line").data(x.ticks(7)).join("line").attr("x1",d=>x(d)).attr("x2",d=>x(d))
+    .attr("y1",0).attr("y2",ih).attr("stroke","var(--hair-soft)");
+  g.append("g").selectAll("text.xt").data(x.ticks(7)).join("text").attr("class","axlab")
+    .attr("x",d=>x(d)).attr("y",ih+22).attr("text-anchor","middle").text(d=>d.toFixed(2));
+  g.append("text").attr("class","smcap").attr("x",iw/2).attr("y",ih+40).attr("text-anchor","middle").text("standardized coefficient on life satisfaction (within country) →");
+  g.selectAll("rect").data(bars).join("rect").attr("x",0).attr("y",d=>y(d.label)).attr("height",y.bandwidth())
+    .attr("width",d=>x(d.v)).attr("rx",4).attr("fill",d=>d.c)
+    .attr("tabindex",0).attr("role","button").attr("aria-label",d=>`${d.label}: ${d.v}`)
+    .on("mousemove",(ev,d)=>showTip(`<b>${d.label}</b><div class="row"><span class="muted">β</span><b>${d.v.toFixed(3)}</b></div>`,ev)).on("mouseleave",hideTip);
+  g.selectAll("text.bl").data(bars).join("text").attr("class","bl").attr("x",-14).attr("y",d=>y(d.label)+y.bandwidth()/2+4)
+    .attr("text-anchor","end").attr("font-family","var(--sans)").attr("font-size",13.5).attr("font-weight",600).attr("fill","var(--ink-dim)").text(d=>d.label);
+  g.selectAll("text.bv").data(bars).join("text").attr("class","bv").attr("x",d=>x(d.v)+8).attr("y",d=>y(d.label)+y.bandwidth()/2+4)
+    .attr("font-family","var(--sans)").attr("font-size",13).attr("font-weight",700).attr("fill",d=>d.c).text(d=>d.v.toFixed(2));
+  document.getElementById("cap-race").innerHTML=`Standardized within-country WLS, N ${hr.n.toLocaleString()}. The sense of freedom (${hr.free.toFixed(2)}) outweighs health (${hr.health.toFixed(2)}) and income (${hr.income.toFixed(2)}). Both freedom and the others are net of each other; association, not causation.`;
+})();
+
+/* ===== COUNTRY SCATTER ===== */
+(function(){
+  const pts=DATA.country_pts, fit=DATA.fit, REG=C.region;
+  const named=new Set([...fit.over,...fit.under]);
+  // legend
+  const regions=[...new Set(pts.map(p=>p.region).filter(Boolean))];
+  const leg=d3.select("#leg-scatter");
+  regions.forEach(r=>{const s=leg.append("span").attr("class","li");
+    s.append("span").attr("class","dot").style("background",REG[r]||"#999"); s.append("text").text(r);});
+  const W=1000,H=560,M={t:20,r:24,b:54,l:54};
+  const svg=d3.select("#chart-scatter").append("svg").attr("viewBox",`0 0 ${W} ${H}`).attr("width","100%")
+    .attr("role","img").attr("aria-label","Scatter: country mean sense of freedom against mean life satisfaction, correlation 0.77.");
+  const g=svg.append("g").attr("transform",`translate(${M.l},${M.t})`);
+  const iw=W-M.l-M.r, ih=H-M.t-M.b;
+  const x=d3.scaleLinear().domain([4.7,8.5]).range([0,iw]);
+  const y=d3.scaleLinear().domain([3.6,8.7]).range([ih,0]);
+  g.append("g").selectAll("line.v").data(x.ticks(6)).join("line").attr("x1",d=>x(d)).attr("x2",d=>x(d)).attr("y1",0).attr("y2",ih).attr("stroke","var(--hair-soft)");
+  g.append("g").selectAll("line.h").data(y.ticks(6)).join("line").attr("x1",0).attr("x2",iw).attr("y1",d=>y(d)).attr("y2",d=>y(d)).attr("stroke","var(--hair-soft)");
+  g.append("g").selectAll("text.xt").data(x.ticks(6)).join("text").attr("class","axlab").attr("x",d=>x(d)).attr("y",ih+22).attr("text-anchor","middle").text(d=>d.toFixed(0));
+  g.append("g").selectAll("text.yt").data(y.ticks(6)).join("text").attr("class","axlab").attr("x",-10).attr("y",d=>y(d)+4).attr("text-anchor","end").text(d=>d.toFixed(0));
+  g.append("text").attr("class","smcap").attr("x",iw/2).attr("y",ih+42).attr("text-anchor","middle").text("country mean sense of freedom &amp; control →");
+  g.append("text").attr("class","smcap").attr("transform",`translate(-38,${ih/2}) rotate(-90)`).attr("text-anchor","middle").text("country mean life satisfaction →");
+  // fit line
+  const xa=fit.x0-0.1, xb=fit.x1+0.1;
+  g.append("line").attr("x1",x(xa)).attr("y1",y(fit.intercept+fit.slope*xa)).attr("x2",x(xb)).attr("y2",y(fit.intercept+fit.slope*xb))
+    .attr("stroke","var(--ink-dim)").attr("stroke-width",1.6).attr("stroke-dasharray","6 4").attr("opacity",.6);
+  g.selectAll("circle").data(pts).join("circle").attr("cx",d=>x(d.free)).attr("cy",d=>y(d.life)).attr("r",d=>named.has(d.country)?6:4.4)
+    .attr("fill",d=>REG[d.region]||"#999").attr("opacity",.82).attr("stroke",d=>named.has(d.country)?"var(--ink)":"none").attr("stroke-width",1.2)
+    .attr("tabindex",0).attr("role","button").attr("aria-label",d=>`${d.country}: freedom ${d.free.toFixed(1)}, life satisfaction ${d.life.toFixed(1)}`)
+    .on("mousemove",(ev,d)=>showTip(`<b>${d.country}</b>`+
+      `<div class="row"><span class="muted">sense of freedom</span><b>${d.free.toFixed(2)}</b></div>`+
+      `<div class="row"><span class="muted">life satisfaction</span><b>${d.life.toFixed(2)}</b></div>`+
+      `<div class="row"><span class="muted">N</span><b>${d.n.toLocaleString()}</b></div>`,ev))
+    .on("mouseleave",hideTip)
+    .on("focus",function(ev,d){const r=this.getBoundingClientRect();showTip(`<b>${d.country}</b><div class="row"><span class="muted">freedom</span><b>${d.free.toFixed(2)}</b></div><div class="row"><span class="muted">life sat</span><b>${d.life.toFixed(2)}</b></div>`,{clientX:r.x+r.width/2,clientY:r.y});})
+    .on("blur",hideTip);
+  // labels for outliers
+  g.selectAll("text.lbl").data(pts.filter(d=>named.has(d.country))).join("text").attr("class","smcap")
+    .attr("x",d=>x(d.free)+8).attr("y",d=>y(d.life)+(fit.over.includes(d.country)?-7:13)).attr("fill","var(--ink-dim)").attr("font-weight",700).text(d=>d.country);
+  g.append("text").attr("class","smcap").attr("x",iw-4).attr("y",14).attr("text-anchor","end").attr("fill","var(--ink-dim)").attr("font-weight",700).text(`r = ${fit.r.toFixed(2)} · ${fit.n_countries} countries`);
+  document.getElementById("cap-scatter").innerHTML=`Each country's pooled weighted means. The dashed line is the cross-country fit (r = ${fit.r.toFixed(2)}). Outlined, labelled points are the biggest residuals — above the line (e.g. Netherlands, Japan) or below it (e.g. Tanzania, Moldova). Each country weighted equally.`;
+  const t=d3.select("#chart-scatter").append("table").attr("class","fallback").style("display","none");
+  t.append("caption").text("Country means: sense of freedom and life satisfaction"); const hr=t.append("thead").append("tr");
+  ["Country","Freedom","Life satisfaction"].forEach(s=>hr.append("th").text(s)); const tb=t.append("tbody");
+  pts.slice().sort((a,b)=>b.life-a.life).forEach(d=>{const r=tb.append("tr"); r.append("td").text(d.country); r.append("td").text(d.free.toFixed(2)); r.append("td").text(d.life.toFixed(2));});
+})();
+</script>
+<!--SL_BOOKNAV_START-->
+<style>
+.slbn{font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;background:#0f1417;border-top:1px solid #27313a;color:#9fb0ba;padding:24px 20px 40px;margin:48px 0 0}
+.slbn-in{max-width:1080px;margin:0 auto;display:flex;align-items:stretch;gap:12px}
+.slbn a{flex:1 1 0;min-width:0;text-decoration:none;color:inherit;border:1px solid #27313a;border-radius:10px;padding:13px 15px;display:flex;flex-direction:column;gap:4px;background:#161d22;transition:border-color .15s,transform .15s}
+.slbn a:hover{border-color:#3fa9a0;transform:translateY(-2px)}
+.slbn a:focus-visible{outline:2px solid #3fa9a0;outline-offset:2px}
+.slbn a.slbn-next{text-align:right;align-items:flex-end}
+.slbn a.slbn-toc{flex:0 0 auto;min-width:120px;justify-content:center;align-items:center;text-align:center}
+.slbn .slbn-dir{font:700 10px/1 inherit;letter-spacing:.13em;text-transform:uppercase;color:#6b7c87}
+.slbn .slbn-ttl{font:700 14px/1.3 inherit;color:#eef2f4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.slbn a.slbn-disabled{opacity:.38;pointer-events:none}
+@media(max-width:640px){.slbn-in{flex-wrap:wrap}.slbn a{flex:1 1 100%}.slbn a.slbn-next{text-align:left;align-items:flex-start}.slbn a.slbn-toc{order:-1}}
+</style>
+<nav class="slbn" aria-label="Book navigation"><div class="slbn-in"><a class="slbn-prev" href="../read.html?ch=the-changing-recipe" target="_top"><span class="slbn-dir">‹ Previous</span><span class="slbn-ttl">The Changing Recipe of a Good Life</span></a><a class="slbn-toc" href="../index.html#book" target="_top"><span class="slbn-dir">The Scissors</span><span class="slbn-ttl">Chapter 7 / 36</span></a><a class="slbn-next" href="../read.html?ch=marriage-premium" target="_top"><span class="slbn-dir">Next ›</span><span class="slbn-ttl">Does the Ring Still Matter?</span></a></div></nav>
+<!--SL_BOOKNAV_END-->
+</body>
+</html>

@@ -1,0 +1,873 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reading · The Scissors</title>
+<style>
+ :root{
+   --bg:#0f1417;--panel:#161d22;--edge:#27313a;--edge2:#33414c;--ink:#eef2f4;--dim:#9fb0ba;--faint:#6b7c87;
+   --eval:#3fa9a0;--exp:#e0794a;--gap:#8d7bd8;
+   --sans:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;--serif:Charter,Georgia,"Times New Roman",serif;
+   --bar:54px;
+ }
+ *{box-sizing:border-box}
+ html,body{height:100%}
+ body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);display:flex;flex-direction:column;overflow:hidden}
+ a{color:inherit;text-decoration:none}
+ /* ---- bar ---- */
+ .bar{height:var(--bar);flex:0 0 auto;display:flex;align-items:center;gap:12px;padding:0 14px;
+   background:var(--panel);border-bottom:1px solid var(--edge);position:relative;z-index:20}
+ .left,.right{display:flex;align-items:center;gap:8px;flex:0 0 auto}
+ .center{flex:1 1 auto;min-width:0;text-align:center;display:flex;flex-direction:column;align-items:center;gap:1px}
+ .toc-btn,.navbtn,.home{appearance:none;border:1px solid var(--edge2);background:transparent;color:var(--dim);
+   font:600 13px/1 var(--sans);padding:8px 11px;border-radius:8px;cursor:pointer;display:inline-flex;align-items:center;gap:7px;
+   transition:.15s;white-space:nowrap}
+ .toc-btn:hover,.navbtn:hover:not(:disabled),.home:hover{color:var(--ink);border-color:var(--dim)}
+ .navbtn:disabled{opacity:.32;cursor:default}
+ .toc-btn:focus-visible,.navbtn:focus-visible,.home:focus-visible{outline:2px solid var(--eval);outline-offset:2px}
+ .home svg{display:block}
+ .c-part{font:700 10.5px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--faint);
+   max-width:90vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+ .c-title{font:700 14px/1.2 var(--sans);color:var(--ink);max-width:48ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+ .c-num{color:var(--eval)}
+ .progress{height:2px;background:var(--edge);flex:0 0 auto;position:relative;z-index:20}
+ .progress > i{display:block;height:100%;background:linear-gradient(90deg,var(--exp),var(--eval));transition:width .3s ease}
+ /* ---- frame ---- */
+ .frame{flex:1 1 auto;position:relative}
+ iframe{width:100%;height:100%;border:0;background:var(--bg);display:block}
+ /* ---- contents drawer ---- */
+ .scrim{position:fixed;inset:0;background:rgba(8,11,13,.6);opacity:0;visibility:hidden;transition:.2s;z-index:30}
+ .scrim.open{opacity:1;visibility:visible}
+ .drawer{position:fixed;top:0;left:0;height:100%;width:min(420px,90vw);background:var(--panel);
+   border-right:1px solid var(--edge);transform:translateX(-100%);transition:transform .24s ease;z-index:40;
+   display:flex;flex-direction:column}
+ .drawer.open{transform:none}
+ @media (prefers-reduced-motion:reduce){.drawer,.scrim,.progress>i{transition:none}}
+ .dhead{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--edge)}
+ .dhead .t{font:800 15px/1 var(--sans);letter-spacing:-.01em}
+ .dclose{appearance:none;border:0;background:transparent;color:var(--dim);font:600 22px/1 var(--sans);cursor:pointer;padding:2px 6px}
+ .dclose:hover{color:var(--ink)}
+ .dlist{overflow-y:auto;padding:8px 0 24px}
+ .dpart{font:700 10.5px/1.2 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--faint);
+   padding:16px 18px 6px}
+ .dpart.appendix{color:var(--exp)}
+ .drow{display:grid;grid-template-columns:30px 1fr;gap:10px;align-items:baseline;padding:8px 18px;cursor:pointer;
+   text-decoration:none;color:var(--dim);transition:background .12s,color .12s}
+ .drow:hover{background:var(--bg);color:var(--ink)}
+ .drow.cur{color:var(--ink);background:#10171b}
+ .drow.cur .drn{color:var(--eval)}
+ .drn{font:600 13px/1 var(--serif);color:var(--faint);font-variant-numeric:tabular-nums}
+ .drt{font:600 13.5px/1.35 var(--sans)}
+ .drow.cur .drt{box-shadow:none}
+ @media(max-width:620px){
+   .c-title{display:none}.bar{gap:8px;padding:0 10px}
+   .toc-btn span.lbl{display:none}.navbtn span.lbl{display:none}.home span{display:none}
+ }
+</style></head>
+<body>
+  <div class="bar">
+    <div class="left">
+      <a class="home" href="index.html#book" aria-label="Back to contents">
+        <svg width="26" height="17" viewBox="0 0 60 40" aria-hidden="true">
+          <circle cx="8" cy="20" r="3.2" fill="none" stroke="var(--gap)" stroke-width="2"/>
+          <path d="M8,20 C24,19 42,12 58,5" fill="none" stroke="var(--eval)" stroke-width="2.6" stroke-linecap="round"/>
+          <path d="M8,20 C24,21 42,28 58,35" fill="none" stroke="var(--exp)" stroke-width="2.6" stroke-linecap="round"/>
+        </svg><span>Contents</span>
+      </a>
+      <button class="toc-btn" id="toc-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="drawer">
+        <svg width="14" height="12" viewBox="0 0 14 12" aria-hidden="true"><path d="M1,1h12M1,6h12M1,11h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <span class="lbl">Chapters</span>
+      </button>
+    </div>
+    <div class="center">
+      <div class="c-part" id="c-part"></div>
+      <div class="c-title" id="c-title"></div>
+    </div>
+    <div class="right">
+      <button class="navbtn" id="prev" aria-label="Previous chapter">◀<span class="lbl">&nbsp;Prev</span></button>
+      <button class="navbtn" id="next" aria-label="Next chapter"><span class="lbl">Next&nbsp;</span>▶</button>
+    </div>
+  </div>
+  <div class="progress"><i id="progbar"></i></div>
+  <div class="frame">
+    <iframe id="frame" title="Chapter" allow="fullscreen"></iframe>
+  </div>
+
+  <div class="scrim" id="scrim"></div>
+  <aside class="drawer" id="drawer" aria-label="Table of contents" aria-hidden="true">
+    <div class="dhead"><span class="t">Contents</span><button class="dclose" id="dclose" aria-label="Close contents">×</button></div>
+    <div class="dlist" id="dlist"></div>
+  </aside>
+
+<script>
+const BOOK = {
+ "title": "The Scissors",
+ "subtitle": "A data-journalism book in charts",
+ "thesis": "Two ways of measuring a life are coming apart. The evaluative blade — how people rate their lives — holds or climbs. The experiential blade — how their days feel, and how connected and hopeful they are — falls, and since 2020 has not recovered. A life can be rated higher and lived worse at the same time.",
+ "backbones": "Hand-built in D3 from the GSS (1972–2024), Gallup US Daily, the Gallup World Poll (2005–2025) and the EVS–WVS Values Surveys.",
+ "n_main": 36,
+ "n_total": 39,
+ "parts": [
+  {
+   "part": "Prologue",
+   "sub": "The two blades, drawn once",
+   "appendix": false,
+   "chapters": [
+    {
+     "slug": "the-scissors",
+     "href": "the-scissors/index.html",
+     "title": "The Scissors",
+     "dek": "Two ways of measuring a life are coming apart: the rating people give it holds or climbs while the daily feel of it sinks. Across the Gallup World Poll, the GSS, and the Values Surveys, the gap between the evaluative and experiential blades keeps widening.",
+     "dataset": "Gallup World Poll 2006–2025 + GSS 1972–2024 + EVS–WVS",
+     "is_new": true,
+     "part": "Prologue",
+     "appendix": false,
+     "num": 1
+    }
+   ]
+  },
+  {
+   "part": "Part I — The Resilient Ladder",
+   "sub": "The upper blade: what holds and rises",
+   "appendix": false,
+   "chapters": [
+    {
+     "slug": "plateau-in-the-tail",
+     "href": "plateau-in-the-tail/index.html",
+     "title": "The Plateau Is in the Tail, Not the Mean",
+     "dek": "For more than a decade, social science fought over whether money stops buying happiness around $75,000. Re-run the question on 1.8 million Gallup interviews — the same survey the fight began on — and the answer is that everyone was staring at the wrong line.",
+     "dataset": "Gallup US Daily ('Motherlode' extract), 2009–2017 (affect items 2009–2012)",
+     "is_new": false,
+     "part": "Part I — The Resilient Ladder",
+     "appendix": false,
+     "num": 2
+    },
+    {
+     "slug": "money-buys-calm-not-joy",
+     "href": "money-buys-calm-not-joy/index.html",
+     "title": "Money Buys Calm, Not Joy",
+     "dek": "Across the income ladder, how people rate their lives climbs steeply while daily enjoyment plateaus above poverty and stress barely moves — what money most clearly buys is freedom from worry.",
+     "dataset": "Gallup US Daily ('Motherlode' extract), 2008–2012",
+     "is_new": false,
+     "part": "Part I — The Resilient Ladder",
+     "appendix": false,
+     "num": 3
+    },
+    {
+     "slug": "income-life-vs-mood",
+     "href": "income-life-vs-mood/index.html",
+     "title": "Money Moves Your Life Rating More Than Your Mood",
+     "dek": "Inside almost every country, richer people both rate their lives higher and feel better day to day — but the life-rating slope is steeper than the mood slope in 96% of countries, and the gap widens with development.",
+     "dataset": "Gallup World Poll, 2005–2020 (155 countries)",
+     "is_new": false,
+     "part": "Part I — The Resilient Ladder",
+     "appendix": false,
+     "num": 4
+    },
+    {
+     "slug": "the-great-convergence",
+     "href": "the-great-convergence/index.html",
+     "title": "The Great Convergence",
+     "dek": "Since 1981 national life satisfaction grew more alike: the post-communist world climbed ~2 points out of its mid-1990s trough (Albania +2.4, Ukraine +2.2) while some wealthy nations slipped, and the cross-country spread fell 49%.",
+     "dataset": "Integrated EVS-WVS (Values Surveys), 1981-2022 (S017)",
+     "is_new": false,
+     "part": "Part I — The Resilient Ladder",
+     "appendix": false,
+     "num": 5
+    },
+    {
+     "slug": "the-changing-recipe",
+     "href": "the-changing-recipe/index.html",
+     "title": "The Changing Recipe of a Good Life",
+     "dek": "Run the same model of life satisfaction in poor and rich countries and the ingredients shift: financial satisfaction’s grip eases, the sense of freedom nearly doubles in weight (0.14→0.27), and the pull of relative income rank fades to zero.",
+     "dataset": "Integrated EVS-WVS (Values Surveys), 1981-2022 (S017)",
+     "is_new": false,
+     "part": "Part I — The Resilient Ladder",
+     "appendix": false,
+     "num": 6
+    },
+    {
+     "slug": "the-freedom-to-be-happy",
+     "href": "the-freedom-to-be-happy/index.html",
+     "title": "The Freedom to Be Happy",
+     "dek": "Across 100+ countries and 40 years of the Values Surveys, the sense of freedom and control over one’s life predicts life satisfaction better than income or health — a within-country coefficient of 0.30, and r=0.77 across 107 national averages.",
+     "dataset": "Integrated EVS-WVS (Values Surveys), 1981-2022 (S017)",
+     "is_new": false,
+     "part": "Part I — The Resilient Ladder",
+     "appendix": false,
+     "num": 7
+    },
+    {
+     "slug": "marriage-premium",
+     "href": "marriage-premium/index.html",
+     "title": "Does the Ring Still Matter?",
+     "dek": "For fifty years, married Americans have reported more happiness than everyone else — a gap that has barely budged, and that survives even after you account for who tends to marry.",
+     "dataset": "General Social Survey, 1972–2024 (weight wtssps)",
+     "is_new": false,
+     "part": "Part I — The Resilient Ladder",
+     "appendix": false,
+     "num": 8
+    }
+   ]
+  },
+  {
+   "part": "Part II — The Falling Day",
+   "sub": "The lower blade: distress rises and sticks",
+   "appendix": false,
+   "chapters": [
+    {
+     "slug": "the-mood-that-didnt-lift",
+     "href": "the-mood-that-didnt-lift/index.html",
+     "title": "The Mood That Didn't Lift",
+     "dek": "From 2006 to 2025 the world's life-rating climbed back to a record high, but daily negative emotion stayed elevated — and peaked in 2022, not 2020. The recovery reached the ladder, not the day.",
+     "dataset": "Gallup World Poll, 2006–2025 (population-weighted)",
+     "is_new": true,
+     "part": "Part II — The Falling Day",
+     "appendix": false,
+     "num": 9
+    },
+    {
+     "slug": "worst-year",
+     "href": "worst-year/index.html",
+     "title": "2020 Was Not the End",
+     "dek": "Re-examined across the full 2017–2025 arc, 2020's shock looks different: the world's life-rating recovered past its pre-pandemic baseline (+0.41 ladder points) while daily distress only half receded — and the worst year for negative emotion was 2022, not 2020.",
+     "dataset": "Gallup World Poll, 2017–2025 (115-country fixed panel)",
+     "is_new": true,
+     "part": "Part II — The Falling Day",
+     "appendix": false,
+     "num": 10
+    },
+    {
+     "slug": "despair-felt-and-fatal",
+     "href": "despair-felt-and-fatal/index.html",
+     "title": "Despair, Felt and Fatal",
+     "dek": "Deaths of despair gave America a mortality map. Buried in 1,769,079 Gallup interviews is the question that map raises: which feeling lives in the places where people die? Not sadness. Not worry. Pain — and a future that looks shorter than the present.",
+     "dataset": "Gallup US Daily ('Motherlode' extract), 2008–2012 + county despair-mortality join (1,341 counties)",
+     "is_new": false,
+     "part": "Part II — The Falling Day",
+     "appendix": false,
+     "num": 11
+    }
+   ]
+  },
+  {
+   "part": "Part III — The Generations Split",
+   "sub": "The life-cycle of well-being inverts",
+   "appendix": false,
+   "chapters": [
+    {
+     "slug": "young-and-less-happy",
+     "href": "young-and-less-happy/index.html",
+     "title": "Young and Less Happy",
+     "dek": "In the GSS, happiness has always risen gently with age. Over the past decade the youngest adults fell to a 50-year low — 1.80 in 2021, 1.91 in 2024 — pulling away from everyone else.",
+     "dataset": "General Social Survey, 1972–2024",
+     "is_new": false,
+     "part": "Part III — The Generations Split",
+     "appendix": false,
+     "num": 12
+    },
+    {
+     "slug": "the-u-curve-inverts",
+     "href": "the-u-curve-inverts/index.html",
+     "title": "The U-Curve Inverts",
+     "dek": "The midlife dip and old-age rebound was a 20th-century pattern. In the rich world the young have lost their lead: the young-minus-old life-rating gap swung from +0.46 to −0.06 as the young fell and the old held.",
+     "dataset": "Gallup World Poll 2010–2025 + GSS",
+     "is_new": true,
+     "part": "Part III — The Generations Split",
+     "appendix": false,
+     "num": 13
+    },
+    {
+     "slug": "global-ageing-and-happiness",
+     "href": "global-ageing-and-happiness/index.html",
+     "title": "The Two Clocks of Growing Old",
+     "dek": "As people age worldwide, the mind's agitations fall — stress peaks in midlife and anger hits a lifetime low by 65+ — while pain (18%→47%), sadness and health limits climb. Whether old-age worry eases or deepens is sorted by money: 0.31 in rich countries vs 0.47 in poor.",
+     "dataset": "Gallup World Poll, 2005–2020 (165 countries, 2.28M interviews)",
+     "is_new": false,
+     "part": "Part III — The Generations Split",
+     "appendix": false,
+     "num": 14
+    }
+   ]
+  },
+  {
+   "part": "Part IV — The Fraying Cord",
+   "sub": "Why the lower blade falls: connection erodes",
+   "appendix": false,
+   "chapters": [
+    {
+     "slug": "long-retreat-of-trust",
+     "href": "long-retreat-of-trust/index.html",
+     "title": "The Long Retreat of Trust",
+     "dek": "The share of Americans who say most people can be trusted has nearly halved since 1972 — 47% to 25% — while the durable happiness gap between trusters and the wary held firm.",
+     "dataset": "General Social Survey, 1972–2024",
+     "is_new": false,
+     "part": "Part IV — The Fraying Cord",
+     "appendix": false,
+     "num": 15
+    },
+    {
+     "slug": "fifty-years-of-evenings",
+     "href": "fifty-years-of-evenings/index.html",
+     "title": "Fifty Years of American Evenings",
+     "dek": "Since 1974 the General Social Survey has asked the same four questions: how often do you spend an evening with relatives, with friends, with neighbors, at a bar? The company thinned. The glow stayed. And the people who still gather now look happier, relative to those who don’t, than they did when the asking began.",
+     "dataset": "General Social Survey, 1974–2024 (weight wtssps)",
+     "is_new": false,
+     "part": "Part IV — The Fraying Cord",
+     "appendix": false,
+     "num": 16
+    },
+    {
+     "slug": "someone-to-count-on",
+     "href": "someone-to-count-on/index.html",
+     "title": "Someone to Count On",
+     "dek": "Having someone to count on is worth about 1.5 ladder points — one of the largest gaps in well-being — and a generous welfare state, far from substituting for it, makes that private safety net matter more, not less.",
+     "dataset": "Gallup World Poll, 2005–2020 (155 countries)",
+     "is_new": false,
+     "part": "Part IV — The Fraying Cord",
+     "appendix": false,
+     "num": 17
+    },
+    {
+     "slug": "the-pew-not-the-prayer",
+     "href": "the-pew-not-the-prayer/index.html",
+     "title": "The Pew, Not the Prayer",
+     "dek": "Religion is good for happiness — but it's the showing up, not the believing, that does the work: attendance carries roughly twice the happiness of private prayer or belief, and survives when both are entered together.",
+     "dataset": "General Social Survey, 1972–2024 (weight wtssps)",
+     "is_new": false,
+     "part": "Part IV — The Fraying Cord",
+     "appendix": false,
+     "num": 18
+    },
+    {
+     "slug": "losing-my-religion",
+     "href": "losing-my-religion/index.html",
+     "title": "Losing My Religion",
+     "dek": "Americans leave the faith they were raised in at four times the rate they did fifty years ago — and what that costs in happiness depends less on where you started than on where you stand now.",
+     "dataset": "General Social Survey, 1972–2022 (weight wtssps)",
+     "is_new": false,
+     "part": "Part IV — The Fraying Cord",
+     "appendix": false,
+     "num": 19
+    },
+    {
+     "slug": "does-generosity-pay",
+     "href": "does-generosity-pay/index.html",
+     "title": "Does Generosity Pay — Everywhere?",
+     "dek": "Across 155 countries, people who give — money, time, or a hand to a stranger — rate their lives higher and feel better day to day; the link holds in rich countries and poor ones alike, and is strongest for giving money.",
+     "dataset": "Gallup World Poll, 2005–2020 (155 countries)",
+     "is_new": false,
+     "part": "Part IV — The Fraying Cord",
+     "appendix": false,
+     "num": 20
+    },
+    {
+     "slug": "alone",
+     "href": "alone/index.html",
+     "title": "Alone",
+     "dek": "Half a century of GSS data traces a quiet, broad withdrawal from in-person life — neighbors most of all — and the steep happiness gap that separates the connected from the isolated.",
+     "dataset": "General Social Survey, 1974–2024",
+     "is_new": true,
+     "part": "Part IV — The Fraying Cord",
+     "appendix": false,
+     "num": 21
+    }
+   ]
+  },
+  {
+   "part": "Part V — The Broken Promise",
+   "sub": "The future blade: comparison and expectation",
+   "appendix": false,
+   "chapters": [
+    {
+     "slug": "out-of-reach",
+     "href": "out-of-reach/index.html",
+     "title": "Out of Reach — When the American Dream Stopped Feeling Possible",
+     "dek": "The belief that the system gives you a fair shot has quietly collapsed — agreement fell from 78% in 2000 to 45% in 2024 — and that belief is worth real happiness.",
+     "dataset": "General Social Survey, 1987–2024 (weight wtssps)",
+     "is_new": false,
+     "part": "Part V — The Broken Promise",
+     "appendix": false,
+     "num": 22
+    },
+    {
+     "slug": "the-optimism-gap",
+     "href": "the-optimism-gap/index.html",
+     "title": "The Optimism Gap",
+     "dek": "Americans disagree enormously about how much better their lives will get — and the least hopeful group is the white working class, not the poor of color.",
+     "dataset": "Gallup US Daily, 2008–2017 (unweighted)",
+     "is_new": false,
+     "part": "Part V — The Broken Promise",
+     "appendix": false,
+     "num": 23
+    },
+    {
+     "slug": "the-satisfaction-treadmill",
+     "href": "the-satisfaction-treadmill/index.html",
+     "title": "The Satisfaction Treadmill",
+     "dek": "Real family incomes rose about a third from 1972 to 2022, but Americans' satisfaction with their finances never followed — the share 'pretty well satisfied' fell from 33% to 23%, and beneath the flat average the top and bottom thirds pulled apart from 0.43 to 0.62 points.",
+     "dataset": "General Social Survey, 1972-2024 (wtssps)",
+     "is_new": false,
+     "part": "Part V — The Broken Promise",
+     "appendix": false,
+     "num": 24
+    },
+    {
+     "slug": "flip-counties-felt-it-first",
+     "href": "flip-counties-felt-it-first/index.html",
+     "title": "The Flip Counties Felt It First",
+     "dek": "In the 223 counties that voted for Barack Obama in 2012 and Donald Trump in 2016, people rated their day-to-day lives almost exactly like residents of similar counties that never flipped. What sagged, years before any ballots were cast, was the future.",
+     "dataset": "Gallup US Daily ('Motherlode' extract), 2008–2016 (2017 coda) + MIT/MEDSL county election join",
+     "is_new": false,
+     "part": "Part V — The Broken Promise",
+     "appendix": false,
+     "num": 25
+    },
+    {
+     "slug": "feeling-behind",
+     "href": "feeling-behind/index.html",
+     "title": "Feeling Behind",
+     "dek": "Financial satisfaction tracks where Americans think they rank more than the dollars they actually have: the perceived-rank gradient spans a full point and saturates at the top, and adding rank to a model collapses the income effect by about 61%.",
+     "dataset": "General Social Survey, 1972-2024 (wtssps)",
+     "is_new": false,
+     "part": "Part V — The Broken Promise",
+     "appendix": false,
+     "num": 26
+    },
+    {
+     "slug": "keeping-up-with-the-county",
+     "href": "keeping-up-with-the-county/index.html",
+     "title": "Keeping Up With the County",
+     "dek": "Take two Americans on the same paycheck and drop one in a richer county — the comparison drags down the middle, barely touches the rich, and slightly lifts the poor.",
+     "dataset": "Gallup US Daily, 2008–2017 (unweighted) + county income context",
+     "is_new": false,
+     "part": "Part V — The Broken Promise",
+     "appendix": false,
+     "num": 27
+    }
+   ]
+  },
+  {
+   "part": "Part VI — Whose Blade Fell",
+   "sub": "The divergence is unequal — place and identity",
+   "appendix": false,
+   "chapters": [
+    {
+     "slug": "geography-of-american-thriving",
+     "href": "geography-of-american-thriving/index.html",
+     "title": "The Geography of American Thriving",
+     "dek": "Across 2.46 million interviews, the share of Americans 'thriving' in how they rate their lives spans about 19 points between states — and at the county level it tracks income, rurality, and deaths of despair.",
+     "dataset": "Gallup US Daily ('Motherlode' extract), 2008–2017",
+     "is_new": false,
+     "part": "Part VI — Whose Blade Fell",
+     "appendix": false,
+     "num": 28
+    },
+    {
+     "slug": "happiness-moved-inside-borders",
+     "href": "happiness-moved-inside-borders/index.html",
+     "title": "Happiness Moved Inside Borders",
+     "dek": "From 2006 to 2019 the world grew happier and nations grew more alike — but inside 39 of 42 countries, the distance between the happiest and unhappiest citizens widened.",
+     "dataset": "Gallup World Poll, 2006–2019 (42-country balanced panel)",
+     "is_new": false,
+     "part": "Part VI — Whose Blade Fell",
+     "appendix": false,
+     "num": 29
+    },
+    {
+     "slug": "black-white-two-measures",
+     "href": "black-white-two-measures/index.html",
+     "title": "Lower on the Ladder, Lighter in the Day",
+     "dek": "Ask whether Black or white Americans are happier and the honest answer is: by which measure? They rate their current lives slightly lower, yet report calmer days — less worry and less stress — at every income level, and most among the affluent.",
+     "dataset": "GSS 1972–2024 (wtssps) + Gallup US Daily 2008–2017 (unweighted)",
+     "is_new": false,
+     "part": "Part VI — Whose Blade Fell",
+     "appendix": false,
+     "num": 30
+    },
+    {
+     "slug": "gender-gap-two-ways",
+     "href": "gender-gap-two-ways/index.html",
+     "title": "The Gender Well-Being Paradox, Measured Two Ways",
+     "dek": "Across 155 countries, women rate their lives at least as high as men in nine of every ten places — yet report more daily worry, sadness, and stress. Two gender gaps, pointing opposite ways.",
+     "dataset": "Gallup World Poll, 2005–2020 (155 countries)",
+     "is_new": false,
+     "part": "Part VI — Whose Blade Fell",
+     "appendix": false,
+     "num": 31
+    },
+    {
+     "slug": "out-of-place",
+     "href": "out-of-place/index.html",
+     "title": "Out of Place — The Geography of the LGBT Well-Being Gap",
+     "dek": "Daily distress runs high for LGBT Americans everywhere, but how poorly they rate their lives widens where the county climate turns hostile — and in those same places, fewer people say they are LGBT at all, so the widening gap is a lower bound.",
+     "dataset": "Gallup US Daily, 2012–2017 (unweighted) + county/state context",
+     "is_new": false,
+     "part": "Part VI — Whose Blade Fell",
+     "appendix": false,
+     "num": 32
+    },
+    {
+     "slug": "feeling-rich-being-rich",
+     "href": "feeling-rich-being-rich/index.html",
+     "title": "Feeling Rich Is Not the Same as Being Rich",
+     "dek": "Money buys the feeling of enough everywhere and never stops — but Central Asia feels richer than its GDP, southern Africa poorer, and the countries that rate their lives best are not the ones that feel paid.",
+     "dataset": "Gallup World Poll, 2016–2020 (147–150 countries; enough_money coda 2013–15)",
+     "is_new": false,
+     "part": "Part VI — Whose Blade Fell",
+     "appendix": false,
+     "num": 33
+    },
+    {
+     "slug": "faith-where-its-normative",
+     "href": "faith-where-its-normative/index.html",
+     "title": "Faith Pays Off Where Faith Is the Norm",
+     "dek": "Being religious lifts your life rating only a little — and no more in devout societies than secular ones — but faith's experiential dividends, less daily distress and more felt support, swell sharply where religion is the social norm.",
+     "dataset": "Gallup World Poll, 2005–2020 (153 countries)",
+     "is_new": false,
+     "part": "Part VI — Whose Blade Fell",
+     "appendix": false,
+     "num": 34
+    },
+    {
+     "slug": "whose-america-is-thriving",
+     "href": "whose-america-is-thriving/index.html",
+     "title": "Whose America Is Thriving? Whoever Just Won",
+     "dek": "Across a decade of daily interviews, Americans rated their own lives higher when their party held the White House — and the partisan gap flipped sign at each handover. Both sides do it; it is the winning that moves the mood.",
+     "dataset": "Gallup US Daily, 2008–2017 (unweighted)",
+     "is_new": false,
+     "part": "Part VI — Whose Blade Fell",
+     "appendix": false,
+     "num": 35
+    }
+   ]
+  },
+  {
+   "part": "Coda",
+   "sub": "What would lift the lower blade",
+   "appendix": false,
+   "chapters": [
+    {
+     "slug": "closing-the-scissors",
+     "href": "closing-the-scissors/index.html",
+     "title": "Closing the Scissors",
+     "dek": "What actually lifts a life? Run the horse race across the GSS, Gallup World, and the Values Surveys and the same answer recurs: perceived freedom, health, and connection rival or beat income — and income barely touches the daily-emotion blade at all.",
+     "dataset": "GSS + Gallup World Poll + EVS–WVS",
+     "is_new": true,
+     "part": "Coda",
+     "appendix": false,
+     "num": 36
+    }
+   ]
+  },
+  {
+   "part": "Appendix — under review",
+   "sub": "Candidate cuts, kept until you decide",
+   "appendix": true,
+   "chapters": [
+    {
+     "slug": "community-and-the-isolated",
+     "href": "community-and-the-isolated/index.html",
+     "title": "Does Community Substitute for Connection?",
+     "dek": "Fifty years of social-capital theory promised that civic-rich places would matter most for people with the thinnest personal ties — or, in the rival telling, least. In 921,639 Gallup interviews, the answer is sharper than either story: the gap barely moves at all.",
+     "dataset": "Gallup US Daily ('Motherlode' extract), 2008–2012 + JEC county social-capital index",
+     "is_new": false,
+     "part": "Appendix — under review",
+     "appendix": true,
+     "num": null
+    },
+    {
+     "slug": "female-happiness-paradox",
+     "href": "female-happiness-paradox/index.html",
+     "title": "The Paradox That Didn't Hold",
+     "dek": "In the 1970s American women called themselves happier than men. A famous study watched that lead vanish — extend the data eighteen more years and the decline doesn't continue, it dissolves into noise.",
+     "dataset": "General Social Survey, 1972–2024 (weight wtssps)",
+     "is_new": false,
+     "part": "Appendix — under review",
+     "appendix": true,
+     "num": null
+    },
+    {
+     "slug": "religion-conditional-dividend",
+     "href": "religion-conditional-dividend/index.html",
+     "title": "Religion's Conditional Dividend",
+     "dek": "Across 143 countries, faith tracks higher life evaluation and better days — but mainly where life is hard. As nations grow richer and safer, the religious advantage bends toward zero.",
+     "dataset": "Gallup World Poll, 2009–2019 (143 countries)",
+     "is_new": false,
+     "part": "Appendix — under review",
+     "appendix": true,
+     "num": null
+    }
+   ]
+  }
+ ],
+ "order": [
+  {
+   "slug": "the-scissors",
+   "num": 1,
+   "appendix": false
+  },
+  {
+   "slug": "plateau-in-the-tail",
+   "num": 2,
+   "appendix": false
+  },
+  {
+   "slug": "money-buys-calm-not-joy",
+   "num": 3,
+   "appendix": false
+  },
+  {
+   "slug": "income-life-vs-mood",
+   "num": 4,
+   "appendix": false
+  },
+  {
+   "slug": "the-great-convergence",
+   "num": 5,
+   "appendix": false
+  },
+  {
+   "slug": "the-changing-recipe",
+   "num": 6,
+   "appendix": false
+  },
+  {
+   "slug": "the-freedom-to-be-happy",
+   "num": 7,
+   "appendix": false
+  },
+  {
+   "slug": "marriage-premium",
+   "num": 8,
+   "appendix": false
+  },
+  {
+   "slug": "the-mood-that-didnt-lift",
+   "num": 9,
+   "appendix": false
+  },
+  {
+   "slug": "worst-year",
+   "num": 10,
+   "appendix": false
+  },
+  {
+   "slug": "despair-felt-and-fatal",
+   "num": 11,
+   "appendix": false
+  },
+  {
+   "slug": "young-and-less-happy",
+   "num": 12,
+   "appendix": false
+  },
+  {
+   "slug": "the-u-curve-inverts",
+   "num": 13,
+   "appendix": false
+  },
+  {
+   "slug": "global-ageing-and-happiness",
+   "num": 14,
+   "appendix": false
+  },
+  {
+   "slug": "long-retreat-of-trust",
+   "num": 15,
+   "appendix": false
+  },
+  {
+   "slug": "fifty-years-of-evenings",
+   "num": 16,
+   "appendix": false
+  },
+  {
+   "slug": "someone-to-count-on",
+   "num": 17,
+   "appendix": false
+  },
+  {
+   "slug": "the-pew-not-the-prayer",
+   "num": 18,
+   "appendix": false
+  },
+  {
+   "slug": "losing-my-religion",
+   "num": 19,
+   "appendix": false
+  },
+  {
+   "slug": "does-generosity-pay",
+   "num": 20,
+   "appendix": false
+  },
+  {
+   "slug": "alone",
+   "num": 21,
+   "appendix": false
+  },
+  {
+   "slug": "out-of-reach",
+   "num": 22,
+   "appendix": false
+  },
+  {
+   "slug": "the-optimism-gap",
+   "num": 23,
+   "appendix": false
+  },
+  {
+   "slug": "the-satisfaction-treadmill",
+   "num": 24,
+   "appendix": false
+  },
+  {
+   "slug": "flip-counties-felt-it-first",
+   "num": 25,
+   "appendix": false
+  },
+  {
+   "slug": "feeling-behind",
+   "num": 26,
+   "appendix": false
+  },
+  {
+   "slug": "keeping-up-with-the-county",
+   "num": 27,
+   "appendix": false
+  },
+  {
+   "slug": "geography-of-american-thriving",
+   "num": 28,
+   "appendix": false
+  },
+  {
+   "slug": "happiness-moved-inside-borders",
+   "num": 29,
+   "appendix": false
+  },
+  {
+   "slug": "black-white-two-measures",
+   "num": 30,
+   "appendix": false
+  },
+  {
+   "slug": "gender-gap-two-ways",
+   "num": 31,
+   "appendix": false
+  },
+  {
+   "slug": "out-of-place",
+   "num": 32,
+   "appendix": false
+  },
+  {
+   "slug": "feeling-rich-being-rich",
+   "num": 33,
+   "appendix": false
+  },
+  {
+   "slug": "faith-where-its-normative",
+   "num": 34,
+   "appendix": false
+  },
+  {
+   "slug": "whose-america-is-thriving",
+   "num": 35,
+   "appendix": false
+  },
+  {
+   "slug": "closing-the-scissors",
+   "num": 36,
+   "appendix": false
+  },
+  {
+   "slug": "community-and-the-isolated",
+   "num": null,
+   "appendix": true
+  },
+  {
+   "slug": "female-happiness-paradox",
+   "num": null,
+   "appendix": true
+  },
+  {
+   "slug": "religion-conditional-dividend",
+   "num": null,
+   "appendix": true
+  }
+ ]
+};
+(function(){
+  const $=(s)=>document.querySelector(s);
+  const esc=s=>String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+  // slug -> chapter meta
+  const META={}; BOOK.parts.forEach(p=>p.chapters.forEach(c=>META[c.slug]=c));
+  const ORDER=BOOK.order.map(o=>o.slug).filter(s=>META[s]);
+  const partShort=name=>name.replace(/\s*[—-]\s*.*/,'').trim();
+
+  function slugFromURL(){
+    const u=new URL(location.href); let s=u.searchParams.get('ch');
+    if(!s||!META[s]) s=ORDER[0];
+    return s;
+  }
+  let cur=slugFromURL();
+
+  // build drawer
+  const dlist=$('#dlist');
+  BOOK.parts.forEach(p=>{
+    const h=document.createElement('div'); h.className='dpart'+(p.appendix?' appendix':''); h.textContent=p.part;
+    dlist.appendChild(h);
+    p.chapters.forEach(c=>{
+      const r=document.createElement('a'); r.className='drow'; r.dataset.slug=c.slug; r.href='read.html?ch='+encodeURIComponent(c.slug);
+      r.innerHTML=`<span class="drn">${c.num!=null?String(c.num).padStart(2,'0'):'·'}</span><span class="drt">${esc(c.title)}</span>`;
+      r.addEventListener('click',e=>{e.preventDefault();go(c.slug);closeDrawer();});
+      dlist.appendChild(r);
+    });
+  });
+
+  function go(slug,push){
+    if(!META[slug]) slug=ORDER[0];
+    cur=slug; const c=META[slug];
+    $('#frame').src = slug+'/index.html';
+    $('#frame').title = c.title;
+    $('#c-part').textContent = c.appendix ? 'Appendix · under review' : partShort(c.part);
+    $('#c-title').textContent = c.title;
+    const i=ORDER.indexOf(slug);
+    const numTxt = c.num!=null ? `<span class="c-num">Chapter ${c.num}</span> / ${BOOK.n_main}` : '<span class="c-num">Appendix</span>';
+    // put chapter number into the part line's right? keep simple: prepend to part
+    $('#c-part').innerHTML = (c.appendix?'Appendix · under review':esc(partShort(c.part))) + ' &nbsp;·&nbsp; ' + numTxt;
+    $('#prev').disabled = i<=0;
+    $('#next').disabled = i>=ORDER.length-1;
+    $('#progbar').style.width = (ORDER.length>1 ? (i/(ORDER.length-1))*100 : 100)+'%';
+    // highlight in drawer
+    dlist.querySelectorAll('.drow').forEach(r=>r.classList.toggle('cur', r.dataset.slug===slug));
+    const url=new URL(location.href); url.searchParams.set('ch',slug);
+    history.replaceState({slug},'',url);
+    document.title = c.title+' · The Scissors';
+    // bring current drawer row into view
+    const crow=dlist.querySelector('.drow.cur'); if(crow) crow.scrollIntoView({block:'nearest'});
+  }
+  function step(d){const i=ORDER.indexOf(cur)+d; if(i>=0&&i<ORDER.length) go(ORDER[i]);}
+  $('#prev').onclick=()=>step(-1); $('#next').onclick=()=>step(1);
+
+  // drawer open/close
+  const drawer=$('#drawer'), scrim=$('#scrim'), toggle=$('#toc-toggle');
+  function openDrawer(){drawer.classList.add('open');scrim.classList.add('open');drawer.setAttribute('aria-hidden','false');toggle.setAttribute('aria-expanded','true');$('#dclose').focus();}
+  function closeDrawer(){drawer.classList.remove('open');scrim.classList.remove('open');drawer.setAttribute('aria-hidden','true');toggle.setAttribute('aria-expanded','false');toggle.focus();}
+  toggle.onclick=()=>drawer.classList.contains('open')?closeDrawer():openDrawer();
+  $('#dclose').onclick=closeDrawer; scrim.onclick=closeDrawer;
+
+  // keyboard (top document only)
+  window.addEventListener('keydown',e=>{
+    if(e.metaKey||e.ctrlKey||e.altKey) return;
+    if(e.key==='ArrowLeft'){step(-1);} else if(e.key==='ArrowRight'){step(1);}
+    else if(e.key==='c'||e.key==='C'){drawer.classList.contains('open')?closeDrawer():openDrawer();}
+    else if(e.key==='Escape'&&drawer.classList.contains('open')){closeDrawer();}
+  });
+  window.addEventListener('popstate',()=>{const s=slugFromURL(); if(s!==cur) go(s);});
+
+  go(cur);
+})();
+</script>
+</body></html>

@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Does Generosity Pay - Everywhere?</title>
+<style>
+:root{
+  --ink:#15191c; --muted:#5b6770; --faint:#8a949b; --line:#e3e7e6;
+  --paper:#f4f6f4; --card:#ffffff; --rule:#d4dad8;
+  --accent:#1d6f5c;            /* deep green - giving / growth */
+  --accentd:#0f4a3c;
+  --warm:#c66a1e;              /* amber accent for contrast */
+  /* colourblind-safe income ramp (Okabe-Ito derived, ordered low->high) */
+  --inc-low:#0072b2;           /* blue */
+  --inc-lmid:#56b4e9;          /* light blue */
+  --inc-umid:#e69f00;          /* orange */
+  --inc-high:#d55e00;          /* vermillion */
+  --grid:#e7ebea; --tip-bg:#13201c;
+  --maxw:1100px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:"Charter","Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  font-size:18px; line-height:1.62; text-rendering:optimizeLegibility;
+}
+.wrap{max-width:var(--maxw); margin:0 auto; padding:0 22px}
+header.lead{max-width:780px; margin:0 auto; padding:54px 22px 8px}
+.kicker{font-family:ui-sans-serif,system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  font-size:13px; letter-spacing:.15em; text-transform:uppercase; color:var(--accent); font-weight:650; margin:0 0 14px}
+h1{font-size:clamp(31px,5.4vw,52px); line-height:1.04; margin:0 0 18px; font-weight:650; letter-spacing:-.015em}
+.dek{font-size:clamp(19px,2.4vw,23px); color:var(--muted); line-height:1.45; margin:0 0 8px}
+.byline{font-family:ui-sans-serif,system-ui,sans-serif; font-size:13px; color:var(--faint); letter-spacing:.02em; margin-top:18px}
+main{max-width:780px; margin:0 auto; padding:8px 22px 10px}
+p{margin:0 0 20px}
+h2{font-size:clamp(22px,3.2vw,29px); line-height:1.14; margin:50px 0 6px; font-weight:650; letter-spacing:-.01em}
+h2 .h2sub{display:block; font-family:ui-sans-serif,system-ui,sans-serif; font-size:14px; font-weight:500;
+  letter-spacing:.02em; color:var(--accent); text-transform:none; margin-top:8px}
+.standfirst{color:var(--muted); font-size:17px; margin:2px 0 18px}
+strong{font-weight:650}
+em.term{font-style:normal; font-weight:650; color:var(--accentd)}
+a{color:var(--accent); text-underline-offset:2px}
+.fig{margin:26px auto 30px; max-width:var(--maxw)}
+.fig figcaption{font-family:ui-sans-serif,system-ui,sans-serif; font-size:13.5px; color:var(--muted);
+  line-height:1.5; margin-top:12px; max-width:820px}
+.panel{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:18px 16px 14px;
+  box-shadow:0 1px 0 rgba(0,0,0,.02)}
+.controls{font-family:ui-sans-serif,system-ui,sans-serif; display:flex; flex-wrap:wrap; gap:10px 14px;
+  align-items:center; margin:2px 4px 14px}
+.controls .lab{font-size:12px; color:var(--faint); letter-spacing:.05em; text-transform:uppercase; margin-right:1px}
+.seg{display:inline-flex; border:1px solid var(--rule); border-radius:9px; overflow:hidden; background:var(--paper)}
+.seg button{font:inherit; font-size:13px; border:0; background:transparent; color:var(--muted);
+  padding:6px 13px; cursor:pointer; line-height:1.1}
+.seg button[aria-pressed="true"]{background:var(--accent); color:#fff}
+.seg button:focus-visible{outline:2px solid var(--accentd); outline-offset:1px}
+svg{display:block; width:100%; height:auto; overflow:visible}
+.axis text{font-family:ui-sans-serif,system-ui,sans-serif; font-size:12px; fill:var(--muted)}
+.axis line,.axis path{stroke:var(--grid)}
+.axis-title{font-family:ui-sans-serif,system-ui,sans-serif; font-size:12.5px; fill:var(--faint); font-weight:500}
+.zero{stroke:var(--ink); stroke-width:1.3}
+.worldband{fill:var(--accent); opacity:.12}
+.worldline{stroke:var(--accentd); stroke-width:2; stroke-dasharray:5 3}
+.whisk{stroke-width:1; opacity:.55}
+.dot{stroke:#fff; stroke-width:.5; cursor:pointer}
+.dot:hover{stroke:var(--ink); stroke-width:1.2}
+.dot:focus-visible{outline:2px solid var(--ink)}
+.rowlab{font-family:ui-sans-serif,system-ui,sans-serif; font-size:10.5px; fill:var(--muted)}
+.legend{font-family:ui-sans-serif,system-ui,sans-serif; font-size:13px; color:var(--muted);
+  display:flex; flex-wrap:wrap; gap:10px 16px; align-items:center; margin:2px 4px 8px}
+.legend .sw{display:inline-block; width:12px; height:12px; border-radius:3px; margin-right:6px; vertical-align:-1px}
+.legend .item{display:inline-flex; align-items:center}
+.callout{position:absolute; pointer-events:none; background:var(--tip-bg); color:#eef3f1;
+  font-family:ui-sans-serif,system-ui,sans-serif; font-size:12.5px; line-height:1.45; padding:9px 11px;
+  border-radius:8px; max-width:250px; opacity:0; transition:opacity .08s; z-index:9; box-shadow:0 4px 14px rgba(0,0,0,.22)}
+.callout b{color:#fff} .callout .v{color:#7fd3bd}
+.barlab{font-family:ui-sans-serif,system-ui,sans-serif; font-size:12.5px; fill:var(--ink)}
+.barval{font-family:ui-sans-serif,system-ui,sans-serif; font-size:12px; fill:var(--muted)}
+.tablewrap{margin-top:10px}
+.tabbtn{font-family:ui-sans-serif,system-ui,sans-serif; font-size:12.5px; background:transparent;
+  border:1px solid var(--rule); border-radius:8px; padding:5px 11px; color:var(--muted); cursor:pointer}
+.tabbtn:focus-visible{outline:2px solid var(--accent)}
+table.data{border-collapse:collapse; font-family:ui-sans-serif,system-ui,sans-serif; font-size:13px; width:100%; margin-top:10px}
+table.data th,table.data td{border-bottom:1px solid var(--line); padding:5px 8px; text-align:right}
+table.data th:first-child,table.data td:first-child{text-align:left}
+table.data caption{text-align:left; color:var(--muted); font-size:12.5px; margin-bottom:6px}
+.note{font-family:ui-sans-serif,system-ui,sans-serif; font-size:14px; color:var(--muted); line-height:1.6}
+.statband{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin:24px 0 6px}
+.stat{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px 16px}
+.stat .n{font-size:30px; font-weight:650; letter-spacing:-.01em; line-height:1; color:var(--accentd)}
+.stat .n.warm{color:var(--warm)}
+.stat .l{font-family:ui-sans-serif,system-ui,sans-serif; font-size:13px; color:var(--muted); margin-top:7px; line-height:1.35}
+footer{max-width:780px; margin:30px auto 70px; padding:0 22px}
+footer h2{margin-top:30px}
+.refs{font-family:ui-sans-serif,system-ui,sans-serif; font-size:13.5px; color:var(--muted); line-height:1.65}
+.refs li{margin-bottom:8px}
+.sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0}
+hr.rule{border:0; border-top:1px solid var(--rule); margin:42px auto; max-width:780px}
+@media (max-width:560px){ body{font-size:16.5px} .stat .n{font-size:25px} }
+@media (prefers-reduced-motion:reduce){ *{transition:none!important} }
+</style>
+</head>
+<body>
+<header class="lead">
+  <p class="kicker">Gallup World Poll &middot; generosity &amp; well-being</p>
+  <h1>Does generosity pay &mdash; everywhere?</h1>
+  <p class="dek">Across <span id="dek-k"></span> countries, people who give &mdash; money, time, or a hand to a stranger &mdash; rate their lives higher and feel better day to day. The link is remarkably stubborn: it holds in rich countries and poor ones alike, and it is <em>strongest</em> for giving money.</p>
+  <p class="byline">A within-country regression read across the world &middot; data 2005&ndash;2020</p>
+</header>
+
+<main>
+<p>In 2008 a small experiment made a big claim. Hand people a windfall and tell some to spend it on themselves and others to spend it on someone else, and by evening the givers are happier. Five years later, <a href="https://doi.org/10.1037/a0031578">Lara Aknin and colleagues</a> went looking for that &ldquo;warm glow&rdquo; around the globe and argued it was a psychological universal &mdash; something that shows up in Canada and Uganda alike. It is a lovely idea. It is also the kind of claim that deserves to be stress-tested against a few million interviews.</p>
+
+<p>So here is the test. The Gallup World Poll asks people in scores of countries whether, in the past month, they <em class="term">donated</em> money to charity, <em class="term">volunteered</em> their time, or <em class="term">helped a stranger</em> who needed it. It also asks how they rate their lives on a 0&ndash;10 ladder, and what they actually felt yesterday. We fit a regression <em>inside</em> each country &mdash; weighted by Gallup&rsquo;s within-country weight, holding age, sex, education, marital status, household size and income rank constant &mdash; and read off a single number: how much higher is the well-being of a giver than an otherwise-identical non-giver. Call it the country&rsquo;s <em class="term">giving premium</em>. Do it once per country and a distribution of premiums appears, one per nation, and that spread is the evidence.</p>
+
+<div class="statband" id="statband"></div>
+
+<p class="note" style="margin-top:8px">One caution rides shotgun through everything that follows. A premium is an <em>association</em>, not a verdict on cause. Happier people may simply give more &mdash; the arrow can run either way, and these data cannot break the tie. Read &ldquo;premium&rdquo; as &ldquo;givers score higher,&rdquo; never as &ldquo;giving makes you happier.&rdquo;</p>
+
+<h2>The shape of a near-universal<span class="h2sub">One row per country &middot; the giving premium with its 95% interval &middot; sorted</span></h2>
+<p class="standfirst">Toggle the act and the outcome. Each dot is one country&rsquo;s premium; the whisker is its 95&thinsp;% confidence interval; the band marks the population-weighted world.</p>
+
+<figure class="fig">
+  <div class="panel">
+    <div class="controls">
+      <span class="lab">Act</span>
+      <span class="seg" id="seg-act" role="group" aria-label="Choose prosocial act">
+        <button data-act="d" aria-pressed="true">Donated money</button>
+        <button data-act="v" aria-pressed="false">Volunteered time</button>
+        <button data-act="h" aria-pressed="false">Helped a stranger</button>
+      </span>
+      <span class="lab" style="margin-left:6px">Outcome</span>
+      <span class="seg" id="seg-out" role="group" aria-label="Choose well-being outcome">
+        <button data-out="L" aria-pressed="true">Life rating</button>
+        <button data-out="P" aria-pressed="false">Daily affect</button>
+      </span>
+    </div>
+    <div class="legend" id="legend-inc" aria-hidden="true"></div>
+    <svg id="forest" role="img" aria-label="Sorted dot-and-interval plot of the within-country giving premium for each country, coloured by income group, with the population-weighted world premium marked as a band."></svg>
+    <div class="tablewrap">
+      <button class="tabbtn" id="forest-tab-btn" aria-expanded="false" aria-controls="forest-table">Show data table</button>
+      <div id="forest-table" hidden></div>
+    </div>
+  </div>
+  <figcaption id="forest-cap"></figcaption>
+</figure>
+
+<p>Start with money, against the life ladder &mdash; the cell that maps most directly onto Aknin&rsquo;s claim. The premium is <strong>positive in <span class="t" data-claim="dL-share-pos-pct"></span>% of countries</strong>. Lined up from the most negative to the most positive, the rows form a gentle uphill curve that crosses zero early and never looks back: a handful of countries sit a touch to the left of the &ldquo;no premium&rdquo; line, and the great mass piles up to the right of it. The population-weighted world premium &mdash; the number for a representative person on the planet &mdash; is about <strong><span class="t" data-claim="dL-pooled"></span> ladder points</strong>. That is real but modest: roughly a quarter of one rung, not a transformation.</p>
+
+<p>The honest way to size it is against the raw gap. Before any controls, donors out-rate non-donors by about <span class="t" data-claim="dL-raw"></span> of a ladder point. Most of that is confounding &mdash; donors are richer, better educated, more often partnered. Net those out and roughly two-thirds of the gap survives. Giving money still travels with a higher life rating almost everywhere; it just travels with a smaller bump than the headline correlation suggests.</p>
+
+<h2>Which act travels furthest<span class="h2sub">Money, then time, then strangers</span></h2>
+<p>Flip the act toggle and a clear ranking emerges. Donating money is the most universal: positive in <span class="t" data-claim="dL-share-pos-pct"></span>% of countries against the life ladder. Volunteering time is close behind at <span class="t" data-claim="vL-share-pos-pct"></span>%. Helping a stranger is the outlier &mdash; positive in <span class="t" data-claim="hL-share-pos-pct"></span>% of countries, with a noticeably thicker tail of nations sitting at or left of zero.</p>
+
+<p>That ordering is not an accident, and it lines up with a worry the original researchers flagged: the &ldquo;helped a stranger&rdquo; question travels badly across cultures. What counts as helping a stranger &mdash; and whether you would admit to needing help, or to giving it &mdash; bends with local norms in a way that &ldquo;gave money to charity&rdquo; does not. Its raw signal is the weakest of the three (about <span class="t" data-claim="hL-raw"></span> of a ladder point uncontrolled), and its premium is the most heterogeneous. The warm glow of in-person kindness is real on average, but it is the least portable of the three acts. Money is the cleanest, most universal currency of the giving premium.</p>
+
+<h2>Does it hold where giving is costly?<span class="h2sub">The premium by World Bank income group</span></h2>
+<p class="standfirst">If generosity were a luxury, its dividend would fade in poorer countries. It does not.</p>
+
+<figure class="fig">
+  <div class="panel">
+    <div class="controls">
+      <span class="lab">Outcome</span>
+      <span class="seg" id="seg-mod" role="group" aria-label="Choose outcome for the income-group panel">
+        <button data-mod="L" aria-pressed="true">Life rating</button>
+        <button data-mod="P" aria-pressed="false">Daily affect</button>
+      </span>
+      <span class="note" style="margin-left:auto">Donating money &middot; population-weighted within each group</span>
+    </div>
+    <svg id="groups" role="img" aria-label="Population-weighted giving premium for donating money within each of four World Bank income groups."></svg>
+  </div>
+  <figcaption id="groups-cap"></figcaption>
+</figure>
+
+<p>The intuition is that giving is a luxury good: easy to afford a warm glow when the fridge is full, harder when it is not. The data refuse the story. Donating money&rsquo;s life-rating premium is <strong>largest in the poorest countries</strong> &mdash; about <span class="t" data-claim="dL-group-low"></span> ladder points in low-income nations, against <span class="t" data-claim="dL-group-uppermid"></span> in upper-middle-income ones and <span class="t" data-claim="dL-group-high"></span> in the richest. Regress each country&rsquo;s premium on its national income directly and the slope is essentially flat: national income explains only about <span class="t" data-claim="dL-gni-r2-pct"></span>% of why the premium varies from place to place. Where giving costs more, the premium does not shrink &mdash; if anything it is a touch larger. Whatever the warm glow is, it is not a perk of affluence.</p>
+
+<h2>Two kinds of better<span class="h2sub">The evaluative ladder vs the experiential day</span></h2>
+<p>The poll measures well-being two ways that should never be blurred. The Cantril ladder is <em class="term">evaluative</em>: a considered verdict on your life as a whole. The positive-affect index is <em class="term">experiential</em>: did you smile, laugh, feel enjoyment, feel rested and respected <em>yesterday</em>? They behave differently here, and the difference is the point.</p>
+
+<p>On the ladder, the donating premium is bigger in size (about <span class="t" data-claim="dL-pooled"></span> points on a 0&ndash;10 scale) but a little less than universal (<span class="t" data-claim="dL-share-pos-pct"></span>% of countries). On daily affect the premium is smaller in raw size &mdash; about <span class="t" data-claim="dP-pooled"></span> on a 0&ndash;1 index &mdash; but it is even <em>more</em> universal: positive in <strong><span class="t" data-claim="dP-share-pos-pct"></span>% of countries</strong>, and against daily affect even helping a stranger reaches <span class="t" data-claim="hP-share-pos-pct"></span>%. The warm glow shows up more consistently in the texture of the day than in the summary judgment of a life. That is exactly the signature Aknin&rsquo;s experiments predicted: an immediate affective lift, felt yesterday, almost everywhere.</p>
+
+<h2>What this does &mdash; and doesn&rsquo;t &mdash; show<span class="h2sub">Read before you generalise</span></h2>
+<p>The reverse-causation problem comes first because it is the biggest. Nothing here pins down direction. Happier, more contented people plausibly give more &mdash; the glow could run from mood to giving as easily as the reverse, and almost certainly runs both ways. Every &ldquo;premium&rdquo; in this piece is the gap between givers and non-givers, full stop.</p>
+
+<p>Three more caveats. The effect sizes are modest: a quarter of a ladder rung, a few hundredths of an affect index. This is &ldquo;givers score a little higher,&rdquo; not &ldquo;giving rewrites a life.&rdquo; Cross-cultural response styles muddy small gaps, so we read a country count and a population-weighted world figure rather than ranking nation against nation on tenths of a point. And the &ldquo;helped a stranger&rdquo; item, as flagged, carries real framing differences across cultures &mdash; its lower universality may be as much about the question as about kindness itself. What survives all of that is sturdy: across <span class="t" data-claim="k-countries"></span> countries, on two different measures of well-being, giving and feeling good travel together &mdash; and they travel together about as well in poor places as in rich ones.</p>
+
+<hr class="rule">
+<footer>
+<h2 id="notes">Notes &amp; data</h2>
+<p class="note"><strong>Source.</strong> Gallup World Poll, individual interviews 2005&ndash;2020 (cleaned extract). The headline donating-and-life-rating model rests on <span class="t" data-claim="total-rows"></span> interviews across <span class="t" data-claim="k-countries"></span> countries.</p>
+<p class="note"><strong>Method.</strong> Within each country we fit a weighted least-squares regression of the outcome on the prosocial act plus controls (age, age&sup2;, sex, education, marital status, within-country income quintile, household size), weighted by Gallup&rsquo;s within-country weight <code>wgt</code>. The coefficient on the act is that country&rsquo;s giving premium. Outcomes: the Cantril ladder (evaluative, 0&ndash;10) and the positive-affect index (experiential, mean of five yesterday-items, 0&ndash;1) &mdash; kept strictly separate and tagged per claim.</p>
+<p class="note"><strong>Three &ldquo;world&rdquo; numbers, never conflated.</strong> (1) <em>Universality</em> &mdash; the share of countries whose premium exceeds zero, one vote each. (2) <em>The representative person</em> &mdash; the population-weighted mean of the per-country premiums, weighted by <code>ctry_pop_millions</code> (a total-population figure used as a proxy for the 15+ population, which slightly over-weights younger countries). (3) <em>The income gradient</em> &mdash; an inverse-variance-weighted regression of the premium on GNI per capita, with population-weighted and unweighted versions as robustness.</p>
+<p class="note"><strong>Suppression &amp; coverage.</strong> A country is shown only if it has at least <span class="t" data-claim="min-n"></span> complete cases and was surveyed in at least <span class="t" data-claim="min-waves"></span> waves; <span class="t" data-claim="k-countries"></span> countries clear the bar. The panel is unbalanced &mdash; not every country is polled every year &mdash; which the country count and the suppression rule are designed to handle. Adding employment status (available 2009 onward) as a control barely moves the donating premium (about <span class="t" data-claim="emp-pooled"></span> ladder points), so it is held as a robustness drawer rather than a headline control.</p>
+<p class="note"><strong>Country attributes.</strong> Income group and GNI per capita are a static join (roughly 2015&ndash;2018 vintage) applied to all years; treat them as fixed national attributes, not time-varying signals.</p>
+<h2>References</h2>
+<ol class="refs">
+  <li>Dunn, E. W., Aknin, L. B., &amp; Norton, M. I. (2008). Spending money on others promotes happiness. <em>Science, 319</em>(5870), 1687&ndash;1688. <a href="https://doi.org/10.1126/science.1150952">doi:10.1126/science.1150952</a></li>
+  <li>Aknin, L. B., et&nbsp;al. (2013). Prosocial spending and well-being: cross-cultural evidence for a psychological universal. <em>Journal of Personality and Social Psychology, 104</em>(4), 635&ndash;652. <a href="https://doi.org/10.1037/a0031578">doi:10.1037/a0031578</a></li>
+  <li>Curry, O. S., et&nbsp;al. (2018). Happy to help? A systematic review and meta-analysis of the effects of performing acts of kindness on the well-being of the actor. <em>Journal of Experimental Social Psychology, 76</em>, 320&ndash;329. <a href="https://doi.org/10.1016/j.jesp.2018.02.014">doi:10.1016/j.jesp.2018.02.014</a></li>
+  <li>Helliwell, J. F., Layard, R., Sachs, J. D., et&nbsp;al. (eds.). <em>World Happiness Report</em> (generosity chapters), annual since 2012. <a href="https://worldhappiness.report/">worldhappiness.report</a></li>
+</ol>
+</footer>
+</main>
+
+<div class="callout" id="tip" role="status" aria-live="polite"></div>
+
+<script type="module">
+import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+
+const DATA = {"meta":{"slug":"does-generosity-pay","title":"Does Generosity Pay - Everywhere?","dataset":"Gallup World Poll","years":"2005-2020","weight":"wgt","construct":"evaluative (ladder) AND experiential (pos_affect) - kept separate, tagged per claim","min_n":300,"min_waves":2,"k_countries":155,"acts":{"d":"donated money","v":"volunteered time","h":"helped a stranger"},"outcomes":{"L":"life rating (ladder, evaluative)","P":"daily positive affect (experiential)"},"predictor":"prosocial act (individual 0/1)","moderator":"ctry_income_group (4 World Bank levels) + ctry_gni_percap (2011 PPP $)","controls":"age + age^2 + sex + educ3 + marital + income_quintile + hhsize","controls_emp":"headline + employment (2009+ robustness drawer)","total_rows":2036155,"n_min":1947,"waves_min":2,"waves_med":11,"income_order":["Low","Lower-mid","Upper-mid","High"],"context_vintage":"~2015-2018 static country join","regions":["Australia-New Zealand","Commonwealth of Independent States","East Asia","Europe-Other","European Union","Latin America and the Caribbean","Middle East and North Africa","Northern America","South Asia","Southeast Asia","Sub-Saharan Africa"],"seed":12345,"script":"build_data.py"},"blocks":{"dL":{"construct":"evaluative","k":155,"median":0.2818,"mean":0.3035,"pooled":0.2506,"share_pos":0.968,"no_pop":2,"min":-0.1853,"max":1.6033,"byGroup":{"Low":{"pooled":0.343,"k":31},"Lower-mid":{"pooled":0.2632,"k":36},"Upper-mid":{"pooled":0.1782,"k":39},"High":{"pooled":0.3213,"k":47}},"ivw":{"slope":-0.0,"se":0.0,"ci_lo":-0.0,"ci_hi":0.0,"r2":0.013,"k":152},"pop":{"slope":0.0,"se":0.0,"ci_lo":-0.0,"ci_hi":0.0,"r2":0.014,"k":152},"unw":{"slope":-0.0,"se":0.0,"ci_lo":-0.0,"ci_hi":0.0,"r2":0.02,"k":152},"raw":0.8055},"dP":{"construct":"experiential","k":155,"median":0.0478,"mean":0.0499,"pooled":0.046,"share_pos":0.994,"no_pop":2,"min":-0.0014,"max":0.1363,"byGroup":{"Low":{"pooled":0.0526,"k":31},"Lower-mid":{"pooled":0.0563,"k":36},"Upper-mid":{"pooled":0.0348,"k":39},"High":{"pooled":0.0408,"k":47}},"ivw":{"slope":-0.0,"se":0.0,"ci_lo":-0.0,"ci_hi":0.0,"r2":0.009,"k":152},"pop":{"slope":-0.0,"se":0.0,"ci_lo":-0.0,"ci_hi":-0.0,"r2":0.052,"k":152},"unw":{"slope":-0.0,"se":0.0,"ci_lo":-0.0,"ci_hi":0.0,"r2":0.005,"k":152},"raw":0.072},"vL":{"construct":"evaluative","k":155,"median":0.1758,"mean":0.1741,"pooled":0.1863,"share_pos":0.935,"no_pop":2,"min":-0.4611,"max":0.591,"byGroup":{"Low":{"pooled":0.1749,"k":31},"Lower-mid":{"pooled":0.1338,"k":36},"Upper-mid":{"pooled":0.2238,"k":39},"High":{"pooled":0.241,"k":47}},"ivw":{"slope":0.0,"se":0.0,"ci_lo":0.0,"ci_hi":0.0,"r2":0.045,"k":152},"pop":{"slope":0.0,"se":0.0,"ci_lo":0.0,"ci_hi":0.0,"r2":0.049,"k":152},"unw":{"slope":0.0,"se":0.0,"ci_lo":-0.0,"ci_hi":0.0,"r2":0.019,"k":152},"raw":0.3572},"vP":{"construct":"experiential","k":155,"median":0.0424,"mean":0.0442,"pooled":0.0441,"share_pos":0.981,"no_pop":2,"min":-0.0265,"max":0.1333,"byGroup":{"Low":{"pooled":0.0335,"k":31},"Lower-mid":{"pooled":0.0488,"k":36},"Upper-mid":{"pooled":0.0383,"k":39},"High":{"pooled":0.0509,"k":47}},"ivw":{"slope":0.0,"se":0.0,"ci_lo":0.0,"ci_hi":0.0,"r2":0.039,"k":152},"pop":{"slope":0.0,"se":0.0,"ci_lo":-0.0,"ci_hi":0.0,"r2":0.011,"k":152},"unw":{"slope":0.0,"se":0.0,"ci_lo":0.0,"ci_hi":0.0,"r2":0.03,"k":152},"raw":0.065},"hL":{"construct":"evaluative","k":155,"median":0.107,"mean":0.1285,"pooled":0.1134,"share_pos":0.826,"no_pop":2,"min":-0.3095,"max":0.5945,"byGroup":{"Low":{"pooled":0.1916,"k":31},"Lower-mid":{"pooled":0.1385,"k":36},"Upper-mid":{"pooled":0.0979,"k":39},"High":{"pooled":0.0399,"k":47}},"ivw":{"slope":-0.0,"se":0.0,"ci_lo":-0.0,"ci_hi":-0.0,"r2":0.156,"k":152},"pop":{"slope":-0.0,"se":0.0,"ci_lo":-0.0,"ci_hi":-0.0,"r2":0.138,"k":152},"unw":{"slope":-0.0,"se":0.0,"ci_lo":-0.0,"ci_hi":-0.0,"r2":0.103,"k":152},"raw":0.2261},"hP":{"construct":"experiential","k":155,"median":0.0419,"mean":0.0413,"pooled":0.0401,"share_pos":0.974,"no_pop":2,"min":-0.0075,"max":0.1148,"byGroup":{"Low":{"pooled":0.0478,"k":31},"Lower-mid":{"pooled":0.0533,"k":36},"Upper-mid":{"pooled":0.0272,"k":39},"High":{"pooled":0.0311,"k":47}},"ivw":{"slope":-0.0,"se":0.0,"ci_lo":-0.0,"ci_hi":-0.0,"r2":0.038,"k":152},"pop":{"slope":-0.0,"se":0.0,"ci_lo":-0.0,"ci_hi":-0.0,"r2":0.114,"k":152},"unw":{"slope":-0.0,"se":0.0,"ci_lo":-0.0,"ci_hi":-0.0,"r2":0.033,"k":152},"raw":0.0548}},"emp":{"pooled":0.2436,"share_pos":0.948,"k":155,"k_headline":155},"standouts":{"top":[{"country":"Angola","iso3":"AGO","premium":1.603,"se":0.129,"n":1947,"income":"Lower-mid"},{"country":"Yemen","iso3":"YEM","premium":0.905,"se":0.073,"n":13918,"income":"Low"},{"country":"Togo","iso3":"TGO","premium":0.737,"se":0.087,"n":6859,"income":"Low"},{"country":"Egypt","iso3":"EGY","premium":0.671,"se":0.039,"n":22572,"income":"Lower-mid"},{"country":"Afghanistan","iso3":"AFG","premium":0.667,"se":0.038,"n":11885,"income":"Low"},{"country":"Morocco","iso3":"MAR","premium":0.608,"se":0.125,"n":8635,"income":"Lower-mid"}],"neg":[{"country":"Algeria","iso3":"DZA","premium":-0.185,"se":0.062,"n":6955,"income":"Upper-mid"},{"country":"Mexico","iso3":"MEX","premium":-0.058,"se":0.05,"n":11721,"income":"Upper-mid"},{"country":"Liberia","iso3":"LBR","premium":-0.026,"se":0.147,"n":3846,"income":"Low"},{"country":"Philippines","iso3":"PHL","premium":-0.019,"se":0.05,"n":14008,"income":"Lower-mid"},{"country":"Zambia","iso3":"ZMB","premium":-0.018,"se":0.061,"n":10784,"income":"Lower-mid"},{"country":"Haiti","iso3":"HTI","premium":0.027,"se":0.101,"n":2312,"income":"Low"}]},"countries":[{"iso3":"AFG","name":"Afghanistan","region":"South Asia","inc":"Low","gni":1824,"pop":35.5,"dL":0.667,"dLs":0.0383,"dLn":11885,"dP":0.1206,"dPs":0.0069,"dPn":11914,"vL":0.5572,"vLs":0.0454,"vLn":11782,"vP":0.068,"vPs":0.0081,"vPn":11820,"hL":0.2729,"hLs":0.0335,"hLn":11776,"hP":0.0816,"hPs":0.006,"hPn":11811},{"iso3":"ALB","name":"Albania","region":"Europe-Other","inc":"Upper-mid","gni":11886,"pop":2.9,"dL":0.3452,"dLs":0.0518,"dLn":11878,"dP":0.0487,"dPs":0.0063,"dPn":11820,"vL":0.2184,"vLs":0.0778,"vLn":11863,"vP":0.0506,"vPs":0.0094,"vPn":11809,"hL":0.0807,"hLs":0.0434,"hLn":11828,"hP":0.0312,"hPs":0.0053,"hPn":11778},{"iso3":"DZA","name":"Algeria","region":"Middle East and North Africa","inc":"Upper-mid","gni":13802,"pop":41.3,"dL":-0.1853,"dLs":0.0621,"dLn":6955,"dP":0.0935,"dPs":0.0108,"dPn":5922,"vL":-0.4611,"vLs":0.0671,"vLn":6979,"vP":0.0676,"vPs":0.0116,"vPn":5946,"hL":0.0788,"hLs":0.0411,"hLn":7923,"hP":0.0549,"hPs":0.0073,"hPn":6899},{"iso3":"AGO","name":"Angola","region":"Sub-Saharan Africa","inc":"Lower-mid","gni":5790,"pop":29.8,"dL":1.6033,"dLs":0.1293,"dLn":1947,"dP":0.0634,"dPs":0.0172,"dPn":1964,"vL":0.5765,"vLs":0.1253,"vLn":1944,"vP":0.0427,"vPs":0.0163,"vPn":1962,"hL":0.1682,"hLs":0.0956,"hLn":1946,"hP":0.0765,"hPs":0.0122,"hPn":1961},{"iso3":"ARG","name":"Argentina","region":"Latin America and the Caribbean","inc":"High","gni":18461,"pop":44.3,"dL":0.2467,"dLs":0.0508,"dLn":11815,"dP":0.0278,"dPs":0.0055,"dPn":11783,"vL":0.1331,"vLs":0.0523,"vLn":11806,"vP":0.0455,"vPs":0.0057,"vPn":11775,"hL":0.0158,"hLs":0.039,"hLn":11795,"hP":0.0168,"hPs":0.0043,"hPn":11765},{"iso3":"ARM","name":"Armenia","region":"Commonwealth of Independent States","inc":"Upper-mid","gni":9144,"pop":2.9,"dL":0.4281,"dLs":0.0658,"dLn":10881,"dP":0.0844,"dPs":0.0085,"dPn":10813,"vL":0.1018,"vLs":0.0736,"vLn":10904,"vP":0.0299,"vPs":0.0095,"vPn":10835,"hL":0.3247,"hLs":0.04,"hLn":10870,"hP":0.0619,"hPs":0.0052,"hPn":10800},{"iso3":"AUS","name":"Australia","region":"Australia-New Zealand","inc":"High","gni":43560,"pop":24.5,"dL":0.3032,"dLs":0.0351,"dLn":10728,"dP":0.032,"dPs":0.0052,"dPn":10748,"vL":0.2987,"vLs":0.0338,"vLn":10740,"vP":0.0373,"vPs":0.005,"vPn":10761,"hL":0.0193,"hLs":0.0346,"hLn":10661,"hP":0.0182,"hPs":0.0051,"hPn":10680},{"iso3":"AUT","name":"Austria","region":"European Union","inc":"High","gni":45415,"pop":8.7,"dL":0.362,"dLs":0.0308,"dLn":11834,"dP":0.0573,"dPs":0.0047,"dPn":11807,"vL":0.2679,"vLs":0.0344,"vLn":11853,"vP":0.0377,"vPs":0.0052,"vPn":11826,"hL":0.1342,"hLs":0.0303,"hLn":11786,"hP":0.0472,"hPs":0.0046,"hPn":11761},{"iso3":"AZE","name":"Azerbaijan","region":"Commonwealth of Independent States","inc":"Upper-mid","gni":15600,"pop":9.8,"dL":0.1422,"dLs":0.0464,"dLn":10782,"dP":0.0833,"dPs":0.0087,"dPn":10528,"vL":-0.0638,"vLs":0.0406,"vLn":10787,"vP":0.0506,"vPs":0.0076,"vPn":10532,"hL":0.0969,"hLs":0.033,"hLn":10697,"hP":0.0608,"hPs":0.0062,"hPn":10457},{"iso3":"BHR","name":"Bahrain","region":"Middle East and North Africa","inc":"High","gni":41580,"pop":1.5,"dL":0.3842,"dLs":0.0393,"dLn":11862,"dP":0.073,"dPs":0.0053,"dPn":10747,"vL":0.3449,"vLs":0.0467,"vLn":11901,"vP":0.0687,"vPs":0.0062,"vPn":10789,"hL":0.3906,"hLs":0.0394,"hLn":11857,"hP":0.0728,"hPs":0.0053,"hPn":10749},{"iso3":"BGD","name":"Bangladesh","region":"South Asia","inc":"Lower-mid","gni":3677,"pop":164.7,"dL":0.2766,"dLs":0.0496,"dLn":13668,"dP":0.0426,"dPs":0.0063,"dPn":13754,"vL":0.0141,"vLs":0.0572,"vLn":13665,"vP":0.0263,"vPs":0.0073,"vPn":13751,"hL":0.206,"hLs":0.0378,"hLn":13694,"hP":0.0109,"hPs":0.0048,"hPn":13785},{"iso3":"BLR","name":"Belarus","region":"Commonwealth of Independent States","inc":"Upper-mid","gni":16323,"pop":9.5,"dL":0.2078,"dLs":0.0449,"dLn":11091,"dP":0.0639,"dPs":0.0078,"dPn":10540,"vL":0.1538,"vLs":0.0402,"vLn":11086,"vP":0.0408,"vPs":0.007,"vPn":10541,"hL":0.2385,"hLs":0.0368,"hLn":10956,"hP":0.0834,"hPs":0.0063,"hPn":10431},{"iso3":"BEL","name":"Belgium","region":"European Union","inc":"High","gni":42156,"pop":11.4,"dL":0.2778,"dLs":0.031,"dLn":10757,"dP":0.0441,"dPs":0.0051,"dPn":10779,"vL":0.117,"vLs":0.0344,"vLn":10785,"vP":0.0389,"vPs":0.0056,"vPn":10807,"hL":0.0399,"hLs":0.0301,"hLn":10755,"hP":0.03,"hPs":0.0049,"hPn":10778},{"iso3":"BEN","name":"Benin","region":"Sub-Saharan Africa","inc":"Low","gni":2061,"pop":11.2,"dL":0.3946,"dLs":0.0725,"dLn":9665,"dP":0.0495,"dPs":0.0085,"dPn":9812,"vL":0.2566,"vLs":0.0705,"vLn":9663,"vP":0.0522,"vPs":0.0082,"vPn":9809,"hL":0.4192,"hLs":0.0495,"hLn":9681,"hP":0.0522,"hPs":0.0057,"hPn":9832},{"iso3":"BTN","name":"Bhutan","region":"South Asia","inc":"Lower-mid","gni":8065,"pop":0.8,"dL":0.1435,"dLs":0.0481,"dLn":2996,"dP":0.0482,"dPs":0.0091,"dPn":2993,"vL":0.0129,"vLs":0.0482,"vLn":2997,"vP":0.0434,"vPs":0.0092,"vPn":2995,"hL":0.3107,"hLs":0.0469,"hLn":2986,"hP":0.0619,"hPs":0.009,"hPn":2984},{"iso3":"BOL","name":"Bolivia","region":"Latin America and the Caribbean","inc":"Lower-mid","gni":6714,"pop":11.1,"dL":0.2085,"dLs":0.0446,"dLn":11495,"dP":0.0354,"dPs":0.0056,"dPn":11686,"vL":0.1078,"vLs":0.0443,"vLn":11484,"vP":0.0293,"vPs":0.0056,"vPn":11678,"hL":0.0291,"hLs":0.0367,"hLn":11465,"hP":0.0247,"hPs":0.0046,"hPn":11660},{"iso3":"BIH","name":"Bosnia Herzegovina","region":"Europe-Other","inc":"Upper-mid","gni":11716,"pop":3.5,"dL":0.5915,"dLs":0.0405,"dLn":11796,"dP":0.066,"dPs":0.0057,"dPn":11588,"vL":0.4013,"vLs":0.084,"vLn":11881,"vP":0.0488,"vPs":0.0118,"vPn":11658,"hL":0.525,"hLs":0.0399,"hLn":11794,"hP":0.0732,"hPs":0.0056,"hPn":11594},{"iso3":"BWA","name":"Botswana","region":"Sub-Saharan Africa","inc":"Upper-mid","gni":15534,"pop":2.3,"dL":0.3358,"dLs":0.0688,"dLn":9848,"dP":0.0316,"dPs":0.0086,"dPn":9902,"vL":0.1884,"vLs":0.0597,"vLn":9843,"vP":0.0241,"vPs":0.0074,"vPn":9897,"hL":0.1427,"hLs":0.0468,"hLn":9849,"hP":0.0401,"hPs":0.0058,"hPn":9905},{"iso3":"BRA","name":"Brazil","region":"Latin America and the Caribbean","inc":"Upper-mid","gni":13755,"pop":209.3,"dL":0.1771,"dLs":0.0485,"dLn":13842,"dP":0.033,"dPs":0.005,"dPn":14003,"vL":-0.0011,"vLs":0.0549,"vLn":13841,"vP":0.0453,"vPs":0.0056,"vPn":14004,"hL":0.0123,"hLs":0.0401,"hLn":13821,"hP":0.0286,"hPs":0.0041,"hPn":13983},{"iso3":"BGR","name":"Bulgaria","region":"European Union","inc":"Upper-mid","gni":18740,"pop":7.1,"dL":0.5115,"dLs":0.0458,"dLn":11802,"dP":0.0741,"dPs":0.0068,"dPn":11618,"vL":0.591,"vLs":0.0749,"vLn":11805,"vP":0.09,"vPs":0.0111,"vPn":11621,"hL":0.3953,"hLs":0.0366,"hLn":11739,"hP":0.0845,"hPs":0.0054,"hPn":11563},{"iso3":"BFA","name":"Burkina Faso","region":"Sub-Saharan Africa","inc":"Low","gni":1650,"pop":19.2,"dL":0.0385,"dLs":0.0623,"dLn":9646,"dP":0.0229,"dPs":0.0082,"dPn":9808,"vL":0.017,"vLs":0.0591,"vLn":9612,"vP":0.0567,"vPs":0.0078,"vPn":9775,"hL":0.2061,"hLs":0.0429,"hLn":9660,"hP":0.0483,"hPs":0.0057,"hPn":9824},{"iso3":"BDI","name":"Burundi","region":"Sub-Saharan Africa","inc":"Low","gni":702,"pop":10.9,"dL":0.4994,"dLs":0.1344,"dLn":3880,"dP":0.0509,"dPs":0.0188,"dPn":3942,"vL":0.4184,"vLs":0.1087,"vLn":3878,"vP":0.0579,"vPs":0.0151,"vPn":3939,"hL":0.5945,"hLs":0.0786,"hLn":3880,"hP":0.052,"hPs":0.0109,"hPn":3944},{"iso3":"KHM","name":"Cambodia","region":"Southeast Asia","inc":"Lower-mid","gni":3413,"pop":16.0,"dL":0.1408,"dLs":0.0423,"dLn":12237,"dP":0.0453,"dPs":0.0048,"dPn":12444,"vL":-0.0212,"vLs":0.074,"vLn":12265,"vP":0.0535,"vPs":0.0084,"vPn":12475,"hL":-0.0681,"hLs":0.0476,"hLn":12279,"hP":0.0213,"hPs":0.0054,"hPn":12490},{"iso3":"CMR","name":"Cameroon","region":"Sub-Saharan Africa","inc":"Lower-mid","gni":3315,"pop":24.1,"dL":0.3865,"dLs":0.0531,"dLn":11843,"dP":0.0451,"dPs":0.0062,"dPn":11983,"vL":0.3245,"vLs":0.0569,"vLn":11766,"vP":0.0444,"vPs":0.0067,"vPn":11901,"hL":0.1294,"hLs":0.0449,"hLn":11819,"hP":0.0201,"hPs":0.0052,"hPn":11969},{"iso3":"CAN","name":"Canada","region":"Northern America","inc":"High","gni":43433,"pop":36.6,"dL":0.2818,"dLs":0.0341,"dLn":10714,"dP":0.0399,"dPs":0.0051,"dPn":9602,"vL":0.1825,"vLs":0.0341,"vLn":10721,"vP":0.0328,"vPs":0.0052,"vPn":9605,"hL":-0.027,"hLs":0.0336,"hLn":10701,"hP":-0.0003,"hPs":0.0051,"hPn":9591},{"iso3":"CAF","name":"Central African Republic","region":"Sub-Saharan Africa","inc":"Low","gni":663,"pop":4.7,"dL":0.3025,"dLs":0.0982,"dLn":3901,"dP":0.0528,"dPs":0.013,"dPn":3895,"vL":0.0172,"vLs":0.0825,"vLn":3900,"vP":0.0511,"vPs":0.0109,"vPn":3893,"hL":0.2757,"hLs":0.067,"hLn":3888,"hP":0.0613,"hPs":0.0088,"hPn":3885},{"iso3":"TCD","name":"Chad","region":"Sub-Saharan Africa","inc":"Low","gni":1750,"pop":14.9,"dL":0.172,"dLs":0.0575,"dLn":10779,"dP":0.0747,"dPs":0.0079,"dPn":10916,"vL":0.1946,"vLs":0.0579,"vLn":10747,"vP":0.0508,"vPs":0.008,"vPn":10878,"hL":0.1517,"hLs":0.0428,"hLn":10772,"hP":0.0655,"hPs":0.0059,"hPn":10904},{"iso3":"CHL","name":"Chile","region":"Latin America and the Caribbean","inc":"High","gni":21910,"pop":18.1,"dL":0.2417,"dLs":0.0378,"dLn":11965,"dP":0.0331,"dPs":0.0045,"dPn":11973,"vL":0.1472,"vLs":0.052,"vLn":11968,"vP":0.0285,"vPs":0.0062,"vPn":11975,"hL":-0.0779,"hLs":0.0372,"hLn":11944,"hP":0.0183,"hPs":0.0044,"hPn":11952},{"iso3":"CHN","name":"China","region":"East Asia","inc":"Upper-mid","gni":15270,"pop":1409.5,"dL":0.1463,"dLs":0.0282,"dLn":46517,"dP":0.0261,"dPs":0.0034,"dPn":46503,"vL":0.3421,"vLs":0.0383,"vLn":46360,"vP":0.0347,"vPs":0.0047,"vPn":46346,"hL":0.138,"hLs":0.0197,"hLn":46402,"hP":0.0218,"hPs":0.0024,"hPn":46400},{"iso3":"COL","name":"Colombia","region":"Latin America and the Caribbean","inc":"Upper-mid","gni":12938,"pop":49.1,"dL":0.1688,"dLs":0.054,"dLn":11808,"dP":0.0244,"dPs":0.0051,"dPn":11888,"vL":0.0289,"vLs":0.0559,"vLn":11807,"vP":0.0356,"vPs":0.0053,"vPn":11887,"hL":0.0268,"hLs":0.0454,"hLn":11801,"hP":0.0189,"hPs":0.0043,"hPn":11879},{"iso3":"COM","name":"Comoros","region":"Sub-Saharan Africa","inc":"Low","gni":1399,"pop":0.8,"dL":0.2498,"dLs":0.0559,"dLn":8418,"dP":0.0583,"dPs":0.0082,"dPn":7487,"vL":0.1773,"vLs":0.0477,"vLn":8419,"vP":0.0331,"vPs":0.007,"vPn":7484,"hL":0.1505,"hLs":0.0427,"hLn":8414,"hP":0.0265,"hPs":0.0063,"hPn":7485},{"iso3":"COG","name":"Congo Brazzaville","region":"Sub-Saharan Africa","inc":"Lower-mid","gni":5694,"pop":5.3,"dL":0.5932,"dLs":0.0953,"dLn":8069,"dP":0.0478,"dPs":0.0094,"dPn":8675,"vL":0.3945,"vLs":0.0849,"vLn":8030,"vP":0.0285,"vPs":0.0084,"vPn":8639,"hL":0.3049,"hLs":0.0627,"hLn":8082,"hP":0.0501,"hPs":0.0061,"hPn":8688},{"iso3":"COD","name":"Congo Kinshasa","region":"Sub-Saharan Africa","inc":"Low","gni":796,"pop":81.3,"dL":0.2933,"dLs":0.0616,"dLn":7841,"dP":0.0105,"dPs":0.0105,"dPn":7825,"vL":0.0716,"vLs":0.0551,"vLn":7821,"vP":-0.0089,"vPs":0.0094,"vPn":7807,"hL":0.1497,"hLs":0.0403,"hLn":7796,"hP":0.0272,"hPs":0.0069,"hPn":7783},{"iso3":"CRI","name":"Costa Rica","region":"Latin America and the Caribbean","inc":"Upper-mid","gni":14636,"pop":4.9,"dL":0.2381,"dLs":0.0444,"dLn":10575,"dP":0.0327,"dPs":0.0046,"dPn":10616,"vL":0.1044,"vLs":0.0489,"vLn":10580,"vP":0.0334,"vPs":0.005,"vPn":10622,"hL":0.0723,"hLs":0.0411,"hLn":10560,"hP":0.0146,"hPs":0.0042,"hPn":10603},{"iso3":"HRV","name":"Croatia","region":"European Union","inc":"High","gni":22162,"pop":4.2,"dL":0.2129,"dLs":0.0415,"dLn":11538,"dP":0.0823,"dPs":0.0072,"dPn":11374,"vL":0.0981,"vLs":0.06,"vLn":11537,"vP":0.0894,"vPs":0.0104,"vPn":11372,"hL":0.3056,"hLs":0.0367,"hLn":11453,"hP":0.0524,"hPs":0.0064,"hPn":11303},{"iso3":"CYP","name":"Cyprus","region":"European Union","inc":"High","gni":31568,"pop":1.2,"dL":0.286,"dLs":0.0347,"dLn":16168,"dP":0.0351,"dPs":0.0042,"dPn":16228,"vL":0.2056,"vLs":0.0408,"vLn":16238,"vP":0.0397,"vPs":0.0049,"vPn":16298,"hL":0.0077,"hLs":0.034,"hLn":16154,"hP":0.0185,"hPs":0.0041,"hPn":16212},{"iso3":"CZE","name":"Czech Republic","region":"European Union","inc":"High","gni":30588,"pop":10.6,"dL":0.2505,"dLs":0.0408,"dLn":10879,"dP":0.0698,"dPs":0.0068,"dPn":10494,"vL":0.1961,"vLs":0.0484,"vLn":10885,"vP":0.065,"vPs":0.008,"vPn":10500,"hL":0.0046,"hLs":0.0373,"hLn":10743,"hP":0.0426,"hPs":0.0062,"hPn":10382},{"iso3":"DNK","name":"Denmark","region":"European Union","inc":"High","gni":47918,"pop":5.7,"dL":0.1209,"dLs":0.0306,"dLn":11591,"dP":0.0166,"dPs":0.0043,"dPn":11586,"vL":0.1133,"vLs":0.0359,"vLn":11622,"vP":0.0375,"vPs":0.0051,"vPn":11617,"hL":-0.0053,"hLs":0.0305,"hLn":11524,"hP":0.0191,"hPs":0.0043,"hPn":11519},{"iso3":"DOM","name":"Dominican Republic","region":"Latin America and the Caribbean","inc":"Upper-mid","gni":13921,"pop":10.8,"dL":0.2868,"dLs":0.0642,"dLn":11659,"dP":0.0391,"dPs":0.0052,"dPn":11784,"vL":0.0992,"vLs":0.0588,"vLn":11641,"vP":0.0476,"vPs":0.0048,"vPn":11764,"hL":-0.0619,"hLs":0.0564,"hLn":11650,"hP":0.0207,"hPs":0.0046,"hPn":11776},{"iso3":"ECU","name":"Ecuador","region":"Latin America and the Caribbean","inc":"Upper-mid","gni":10347,"pop":16.6,"dL":0.2577,"dLs":0.0588,"dLn":10833,"dP":0.0147,"dPs":0.0059,"dPn":10861,"vL":0.1545,"vLs":0.0625,"vLn":10825,"vP":0.0141,"vPs":0.0062,"vPn":10851,"hL":0.0971,"hLs":0.0445,"hLn":10819,"hP":0.0002,"hPs":0.0044,"hPn":10848},{"iso3":"EGY","name":"Egypt","region":"Middle East and North Africa","inc":"Lower-mid","gni":10355,"pop":97.6,"dL":0.6712,"dLs":0.0392,"dLn":22572,"dP":0.0828,"dPs":0.0055,"dPn":21613,"vL":0.3567,"vLs":0.0591,"vLn":22643,"vP":0.058,"vPs":0.0083,"vPn":21680,"hL":0.2646,"hLs":0.0286,"hLn":21549,"hP":0.042,"hPs":0.004,"hPn":20599},{"iso3":"SLV","name":"El Salvador","region":"Latin America and the Caribbean","inc":"Lower-mid","gni":6868,"pop":6.4,"dL":0.3929,"dLs":0.0676,"dLn":11382,"dP":0.0248,"dPs":0.0062,"dPn":11537,"vL":0.0164,"vLs":0.0592,"vLn":11388,"vP":0.0202,"vPs":0.0054,"vPn":11542,"hL":0.0923,"hLs":0.0465,"hLn":11375,"hP":0.024,"hPs":0.0042,"hPn":11524},{"iso3":"EST","name":"Estonia","region":"European Union","inc":"High","gni":28993,"pop":1.3,"dL":0.5441,"dLs":0.0414,"dLn":10576,"dP":0.0661,"dPs":0.0064,"dPn":10295,"vL":0.3309,"vLs":0.0452,"vLn":10566,"vP":0.0647,"vPs":0.007,"vPn":10285,"hL":0.1955,"hLs":0.0352,"hLn":10503,"hP":0.0446,"hPs":0.0055,"hPn":10231},{"iso3":"SWZ","name":"Eswatini","region":"Sub-Saharan Africa","inc":"Lower-mid","gni":7620,"pop":1.4,"dL":0.3528,"dLs":0.1349,"dLn":3002,"dP":-0.0014,"dPs":0.0149,"dPn":3034,"vL":0.4171,"vLs":0.1074,"vLn":2998,"vP":0.017,"vPs":0.0118,"vPn":3030,"hL":0.1268,"hLs":0.0899,"hLn":2992,"hP":0.0248,"hPs":0.0099,"hPn":3023},{"iso3":"ETH","name":"Ethiopia","region":"Sub-Saharan Africa","inc":"Low","gni":1719,"pop":105.0,"dL":0.1989,"dLs":0.0485,"dLn":10558,"dP":0.0407,"dPs":0.0075,"dPn":11120,"vL":0.2167,"vLs":0.0491,"vLn":10548,"vP":0.0225,"vPs":0.0076,"vPn":11113,"hL":0.1495,"hLs":0.0396,"hLn":10567,"hP":0.0442,"hPs":0.0061,"hPn":11130},{"iso3":"FIN","name":"Finland","region":"European Union","inc":"High","gni":41002,"pop":5.5,"dL":0.1057,"dLs":0.0291,"dLn":10689,"dP":0.0209,"dPs":0.0048,"dPn":10667,"vL":0.1375,"vLs":0.0316,"vLn":10692,"vP":0.0439,"vPs":0.0052,"vPn":10670,"hL":0.0094,"hLs":0.0289,"hLn":10658,"hP":0.0434,"hPs":0.0048,"hPn":10637},{"iso3":"FRA","name":"France","region":"European Union","inc":"High","gni":39254,"pop":65.0,"dL":0.3355,"dLs":0.0357,"dLn":11555,"dP":0.0204,"dPs":0.0053,"dPn":11586,"vL":0.2328,"vLs":0.0351,"vLn":11558,"vP":0.0403,"vPs":0.0052,"vPn":11592,"hL":0.1003,"hLs":0.0328,"hLn":11540,"hP":0.0035,"hPs":0.0049,"hPn":11573},{"iso3":"GAB","name":"Gabon","region":"Sub-Saharan Africa","inc":"Upper-mid","gni":16431,"pop":2.0,"dL":0.0611,"dLs":0.072,"dLn":8724,"dP":0.0311,"dPs":0.0094,"dPn":8764,"vL":-0.0882,"vLs":0.0729,"vLn":8698,"vP":0.0554,"vPs":0.0095,"vPn":8732,"hL":0.1836,"hLs":0.0468,"hLn":8692,"hP":0.048,"hPs":0.0061,"hPn":8732},{"iso3":"GMB","name":"Gambia","region":"Sub-Saharan Africa","inc":"Low","gni":1516,"pop":2.1,"dL":0.3789,"dLs":0.1138,"dLn":2985,"dP":0.0037,"dPs":0.0084,"dPn":3039,"vL":-0.2576,"vLs":0.122,"vLn":2975,"vP":0.0213,"vPs":0.009,"vPn":3028,"hL":-0.0358,"hLs":0.1266,"hLn":2971,"hP":0.0236,"hPs":0.0093,"hPn":3023},{"iso3":"GEO","name":"Georgia","region":"Commonwealth of Independent States","inc":"Lower-mid","gni":9186,"pop":3.9,"dL":0.4958,"dLs":0.0759,"dLn":11887,"dP":0.0381,"dPs":0.0109,"dPn":11752,"vL":0.1552,"vLs":0.0451,"vLn":11830,"vP":0.0293,"vPs":0.0065,"vPn":11697,"hL":0.4094,"hLs":0.0365,"hLn":11796,"hP":0.0716,"hPs":0.0052,"hPn":11676},{"iso3":"DEU","name":"Germany","region":"European Union","inc":"High","gni":46136,"pop":82.1,"dL":0.2768,"dLs":0.0275,"dLn":14957,"dP":0.0429,"dPs":0.0043,"dPn":13941,"vL":0.1383,"vLs":0.0313,"vLn":14974,"vP":0.0363,"vPs":0.0049,"vPn":13958,"hL":0.0083,"hLs":0.0271,"hLn":14877,"hP":0.0274,"hPs":0.0043,"hPn":13864},{"iso3":"GHA","name":"Ghana","region":"Sub-Saharan Africa","inc":"Lower-mid","gni":4096,"pop":28.8,"dL":0.3171,"dLs":0.0517,"dLn":10589,"dP":0.0394,"dPs":0.0056,"dPn":10725,"vL":0.0971,"vLs":0.0501,"vLn":10603,"vP":0.0271,"vPs":0.0055,"vPn":10740,"hL":0.3614,"hLs":0.0474,"hLn":10604,"hP":0.0503,"hPs":0.0052,"hPn":10741},{"iso3":"GRC","name":"Greece","region":"European Union","inc":"High","gni":24648,"pop":11.2,"dL":0.382,"dLs":0.0733,"dLn":11960,"dP":0.0365,"dPs":0.0091,"dPn":11958,"vL":0.1976,"vLs":0.0751,"vLn":11963,"vP":0.0479,"vPs":0.0093,"vPn":11962,"hL":0.136,"hLs":0.0399,"hLn":11952,"hP":0.0347,"hPs":0.0049,"hPn":11951},{"iso3":"GTM","name":"Guatemala","region":"Latin America and the Caribbean","inc":"Upper-mid","gni":7278,"pop":16.9,"dL":0.1477,"dLs":0.0556,"dLn":10301,"dP":0.0222,"dPs":0.0044,"dPn":10575,"vL":0.1467,"vLs":0.0549,"vLn":10284,"vP":0.0266,"vPs":0.0044,"vPn":10559,"hL":0.2724,"hLs":0.0522,"hLn":10281,"hP":0.0261,"hPs":0.0042,"hPn":10558},{"iso3":"GIN","name":"Guinea","region":"Sub-Saharan Africa","inc":"Low","gni":2067,"pop":12.7,"dL":0.3812,"dLs":0.0624,"dLn":8727,"dP":0.0543,"dPs":0.0068,"dPn":8916,"vL":0.3109,"vLs":0.0622,"vLn":8730,"vP":0.0413,"vPs":0.0067,"vPn":8919,"hL":0.1342,"hLs":0.0519,"hLn":8758,"hP":0.0421,"hPs":0.0056,"hPn":8952},{"iso3":"HTI","name":"Haiti","region":"Latin America and the Caribbean","inc":"Low","gni":1665,"pop":11.0,"dL":0.027,"dLs":0.1009,"dLn":2312,"dP":0.0598,"dPs":0.0129,"dPn":2313,"vL":0.0482,"vLs":0.1103,"vLn":2298,"vP":0.0122,"vPs":0.0142,"vPn":2300,"hL":0.0831,"hLs":0.1023,"hLn":2276,"hP":0.0298,"hPs":0.013,"hPn":2285},{"iso3":"HND","name":"Honduras","region":"Latin America and the Caribbean","inc":"Lower-mid","gni":4215,"pop":9.3,"dL":0.338,"dLs":0.0611,"dLn":10418,"dP":0.0125,"dPs":0.0047,"dPn":10562,"vL":0.1157,"vLs":0.0598,"vLn":10421,"vP":0.0285,"vPs":0.0046,"vPn":10565,"hL":0.0904,"hLs":0.0554,"hLn":10401,"hP":0.0194,"hPs":0.0043,"hPn":10555},{"iso3":"HKG","name":"Hong Kong","region":"East Asia","inc":"High","gni":58420,"pop":7.4,"dL":0.3294,"dLs":0.0501,"dLn":5198,"dP":0.0618,"dPs":0.0076,"dPn":5199,"vL":0.2891,"vLs":0.0701,"vLn":5205,"vP":0.0804,"vPs":0.0107,"vPn":5206,"hL":0.1646,"hLs":0.0513,"hLn":5194,"hP":0.0562,"hPs":0.0078,"hPn":5195},{"iso3":"HUN","name":"Hungary","region":"European Union","inc":"High","gni":25393,"pop":9.7,"dL":0.3283,"dLs":0.0461,"dLn":10964,"dP":0.054,"dPs":0.0066,"dPn":10932,"vL":0.1892,"vLs":0.0642,"vLn":10976,"vP":0.0529,"vPs":0.0093,"vPn":10943,"hL":0.1871,"hLs":0.0375,"hLn":10932,"hP":0.0481,"hPs":0.0054,"hPn":10900},{"iso3":"ISL","name":"Iceland","region":"Europe-Other","inc":"High","gni":45810,"pop":0.3,"dL":0.2559,"dLs":0.0556,"dLn":3516,"dP":0.0272,"dPs":0.0078,"dPn":3525,"vL":0.2491,"vLs":0.0587,"vLn":3529,"vP":0.0351,"vPs":0.0083,"vPn":3540,"hL":0.0131,"hLs":0.052,"hLn":3466,"hP":0.0112,"hPs":0.0073,"hPn":3476},{"iso3":"IND","name":"India","region":"South Asia","inc":"Lower-mid","gni":6353,"pop":1339.2,"dL":0.2037,"dLs":0.0223,"dLn":45362,"dP":0.0559,"dPs":0.0031,"dPn":45234,"vL":0.0917,"vLs":0.0244,"vLn":45558,"vP":0.0501,"vPs":0.0034,"vPn":45419,"hL":0.0974,"hLs":0.0205,"hLn":45722,"hP":0.0666,"hPs":0.0028,"hPn":45585},{"iso3":"IDN","name":"Indonesia","region":"Southeast Asia","inc":"Lower-mid","gni":10846,"pop":264.0,"dL":0.166,"dLs":0.0418,"dLn":11976,"dP":0.0571,"dPs":0.0044,"dPn":12060,"vL":-0.0199,"vLs":0.0371,"vLn":12005,"vP":0.0425,"vPs":0.0039,"vPn":12084,"hL":0.0241,"hLs":0.0372,"hLn":11973,"hP":0.0371,"hPs":0.0039,"hPn":12059},{"iso3":"IRN","name":"Iran","region":"Middle East and North Africa","inc":"Upper-mid","gni":19130,"pop":81.2,"dL":0.4489,"dLs":0.051,"dLn":8900,"dP":0.046,"dPs":0.0059,"dPn":8951,"vL":0.2323,"vLs":0.0643,"vLn":8881,"vP":0.0637,"vPs":0.0074,"vPn":8932,"hL":0.2365,"hLs":0.0518,"hLn":8884,"hP":0.0255,"hPs":0.0059,"hPn":8935},{"iso3":"IRQ","name":"Iraq","region":"Middle East and North Africa","inc":"Upper-mid","gni":17789,"pop":38.3,"dL":0.2985,"dLs":0.0485,"dLn":14448,"dP":0.0567,"dPs":0.0061,"dPn":13215,"vL":0.056,"vLs":0.0609,"vLn":14281,"vP":0.0424,"vPs":0.0076,"vPn":13084,"hL":-0.0318,"hLs":0.0424,"hLn":14204,"hP":0.0606,"hPs":0.0054,"hPn":13036},{"iso3":"IRL","name":"Ireland","region":"European Union","inc":"High","gni":53754,"pop":4.8,"dL":0.2449,"dLs":0.0349,"dLn":11229,"dP":0.0382,"dPs":0.0047,"dPn":11239,"vL":0.1997,"vLs":0.0344,"vLn":11233,"vP":0.0204,"vPs":0.0046,"vPn":11242,"hL":0.027,"hLs":0.0341,"hLn":11183,"hP":0.0282,"hPs":0.0046,"hPn":11193},{"iso3":"ISR","name":"Israel","region":"Middle East and North Africa","inc":"High","gni":32711,"pop":8.3,"dL":0.3449,"dLs":0.0295,"dLn":11939,"dP":0.0787,"dPs":0.0051,"dPn":11837,"vL":0.2554,"vLs":0.0356,"vLn":11921,"vP":0.0505,"vPs":0.0062,"vPn":11819,"hL":0.0489,"hLs":0.0298,"hLn":11877,"hP":0.0837,"hPs":0.0051,"hPn":11779},{"iso3":"ITA","name":"Italy","region":"European Union","inc":"High","gni":35299,"pop":59.4,"dL":0.3143,"dLs":0.0343,"dLn":11737,"dP":0.0318,"dPs":0.0052,"dPn":11685,"vL":0.2411,"vLs":0.0449,"vLn":11737,"vP":0.0234,"vPs":0.0069,"vPn":11689,"hL":-0.0614,"hLs":0.0328,"hLn":11703,"hP":0.0411,"hPs":0.005,"hPn":11653},{"iso3":"CIV","name":"Ivory Coast","region":"Sub-Saharan Africa","inc":"Lower-mid","gni":3481,"pop":24.3,"dL":0.2934,"dLs":0.0705,"dLn":8724,"dP":0.0448,"dPs":0.008,"dPn":8833,"vL":0.2038,"vLs":0.0875,"vLn":8669,"vP":0.0681,"vPs":0.01,"vPn":8772,"hL":0.1493,"hLs":0.0533,"hLn":8716,"hP":0.0568,"hPs":0.0061,"hPn":8838},{"iso3":"JAM","name":"Jamaica","region":"Latin America and the Caribbean","inc":"Upper-mid","gni":7846,"pop":2.9,"dL":0.0885,"dLs":0.1343,"dLn":2400,"dP":0.0419,"dPs":0.0132,"dPn":2431,"vL":0.327,"vLs":0.1172,"vLn":2394,"vP":0.06,"vPs":0.0115,"vPn":2426,"hL":0.1604,"hLs":0.1167,"hLn":2390,"hP":0.0491,"hPs":0.0115,"hPn":2421},{"iso3":"JPN","name":"Japan","region":"East Asia","inc":"High","gni":38986,"pop":127.5,"dL":0.2524,"dLs":0.0429,"dLn":10835,"dP":0.0637,"dPs":0.0064,"dPn":10760,"vL":0.3289,"vLs":0.0435,"vLn":10843,"vP":0.1063,"vPs":0.0065,"vPn":10769,"hL":0.1594,"hLs":0.0425,"hLn":10813,"hP":0.068,"hPs":0.0064,"hPn":10741},{"iso3":"JOR","name":"Jordan","region":"Middle East and North Africa","inc":"Upper-mid","gni":8288,"pop":9.7,"dL":0.4873,"dLs":0.0488,"dLn":15780,"dP":0.0611,"dPs":0.0064,"dPn":14781,"vL":0.342,"vLs":0.0745,"vLn":15783,"vP":0.076,"vPs":0.0096,"vPn":14786,"hL":0.1022,"hLs":0.0389,"hLn":14760,"hP":0.0186,"hPs":0.0049,"hPn":13773},{"iso3":"KAZ","name":"Kazakhstan","region":"Commonwealth of Independent States","inc":"Upper-mid","gni":22626,"pop":18.2,"dL":0.201,"dLs":0.0424,"dLn":11380,"dP":0.0673,"dPs":0.0064,"dPn":10840,"vL":0.0884,"vLs":0.0458,"vLn":11337,"vP":0.0474,"vPs":0.0069,"vPn":10810,"hL":0.2174,"hLs":0.0364,"hLn":11293,"hP":0.0459,"hPs":0.0055,"hPn":10780},{"iso3":"KEN","name":"Kenya","region":"Sub-Saharan Africa","inc":"Lower-mid","gni":2961,"pop":49.7,"dL":0.1879,"dLs":0.0418,"dLn":11850,"dP":0.0435,"dPs":0.0052,"dPn":11875,"vL":0.2021,"vLs":0.0419,"vLn":11840,"vP":0.0418,"vPs":0.0052,"vPn":11867,"hL":0.1454,"hLs":0.0443,"hLn":11843,"hP":0.0423,"hPs":0.0056,"hPn":11868},{"iso3":"","name":"Kosovo","region":"Europe-Other","inc":null,"gni":null,"pop":null,"dL":0.6067,"dLs":0.0309,"dLn":19847,"dP":0.0679,"dPs":0.004,"dPn":18630,"vL":0.2912,"vLs":0.0447,"vLn":19881,"vP":0.0662,"vPs":0.0059,"vPn":18662,"hL":0.347,"hLs":0.0307,"hLn":19797,"hP":0.061,"hPs":0.004,"hPn":18585},{"iso3":"KWT","name":"Kuwait","region":"Middle East and North Africa","inc":"High","gni":70524,"pop":4.1,"dL":0.2593,"dLs":0.051,"dLn":7734,"dP":0.0391,"dPs":0.0063,"dPn":7754,"vL":0.3066,"vLs":0.068,"vLn":7843,"vP":0.0634,"vPs":0.0083,"vPn":7860,"hL":0.107,"hLs":0.0551,"hLn":7739,"hP":0.0464,"hPs":0.0068,"hPn":7757},{"iso3":"KGZ","name":"Kyrgyzstan","region":"Commonwealth of Independent States","inc":"Lower-mid","gni":3255,"pop":6.0,"dL":0.3008,"dLs":0.0378,"dLn":11765,"dP":0.0635,"dPs":0.0055,"dPn":11646,"vL":0.0955,"vLs":0.0405,"vLn":11707,"vP":0.0224,"vPs":0.0059,"vPn":11599,"hL":0.3075,"hLs":0.0342,"hLn":11684,"hP":0.0558,"hPs":0.005,"hPn":11573},{"iso3":"LAO","name":"Laos","region":"Southeast Asia","inc":"Lower-mid","gni":6070,"pop":6.9,"dL":0.1685,"dLs":0.05,"dLn":6569,"dP":0.0519,"dPs":0.0056,"dPn":7247,"vL":0.2645,"vLs":0.0848,"vLn":5512,"vP":0.0693,"vPs":0.0088,"vPn":6179,"hL":-0.0196,"hLs":0.05,"hLn":6572,"hP":0.0473,"hPs":0.0056,"hPn":7263},{"iso3":"LVA","name":"Latvia","region":"European Union","inc":"High","gni":25002,"pop":1.9,"dL":0.2073,"dLs":0.0398,"dLn":10350,"dP":0.0649,"dPs":0.0066,"dPn":10229,"vL":0.0486,"vLs":0.0597,"vLn":10357,"vP":0.0601,"vPs":0.0099,"vPn":10233,"hL":0.0896,"hLs":0.0367,"hLn":10247,"hP":0.0571,"hPs":0.0061,"hPn":10140},{"iso3":"LBN","name":"Lebanon","region":"Middle East and North Africa","inc":"Upper-mid","gni":13378,"pop":6.1,"dL":0.4264,"dLs":0.0378,"dLn":14927,"dP":0.0654,"dPs":0.0054,"dPn":13845,"vL":0.424,"vLs":0.0584,"vLn":14943,"vP":0.0566,"vPs":0.0084,"vPn":13863,"hL":0.243,"hLs":0.0364,"hLn":13885,"hP":0.0603,"hPs":0.0053,"hPn":12822},{"iso3":"LSO","name":"Lesotho","region":"Sub-Saharan Africa","inc":"Lower-mid","gni":3255,"pop":2.2,"dL":0.4589,"dLs":0.1723,"dLn":3890,"dP":0.0228,"dPs":0.016,"dPn":3962,"vL":0.1088,"vLs":0.1129,"vLn":3876,"vP":0.0258,"vPs":0.0105,"vPn":3945,"hL":-0.1422,"hLs":0.0959,"hLn":3889,"hP":0.0406,"hPs":0.0089,"hPn":3960},{"iso3":"LBR","name":"Liberia","region":"Sub-Saharan Africa","inc":"Low","gni":667,"pop":4.7,"dL":-0.0262,"dLs":0.1474,"dLn":3846,"dP":0.0408,"dPs":0.0116,"dPn":3932,"vL":0.0918,"vLs":0.1169,"vLn":3856,"vP":0.0275,"vPs":0.0092,"vPn":3942,"hL":0.1686,"hLs":0.1398,"hLn":3853,"hP":0.0174,"hPs":0.0109,"hPn":3937},{"iso3":"LBY","name":"Libya","region":"Middle East and North Africa","inc":"Upper-mid","gni":11100,"pop":6.4,"dL":0.4203,"dLs":0.0858,"dLn":4856,"dP":0.0382,"dPs":0.009,"dPn":4905,"vL":0.0149,"vLs":0.0913,"vLn":4922,"vP":0.0421,"vPs":0.0095,"vPn":4972,"hL":0.0403,"hLs":0.0892,"hLn":4859,"hP":0.0245,"hPs":0.0093,"hPn":4909},{"iso3":"LTU","name":"Lithuania","region":"European Union","inc":"High","gni":28314,"pop":2.9,"dL":0.3706,"dLs":0.0521,"dLn":10804,"dP":0.133,"dPs":0.0089,"dPn":10003,"vL":0.2617,"vLs":0.0551,"vLn":10783,"vP":0.1333,"vPs":0.0093,"vPn":9991,"hL":0.1,"hLs":0.037,"hLn":10642,"hP":0.0755,"hPs":0.0064,"hPn":9892},{"iso3":"LUX","name":"Luxembourg","region":"European Union","inc":"High","gni":65016,"pop":0.6,"dL":0.2055,"dLs":0.0308,"dLn":9321,"dP":0.0674,"dPs":0.0053,"dPn":9310,"vL":0.1977,"vLs":0.0328,"vLn":9328,"vP":0.0485,"vPs":0.0056,"vPn":9316,"hL":0.0449,"hLs":0.0311,"hLn":9300,"hP":0.0322,"hPs":0.0054,"hPn":9290},{"iso3":"MDG","name":"Madagascar","region":"Sub-Saharan Africa","inc":"Low","gni":1358,"pop":25.6,"dL":0.3271,"dLs":0.0614,"dLn":8885,"dP":0.0606,"dPs":0.0085,"dPn":8949,"vL":0.1026,"vLs":0.0457,"vLn":8871,"vP":0.0521,"vPs":0.0063,"vPn":8933,"hL":0.2617,"hLs":0.043,"hLn":8880,"hP":0.0712,"hPs":0.0059,"hPn":8942},{"iso3":"MWI","name":"Malawi","region":"Sub-Saharan Africa","inc":"Low","gni":1064,"pop":18.6,"dL":0.3677,"dLs":0.0701,"dLn":9856,"dP":0.0478,"dPs":0.007,"dPn":9919,"vL":0.0778,"vLs":0.0624,"vLn":9848,"vP":0.0213,"vPs":0.0063,"vPn":9911,"hL":0.1668,"hLs":0.0588,"hLn":9850,"hP":0.0172,"hPs":0.0059,"hPn":9913},{"iso3":"MYS","name":"Malaysia","region":"Southeast Asia","inc":"Upper-mid","gni":26107,"pop":31.6,"dL":0.2493,"dLs":0.04,"dLn":8805,"dP":0.0429,"dPs":0.0054,"dPn":8792,"vL":0.1366,"vLs":0.0438,"vLn":8800,"vP":0.043,"vPs":0.0059,"vPn":8788,"hL":0.1047,"hLs":0.0397,"hLn":8776,"hP":0.0073,"hPs":0.0053,"hPn":8766},{"iso3":"MLI","name":"Mali","region":"Sub-Saharan Africa","inc":"Low","gni":1953,"pop":18.5,"dL":0.4771,"dLs":0.0627,"dLn":10840,"dP":0.0566,"dPs":0.0077,"dPn":10983,"vL":0.3368,"vLs":0.0648,"vLn":10838,"vP":0.0168,"vPs":0.008,"vPn":10982,"hL":0.2652,"hLs":0.0412,"hLn":10852,"hP":0.0395,"hPs":0.0051,"hPn":10991},{"iso3":"MLT","name":"Malta","region":"European Union","inc":"High","gni":34396,"pop":0.4,"dL":0.2076,"dLs":0.0408,"dLn":10432,"dP":0.0332,"dPs":0.0052,"dPn":10448,"vL":0.1533,"vLs":0.0452,"vLn":10472,"vP":0.0556,"vPs":0.0057,"vPn":10487,"hL":-0.0057,"hLs":0.0393,"hLn":10413,"hP":0.0305,"hPs":0.005,"hPn":10427},{"iso3":"MUS","name":"Mauritius","region":"Sub-Saharan Africa","inc":"Upper-mid","gni":20189,"pop":1.3,"dL":0.1142,"dLs":0.0541,"dLn":6950,"dP":0.0253,"dPs":0.006,"dPn":6951,"vL":0.171,"vLs":0.0566,"vLn":6955,"vP":0.0301,"vPs":0.0063,"vPn":6956,"hL":0.042,"hLs":0.0536,"hLn":6936,"hP":0.0283,"hPs":0.006,"hPn":6936},{"iso3":"MEX","name":"Mexico","region":"Latin America and the Caribbean","inc":"Upper-mid","gni":16944,"pop":129.2,"dL":-0.0581,"dLs":0.0504,"dLn":11721,"dP":0.0256,"dPs":0.0055,"dPn":11671,"vL":0.0614,"vLs":0.0529,"vLn":11711,"vP":0.0058,"vPs":0.0058,"vPn":11663,"hL":-0.1636,"hLs":0.0407,"hLn":11683,"hP":0.0267,"hPs":0.0045,"hPn":11629},{"iso3":"MDA","name":"Moldova","region":"Commonwealth of Independent States","inc":"Lower-mid","gni":5554,"pop":4.1,"dL":0.1858,"dLs":0.0422,"dLn":11674,"dP":0.0651,"dPs":0.0068,"dPn":11497,"vL":0.103,"vLs":0.0468,"vLn":11650,"vP":0.0255,"vPs":0.0076,"vPn":11478,"hL":0.0305,"hLs":0.0346,"hLn":11565,"hP":0.0595,"hPs":0.0056,"hPn":11397},{"iso3":"MNG","name":"Mongolia","region":"East Asia","inc":"Lower-mid","gni":10103,"pop":3.1,"dL":0.1266,"dLs":0.0371,"dLn":9947,"dP":0.0393,"dPs":0.0054,"dPn":9907,"vL":0.1626,"vLs":0.0395,"vLn":9940,"vP":0.0471,"vPs":0.0057,"vPn":9901,"hL":0.08,"hLs":0.0373,"hLn":9855,"hP":0.0506,"hPs":0.0054,"hPn":9821},{"iso3":"MNE","name":"Montenegro","region":"Europe-Other","inc":"Upper-mid","gni":16779,"pop":0.6,"dL":0.4073,"dLs":0.0453,"dLn":11874,"dP":0.0792,"dPs":0.0062,"dPn":11719,"vL":0.2416,"vLs":0.0702,"vLn":11882,"vP":0.0798,"vPs":0.0096,"vPn":11720,"hL":0.1973,"hLs":0.0404,"hLn":11818,"hP":0.0612,"hPs":0.0055,"hPn":11668},{"iso3":"MAR","name":"Morocco","region":"Middle East and North Africa","inc":"Lower-mid","gni":7340,"pop":35.7,"dL":0.6084,"dLs":0.1255,"dLn":8635,"dP":0.0791,"dPs":0.0166,"dPn":8838,"vL":0.0353,"vLs":0.0932,"vLn":8638,"vP":0.0468,"vPs":0.0123,"vPn":8840,"hL":0.0103,"hLs":0.0486,"hLn":8599,"hP":0.0275,"hPs":0.0064,"hPn":8809},{"iso3":"MOZ","name":"Mozambique","region":"Sub-Saharan Africa","inc":"Low","gni":1093,"pop":29.7,"dL":0.4085,"dLs":0.1365,"dLn":3734,"dP":0.04,"dPs":0.0109,"dPn":3846,"vL":0.1487,"vLs":0.1138,"vLn":3737,"vP":0.0505,"vPs":0.009,"vPn":3849,"hL":0.1817,"hLs":0.1067,"hLn":3744,"hP":0.0255,"hPs":0.0085,"hPn":3857},{"iso3":"MMR","name":"Myanmar","region":"Southeast Asia","inc":"Lower-mid","gni":5567,"pop":53.4,"dL":0.1309,"dLs":0.0569,"dLn":9640,"dP":0.0456,"dPs":0.0073,"dPn":9747,"vL":0.1758,"vLs":0.0413,"vLn":9626,"vP":0.0655,"vPs":0.0053,"vPn":9732,"hL":0.0194,"hLs":0.0408,"hLn":9616,"hP":0.0546,"hPs":0.0052,"hPn":9720},{"iso3":"NAM","name":"Namibia","region":"Sub-Saharan Africa","inc":"Upper-mid","gni":9387,"pop":2.5,"dL":0.5982,"dLs":0.1167,"dLn":4835,"dP":0.0519,"dPs":0.0118,"dPn":4873,"vL":0.1601,"vLs":0.0939,"vLn":4829,"vP":0.0197,"vPs":0.0094,"vPn":4867,"hL":0.2457,"hLs":0.0791,"hLn":4830,"hP":0.05,"hPs":0.0079,"hPn":4868},{"iso3":"NPL","name":"Nepal","region":"South Asia","inc":"Low","gni":2471,"pop":29.3,"dL":0.3639,"dLs":0.0478,"dLn":11388,"dP":0.0506,"dPs":0.0055,"dPn":11831,"vL":0.2153,"vLs":0.0498,"vLn":11410,"vP":0.0503,"vPs":0.0057,"vPn":11862,"hL":0.2009,"hLs":0.0447,"hLn":11495,"hP":0.0625,"hPs":0.0051,"hPn":11966},{"iso3":"NLD","name":"Netherlands","region":"European Union","inc":"High","gni":47900,"pop":17.0,"dL":0.2221,"dLs":0.0271,"dLn":10618,"dP":0.0398,"dPs":0.0047,"dPn":10614,"vL":0.1074,"vLs":0.0266,"vLn":10632,"vP":0.0394,"vPs":0.0046,"vPn":10630,"hL":-0.0653,"hLs":0.0269,"hLn":9570,"hP":0.024,"hPs":0.0047,"hPn":9567},{"iso3":"NZL","name":"New Zealand","region":"Australia-New Zealand","inc":"High","gni":33970,"pop":4.7,"dL":0.1626,"dLs":0.0348,"dLn":9894,"dP":0.0187,"dPs":0.005,"dPn":9888,"vL":0.2093,"vLs":0.0332,"vLn":9909,"vP":0.0312,"vPs":0.0048,"vPn":9903,"hL":-0.03,"hLs":0.034,"hLn":9839,"hP":0.0134,"hPs":0.0049,"hPn":9832},{"iso3":"NIC","name":"Nicaragua","region":"Latin America and the Caribbean","inc":"Lower-mid","gni":5157,"pop":6.2,"dL":0.2152,"dLs":0.0583,"dLn":10441,"dP":0.0199,"dPs":0.0051,"dPn":10768,"vL":0.3082,"vLs":0.0641,"vLn":10429,"vP":0.0422,"vPs":0.0056,"vPn":10760,"hL":0.0702,"hLs":0.0528,"hLn":10430,"hP":0.0221,"hPs":0.0046,"hPn":10758},{"iso3":"NER","name":"Niger","region":"Sub-Saharan Africa","inc":"Low","gni":906,"pop":21.5,"dL":0.487,"dLs":0.0686,"dLn":9821,"dP":0.0411,"dPs":0.009,"dPn":9882,"vL":0.1265,"vLs":0.0647,"vLn":9788,"vP":0.0284,"vPs":0.0084,"vPn":9850,"hL":0.3321,"hLs":0.0405,"hLn":9813,"hP":0.05,"hPs":0.0053,"hPn":9879},{"iso3":"NGA","name":"Nigeria","region":"Sub-Saharan Africa","inc":"Lower-mid","gni":5231,"pop":190.9,"dL":0.36,"dLs":0.0473,"dLn":12458,"dP":0.0373,"dPs":0.0049,"dPn":14595,"vL":0.4227,"vLs":0.046,"vLn":12372,"vP":0.0288,"vPs":0.0047,"vPn":14509,"hL":0.304,"hLs":0.0459,"hLn":12422,"hP":0.0499,"hPs":0.0046,"hPn":14561},{"iso3":"MKD","name":"North Macedonia","region":"Europe-Other","inc":"Upper-mid","gni":12505,"pop":2.1,"dL":0.4496,"dLs":0.0428,"dLn":11837,"dP":0.1073,"dPs":0.0058,"dPn":11576,"vL":0.1738,"vLs":0.0717,"vLn":11844,"vP":0.0788,"vPs":0.0099,"vPn":11582,"hL":0.3189,"hLs":0.0405,"hLn":11753,"hP":0.0922,"hPs":0.0055,"hPn":11509},{"iso3":"NOR","name":"Norway","region":"Europe-Other","inc":"High","gni":68012,"pop":5.3,"dL":0.1522,"dLs":0.0373,"dLn":7806,"dP":0.0287,"dPs":0.0056,"dPn":6828,"vL":0.1803,"vLs":0.0397,"vLn":7808,"vP":0.0504,"vPs":0.006,"vPn":6828,"hL":-0.0048,"hLs":0.037,"hLn":7775,"hP":0.0191,"hPs":0.0056,"hPn":6797},{"iso3":"PAK","name":"Pakistan","region":"South Asia","inc":"Lower-mid","gni":5311,"pop":197.0,"dL":0.4146,"dLs":0.0404,"dLn":13577,"dP":0.0826,"dPs":0.0048,"dPn":13470,"vL":0.2938,"vLs":0.0549,"vLn":13539,"vP":0.0902,"vPs":0.0066,"vPn":13432,"hL":0.2932,"hLs":0.0386,"hLn":13520,"hP":0.0471,"hPs":0.0046,"hPn":13416},{"iso3":"PSE","name":"Palestine","region":"Middle East and North Africa","inc":"Lower-mid","gni":5055,"pop":4.9,"dL":0.5786,"dLs":0.0605,"dLn":13971,"dP":0.0554,"dPs":0.0089,"dPn":12963,"vL":0.2422,"vLs":0.0659,"vLn":13995,"vP":0.0422,"vPs":0.0097,"vPn":12985,"hL":0.1391,"hLs":0.038,"hLn":13965,"hP":0.0233,"hPs":0.0056,"hPn":12959},{"iso3":"PAN","name":"Panama","region":"Latin America and the Caribbean","inc":"High","gni":19178,"pop":4.1,"dL":0.2398,"dLs":0.0516,"dLn":10664,"dP":0.0332,"dPs":0.0045,"dPn":10685,"vL":0.2405,"vLs":0.0538,"vLn":10646,"vP":0.0269,"vPs":0.0048,"vPn":10670,"hL":0.0981,"hLs":0.0473,"hLn":10649,"hP":0.0144,"hPs":0.0042,"hPn":10667},{"iso3":"PRY","name":"Paraguay","region":"Latin America and the Caribbean","inc":"Upper-mid","gni":8380,"pop":6.8,"dL":0.1586,"dLs":0.0415,"dLn":10921,"dP":0.0078,"dPs":0.0042,"dPn":10950,"vL":0.0903,"vLs":0.0473,"vLn":10915,"vP":-0.0064,"vPs":0.0048,"vPn":10943,"hL":0.0716,"hLs":0.0399,"hLn":10922,"hP":-0.0019,"hPs":0.004,"hPn":10950},{"iso3":"PER","name":"Peru","region":"Latin America and the Caribbean","inc":"Upper-mid","gni":11789,"pop":32.2,"dL":0.253,"dLs":0.0555,"dLn":10747,"dP":0.0384,"dPs":0.0061,"dPn":10803,"vL":0.0241,"vLs":0.0541,"vLn":10727,"vP":0.0422,"vPs":0.0059,"vPn":10780,"hL":0.1384,"hLs":0.0432,"hLn":10725,"hP":0.0366,"hPs":0.0047,"hPn":10780},{"iso3":"PHL","name":"Philippines","region":"Southeast Asia","inc":"Lower-mid","gni":9154,"pop":104.9,"dL":-0.0186,"dLs":0.0498,"dLn":14008,"dP":0.0373,"dPs":0.0044,"dPn":14021,"vL":0.0288,"vLs":0.0432,"vLn":14004,"vP":0.0364,"vPs":0.0038,"vPn":14018,"hL":0.0877,"hLs":0.0419,"hLn":14001,"hP":0.0274,"hPs":0.0037,"hPn":14015},{"iso3":"POL","name":"Poland","region":"European Union","inc":"High","gni":26150,"pop":38.2,"dL":0.145,"dLs":0.0377,"dLn":11543,"dP":0.0589,"dPs":0.0055,"dPn":11487,"vL":0.1557,"vLs":0.0522,"vLn":11541,"vP":0.0433,"vPs":0.0077,"vPn":11485,"hL":0.0958,"hLs":0.0341,"hLn":11473,"hP":0.048,"hPs":0.005,"hPn":11430},{"iso3":"PRT","name":"Portugal","region":"European Union","inc":"High","gni":27315,"pop":10.3,"dL":0.1902,"dLs":0.0475,"dLn":11768,"dP":0.0329,"dPs":0.0058,"dPn":11815,"vL":0.1026,"vLs":0.0555,"vLn":11797,"vP":0.0337,"vPs":0.0067,"vPn":11845,"hL":-0.01,"hLs":0.0386,"hLn":11690,"hP":0.0316,"hPs":0.0047,"hPn":11739},{"iso3":"QAT","name":"Qatar","region":"Middle East and North Africa","inc":"High","gni":116818,"pop":2.6,"dL":0.1859,"dLs":0.0614,"dLn":4610,"dP":0.0594,"dPs":0.0086,"dPn":3635,"vL":0.1232,"vLs":0.0786,"vLn":4720,"vP":0.0378,"vPs":0.0107,"vPn":3728,"hL":-0.0227,"hLs":0.0658,"hLn":4581,"hP":0.0355,"hPs":0.0091,"hPn":3621},{"iso3":"ROU","name":"Romania","region":"European Union","inc":"Upper-mid","gni":22646,"pop":19.7,"dL":0.3299,"dLs":0.0505,"dLn":10746,"dP":0.0491,"dPs":0.0065,"dPn":10773,"vL":0.1852,"vLs":0.0813,"vLn":10753,"vP":0.0654,"vPs":0.0104,"vPn":10779,"hL":0.3041,"hLs":0.0408,"hLn":10693,"hP":0.0533,"hPs":0.0052,"hPn":10723},{"iso3":"RUS","name":"Russia","region":"Commonwealth of Independent States","inc":"Upper-mid","gni":24233,"pop":144.0,"dL":0.3162,"dLs":0.0354,"dLn":26935,"dP":0.0717,"dPs":0.0052,"dPn":26337,"vL":0.0219,"vLs":0.0334,"vLn":26916,"vP":0.0395,"vPs":0.005,"vPn":26326,"hL":0.0984,"hLs":0.0252,"hLn":26773,"hP":0.056,"hPs":0.0037,"hPn":26187},{"iso3":"RWA","name":"Rwanda","region":"Sub-Saharan Africa","inc":"Low","gni":1811,"pop":12.2,"dL":0.2759,"dLs":0.0484,"dLn":9888,"dP":0.0501,"dPs":0.0075,"dPn":9914,"vL":0.0541,"vLs":0.0522,"vLn":9870,"vP":0.022,"vPs":0.0081,"vPn":9898,"hL":0.1862,"hLs":0.0393,"hLn":9896,"hP":0.0439,"hPs":0.0061,"hPn":9923},{"iso3":"SAU","name":"Saudi Arabia","region":"Middle East and North Africa","inc":"High","gni":49680,"pop":32.9,"dL":0.3855,"dLs":0.0406,"dLn":14725,"dP":0.0435,"dPs":0.0051,"dPn":13607,"vL":0.1922,"vLs":0.0535,"vLn":14760,"vP":0.0289,"vPs":0.0067,"vPn":13664,"hL":-0.0422,"hLs":0.038,"hLn":14612,"hP":0.0209,"hPs":0.0047,"hPn":13550},{"iso3":"SEN","name":"Senegal","region":"Sub-Saharan Africa","inc":"Low","gni":2384,"pop":15.9,"dL":0.4284,"dLs":0.0528,"dLn":10763,"dP":0.0353,"dPs":0.0072,"dPn":10861,"vL":0.2083,"vLs":0.0515,"vLn":10747,"vP":0.0185,"vPs":0.0071,"vPn":10847,"hL":0.0462,"hLs":0.0364,"hLn":10738,"hP":0.0597,"hPs":0.0049,"hPn":10834},{"iso3":"SRB","name":"Serbia","region":"Europe-Other","inc":"Upper-mid","gni":13019,"pop":8.8,"dL":0.5496,"dLs":0.0465,"dLn":11891,"dP":0.0891,"dPs":0.0063,"dPn":11668,"vL":0.2046,"vLs":0.0883,"vLn":11896,"vP":0.0588,"vPs":0.012,"vPn":11683,"hL":0.2152,"hLs":0.0431,"hLn":11828,"hP":0.0758,"hPs":0.0058,"hPn":11618},{"iso3":"SLE","name":"Sierra Leone","region":"Sub-Saharan Africa","inc":"Low","gni":1240,"pop":7.6,"dL":0.3165,"dLs":0.1103,"dLn":3945,"dP":0.0519,"dPs":0.011,"dPn":4073,"vL":0.1422,"vLs":0.1001,"vLn":3945,"vP":0.0229,"vPs":0.01,"vPn":4073,"hL":0.1741,"hLs":0.1183,"hLn":3955,"hP":0.0325,"hPs":0.0116,"hPn":4084},{"iso3":"SGP","name":"Singapore","region":"Southeast Asia","inc":"High","gni":82503,"pop":5.7,"dL":0.3272,"dLs":0.0324,"dLn":8883,"dP":0.0846,"dPs":0.0058,"dPn":8760,"vL":0.2237,"vLs":0.039,"vLn":8883,"vP":0.0898,"vPs":0.0069,"vPn":8759,"hL":0.1741,"hLs":0.0342,"hLn":7883,"hP":0.0568,"hPs":0.006,"hPn":7798},{"iso3":"SVK","name":"Slovakia","region":"European Union","inc":"High","gni":29467,"pop":5.4,"dL":0.4213,"dLs":0.0385,"dLn":10928,"dP":0.0704,"dPs":0.0059,"dPn":10730,"vL":0.4628,"vLs":0.0486,"vLn":10927,"vP":0.0708,"vPs":0.0074,"vPn":10732,"hL":0.2079,"hLs":0.036,"hLn":10838,"hP":0.0597,"hPs":0.0055,"hPn":10661},{"iso3":"SVN","name":"Slovenia","region":"European Union","inc":"High","gni":30594,"pop":2.1,"dL":0.1517,"dLs":0.038,"dLn":11373,"dP":0.032,"dPs":0.0053,"dPn":11385,"vL":0.1512,"vLs":0.0382,"vLn":11379,"vP":0.0481,"vPs":0.0054,"vPn":11391,"hL":-0.0314,"hLs":0.0362,"hLn":11346,"hP":0.0419,"hPs":0.0051,"hPn":11361},{"iso3":"SOM","name":"Somalia","region":"Sub-Saharan Africa","inc":"Low","gni":null,"pop":14.7,"dL":0.3177,"dLs":0.112,"dLn":3072,"dP":0.0626,"dPs":0.0114,"dPn":3059,"vL":0.3765,"vLs":0.1006,"vLn":3068,"vP":0.0343,"vPs":0.0103,"vPn":3049,"hL":0.3079,"hLs":0.0889,"hLn":3085,"hP":0.0587,"hPs":0.009,"hPn":3064},{"iso3":"ZAF","name":"South Africa","region":"Sub-Saharan Africa","inc":"Upper-mid","gni":11923,"pop":56.7,"dL":0.2306,"dLs":0.0524,"dLn":12865,"dP":0.0433,"dPs":0.006,"dPn":12894,"vL":0.0958,"vLs":0.0462,"vLn":12858,"vP":0.0409,"vPs":0.0053,"vPn":12883,"hL":-0.0383,"hLs":0.0416,"hLn":12864,"hP":0.0256,"hPs":0.0048,"hPn":12892},{"iso3":"KOR","name":"South Korea","region":"East Asia","inc":"High","gni":35945,"pop":51.0,"dL":0.3397,"dLs":0.0416,"dLn":10777,"dP":0.0647,"dPs":0.0064,"dPn":10752,"vL":0.5001,"vLs":0.0479,"vLn":10791,"vP":0.0907,"vPs":0.0073,"vPn":10767,"hL":0.1809,"hLs":0.0389,"hLn":10728,"hP":0.048,"hPs":0.0059,"hPn":10704},{"iso3":"SSD","name":"South Sudan","region":"Sub-Saharan Africa","inc":"Low","gni":963,"pop":12.6,"dL":0.3593,"dLs":0.1158,"dLn":3768,"dP":0.0985,"dPs":0.0122,"dPn":3775,"vL":0.2839,"vLs":0.11,"vLn":3802,"vP":0.0993,"vPs":0.0116,"vPn":3810,"hL":0.0909,"hLs":0.1,"hLn":3793,"hP":0.1104,"hPs":0.0105,"hPn":3801},{"iso3":"ESP","name":"Spain","region":"European Union","inc":"High","gni":34258,"pop":46.4,"dL":0.3399,"dLs":0.0355,"dLn":11964,"dP":0.0215,"dPs":0.0052,"dPn":11954,"vL":0.0858,"vLs":0.044,"vLn":11969,"vP":0.0374,"vPs":0.0064,"vPn":11959,"hL":0.0374,"hLs":0.0318,"hLn":11948,"hP":0.0185,"hPs":0.0047,"hPn":11937},{"iso3":"LKA","name":"Sri Lanka","region":"South Asia","inc":"Lower-mid","gni":11326,"pop":20.9,"dL":0.2059,"dLs":0.0406,"dLn":10198,"dP":0.0455,"dPs":0.0048,"dPn":10223,"vL":0.0276,"vLs":0.0405,"vLn":10219,"vP":0.0262,"vPs":0.0048,"vPn":10240,"hL":0.1478,"hLs":0.0411,"hLn":10045,"hP":0.0646,"hPs":0.0048,"hPn":10085},{"iso3":"SDN","name":"Sudan","region":"Sub-Saharan Africa","inc":"Lower-mid","gni":4119,"pop":40.5,"dL":0.4745,"dLs":0.054,"dLn":7435,"dP":0.1363,"dPs":0.0095,"dPn":6353,"vL":0.0249,"vLs":0.0514,"vLn":7437,"vP":0.0895,"vPs":0.0092,"vPn":6354,"hL":0.314,"hLs":0.0472,"hLn":7398,"hP":0.1148,"hPs":0.0084,"hPn":6325},{"iso3":"SWE","name":"Sweden","region":"European Union","inc":"High","gni":47766,"pop":9.9,"dL":0.1524,"dLs":0.0322,"dLn":10570,"dP":0.0223,"dPs":0.0046,"dPn":10570,"vL":0.1157,"vLs":0.0458,"vLn":10562,"vP":0.026,"vPs":0.0066,"vPn":10562,"hL":-0.0159,"hLs":0.0323,"hLn":10507,"hP":0.0215,"hPs":0.0046,"hPn":10507},{"iso3":"CHE","name":"Switzerland","region":"Europe-Other","inc":"High","gni":57625,"pop":8.5,"dL":0.2556,"dLs":0.0344,"dLn":8385,"dP":0.0493,"dPs":0.0052,"dPn":8381,"vL":0.1771,"vLs":0.0367,"vLn":8393,"vP":0.0367,"vPs":0.0055,"vPn":8389,"hL":0.0276,"hLs":0.0339,"hLn":8345,"hP":0.0216,"hPs":0.0051,"hPn":8341},{"iso3":"SYR","name":"Syria","region":"Middle East and North Africa","inc":"Low","gni":2337,"pop":18.3,"dL":0.1148,"dLs":0.0589,"dLn":7721,"dP":0.0022,"dPs":0.0065,"dPn":6732,"vL":-0.3348,"vLs":0.0781,"vLn":8796,"vP":-0.0265,"vPs":0.0085,"vPn":7603,"hL":-0.1484,"hLs":0.0588,"hLn":7960,"hP":-0.0041,"hPs":0.0065,"hPn":6941},{"iso3":"TWN","name":"Taiwan","region":"East Asia","inc":null,"gni":null,"pop":null,"dL":0.199,"dLs":0.0358,"dLn":10851,"dP":0.036,"dPs":0.0049,"dPn":10839,"vL":0.0895,"vLs":0.0456,"vLn":10881,"vP":0.0503,"vPs":0.0061,"vPn":10869,"hL":0.0561,"hLs":0.0343,"hLn":10808,"hP":0.0341,"hPs":0.0047,"hPn":10796},{"iso3":"TJK","name":"Tajikistan","region":"Commonwealth of Independent States","inc":"Low","gni":3317,"pop":8.9,"dL":0.3683,"dLs":0.0392,"dLn":13831,"dP":0.0384,"dPs":0.0063,"dPn":13471,"vL":-0.0891,"vLs":0.0311,"vLn":13799,"vP":0.001,"vPs":0.005,"vPn":13440,"hL":0.2754,"hLs":0.0304,"hLn":13700,"hP":0.0259,"hPs":0.0049,"hPn":13374},{"iso3":"TZA","name":"Tanzania","region":"Sub-Saharan Africa","inc":"Low","gni":2655,"pop":57.3,"dL":0.2465,"dLs":0.046,"dLn":11893,"dP":0.0572,"dPs":0.0058,"dPn":11923,"vL":0.1712,"vLs":0.061,"vLn":11893,"vP":0.0374,"vPs":0.0077,"vPn":11923,"hL":0.1118,"hLs":0.0429,"hLn":11885,"hP":0.0476,"hPs":0.0054,"hPn":11915},{"iso3":"THA","name":"Thailand","region":"Southeast Asia","inc":"Upper-mid","gni":15516,"pop":69.0,"dL":0.1732,"dLs":0.0365,"dLn":13737,"dP":0.0398,"dPs":0.0046,"dPn":13837,"vL":0.1854,"vLs":0.0459,"vLn":13721,"vP":0.0458,"vPs":0.0058,"vPn":13821,"hL":-0.038,"hLs":0.0339,"hLn":13712,"hP":0.0268,"hPs":0.0043,"hPn":13811},{"iso3":"TGO","name":"Togo","region":"Sub-Saharan Africa","inc":"Low","gni":1453,"pop":7.8,"dL":0.7368,"dLs":0.0871,"dLn":6859,"dP":0.0732,"dPs":0.0111,"dPn":6884,"vL":0.4437,"vLs":0.0775,"vLn":6843,"vP":0.0534,"vPs":0.0099,"vPn":6869,"hL":0.4408,"hLs":0.0572,"hLn":6881,"hP":0.0646,"hPs":0.0073,"hPn":6904},{"iso3":"TUN","name":"Tunisia","region":"Middle East and North Africa","inc":"Lower-mid","gni":10275,"pop":11.5,"dL":0.5264,"dLs":0.054,"dLn":14861,"dP":0.0795,"dPs":0.0083,"dPn":13685,"vL":0.3959,"vLs":0.0572,"vLn":14893,"vP":0.0671,"vPs":0.0088,"vPn":13716,"hL":0.427,"hLs":0.0345,"hLn":13671,"hP":0.082,"hPs":0.0053,"hPn":12523},{"iso3":"TUR","name":"Turkey","region":"Middle East and North Africa","inc":"Upper-mid","gni":24804,"pop":80.7,"dL":0.3852,"dLs":0.0483,"dLn":13743,"dP":0.0534,"dPs":0.0062,"dPn":13613,"vL":0.2998,"vLs":0.0663,"vLn":13774,"vP":0.0724,"vPs":0.0085,"vPn":13640,"hL":0.1864,"hLs":0.038,"hLn":13678,"hP":0.0316,"hPs":0.0049,"hPn":13551},{"iso3":"TKM","name":"Turkmenistan","region":"Commonwealth of Independent States","inc":"Upper-mid","gni":15594,"pop":5.8,"dL":0.1319,"dLs":0.0366,"dLn":8973,"dP":0.0505,"dPs":0.0056,"dPn":8769,"vL":0.1873,"vLs":0.0365,"vLn":8963,"vP":0.0041,"vPs":0.0056,"vPn":8756,"hL":-0.0664,"hLs":0.0358,"hLn":8895,"hP":0.0326,"hPs":0.0055,"hPn":8704},{"iso3":"UGA","name":"Uganda","region":"Sub-Saharan Africa","inc":"Low","gni":1658,"pop":42.9,"dL":0.4228,"dLs":0.0529,"dLn":11714,"dP":0.0884,"dPs":0.0062,"dPn":11822,"vL":0.1981,"vLs":0.0515,"vLn":11703,"vP":0.0539,"vPs":0.0061,"vPn":11809,"hL":0.2172,"hLs":0.0485,"hLn":11716,"hP":0.0574,"hPs":0.0057,"hPn":11827},{"iso3":"UKR","name":"Ukraine","region":"Commonwealth of Independent States","inc":"Lower-mid","gni":8130,"pop":44.2,"dL":0.1653,"dLs":0.0445,"dLn":11604,"dP":0.0603,"dPs":0.0069,"dPn":11244,"vL":0.2554,"vLs":0.0473,"vLn":11613,"vP":0.0473,"vPs":0.0074,"vPn":11251,"hL":0.2292,"hLs":0.0375,"hLn":11535,"hP":0.0672,"hPs":0.0058,"hPn":11195},{"iso3":"ARE","name":"United Arab Emirates","region":"Middle East and North Africa","inc":"High","gni":67805,"pop":9.4,"dL":0.2232,"dLs":0.0311,"dLn":18058,"dP":0.0252,"dPs":0.004,"dPn":15283,"vL":0.2902,"vLs":0.0386,"vLn":18265,"vP":0.0514,"vPs":0.0049,"vPn":15483,"hL":-0.0636,"hLs":0.0324,"hLn":18053,"hP":0.0203,"hPs":0.0042,"hPn":15295},{"iso3":"GBR","name":"United Kingdom","region":"European Union","inc":"High","gni":39116,"pop":66.2,"dL":0.1261,"dLs":0.0358,"dLn":11600,"dP":0.057,"dPs":0.005,"dPn":11613,"vL":0.2225,"vLs":0.0357,"vLn":11616,"vP":0.0402,"vPs":0.005,"vPn":11628,"hL":0.0164,"hLs":0.0334,"hLn":11562,"hP":0.0309,"hPs":0.0047,"hPn":11574},{"iso3":"USA","name":"United States","region":"Northern America","inc":"High","gni":54941,"pop":324.5,"dL":0.462,"dLs":0.0403,"dLn":10647,"dP":0.0297,"dPs":0.0055,"dPn":9513,"vL":0.2848,"vLs":0.0385,"vLn":10656,"vP":0.0472,"vPs":0.0053,"vPn":9518,"hL":0.0015,"hLs":0.0414,"hLn":10631,"hP":0.0233,"hPs":0.0056,"hPn":9498},{"iso3":"URY","name":"Uruguay","region":"Latin America and the Caribbean","inc":"High","gni":19930,"pop":3.5,"dL":0.3366,"dLs":0.0449,"dLn":11536,"dP":0.037,"dPs":0.0049,"dPn":11606,"vL":0.1918,"vLs":0.0533,"vLn":11530,"vP":0.0461,"vPs":0.0058,"vPn":11601,"hL":0.1073,"hLs":0.0386,"hLn":11497,"hP":0.0212,"hPs":0.0042,"hPn":11569},{"iso3":"UZB","name":"Uzbekistan","region":"Commonwealth of Independent States","inc":"Lower-mid","gni":6470,"pop":31.9,"dL":0.2499,"dLs":0.0428,"dLn":10847,"dP":0.0662,"dPs":0.0045,"dPn":10904,"vL":-0.0629,"vLs":0.0449,"vLn":10817,"vP":0.0187,"vPs":0.0047,"vPn":10877,"hL":0.2531,"hLs":0.0417,"hLn":10765,"hP":0.0513,"hPs":0.0044,"hPn":10823},{"iso3":"VEN","name":"Venezuela","region":"Latin America and the Caribbean","inc":"Upper-mid","gni":10672,"pop":32.0,"dL":0.1677,"dLs":0.0808,"dLn":9622,"dP":0.0202,"dPs":0.0074,"dPn":9669,"vL":0.1059,"vLs":0.0805,"vLn":9610,"vP":0.027,"vPs":0.0074,"vPn":9658,"hL":-0.3095,"hLs":0.0554,"hLn":9630,"hP":-0.0075,"hPs":0.0051,"hPn":9677},{"iso3":"VNM","name":"Vietnam","region":"Southeast Asia","inc":"Lower-mid","gni":5859,"pop":95.5,"dL":0.2085,"dLs":0.0375,"dLn":11230,"dP":0.0502,"dPs":0.0061,"dPn":11257,"vL":0.1788,"vLs":0.0464,"vLn":11238,"vP":0.055,"vPs":0.0075,"vPn":11265,"hL":0.0963,"hLs":0.0307,"hLn":11208,"hP":0.0424,"hPs":0.005,"hPn":11240},{"iso3":"YEM","name":"Yemen","region":"Middle East and North Africa","inc":"Low","gni":1239,"pop":28.3,"dL":0.9046,"dLs":0.0731,"dLn":13918,"dP":0.112,"dPs":0.0109,"dPn":12925,"vL":0.1915,"vLs":0.0852,"vLn":13917,"vP":0.0835,"vPs":0.0123,"vPn":12926,"hL":0.4802,"hLs":0.0392,"hLn":13852,"hP":0.0854,"hPs":0.0057,"hPn":12870},{"iso3":"ZMB","name":"Zambia","region":"Sub-Saharan Africa","inc":"Lower-mid","gni":3557,"pop":17.1,"dL":-0.0181,"dLs":0.0607,"dLn":10784,"dP":0.0633,"dPs":0.0064,"dPn":10871,"vL":0.0577,"vLs":0.0562,"vLn":10771,"vP":0.026,"vPs":0.0059,"vPn":10854,"hL":0.0901,"hLs":0.0553,"hLn":10778,"hP":0.0443,"hPs":0.0058,"hPn":10866},{"iso3":"ZWE","name":"Zimbabwe","region":"Sub-Saharan Africa","inc":"Low","gni":1683,"pop":16.5,"dL":0.1853,"dLs":0.0692,"dLn":10937,"dP":0.0599,"dPs":0.0088,"dPn":10990,"vL":0.039,"vLs":0.0532,"vLn":10924,"vP":0.0232,"vPs":0.0067,"vPn":10980,"hL":-0.0693,"hLs":0.0438,"hLn":10937,"hP":0.0336,"hPs":0.0055,"hPn":10994}]};
+
+const M = DATA.meta;
+const B = DATA.blocks;
+const C = DATA.countries;
+
+// ----- claim lookup for traceable prose spans -----
+const CLAIMS = {};
+try {
+  // claims are not inlined; prose spans are filled from DATA directly via a small map
+} catch(e){}
+const fmt2 = x => (x==null? "—" : (x>=0?"":"−") + Math.abs(x).toFixed(2));
+const fmt3 = x => (x==null? "—" : (x>=0?"":"−") + Math.abs(x).toFixed(3));
+const pct1 = x => (x==null? "—" : (x*100).toFixed(1));
+
+// map prose data-claim ids -> rendered strings (must round-trip to data.json/claims.json)
+const proseVal = {
+  "k-countries": String(M.k_countries),
+  "total-rows": (DATA.meta.total_rows).toLocaleString("en-US"),
+  "min-n": String(M.min_n),
+  "min-waves": String(M.min_waves),
+  "dL-share-pos-pct": pct1(B.dL.share_pos),
+  "vL-share-pos-pct": pct1(B.vL.share_pos),
+  "hL-share-pos-pct": pct1(B.hL.share_pos),
+  "dP-share-pos-pct": pct1(B.dP.share_pos),
+  "hP-share-pos-pct": pct1(B.hP.share_pos),
+  "dL-pooled": fmt2(B.dL.pooled),
+  "dP-pooled": fmt2(B.dP.pooled),
+  "dL-raw": fmt2(B.dL.raw),
+  "hL-raw": fmt2(B.hL.raw),
+  "dL-group-low": fmt2(B.dL.byGroup.Low.pooled),
+  "dL-group-uppermid": fmt2(B.dL.byGroup["Upper-mid"].pooled),
+  "dL-group-high": fmt2(B.dL.byGroup.High.pooled),
+  "dL-gni-r2-pct": (B.dL.ivw.r2*100).toFixed(1),
+  "emp-pooled": fmt2(DATA.emp.pooled),
+};
+document.querySelectorAll(".t[data-claim]").forEach(el=>{
+  const k = el.getAttribute("data-claim");
+  if (k in proseVal) el.textContent = proseVal[k];
+});
+document.getElementById("dek-k").textContent = M.k_countries;
+
+// ----- statband -----
+const stats = [
+  {n: String(M.k_countries), l: "countries with an estimable giving premium", warm:false},
+  {n: pct1(B.dL.share_pos)+"%", l: "of countries: donating money raises the life rating", warm:false},
+  {n: pct1(B.dP.share_pos)+"%", l: "of countries: donating lifts daily positive affect", warm:false},
+  {n: fmt2(B.dL.pooled), l: "the world's representative donating premium (ladder points)", warm:true},
+];
+const sb = d3.select("#statband");
+stats.forEach(s=>{
+  const c = sb.append("div").attr("class","stat");
+  c.append("div").attr("class","n"+(s.warm?" warm":"")).text(s.n);
+  c.append("div").attr("class","l").text(s.l);
+});
+
+// ----- income-group colour + labels -----
+const INC = ["Low","Lower-mid","Upper-mid","High"];
+const INC_FULL = {"Low":"Low income","Lower-mid":"Lower-middle income","Upper-mid":"Upper-middle income","High":"High income"};
+const incColor = d3.scaleOrdinal()
+  .domain(INC)
+  .range(["var(--inc-low)","var(--inc-lmid)","var(--inc-umid)","var(--inc-high)"]);
+const incCss = {"Low":getComputedStyle(document.documentElement).getPropertyValue("--inc-low").trim(),
+  "Lower-mid":getComputedStyle(document.documentElement).getPropertyValue("--inc-lmid").trim(),
+  "Upper-mid":getComputedStyle(document.documentElement).getPropertyValue("--inc-umid").trim(),
+  "High":getComputedStyle(document.documentElement).getPropertyValue("--inc-high").trim()};
+
+const leg = d3.select("#legend-inc").attr("aria-hidden","false");
+INC.forEach(g=>{
+  const it = leg.append("span").attr("class","item");
+  it.append("span").attr("class","sw").style("background", incCss[g]);
+  it.append("span").text(INC_FULL[g]);
+});
+
+const tip = document.getElementById("tip");
+function showTip(html, ev){
+  tip.innerHTML = html;
+  tip.style.opacity = 1;
+  const pad = 14; let x = ev.clientX + pad, y = ev.clientY + pad;
+  const w = tip.offsetWidth, h = tip.offsetHeight;
+  if (x + w > window.innerWidth) x = ev.clientX - w - pad;
+  if (y + h > window.innerHeight) y = ev.clientY - h - pad;
+  tip.style.left = (x + window.scrollX) + "px";
+  tip.style.top = (y + window.scrollY) + "px";
+}
+function hideTip(){ tip.style.opacity = 0; }
+
+// ===================== FOREST (sorted dot-and-interval) =====================
+let actSel = "d", outSel = "L";
+const ACTW = {d:"donating money", v:"volunteering time", h:"helping a stranger"};
+const OUTW = {L:"life rating", P:"daily positive affect"};
+
+const forestSvg = d3.select("#forest");
+function drawForest(){
+  const key = actSel + outSel;
+  const blk = B[key];
+  // rows = countries with a premium for this cell
+  const rows = C.map(c=>({iso:c.iso3, name:c.name, inc:c.inc,
+      coef:c[key], se:c[key+"s"], n:c[key+"n"]}))
+    .filter(d=>d.coef!=null)
+    .sort((a,b)=>d3.ascending(a.coef,b.coef));
+  rows.forEach((d,i)=>d.rank=i);
+
+  const W = 820, rowH = Math.max(3.0, Math.min(5.2, 720/rows.length));
+  const mL = 96, mR = 118, mT = 26, mB = 40;
+  const innerH = rows.length * rowH;
+  const H = mT + innerH + mB;
+  forestSvg.attr("viewBox", `0 0 ${W} ${H}`).attr("height", null).selectAll("*").remove();
+
+  const xs = rows.flatMap(d=>[d.coef - 1.96*d.se, d.coef + 1.96*d.se]);
+  let xmin = d3.min(xs), xmax = d3.max(xs);
+  // clamp extreme whiskers so the bulk is readable; keep 0 visible
+  const lo = Math.min(0, d3.quantile(rows.map(d=>d.coef-1.96*d.se).sort(d3.ascending), 0.01));
+  const hi = Math.max(0, d3.quantile(rows.map(d=>d.coef+1.96*d.se).sort(d3.ascending), 0.99));
+  const x = d3.scaleLinear().domain([Math.min(lo,0), Math.max(hi,0)]).nice().range([mL, W-mR]);
+  const y = d3.scaleLinear().domain([0, rows.length]).range([mT, mT+innerH]);
+
+  // world band (population-weighted pooled): a soft vertical band centred on the world premium
+  const world = blk.pooled;
+  forestSvg.append("rect").attr("class","worldband")
+    .attr("x", x(world)-7).attr("y", mT)
+    .attr("width", 14).attr("height", innerH);
+  forestSvg.append("line").attr("class","worldline")
+    .attr("x1", x(world)).attr("x2", x(world)).attr("y1", mT-4).attr("y2", mT+innerH+4);
+  forestSvg.append("text").attr("class","axis-title")
+    .attr("x", x(world)).attr("y", mT-10).attr("text-anchor","middle")
+    .style("fill","var(--accentd)").style("font-weight","600")
+    .text("world "+fmt2(world));
+
+  // x axis (top + bottom ticks)
+  const xa = d3.axisBottom(x).ticks(6).tickSize(innerH);
+  const gx = forestSvg.append("g").attr("class","axis")
+    .attr("transform",`translate(0,${mT})`).call(xa);
+  gx.select(".domain").remove();
+  gx.selectAll(".tick line").attr("stroke","var(--grid)");
+  gx.selectAll(".tick text").attr("dy", innerH+16);
+
+  // zero line ("no premium")
+  forestSvg.append("line").attr("class","zero")
+    .attr("x1", x(0)).attr("x2", x(0)).attr("y1", mT).attr("y2", mT+innerH);
+  forestSvg.append("text").attr("class","axis-title")
+    .attr("x", x(0)).attr("y", mT+innerH+30).attr("text-anchor","middle")
+    .text("no premium");
+  forestSvg.append("text").attr("class","axis-title")
+    .attr("x", (mL+W-mR)/2).attr("y", H-4).attr("text-anchor","middle")
+    .text("giving premium — "+OUTW[outSel]+(outSel==="L"?" (ladder points)":" (0–1 index)"));
+
+  // whiskers
+  forestSvg.append("g").selectAll("line.whisk").data(rows).join("line")
+    .attr("class","whisk")
+    .attr("x1", d=>x(Math.max(x.domain()[0], d.coef-1.96*d.se)))
+    .attr("x2", d=>x(Math.min(x.domain()[1], d.coef+1.96*d.se)))
+    .attr("y1", d=>y(d.rank)+rowH/2).attr("y2", d=>y(d.rank)+rowH/2)
+    .attr("stroke", d=>incCss[d.inc] || "var(--faint)");
+
+  // dots
+  const r = Math.max(1.6, Math.min(3.0, rowH*0.62));
+  forestSvg.append("g").selectAll("circle.dot").data(rows).join("circle")
+    .attr("class","dot").attr("tabindex",0).attr("role","img")
+    .attr("aria-label", d=>`${d.name}: premium ${fmt3(d.coef)}, ${d.inc} income`)
+    .attr("cx", d=>x(Math.max(x.domain()[0], Math.min(x.domain()[1], d.coef))))
+    .attr("cy", d=>y(d.rank)+rowH/2).attr("r", r)
+    .attr("fill", d=>incCss[d.inc] || "var(--faint)")
+    .on("mousemove", (ev,d)=>showTip(
+      `<b>${d.name}</b> <span class="v">${INC_FULL[d.inc]||"—"}</span><br>`+
+      `${ACTW[actSel]} &rarr; ${OUTW[outSel]}<br>`+
+      `premium <span class="v">${fmt3(d.coef)}</span> &plusmn; ${(1.96*d.se).toFixed(3)}<br>`+
+      `n = ${d.n.toLocaleString("en-US")}`, ev))
+    .on("mouseleave", hideTip)
+    .on("focus", function(ev,d){
+      const b = this.getBoundingClientRect();
+      showTip(`<b>${d.name}</b> <span class="v">${INC_FULL[d.inc]||""}</span><br>premium <span class="v">${fmt3(d.coef)}</span>, n=${d.n.toLocaleString("en-US")}`,
+        {clientX:b.x+b.width/2, clientY:b.y});
+    })
+    .on("blur", hideTip);
+
+  // selective labels: 3 most positive, 3 most negative. Keep labels inside the plot:
+  // negatives label to the left of their dot; positives label to the left too (dot sits near
+  // the right edge), so the extreme outliers (e.g. Angola) never run off the canvas.
+  const labRows = rows.slice(0,3).concat(rows.slice(-3));
+  forestSvg.append("g").selectAll("text.rowlab").data(labRows).join("text")
+    .attr("class","rowlab")
+    .attr("x", d=>x(Math.max(x.domain()[0], Math.min(x.domain()[1], d.coef))) - (r+5))
+    .attr("y", d=>y(d.rank)+rowH/2)
+    .attr("dy","0.32em")
+    .attr("text-anchor","end")
+    .style("paint-order","stroke").style("stroke","var(--card)").style("stroke-width","2.6px")
+    .text(d=>d.name);
+
+  // caption + table
+  d3.select("#forest-cap").html(
+    `The within-country premium for <strong>${ACTW[actSel]}</strong> on the <strong>${OUTW[outSel]}</strong>, one row per country, sorted low to high. `+
+    `Whiskers are 95&thinsp;% confidence intervals; dots are coloured by World Bank income group. `+
+    `The dashed line and band mark the population-weighted world premium (${fmt2(blk.pooled)}). `+
+    `Positive in ${pct1(blk.share_pos)}% of ${blk.k} countries.`);
+  buildForestTable(rows, blk);
+}
+
+function buildForestTable(rows, blk){
+  const host = d3.select("#forest-table");
+  host.selectAll("*").remove();
+  const t = host.append("table").attr("class","data");
+  t.append("caption").text(`Giving premium for ${ACTW[actSel]} on the ${OUTW[outSel]}, by country (sorted).`);
+  const hr = t.append("thead").append("tr");
+  ["Country","Income","Premium","95% CI","n"].forEach(h=>hr.append("th").text(h));
+  const tb = t.append("tbody");
+  rows.slice().reverse().forEach(d=>{
+    const tr = tb.append("tr");
+    tr.append("td").text(d.name);
+    tr.append("td").text(INC_FULL[d.inc]||"—");
+    tr.append("td").text(fmt3(d.coef));
+    tr.append("td").text(`${fmt3(d.coef-1.96*d.se)} to ${fmt3(d.coef+1.96*d.se)}`);
+    tr.append("td").text(d.n.toLocaleString("en-US"));
+  });
+}
+
+// ----- forest controls -----
+d3.selectAll("#seg-act button").on("click", function(){
+  actSel = this.getAttribute("data-act");
+  d3.selectAll("#seg-act button").attr("aria-pressed", function(){ return this.getAttribute("data-act")===actSel; });
+  drawForest();
+});
+d3.selectAll("#seg-out button").on("click", function(){
+  outSel = this.getAttribute("data-out");
+  d3.selectAll("#seg-out button").attr("aria-pressed", function(){ return this.getAttribute("data-out")===outSel; });
+  drawForest();
+});
+const ftab = document.getElementById("forest-tab-btn");
+ftab.addEventListener("click", ()=>{
+  const box = document.getElementById("forest-table");
+  const open = box.hidden;
+  box.hidden = !open;
+  ftab.setAttribute("aria-expanded", String(open));
+  ftab.textContent = open ? "Hide data table" : "Show data table";
+});
+
+// ===================== GROUPS (premium by income group) =====================
+let modSel = "L";
+const groupsSvg = d3.select("#groups");
+function drawGroups(){
+  const blk = B["d"+modSel];
+  const data = INC.map(g=>({grp:g, full:INC_FULL[g], pooled:blk.byGroup[g].pooled, k:blk.byGroup[g].k}));
+  const W = 820, H = 300, mL = 156, mR = 78, mT = 16, mB = 44;
+  groupsSvg.attr("viewBox",`0 0 ${W} ${H}`).attr("height",null).selectAll("*").remove();
+
+  const x = d3.scaleLinear()
+    .domain([0, d3.max(data, d=>d.pooled)*1.18]).nice().range([mL, W-mR]);
+  const y = d3.scaleBand().domain(INC).range([mT, H-mB]).padding(0.34);
+
+  const xa = d3.axisBottom(x).ticks(5).tickSize(-(H-mT-mB));
+  const gx = groupsSvg.append("g").attr("class","axis")
+    .attr("transform",`translate(0,${H-mB})`).call(xa);
+  gx.select(".domain").remove();
+  gx.selectAll(".tick line").attr("stroke","var(--grid)");
+
+  groupsSvg.append("line").attr("class","zero")
+    .attr("x1",x(0)).attr("x2",x(0)).attr("y1",mT).attr("y2",H-mB);
+
+  groupsSvg.append("g").selectAll("rect.bar").data(data).join("rect")
+    .attr("class","bar")
+    .attr("x", x(0)).attr("y", d=>y(d.grp))
+    .attr("width", d=>Math.max(0, x(d.pooled)-x(0))).attr("height", y.bandwidth())
+    .attr("rx",4).attr("fill", d=>incCss[d.grp])
+    .on("mousemove",(ev,d)=>showTip(
+      `<b>${d.full}</b><br>donating &rarr; ${OUTW[modSel]}<br>premium <span class="v">${fmt3(d.pooled)}</span><br>${d.k} countries`, ev))
+    .on("mouseleave", hideTip);
+
+  groupsSvg.append("g").selectAll("text.barlab").data(data).join("text")
+    .attr("class","barlab").attr("x", mL-10).attr("y", d=>y(d.grp)+y.bandwidth()/2)
+    .attr("dy","0.32em").attr("text-anchor","end").text(d=>d.full);
+
+  groupsSvg.append("g").selectAll("text.barval").data(data).join("text")
+    .attr("class","barval").attr("x", d=>x(d.pooled)+7).attr("y", d=>y(d.grp)+y.bandwidth()/2)
+    .attr("dy","0.32em").attr("text-anchor","start")
+    .text(d=>fmt2(d.pooled)+"  ("+d.k+")");
+
+  groupsSvg.append("text").attr("class","axis-title")
+    .attr("x",(mL+W-mR)/2).attr("y",H-6).attr("text-anchor","middle")
+    .text("population-weighted donating premium — "+OUTW[modSel]+(modSel==="L"?" (ladder points)":" (0–1 index)"));
+
+  d3.select("#groups-cap").html(
+    `Population-weighted premium for <strong>donating money</strong> on the <strong>${OUTW[modSel]}</strong>, within each World Bank income group `+
+    `(country count in parentheses). The premium does not fade in poorer countries; on the life rating it is `+
+    `largest among low-income nations (${fmt2(B.dL.byGroup.Low.pooled)}).`);
+}
+d3.selectAll("#seg-mod button").on("click", function(){
+  modSel = this.getAttribute("data-mod");
+  d3.selectAll("#seg-mod button").attr("aria-pressed", function(){ return this.getAttribute("data-mod")===modSel; });
+  drawGroups();
+});
+
+// ----- initial paint (synchronous; no IntersectionObserver, render on load) -----
+drawForest();
+drawGroups();
+</script>
+<!--SL_BOOKNAV_START-->
+<style>
+.slbn{font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;background:#0f1417;border-top:1px solid #27313a;color:#9fb0ba;padding:24px 20px 40px;margin:48px 0 0}
+.slbn-in{max-width:1080px;margin:0 auto;display:flex;align-items:stretch;gap:12px}
+.slbn a{flex:1 1 0;min-width:0;text-decoration:none;color:inherit;border:1px solid #27313a;border-radius:10px;padding:13px 15px;display:flex;flex-direction:column;gap:4px;background:#161d22;transition:border-color .15s,transform .15s}
+.slbn a:hover{border-color:#3fa9a0;transform:translateY(-2px)}
+.slbn a:focus-visible{outline:2px solid #3fa9a0;outline-offset:2px}
+.slbn a.slbn-next{text-align:right;align-items:flex-end}
+.slbn a.slbn-toc{flex:0 0 auto;min-width:120px;justify-content:center;align-items:center;text-align:center}
+.slbn .slbn-dir{font:700 10px/1 inherit;letter-spacing:.13em;text-transform:uppercase;color:#6b7c87}
+.slbn .slbn-ttl{font:700 14px/1.3 inherit;color:#eef2f4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.slbn a.slbn-disabled{opacity:.38;pointer-events:none}
+@media(max-width:640px){.slbn-in{flex-wrap:wrap}.slbn a{flex:1 1 100%}.slbn a.slbn-next{text-align:left;align-items:flex-start}.slbn a.slbn-toc{order:-1}}
+</style>
+<nav class="slbn" aria-label="Book navigation"><div class="slbn-in"><a class="slbn-prev" href="../read.html?ch=losing-my-religion" target="_top"><span class="slbn-dir">‹ Previous</span><span class="slbn-ttl">Losing My Religion</span></a><a class="slbn-toc" href="../index.html#book" target="_top"><span class="slbn-dir">The Scissors</span><span class="slbn-ttl">Chapter 20 / 36</span></a><a class="slbn-next" href="../read.html?ch=alone" target="_top"><span class="slbn-dir">Next ›</span><span class="slbn-ttl">Alone</span></a></div></nav>
+<!--SL_BOOKNAV_END-->
+</body>
+</html>

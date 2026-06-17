@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Autonomy Engine — Perceived Freedom and Life Satisfaction Across Europe</title>
+<style>
+  :root{
+    --bg:#f5f3ee;
+    --bg-deep:#ebe7dd;
+    --panel:#fdfcf8;
+    --ink:#1b1a16;
+    --ink-dim:#494640;
+    --ink-faint:#857f73;
+    --hair:rgba(27,26,22,.14);
+    --hair-soft:rgba(27,26,22,.07);
+    --free:#1a6e5e;
+    --free-deep:#0f4a3e;
+    --free-soft:rgba(26,110,94,.13);
+    --health:#c07a28;
+    --west:#3a5a8c;
+    --postcom:#b5462f;
+    --accent:#c4452f;
+    --rule:#a39a86;
+    --serif:'Iowan Old Style','Hoefler Text',Georgia,'Times New Roman',serif;
+    --sans:'Avenir Next',system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+    --mono:'SFMono-Regular',ui-monospace,'Cascadia Mono',Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--serif); font-size:18.5px; line-height:1.64; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility}
+  a{color:var(--free-deep); text-decoration:none; border-bottom:1px solid rgba(15,74,62,.4)}
+  a:hover,a:focus-visible{color:var(--accent); border-bottom-color:var(--accent)}
+  a:focus-visible,button:focus-visible{outline:2.5px solid var(--accent); outline-offset:2px; border-radius:3px}
+  .wrap{max-width:720px; margin:0 auto; padding:0 22px}
+  .wide{max-width:1060px; margin:0 auto; padding:0 22px}
+  header{padding:78px 0 22px}
+  .kicker{font-family:var(--sans); font-size:12px; letter-spacing:.28em; text-transform:uppercase; color:var(--accent); margin:0 0 20px; font-weight:600}
+  h1{font-size:clamp(36px,6.4vw,64px); line-height:1.0; margin:0 0 22px; font-weight:700; letter-spacing:-.022em}
+  .dek{font-size:clamp(18px,2.5vw,23px); font-style:italic; color:var(--ink-dim); max-width:640px; margin:0 0 26px; line-height:1.46}
+  .byline{font-family:var(--sans); font-size:13px; color:var(--ink-faint); letter-spacing:.04em}
+  .byline b{color:var(--ink-dim); font-weight:600}
+  main p{margin:0 0 1.34em}
+  h2{font-size:clamp(25px,3.6vw,35px); line-height:1.12; margin:2.0em 0 .5em; letter-spacing:-.014em; font-weight:700}
+  .lead{font-size:clamp(19px,2.4vw,22px); line-height:1.5; color:var(--ink)}
+  .drop::first-letter{float:left; font-size:3.55em; line-height:.78; padding:9px 11px 0 0; color:var(--accent); font-weight:700; font-family:var(--serif)}
+  strong{font-weight:700}
+  .free-t{color:var(--free-deep); font-weight:700}
+  .west-t{color:var(--west); font-weight:700}
+  .post-t{color:var(--postcom); font-weight:700}
+  .num{font-variant-numeric:tabular-nums}
+  .figwrap{margin:44px auto 16px}
+  figure{margin:0; background:var(--panel); border:1px solid var(--hair); border-radius:14px; padding:26px 24px 16px; box-shadow:0 1px 0 rgba(27,26,22,.04), 0 18px 40px -32px rgba(27,26,22,.4)}
+  figure h4{font-family:var(--sans); font-size:19px; margin:0 0 5px; font-weight:700; color:var(--ink); letter-spacing:-.01em}
+  figure .sub{font-family:var(--sans); font-size:13.5px; color:var(--ink-dim); margin:0 0 16px; line-height:1.5; max-width:760px}
+  figcaption{font-family:var(--sans); font-size:12.5px; color:var(--ink-faint); line-height:1.55; margin-top:12px; border-top:1px solid var(--hair-soft); padding-top:11px}
+  svg{width:100%; height:auto; display:block; overflow:visible}
+  text{font-family:var(--sans)}
+  .legend{display:flex; flex-wrap:wrap; gap:6px 16px; font-family:var(--sans); font-size:12.5px; color:var(--ink-dim); margin:0 0 12px; align-items:center}
+  .legend span.li{display:inline-flex; align-items:center; gap:6px}
+  .dot{width:11px; height:11px; border-radius:50%; display:inline-block}
+  .tip{position:fixed; pointer-events:none; opacity:0; background:var(--ink); color:#fff; font-family:var(--sans); font-size:12.5px; line-height:1.5; padding:10px 12px; border-radius:9px; max-width:260px; z-index:30; transition:opacity .09s; box-shadow:0 8px 26px rgba(27,26,22,.36)}
+  .tip b{color:#fff; font-weight:700}
+  .tip .row{display:flex; justify-content:space-between; gap:16px; font-variant-numeric:tabular-nums}
+  .tip .muted{color:#b3ab9c}
+  .tip .hd{font-weight:700; margin-bottom:3px}
+  .smcap{font-family:var(--sans); font-size:11px; letter-spacing:.04em; fill:var(--ink-faint)}
+  .axlab{font-family:var(--sans); font-size:12px; fill:var(--ink-faint)}
+  .toggle{display:inline-flex; gap:4px; background:var(--bg-deep); border-radius:999px; padding:4px; margin:0 0 4px}
+  .toggle button{font-family:var(--sans); font-size:12.5px; font-weight:600; border:0; background:transparent; color:var(--ink-dim); padding:5px 13px; border-radius:999px; cursor:pointer; letter-spacing:.01em}
+  .toggle button[aria-pressed="true"]{background:var(--panel); color:var(--ink); box-shadow:0 1px 4px rgba(27,26,22,.16)}
+  .note{font-family:var(--sans); font-size:14px; line-height:1.55; color:var(--ink-dim); background:var(--bg-deep); border-left:3px solid var(--rule); border-radius:0 8px 8px 0; padding:14px 16px; margin:26px 0}
+  table.fallback{border-collapse:collapse; width:100%; font-family:var(--sans); font-size:12.5px; margin-top:8px}
+  table.fallback caption{text-align:left; color:var(--ink-faint); font-size:12px; margin-bottom:6px}
+  table.fallback th,table.fallback td{border:1px solid var(--hair-soft); padding:4px 8px; text-align:right}
+  table.fallback th:first-child,table.fallback td:first-child{text-align:left}
+  footer{font-family:var(--sans); font-size:13.5px; color:var(--ink-dim); line-height:1.62; padding:30px 0 84px}
+  footer h2{font-family:var(--sans); font-size:15px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint); margin:0 0 14px; font-weight:700}
+  footer p{margin:0 0 1em; max-width:740px}
+  footer a{color:var(--free-deep)}
+  hr.sep{border:0; border-top:1px solid var(--hair); max-width:1060px; margin:48px auto 0}
+  .pill{font-family:var(--sans); font-size:11px; letter-spacing:.08em; text-transform:uppercase; font-weight:600; padding:2px 8px; border-radius:20px; display:inline-block; vertical-align:middle}
+  .pill-aut{background:var(--free-soft); color:var(--free-deep)}
+  .pill-eval{background:rgba(196,69,47,.12); color:var(--accent)}
+  @media (max-width:560px){ figure{padding:20px 14px 14px} body{font-size:17.5px} }
+  @media (prefers-reduced-motion: reduce){*{transition:none!important; animation:none!important}}
+</style>
+</head>
+<body>
+<header class="wrap">
+  <p class="kicker">European Values Study · Autonomy &amp; well-being</p>
+  <h1>The Autonomy Engine</h1>
+  <p class="dek">Across thirty-seven European countries and four decades, the strongest single individual-level companion of a satisfying life is not health, not age, not marriage. It is the felt sense of freedom and control over one's own life — and that sense rose most, since the wall fell, in the East.</p>
+  <p class="byline">By the numbers · <b>European Values Study (EVS), 1981–2017</b> · within-country weighted (<span style="font-family:var(--mono)">weight</span>), countries equal across</p>
+</header>
+
+<main>
+<div class="wrap">
+  <p class="lead drop">Since 1981 the European Values Study has put a quietly radical question to more than two hundred thousand Europeans: <em>how much freedom of choice and control do you feel you have over the way your life turns out?</em> Mark it from 1 to 10. Their answers, lined up against how satisfied they are with their lives, trace one of the tightest patterns in the whole study — at least as tight as the pull of health, and far tighter than the pull of age or marriage. (This EVS extract carries no individual income measure, so income cannot enter the race.)</p>
+
+  <p>Take the two extremes first. Among Europeans who feel they have almost no control over their lives, mean life satisfaction sits at <strong class="num">4.8</strong> on the 1–10 scale. Among those who feel they have the most, it reaches <strong class="num">8.0</strong> — a gap of nearly <strong class="num">3.2</strong> points, running the length of a single axis of felt agency. Below, the climb between those poles, step by step.</p>
+</div>
+
+<div class="figwrap wide">
+  <figure>
+    <h4>The steeper the sense of control, the more satisfied the life</h4>
+    <p class="sub">Mean life satisfaction (1–10) at each level of perceived freedom and control. Within each country a weighted mean is taken at each freedom level; the line is the average across countries, weighting every country equally. The shaded band is the 95% interval for that equal-country mean, bootstrapped across countries. Note the y-axis is zoomed to 4.4–8.4 (not the full 1–10), and the leftmost, low-control points rest on fewer countries — 27 at level 1, 23 at level 2 versus 37 from level 5 up — so they are noisier and carry a wider band.</p>
+    <div id="chart-grad" style="position:relative"></div>
+    <figcaption id="cap-grad"></figcaption>
+  </figure>
+</div>
+
+<div class="wrap">
+  <p>A gradient like that invites a sceptical question: maybe the people who feel free are simply the healthy and the comfortable, and felt freedom is just their good fortune speaking through them. So put the candidates in a single race. Standardize each measure, compare people <em>within the same country</em> so national wealth and temperament cannot drive the result, and ask which one moves life satisfaction most when the others are held fixed.</p>
+</div>
+
+<div class="figwrap wide">
+  <figure>
+    <h4>Perceived freedom runs neck-and-neck with health — and laps the rest</h4>
+    <p class="sub">Standardized coefficients from one within-country model of life satisfaction. Each bar is the change in life satisfaction (in standard deviations) per standard-deviation rise in that factor, holding the other four fixed.</p>
+    <div id="chart-race" style="position:relative"></div>
+    <figcaption id="cap-race"></figcaption>
+  </figure>
+</div>
+
+<div class="wrap">
+  <p>The <span class="free-t">sense of freedom</span> carries a standardized coefficient of about <strong class="num">0.32</strong> — a hair above self-rated <strong>health</strong> at <strong class="num">0.31</strong>, more than three times the pull of being <strong>married</strong> (<strong class="num">0.09</strong>), and an order of magnitude beyond <strong>age</strong> (<strong class="num">0.03</strong>) or <strong>education</strong> (<strong class="num">0.02</strong>). Health matters, as it always does. But the feeling of authorship over your own life matters at least as much, and it does so net of all the rest.</p>
+
+  <h2>Near-universal, but not uniform</h2>
+  <p>An average can hide its exceptions. So fit the relationship one country at a time — within Belgrade, within Bergen, within Bucharest — and read off how steeply life satisfaction tracks felt freedom in each. The striking thing is the agreement. In <strong>every one</strong> of the <strong class="num">34</strong> countries with enough data, the slope is positive. What differs is how steep.</p>
+</div>
+
+<div class="figwrap wide">
+  <figure>
+    <h4>The engine, country by country</h4>
+    <p class="sub">Each dot is one country's standardized within-country slope of life satisfaction on perceived freedom — how many standard deviations of satisfaction travel with one standard deviation of felt control. Colour marks the bloc; the line through each is the ±1 standard-error span. Hover or focus a dot for detail.</p>
+    <div class="legend" id="leg-bee"></div>
+    <div id="chart-bee" style="position:relative"></div>
+    <figcaption id="cap-bee"></figcaption>
+  </figure>
+</div>
+
+<div class="wrap">
+  <p>The median country posts a slope near <strong class="num">0.91</strong>. The engine runs hottest in the post-communist East: <span class="post-t">Bulgaria</span> tops the list at <strong class="num">1.35</strong>, with <span class="post-t">Bosnia&nbsp;Herzegovina</span> (<strong class="num">1.25</strong>), <span class="post-t">Serbia</span> (<strong class="num">1.16</strong>) and <span class="post-t">North&nbsp;Macedonia</span> (<strong class="num">1.14</strong>) close behind. It runs coolest in two very different places — <span class="post-t">Georgia</span> at <strong class="num">0.32</strong> and the prosperous, high-floor <span class="west-t">Netherlands</span> at <strong class="num">0.36</strong>, where life satisfaction is high almost across the board and leaves felt freedom less room to separate people. Across the continent the post-communist median (<strong class="num">0.99</strong>) sits above the Western one (<strong class="num">0.76</strong>): where life has been least settled, the feeling of being in command of it counts for the most.</p>
+
+  <h2>The freedom that rose in the East</h2>
+  <p>That last fact gains its weight from history. The same study lets us watch perceived freedom itself move over time. Drawing on a fixed pool of countries within each bloc — with coverage noted per wave, since not every country answers in every round — the average sense of control climbed across Europe between 1990 and 2017. It climbed in the West, though the 2017 uptick there rests on fewer countries than 2008, so part of that final rise may be compositional. It climbed nearly as far in the post-communist East, which began the 1990s with agency in retreat.</p>
+</div>
+
+<div class="figwrap wide">
+  <figure>
+    <h4>Perceived freedom rose across Europe — and recovered in the East</h4>
+    <p class="sub">Mean perceived freedom (1–10) by survey wave, each bloc on a fixed set of countries observed in at least two waves. Countries weighted equally within bloc. Toggle to see life satisfaction over the same waves.</p>
+    <div class="toggle" id="tg-trend" role="group" aria-label="Choose measure to trend">
+      <button id="tg-free" aria-pressed="true">Perceived freedom</button>
+      <button id="tg-life" aria-pressed="false">Life satisfaction</button>
+    </div>
+    <div id="chart-trend" style="position:relative"></div>
+    <figcaption id="cap-trend"></figcaption>
+  </figure>
+</div>
+
+<div class="wrap">
+  <p>In the West, perceived freedom rose from <strong class="num">6.4</strong> in 1981 to <strong class="num">7.4</strong> in 2017, a gain of about <strong class="num">0.95</strong> points. In the post-communist countries it dipped through the wrenching 1990s before recovering, climbing from <strong class="num">6.4</strong> at its earliest reading to <strong class="num">7.1</strong> by 2017 — a net rise of <strong class="num">0.76</strong>. Put the two halves of this piece together and a mechanism suggests itself, the one Ronald Inglehart and colleagues proposed two decades ago: as societies grow freer and more secure, a widening sense of free choice becomes the proximate engine of rising satisfaction. The bloc where felt freedom recovered fastest is also the bloc where felt freedom matters most.</p>
+
+  <h2>What this does, and does not, show</h2>
+  <p><strong>Two feelings, not a lever.</strong> Perceived freedom and life satisfaction are both self-reports collected in the same sitting, and a buoyant outlook can lift both at once. The race and the country slopes show which factor travels most tightly with satisfaction — not that handing someone a greater sense of control would manufacture the contentment. Read every slope here as association.</p>
+  <p><strong>Perceived, not measured, freedom.</strong> This is how free people <em>feel</em>, which is related to but distinct from legal or political liberty. Two people under identical laws can feel very differently in command of their lives, and it is the feeling that tracks satisfaction.</p>
+  <p><strong>Evaluative only.</strong> The Values Study carries life satisfaction and a four-point happiness item — both reflective, global judgments — but no "yesterday" measures of daily mood. Everything here concerns how Europeans <em>evaluate</em> their lives, never the texture of a given day.</p>
+  <p><strong>An unbalanced patchwork.</strong> The study is an uneven panel of countries and waves. The country slopes pool all available waves for each country; the trend holds a fixed country set per bloc and reports coverage per wave. Country-cells with an effective sample below 50 are suppressed throughout, and small gaps between countries should be read gently.</p>
+</div>
+
+<hr class="sep">
+<div class="wide">
+<footer>
+  <h2>Notes &amp; data</h2>
+  <p><strong>Source.</strong> European Values Study (EVS), waves 1–7, fieldwork 1981–2017, restricted to the European countries of the integrated EVS–WVS file (the United States and Canada, which appear in early EVS rounds, are excluded). The freedom item asks "how much freedom of choice and control you feel you have over the way your life turns out," from 1 (none at all) to 10 (a great deal). Life satisfaction is the standard 1–10 item. The pooled analysis covers <span class="num">211,059</span> paired responses across <span class="num">37</span> countries.</p>
+  <p><strong>Weighting.</strong> Every within-country estimate uses the EVS within-country survey weight <span style="font-family:var(--mono)">weight</span>. There is no population variable in this extract, so all cross-country and "Europe" figures weight each <em>country</em> equally — an <em>average national experience, not a population-weighted one</em>. Effective N = (Σw)² ⁄ Σw²; country-cells with effective N below 50 are suppressed, and country-waves below that threshold are dropped from the trend. The freedom trend holds a fixed set of countries per bloc (13 Western, 21 post-communist) observed in at least two waves; coverage per wave is given in the chart tooltips.</p>
+  <p><strong>Constructs.</strong> Life satisfaction (and the four-point happiness item) are <strong>evaluative</strong> well-being. The freedom item is <strong>perceived autonomy / control</strong> — an antecedent and correlate, kept distinct and never treated as a well-being outcome. Health is self-rated (1–5, higher better). The study contains no experiential "yesterday" affect items, so no experiential claim is made.</p>
+  <p><strong>Method.</strong> The gradient is the within-country weighted mean of life satisfaction at each freedom level, then averaged across countries equally. The horse race is a single within-country standardized weighted least-squares model — each variable z-scored globally then country-demeaned, so coefficients compare people inside the same country (N ≈ <span class="num">100,046</span>; R² ≈ <span class="num">0.24</span>). Per-country engine slopes are separate within-country weighted regressions of life satisfaction on standardized perceived freedom, for the 34 countries with effective N ≥ 50 and at least two waves. The "Bloc" split follows the standard post-communist set; everything else European is "Western." Coefficients are standardized; all relationships are cross-sectional associations, not causal effects.</p>
+  <p><strong>Further reading.</strong> Ronald Inglehart, Roberto Foa, Christopher Peterson &amp; Christian Welzel, <a href="https://doi.org/10.1111/j.1745-6924.2008.00078.x">"Development, freedom, and rising happiness"</a> (<em>Perspectives on Psychological Science</em>, 2008); Christian Welzel, <em>Freedom Rising</em> (2013); Paolo Verme, <a href="https://doi.org/10.1016/j.jebo.2009.04.011">"Happiness, freedom and control"</a> (<em>Journal of Economic Behavior &amp; Organization</em>, 2009). The post-communist dip and recovery of life satisfaction is documented in the transition-economy literature (Easterlin and others).</p>
+  <p style="color:var(--ink-faint)">Construct labels — <span class="pill pill-aut">autonomy</span> perceived freedom &amp; control · <span class="pill pill-eval">evaluative</span> life satisfaction. Association, not causation.</p>
+</footer>
+</div>
+</main>
+
+<div class="tip" id="tip" role="status" aria-live="polite"></div>
+
+<script type="module">
+import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+
+const DATA = {"meta":{"slug":"the-autonomy-engine","title":"The Autonomy Engine","dataset":"European Values Study (EVS), 1981-2017","colors":{"free":"#1a6e5e","free_deep":"#0f4a3e","health":"#c07a28","west":"#3a5a8c","postcom":"#b5462f","accent":"#c4452f"}},"headline":{"life_at_free1":4.784,"life_at_free10":7.959,"life_span":3.17,"hr_free":0.3178,"hr_health":0.3061,"hr_age":0.0303,"hr_education":0.0207,"hr_married":0.0889,"hr_n":100046,"hr_r2":0.2407,"engine_median":0.906,"engine_n_countries":34,"engine_max_country":"Bulgaria","engine_max_coef":1.352,"engine_min_country":"Georgia","engine_min_coef":0.321,"engine_median_west":0.76,"engine_median_postcom":0.99,"west_freedom_first":6.413,"west_freedom_last":7.363,"west_freedom_chg":0.95,"postcom_freedom_first":6.352,"postcom_freedom_last":7.113,"postcom_freedom_chg":0.761,"n_total":211059,"n_countries_total":37},"grad":[{"level":1,"life":4.784,"life_wtd":5.099,"lo":4.413,"hi":5.163,"n_countries":27,"n":5979},{"level":2,"life":5.014,"life_wtd":5.02,"lo":4.635,"hi":5.406,"n_countries":23,"n":3919},{"level":3,"life":5.215,"life_wtd":5.377,"lo":4.989,"hi":5.455,"n_countries":34,"n":8322},{"level":4,"life":5.649,"life_wtd":5.74,"lo":5.468,"hi":5.843,"n_countries":36,"n":10547},{"level":5,"life":6.145,"life_wtd":6.275,"lo":5.971,"hi":6.341,"n_countries":37,"n":29927},{"level":6,"life":6.52,"life_wtd":6.739,"lo":6.364,"hi":6.68,"n_countries":37,"n":23690},{"level":7,"life":6.946,"life_wtd":7.219,"lo":6.775,"hi":7.12,"n_countries":37,"n":34755},{"level":8,"life":7.426,"life_wtd":7.726,"lo":7.244,"hi":7.598,"n_countries":37,"n":44169},{"level":9,"life":7.808,"life_wtd":8.103,"lo":7.597,"hi":8.018,"n_countries":37,"n":21178},{"level":10,"life":7.959,"life_wtd":8.159,"lo":7.724,"hi":8.189,"n_countries":37,"n":28573}],"horse_race":{"free":0.3178,"health":0.3061,"age":0.0303,"education":0.0207,"married":0.0889,"n":100046,"r2":0.2407},"engine":[{"country":"Albania","bloc":"Post-communist","coef":0.6407,"se":0.0436,"n":2853,"n_waves":2},{"country":"Armenia","bloc":"Post-communist","coef":0.7407,"se":0.0431,"n":2928,"n_waves":2},{"country":"Belarus","bloc":"Post-communist","coef":1.1146,"se":0.0309,"n":3897,"n_waves":3},{"country":"Bosnia Herzegovina","bloc":"Post-communist","coef":1.2497,"se":0.0339,"n":3166,"n_waves":2},{"country":"Bulgaria","bloc":"Post-communist","coef":1.3521,"se":0.0323,"n":4787,"n_waves":4},{"country":"Croatia","bloc":"Post-communist","coef":0.9742,"se":0.0337,"n":3931,"n_waves":3},{"country":"Czechia","bloc":"Post-communist","coef":0.88,"se":0.0215,"n":7530,"n_waves":4},{"country":"Estonia","bloc":"Post-communist","coef":1.0176,"se":0.0275,"n":4686,"n_waves":4},{"country":"Finland","bloc":"Western","coef":0.6759,"se":0.0255,"n":3868,"n_waves":4},{"country":"France","bloc":"Western","coef":0.7868,"se":0.0223,"n":7061,"n_waves":5},{"country":"Georgia","bloc":"Post-communist","coef":0.321,"se":0.045,"n":3608,"n_waves":2},{"country":"Germany","bloc":"Western","coef":0.9055,"se":0.0162,"n":10786,"n_waves":5},{"country":"Greece","bloc":"Western","coef":0.8551,"se":0.0402,"n":2611,"n_waves":2},{"country":"Hungary","bloc":"Post-communist","coef":0.9705,"se":0.0306,"n":4947,"n_waves":4},{"country":"Italy","bloc":"Western","coef":0.7376,"se":0.021,"n":8824,"n_waves":5},{"country":"Latvia","bloc":"Post-communist","coef":0.9295,"se":0.0306,"n":4532,"n_waves":4},{"country":"Lithuania","bloc":"Post-communist","coef":0.9067,"se":0.0316,"n":4721,"n_waves":4},{"country":"Montenegro","bloc":"Post-communist","coef":1.0013,"se":0.0401,"n":2456,"n_waves":2},{"country":"Netherlands","bloc":"Western","coef":0.3581,"se":0.0168,"n":7065,"n_waves":5},{"country":"North Macedonia","bloc":"Post-communist","coef":1.1395,"se":0.043,"n":2474,"n_waves":2},{"country":"Northern Ireland","bloc":"Western","coef":0.7671,"se":0.0344,"n":2069,"n_waves":4},{"country":"Norway","bloc":"Western","coef":0.5891,"se":0.0248,"n":4433,"n_waves":4},{"country":"Poland","bloc":"Post-communist","coef":0.9901,"se":0.0282,"n":4782,"n_waves":4},{"country":"Romania","bloc":"Post-communist","coef":1.0929,"se":0.0331,"n":5120,"n_waves":4},{"country":"Russia","bloc":"Post-communist","coef":1.0221,"se":0.0314,"n":5568,"n_waves":3},{"country":"Serbia","bloc":"Post-communist","coef":1.1616,"se":0.0375,"n":2938,"n_waves":2},{"country":"Slovakia","bloc":"Post-communist","coef":1.0359,"se":0.027,"n":5235,"n_waves":4},{"country":"Slovenia","bloc":"Post-communist","coef":0.9675,"se":0.028,"n":4373,"n_waves":4},{"country":"Spain","bloc":"Western","coef":0.7598,"se":0.0189,"n":8422,"n_waves":5},{"country":"Sweden","bloc":"Western","coef":0.6876,"se":0.0237,"n":5312,"n_waves":5},{"country":"Switzerland","bloc":"Western","coef":0.8524,"se":0.0233,"n":4409,"n_waves":2},{"country":"Turkey","bloc":"Western","coef":0.3218,"se":0.0496,"n":3504,"n_waves":2},{"country":"Ukraine","bloc":"Post-communist","coef":0.9511,"se":0.0373,"n":4039,"n_waves":3},{"country":"United Kingdom","bloc":"Western","coef":0.8328,"se":0.0206,"n":6901,"n_waves":5}],"engine_dist":{"median":0.906,"min":0.321,"max":1.352,"min_country":"Georgia","max_country":"Bulgaria","median_western":0.76,"median_postcom":0.99,"n_western":13,"n_postcom":21},"freedom_trend":[{"label":"Western","points":[{"wave":1,"year":1981,"freedom":6.413,"n_countries":9},{"wave":2,"year":1990,"freedom":6.912,"n_countries":10},{"wave":4,"year":1999,"freedom":6.886,"n_countries":11},{"wave":5,"year":2008,"freedom":6.897,"n_countries":13},{"wave":7,"year":2017,"freedom":7.363,"n_countries":10}]},{"label":"Post-communist","points":[{"wave":2,"year":1990,"freedom":6.352,"n_countries":10},{"wave":4,"year":1999,"freedom":6.23,"n_countries":14},{"wave":5,"year":2008,"freedom":6.665,"n_countries":21},{"wave":7,"year":2017,"freedom":7.113,"n_countries":21}]}],"west_satis":[{"wave":1,"year":1981,"life":7.342,"n_countries":9},{"wave":2,"year":1990,"life":7.478,"n_countries":10},{"wave":4,"year":1999,"life":7.221,"n_countries":11},{"wave":5,"year":2008,"life":7.452,"n_countries":13},{"wave":7,"year":2017,"life":7.678,"n_countries":10}],"postcom_satis":[{"wave":2,"year":1990,"life":6.112,"n_countries":10},{"wave":4,"year":1999,"life":5.699,"n_countries":14},{"wave":5,"year":2008,"life":6.621,"n_countries":21},{"wave":7,"year":2017,"life":7.058,"n_countries":21}]};
+
+const C = DATA.meta.colors;
+const BLOC = { "Western": C.west, "Post-communist": C.postcom };
+const tip = document.getElementById("tip");
+function showTip(html, ev){
+  tip.innerHTML = html; tip.style.opacity = 1;
+  const pad=14, w=tip.offsetWidth, h=tip.offsetHeight;
+  let x=ev.clientX+pad, y=ev.clientY+pad;
+  if(x+w>window.innerWidth-6) x=ev.clientX-w-pad;
+  if(y+h>window.innerHeight-6) y=ev.clientY-h-pad;
+  if(x<6) x=6; if(y<6) y=6;
+  tip.style.left=x+"px"; tip.style.top=y+"px";
+}
+function hideTip(){ tip.style.opacity=0; }
+const f1=v=>v.toFixed(1), f2=v=>v.toFixed(2);
+
+/* ===== 1. GRADIENT ===== */
+(function(){
+  const W=1000,H=440,M={t:24,r:42,b:60,l:54};
+  const svg=d3.select("#chart-grad").append("svg").attr("viewBox",`0 0 ${W} ${H}`).attr("width","100%")
+    .attr("role","img").attr("aria-label","Line chart: mean life satisfaction rises steeply and steadily with the sense of freedom and control, from about 4.8 at level 1 to about 8.0 at level 10.");
+  svg.append("desc").text("Equal-country mean life satisfaction climbing across the ten levels of perceived freedom.");
+  const g=svg.append("g").attr("transform",`translate(${M.l},${M.t})`);
+  const iw=W-M.l-M.r, ih=H-M.t-M.b;
+  const x=d3.scaleLinear().domain([1,10]).range([0,iw]);
+  const y=d3.scaleLinear().domain([4.4,8.4]).range([ih,0]);
+  // gradient fill def
+  const defs=svg.append("defs");
+  const lg=defs.append("linearGradient").attr("id","gradFill").attr("x1",0).attr("y1",0).attr("x2",0).attr("y2",1);
+  lg.append("stop").attr("offset","0%").attr("stop-color",C.free).attr("stop-opacity",.10);
+  lg.append("stop").attr("offset","100%").attr("stop-color",C.free).attr("stop-opacity",0);
+  g.selectAll("line.gl").data(y.ticks(5)).join("line").attr("class","gl").attr("x1",0).attr("x2",iw)
+    .attr("y1",d=>y(d)).attr("y2",d=>y(d)).attr("stroke","var(--hair-soft)");
+  g.selectAll("text.yl").data(y.ticks(5)).join("text").attr("class","axlab")
+    .attr("x",-10).attr("y",d=>y(d)+4).attr("text-anchor","end").text(d=>d.toFixed(0));
+  g.append("text").attr("class","smcap").attr("transform",`translate(-40,${ih/2}) rotate(-90)`).attr("text-anchor","middle").text("mean life satisfaction (1–10)");
+  g.selectAll("text.xl").data(d3.range(1,11)).join("text").attr("class","axlab")
+    .attr("x",d=>x(d)).attr("y",ih+22).attr("text-anchor","middle").text(d=>d);
+  g.append("text").attr("class","smcap").attr("x",0).attr("y",ih+46).attr("text-anchor","start").text("feel no control");
+  g.append("text").attr("class","smcap").attr("x",iw).attr("y",ih+46).attr("text-anchor","end").text("feel in full control");
+  g.append("text").attr("class","smcap").attr("x",iw/2).attr("y",ih+46).attr("text-anchor","middle").attr("font-weight",700).text("sense of freedom & control (1–10)");
+  const rows=DATA.grad;
+  // subtle baseline-anchored wash (decorative only, kept light so it doesn't oversell the slope)
+  const area=d3.area().x(d=>x(d.level)).y0(ih).y1(d=>y(d.life)).curve(d3.curveMonotoneX);
+  // genuine 95% confidence band on the equal-country mean (lo..hi), bootstrapped across countries
+  const band=d3.area().x(d=>x(d.level)).y0(d=>y(d.lo)).y1(d=>y(d.hi)).curve(d3.curveMonotoneX);
+  const line=d3.line().x(d=>x(d.level)).y(d=>y(d.life)).curve(d3.curveMonotoneX);
+  g.append("path").datum(rows).attr("fill","url(#gradFill)").attr("d",area).attr("opacity",.5);
+  g.append("path").datum(rows).attr("class","ci-band").attr("fill",C.free).attr("fill-opacity",.20)
+    .attr("stroke",C.free).attr("stroke-opacity",.28).attr("stroke-width",.8).attr("d",band);
+  const path=g.append("path").datum(rows).attr("fill","none").attr("stroke",C.free_deep).attr("stroke-width",3.6).attr("stroke-linecap","round").attr("d",line);
+  const L=path.node().getTotalLength();
+  path.attr("stroke-dasharray",`${L} ${L}`).attr("stroke-dashoffset",L).transition().duration(1100).ease(d3.easeCubicInOut).attr("stroke-dashoffset",0);
+  g.selectAll("circle").data(rows).join("circle").attr("cx",d=>x(d.level)).attr("cy",d=>y(d.life)).attr("r",5.2)
+    .attr("fill","var(--panel)").attr("stroke",C.free_deep).attr("stroke-width",2.6)
+    .attr("tabindex",0).attr("role","button").attr("aria-label",d=>`freedom ${d.level}: mean life satisfaction ${f2(d.life)}, ${d.n_countries} countries`)
+    .style("cursor","pointer")
+    .on("mousemove",(ev,d)=>showTip(`<div class="hd">Felt control = ${d.level}</div>`+
+      `<div class="row"><span class="muted">life satisfaction</span><b>${f2(d.life)}</b></div>`+
+      `<div class="row"><span class="muted">countries</span><b>${d.n_countries}</b></div>`+
+      `<div class="row"><span class="muted">respondents</span><b>${d.n.toLocaleString()}</b></div>`,ev))
+    .on("mouseleave",hideTip)
+    .on("focus",function(ev,d){const r=this.getBoundingClientRect();showTip(`<div class="hd">Felt control = ${d.level}</div><div class="row"><span class="muted">life satisfaction</span><b>${f2(d.life)}</b></div>`,{clientX:r.x+r.width/2,clientY:r.y});})
+    .on("blur",hideTip);
+  [rows[0],rows[rows.length-1]].forEach((d,i)=>g.append("text").attr("class","smcap").attr("fill",C.free_deep).attr("font-weight",700)
+    .attr("font-size",13).attr("x",x(d.level)).attr("y",y(d.life)+(i?-15:24)).attr("text-anchor",i?"end":"start").text(f1(d.life)));
+  document.getElementById("cap-grad").innerHTML=`Life satisfaction climbs from <b>${f1(rows[0].life)}</b> at the lowest sense of control to <b>${f1(rows[rows.length-1].life)}</b> at the highest — a span of <b>${f1(DATA.headline.life_span)}</b> points. European Values Study (EVS), 1981–2017; within-country <span style="font-family:var(--mono)">weight</span>, countries averaged equally; evaluative.`;
+  buildFallback("#chart-grad","Mean life satisfaction by sense of freedom",["Freedom","Life satisfaction","Countries"],rows.map(d=>[d.level,f2(d.life),d.n_countries]));
+})();
+
+/* ===== 2. HORSE RACE ===== */
+(function(){
+  const W=1000,H=300,M={t:18,r:64,b:48,l:178};
+  const svg=d3.select("#chart-race").append("svg").attr("viewBox",`0 0 ${W} ${H}`).attr("width","100%")
+    .attr("role","img").attr("aria-label","Bar chart of standardized within-country coefficients on life satisfaction: perceived freedom 0.32, health 0.31, married 0.09, age 0.03, education 0.02.");
+  svg.append("desc").text("Perceived freedom and health are the two largest predictors of life satisfaction; marriage, age and education are far smaller.");
+  const g=svg.append("g").attr("transform",`translate(${M.l},${M.t})`);
+  const iw=W-M.l-M.r, ih=H-M.t-M.b;
+  const hr=DATA.horse_race;
+  const bars=[{label:"Sense of freedom & control",v:hr.free,c:C.free,hi:true},
+              {label:"Self-rated health",v:hr.health,c:C.health},
+              {label:"Married",v:hr.married,c:"#8c93a0"},
+              {label:"Age",v:hr.age,c:"#8c93a0"},
+              {label:"Education",v:hr.education,c:"#8c93a0"}];
+  const x=d3.scaleLinear().domain([0,0.35]).range([0,iw]);
+  const y=d3.scaleBand().domain(bars.map(b=>b.label)).range([0,ih]).padding(0.32);
+  g.selectAll("line.gl").data(x.ticks(7)).join("line").attr("class","gl").attr("x1",d=>x(d)).attr("x2",d=>x(d))
+    .attr("y1",0).attr("y2",ih).attr("stroke","var(--hair-soft)");
+  g.selectAll("text.xt").data(x.ticks(7)).join("text").attr("class","axlab")
+    .attr("x",d=>x(d)).attr("y",ih+22).attr("text-anchor","middle").text(d=>d.toFixed(2));
+  g.append("text").attr("class","smcap").attr("x",iw/2).attr("y",ih+42).attr("text-anchor","middle").text("standardized coefficient on life satisfaction (within country)");
+  g.selectAll("rect").data(bars).join("rect").attr("x",0).attr("y",d=>y(d.label)).attr("height",y.bandwidth())
+    .attr("rx",4).attr("fill",d=>d.c).attr("opacity",d=>d.hi?1:.92).attr("width",0)
+    .attr("tabindex",0).attr("role","button").attr("aria-label",d=>`${d.label}: standardized coefficient ${f2(d.v)}`)
+    .on("mousemove",(ev,d)=>showTip(`<div class="hd">${d.label}</div><div class="row"><span class="muted">std. coefficient</span><b>${d.v.toFixed(3)}</b></div>`,ev))
+    .on("mouseleave",hideTip)
+    .transition().duration(900).ease(d3.easeCubicOut).delay((d,i)=>i*70).attr("width",d=>x(d.v));
+  g.selectAll("text.bl").data(bars).join("text").attr("class","bl").attr("x",-14).attr("y",d=>y(d.label)+y.bandwidth()/2+4)
+    .attr("text-anchor","end").attr("font-family","var(--sans)").attr("font-size",13.5).attr("font-weight",d=>d.hi?700:600).attr("fill",d=>d.hi?C.free_deep:"var(--ink-dim)").text(d=>d.label);
+  g.selectAll("text.bv").data(bars).join("text").attr("class","bv").attr("x",d=>x(d.v)+9).attr("y",d=>y(d.label)+y.bandwidth()/2+4)
+    .attr("font-family","var(--sans)").attr("font-size",13).attr("font-weight",700).attr("fill",d=>d.c).attr("opacity",0).text(d=>f2(d.v))
+    .transition().delay((d,i)=>900+i*70).duration(300).attr("opacity",1);
+  document.getElementById("cap-race").innerHTML=`Standardized within-country WLS, N <b>${hr.n.toLocaleString()}</b>, R² ≈ <b>${f2(hr.r2)}</b>. Perceived freedom (<b>${f2(hr.free)}</b>) and health (<b>${f2(hr.health)}</b>) run all but level — a gap of just <b>${f2(hr.free-hr.health)}</b> — and both dwarf marriage, age and education, each net of the others. The EVS extract carries no individual income measure, so income is not in the race. EVS 1981–2017; within-country <span style="font-family:var(--mono)">weight</span>; evaluative outcome; association, not causation.`;
+  buildFallback("#chart-race","Standardized within-country coefficients on life satisfaction",["Factor","Coefficient"],bars.map(d=>[d.label,f2(d.v)]));
+})();
+
+/* ===== 3. ENGINE BEESWARM (HERO) ===== */
+(function(){
+  const eng=DATA.engine.slice().sort((a,b)=>a.coef-b.coef);
+  const dist=DATA.engine_dist;
+  // legend
+  const leg=d3.select("#leg-bee");
+  [["Post-communist",C.postcom],["Western",C.west]].forEach(([k,c])=>{
+    const s=leg.append("span").attr("class","li"); s.append("span").attr("class","dot").style("background",c); s.append("span").text(k);
+  });
+  leg.append("span").attr("class","li").style("color","var(--ink-faint)").text("│ horizontal bar = ±1 standard error");
+  const W=1000,H=420,M={t:30,r:30,b:62,l:30};
+  const svg=d3.select("#chart-bee").append("svg").attr("viewBox",`0 0 ${W} ${H}`).attr("width","100%")
+    .attr("role","img").attr("aria-label","Beeswarm chart: the within-country slope of life satisfaction on perceived freedom is positive in all 34 countries, ranging from 0.32 in Georgia to 1.35 in Bulgaria, with post-communist countries clustering higher than Western ones.");
+  svg.append("desc").text("Each country's freedom-to-satisfaction slope plotted along a horizontal axis; all positive, post-communist median above Western median.");
+  const g=svg.append("g").attr("transform",`translate(${M.l},${M.t})`);
+  const iw=W-M.l-M.r, ih=H-M.t-M.b;
+  const x=d3.scaleLinear().domain([0,1.45]).range([0,iw]);
+  const cy=ih*0.52;
+  // axis
+  g.selectAll("line.gl").data(x.ticks(7)).join("line").attr("class","gl").attr("x1",d=>x(d)).attr("x2",d=>x(d))
+    .attr("y1",0).attr("y2",ih).attr("stroke","var(--hair-soft)");
+  g.selectAll("text.xt").data(x.ticks(7)).join("text").attr("class","axlab")
+    .attr("x",d=>x(d)).attr("y",ih+22).attr("text-anchor","middle").text(d=>d.toFixed(1));
+  g.append("text").attr("class","smcap").attr("x",iw/2).attr("y",ih+44).attr("text-anchor","middle").attr("font-weight",700).text("standardized slope: life satisfaction per SD of perceived freedom");
+  // zero line emphasis
+  g.append("line").attr("x1",x(0)).attr("x2",x(0)).attr("y1",0).attr("y2",ih).attr("stroke","var(--ink-faint)").attr("stroke-width",1).attr("opacity",.5);
+  // bloc medians as soft vertical guides
+  [["median_western",C.west,"Western median"],["median_postcom",C.postcom,"East median"]].forEach(([k,c,lbl])=>{
+    g.append("line").attr("x1",x(dist[k])).attr("x2",x(dist[k])).attr("y1",cy-118).attr("y2",cy+118)
+      .attr("stroke",c).attr("stroke-width",1.4).attr("stroke-dasharray","3 4").attr("opacity",.65);
+    g.append("text").attr("class","smcap").attr("fill",c).attr("font-weight",700).attr("text-anchor","middle")
+      .attr("x",x(dist[k])).attr("y",cy-124).text(`${lbl} ${f2(dist[k])}`);
+  });
+  // beeswarm layout (force on x = scale(coef), collide on y)
+  const r=7;
+  const nodes=eng.map(d=>({...d, tx:x(d.coef)}));
+  const sim=d3.forceSimulation(nodes)
+    .force("x",d3.forceX(d=>d.tx).strength(1))
+    .force("y",d3.forceY(cy).strength(0.06))
+    .force("collide",d3.forceCollide(r+1.4))
+    .stop();
+  for(let i=0;i<260;i++) sim.tick();
+  nodes.forEach(d=>{ d.y=Math.max(r+2,Math.min(ih-r-2,d.y)); });
+  // SE whiskers
+  g.selectAll("line.se").data(nodes).join("line").attr("class","se")
+    .attr("x1",d=>x(Math.max(0,d.coef-d.se))).attr("x2",d=>x(d.coef+d.se))
+    .attr("y1",d=>d.y).attr("y2",d=>d.y).attr("stroke",d=>BLOC[d.bloc]).attr("stroke-width",1.4).attr("opacity",.45);
+  const dots=g.selectAll("circle.bee").data(nodes).join("circle").attr("class","bee")
+    .attr("cx",d=>x(d.coef)).attr("cy",d=>d.y).attr("r",0)
+    .attr("fill",d=>BLOC[d.bloc]).attr("opacity",.86).attr("stroke","var(--panel)").attr("stroke-width",1.2)
+    .attr("tabindex",0).attr("role","button").attr("aria-label",d=>`${d.country}, ${d.bloc}: slope ${f2(d.coef)} plus or minus ${f2(d.se)}, ${d.n_waves} waves`)
+    .style("cursor","pointer");
+  dots.transition().duration(650).delay((d,i)=>i*16).ease(d3.easeBackOut.overshoot(1.3)).attr("r",r);
+  dots.on("mousemove",(ev,d)=>showTip(`<div class="hd">${d.country}</div>`+
+      `<div class="row"><span class="muted">slope</span><b>${f2(d.coef)} ± ${f2(d.se)}</b></div>`+
+      `<div class="row"><span class="muted">bloc</span><b>${d.bloc}</b></div>`+
+      `<div class="row"><span class="muted">waves · N</span><b>${d.n_waves} · ${d.n.toLocaleString()}</b></div>`,ev))
+    .on("mouseleave",function(){hideTip(); d3.select(this).attr("stroke","var(--panel)").attr("stroke-width",1.2);})
+    .on("mouseenter",function(){d3.select(this).raise().attr("stroke","var(--ink)").attr("stroke-width",1.6);})
+    .on("focus",function(ev,d){const rr=this.getBoundingClientRect(); d3.select(this).raise().attr("stroke","var(--ink)").attr("stroke-width",1.6); showTip(`<div class="hd">${d.country}</div><div class="row"><span class="muted">slope</span><b>${f2(d.coef)}</b></div>`,{clientX:rr.x+rr.width/2,clientY:rr.y});})
+    .on("blur",function(){hideTip(); d3.select(this).attr("stroke","var(--panel)").attr("stroke-width",1.2);});
+  // label the named extremes
+  const named={"Bulgaria":[0,-1],"Georgia":[0,1],"Netherlands":[0,1]};
+  nodes.filter(d=>named[d.country]).forEach(d=>{
+    const dir=named[d.country][1];
+    g.append("text").attr("class","smcap").attr("font-weight",700).attr("fill",BLOC[d.bloc])
+      .attr("x",x(d.coef)).attr("y",d.y+(dir<0?-13:20)).attr("text-anchor","middle").text(d.country);
+  });
+  document.getElementById("cap-bee").innerHTML=`All <b>${dist.n_western+dist.n_postcom}</b> countries show a positive slope; the median is <b>${f2(dist.median)}</b>. Highest: <b>${dist.max_country}</b> (${f2(dist.max)}); lowest: <b>${dist.min_country}</b> (${f2(dist.min)}). Post-communist median <b>${f2(dist.median_postcom)}</b> vs Western <b>${f2(dist.median_western)}</b>. EVS 1981–2017; per-country within-country <span style="font-family:var(--mono)">weight</span> WLS; effective N ≥ 50 and ≥ 2 waves; evaluative; association.`;
+  buildFallback("#chart-bee","Per-country slope of life satisfaction on perceived freedom",["Country","Bloc","Slope","±SE"],
+    eng.slice().sort((a,b)=>b.coef-a.coef).map(d=>[d.country,d.bloc,f2(d.coef),f2(d.se)]));
+})();
+
+/* ===== 4. FREEDOM TREND (with toggle) ===== */
+(function(){
+  const trendFree=DATA.freedom_trend;
+  const lifeSeries=[{label:"Western",points:DATA.west_satis.map(p=>({...p,freedom:p.life}))},
+                    {label:"Post-communist",points:DATA.postcom_satis.map(p=>({...p,freedom:p.life}))}];
+  const W=1000,H=420,M={t:24,r:120,b:58,l:54};
+  const svg=d3.select("#chart-trend").append("svg").attr("viewBox",`0 0 ${W} ${H}`).attr("width","100%")
+    .attr("role","img").attr("aria-label","Line chart of perceived freedom over survey waves for Western and post-communist Europe, both rising between 1981 and 2017.");
+  const desc=svg.append("desc").text("Perceived freedom rises in both blocs across waves; the post-communist line dips in 1999 before recovering.");
+  const g=svg.append("g").attr("transform",`translate(${M.l},${M.t})`);
+  const iw=W-M.l-M.r, ih=H-M.t-M.b;
+  const years=[1981,1990,1999,2008,2017];
+  const x=d3.scalePoint().domain(years).range([0,iw]).padding(0.5);
+  let y=d3.scaleLinear().domain([6.0,7.5]).range([ih,0]).nice();
+  const gGrid=g.append("g"), gAxis=g.append("g");
+  g.selectAll("text.xt").data(years).join("text").attr("class","axlab")
+    .attr("x",d=>x(d)).attr("y",ih+22).attr("text-anchor","middle").text(d=>d);
+  g.append("text").attr("class","smcap").attr("x",iw/2).attr("y",ih+44).attr("text-anchor","middle").text("survey wave (year)");
+  const yLab=g.append("text").attr("class","smcap").attr("transform",`translate(-40,${ih/2}) rotate(-90)`).attr("text-anchor","middle");
+  const gLines=g.append("g");
+  const line=d3.line().x(d=>x(d.year)).y(d=>y(d.freedom)).curve(d3.curveMonotoneX);
+  let mode="free";
+  function draw(animate){
+    const series = mode==="free" ? trendFree : lifeSeries;
+    const allv=series.flatMap(s=>s.points.map(p=>p.freedom));
+    const dmin=Math.floor(d3.min(allv)*2)/2-0.2, dmax=Math.ceil(d3.max(allv)*2)/2+0.2;
+    y=d3.scaleLinear().domain([dmin,dmax]).range([ih,0]).nice();
+    yLab.text(mode==="free"?"mean perceived freedom (1–10)":"mean life satisfaction (1–10)");
+    gGrid.selectAll("line").data(y.ticks(5)).join(
+      en=>en.append("line").attr("x1",0).attr("x2",iw).attr("stroke","var(--hair-soft)").attr("y1",d=>y(d)).attr("y2",d=>y(d)),
+      up=>up.transition().duration(animate?500:0).attr("y1",d=>y(d)).attr("y2",d=>y(d)),
+      ex=>ex.remove());
+    gAxis.selectAll("text").data(y.ticks(5)).join(
+      en=>en.append("text").attr("class","axlab").attr("x",-10).attr("text-anchor","end").attr("y",d=>y(d)+4).text(d=>d.toFixed(1)),
+      up=>up.transition().duration(animate?500:0).attr("y",d=>y(d)+4).tween("t",function(d){const s=d3.select(this);return ()=>s.text(d.toFixed(1));}),
+      ex=>ex.remove());
+    const sg=gLines.selectAll("g.s").data(series,d=>d.label).join(
+      en=>{const gg=en.append("g").attr("class","s");
+        gg.append("path").attr("class","ln").attr("fill","none").attr("stroke",d=>BLOC[d.label]).attr("stroke-width",3.4).attr("stroke-linecap","round").attr("stroke-linejoin","round");
+        return gg;}, up=>up, ex=>ex.remove());
+    sg.select("path.ln").datum(d=>d.points).transition().duration(animate?700:0).ease(d3.easeCubicInOut).attr("d",line);
+    const pts=sg.selectAll("circle").data(d=>d.points.map(p=>({...p,label:d.label})),d=>d.year);
+    pts.join(
+      en=>en.append("circle").attr("r",5).attr("fill","var(--panel)").attr("stroke",d=>BLOC[d.label]).attr("stroke-width",2.6)
+        .attr("cx",d=>x(d.year)).attr("cy",d=>y(d.freedom))
+        .attr("tabindex",0).attr("role","button").style("cursor","pointer"),
+      up=>up.transition().duration(animate?700:0).ease(d3.easeCubicInOut).attr("cx",d=>x(d.year)).attr("cy",d=>y(d.freedom)),
+      ex=>ex.remove())
+      .attr("aria-label",d=>`${d.label}, ${d.year}: ${mode==="free"?"perceived freedom":"life satisfaction"} ${f2(d.freedom)}, ${d.n_countries} countries`)
+      .on("mousemove",(ev,d)=>showTip(`<div class="hd">${d.label} · ${d.year}</div>`+
+        `<div class="row"><span class="muted">${mode==="free"?"perceived freedom":"life satisfaction"}</span><b>${f2(d.freedom)}</b></div>`+
+        `<div class="row"><span class="muted">countries</span><b>${d.n_countries}</b></div>`,ev))
+      .on("mouseleave",hideTip)
+      .on("focus",function(ev,d){const r=this.getBoundingClientRect();showTip(`<div class="hd">${d.label} · ${d.year}</div><div class="row"><span class="muted">${mode==="free"?"freedom":"life sat"}</span><b>${f2(d.freedom)}</b></div>`,{clientX:r.x+r.width/2,clientY:r.y});})
+      .on("blur",hideTip);
+    // end labels
+    gLines.selectAll("text.endl").data(series,d=>d.label).join(
+      en=>en.append("text").attr("class","endl smcap").attr("font-weight",700).attr("x",iw+10).attr("alignment-baseline","middle"),
+      up=>up, ex=>ex.remove())
+      .attr("fill",d=>BLOC[d.label]).text(d=>d.label==="Post-communist"?"Post-communist East":"Western")
+      .transition().duration(animate?700:0).attr("y",d=>y(d.points[d.points.length-1].freedom));
+    desc.text(mode==="free"?"Perceived freedom rises in both blocs across waves; the post-communist line dips in 1999 before recovering.":"Life satisfaction rises in both blocs by 2017; the post-communist line falls sharply in 1999 before a strong recovery.");
+    const h=DATA.headline;
+    document.getElementById("cap-trend").innerHTML = mode==="free"
+      ? `Western perceived freedom rose <b>${f2(h.west_freedom_first)}→${f2(h.west_freedom_last)}</b> (+${f2(h.west_freedom_chg)}); the post-communist East rose <b>${f2(h.postcom_freedom_first)}→${f2(h.postcom_freedom_last)}</b> (+${f2(h.postcom_freedom_chg)}) after a 1990s dip. Fixed country set per bloc (13 West, 21 East), ≥2 waves; countries averaged equally; EVS 1981–2017; <span style="font-family:var(--mono)">weight</span> within country.`
+      : `Life satisfaction over the same waves: the post-communist East fell through the 1990s transition before recovering strongly by 2017, while the West drifted upward. Fixed country set per bloc; countries averaged equally; EVS 1981–2017; evaluative; <span style="font-family:var(--mono)">weight</span> within country.`;
+  }
+  draw(true);
+  const bFree=document.getElementById("tg-free"), bLife=document.getElementById("tg-life");
+  bFree.addEventListener("click",()=>{if(mode==="free")return; mode="free"; bFree.setAttribute("aria-pressed","true"); bLife.setAttribute("aria-pressed","false"); draw(true);});
+  bLife.addEventListener("click",()=>{if(mode==="life")return; mode="life"; bLife.setAttribute("aria-pressed","true"); bFree.setAttribute("aria-pressed","false"); draw(true);});
+  buildFallback("#chart-trend","Mean perceived freedom by bloc and wave",["Bloc","Year","Perceived freedom"],
+    trendFree.flatMap(s=>s.points.map(p=>[s.label,p.year,f2(p.freedom)])));
+})();
+
+/* ===== shared: hidden data table for accessibility/fallback ===== */
+function buildFallback(sel,caption,cols,rows){
+  const t=d3.select(sel).append("table").attr("class","fallback").style("display","none");
+  t.append("caption").text(caption);
+  const hr=t.append("thead").append("tr"); cols.forEach(c=>hr.append("th").text(c));
+  const tb=t.append("tbody");
+  rows.forEach(r=>{const tr=tb.append("tr"); r.forEach(v=>tr.append("td").text(v));});
+}
+</script>
+</body>
+</html>

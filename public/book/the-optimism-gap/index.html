@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Across 2.46 million Gallup interviews, Black Americans expect their lives to rise far more than white Americans do at every income level — and the gap is widest among the poor, even though white Americans rate their current lives higher.">
+<title>The Optimism Gap</title>
+<style>
+  :root{
+    --bg:#fbf7f0;
+    --bg2:#f1ece2;
+    --card:#ffffff;
+    --ink:#241c18;
+    --ink2:#6a5f56;
+    --hair:#e2dacd;
+    --line:#cfc4b3;
+    --white:#c2701f;     /* warm amber = white Americans (low optimism) */
+    --whitedk:#9a560f;
+    --black:#1f6f8b;     /* cool teal = Black Americans (high optimism) */
+    --blackdk:#155267;
+    --hisp:#7a8b3a;
+    --asian:#8a5a9c;
+    --other:#a8526a;
+    --diag:#241c18;
+    --grid:#ece4d6;
+    --sans: ui-sans-serif, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Charter, Georgia, serif;
+    --mono: ui-monospace, "Cascadia Code", Consolas, "SF Mono", Menlo, monospace;
+  }
+  *{ box-sizing:border-box; }
+  html{ -webkit-text-size-adjust:100%; }
+  body{ margin:0; background:var(--bg); color:var(--ink); font:17.5px/1.66 var(--serif); }
+  a{ color:var(--blackdk); text-decoration:underline; text-decoration-color:rgba(31,111,139,.4); text-underline-offset:2.5px; }
+  a:hover{ text-decoration-color:var(--blackdk); }
+  a:focus-visible, button:focus-visible{ outline:3px solid var(--black); outline-offset:2px; border-radius:3px; }
+
+  .prose{ max-width:680px; margin:0 auto; padding:0 22px; }
+  .prose p{ margin:1.12em 0; }
+  .prose h2{ font:800 1.55rem/1.18 var(--sans); letter-spacing:-.018em; margin:2.1em 0 .15em; }
+  .prose h2 .num{ font:700 12px/1 var(--mono); color:var(--white); letter-spacing:.16em; display:block; margin-bottom:8px; }
+  .lede{ font-size:1.14rem; }
+  .lede b{ font-weight:700; }
+
+  /* hero */
+  .topstrip{ display:grid; grid-template-columns:repeat(5,1fr); height:8px; }
+  .hero-inner{ max-width:900px; margin:0 auto; padding:52px 22px 0; }
+  .kicker{ font:600 11.5px/1.5 var(--mono); letter-spacing:.2em; text-transform:uppercase; color:var(--black); margin:0; }
+  h1{ font-family:var(--sans); font-weight:850; font-size:clamp(2.5rem, 7.6vw, 4.6rem); line-height:.96;
+      letter-spacing:-.034em; margin:.3em 0 .32em; }
+  h1 .gap{ color:var(--white); font-style:italic; }
+  .dek{ font-size:clamp(1.06rem, 2.4vw, 1.32rem); line-height:1.5; color:var(--ink2); margin:0; max-width:670px; }
+  .meta{ font:12px/1.7 var(--mono); color:var(--ink2); border-top:1px solid var(--hair); border-bottom:1px solid var(--hair);
+    padding:9px 0; margin-top:30px; display:flex; gap:6px 24px; flex-wrap:wrap; }
+  .meta b{ color:var(--ink); font-weight:600; }
+
+  figure{ margin:36px 0; }
+  .figwrap{ max-width:1060px; margin:0 auto; padding:0 16px; }
+  figcaption{ max-width:680px; margin:14px auto 0; padding:0 22px; font:13.5px/1.6 var(--sans); color:var(--ink2); }
+  figcaption b{ color:var(--ink); }
+
+  .card{ background:var(--card); border:1px solid var(--hair); border-radius:12px; padding:18px 16px 12px;
+    box-shadow:0 1px 0 rgba(36,28,24,.03), 0 14px 34px -28px rgba(36,28,24,.4); }
+  svg{ display:block; width:100%; height:auto; overflow:visible; }
+  .chart-title{ font:700 15px/1.3 var(--sans); margin:2px 4px 2px; }
+  .chart-sub{ font:13px/1.4 var(--sans); color:var(--ink2); margin:0 4px 10px; }
+
+  .controls{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin:4px 4px 12px; }
+  .controls .lab{ font:600 11px/1 var(--mono); letter-spacing:.12em; text-transform:uppercase; color:var(--ink2); margin-right:2px; }
+  button.tg{ font:600 12.5px/1 var(--sans); color:var(--ink2); background:var(--bg2); border:1px solid var(--line);
+    border-radius:999px; padding:7px 13px; cursor:pointer; transition:all .14s; }
+  button.tg:hover{ color:var(--ink); border-color:var(--ink2); }
+  button.tg[aria-pressed="true"]{ background:var(--ink); color:#fff; border-color:var(--ink); }
+
+  .chips{ display:flex; gap:13px; flex-wrap:wrap; font:12.5px/1.4 var(--sans); color:var(--ink2); margin:0 4px 10px; }
+  .chips .sw{ display:inline-block; width:11px; height:11px; border-radius:50%; margin-right:5px; vertical-align:-1px; }
+
+  .tip{ position:absolute; pointer-events:none; opacity:0; transition:opacity .1s; z-index:9;
+    background:var(--ink); color:#fff; border-radius:8px; padding:9px 11px; font:13px/1.46 var(--sans);
+    max-width:230px; box-shadow:0 10px 30px -8px rgba(0,0,0,.5); }
+  .tip b{ font-size:13.5px; } .tip .tn{ color:#cdbfae; font-size:11.5px; }
+  .tip .row{ display:flex; justify-content:space-between; gap:14px; }
+  .tip .row span:last-child{ font-variant-numeric:tabular-nums; }
+
+  .callout{ border:1px solid var(--hair); border-left:4px solid var(--white); background:var(--card);
+    padding:17px 20px 18px; margin:34px auto; max-width:680px; }
+  .callout h3{ margin:0 0 8px; font:700 12px/1.3 var(--mono); letter-spacing:.13em; text-transform:uppercase; color:var(--whitedk); }
+  .callout p{ margin:.5em 0; font-size:15.5px; }
+
+  table.fallback{ border-collapse:collapse; width:100%; font:12.5px/1.4 var(--sans); margin-top:8px; }
+  table.fallback caption{ text-align:left; font:600 12px/1.4 var(--sans); color:var(--ink2); margin-bottom:6px; }
+  table.fallback th, table.fallback td{ border:1px solid var(--hair); padding:3px 7px; text-align:right; }
+  table.fallback th:first-child, table.fallback td:first-child{ text-align:left; }
+  .vh{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0; }
+
+  footer{ margin-top:78px; background:var(--bg2); border-top:1px solid var(--hair);
+    padding:42px 0 84px; font:13.5px/1.7 var(--sans); color:#534840; }
+  footer .prose{ max-width:760px; }
+  footer h2{ font:700 12px/1 var(--mono); letter-spacing:.2em; text-transform:uppercase; color:var(--ink); margin:0 0 18px; }
+  footer h3{ font:700 13px/1.3 var(--sans); margin:24px 0 7px; color:var(--ink); }
+  footer ul{ margin:6px 0 0; padding-left:19px; } footer li{ margin:7px 0; }
+  .endmark{ color:var(--white); font-weight:800; }
+
+  @media (prefers-reduced-motion: reduce){ *{ transition:none !important; animation:none !important; } }
+  @media (max-width:520px){ body{ font-size:16.5px; } .chart-title{ font-size:14px; } }
+</style>
+</head>
+<body>
+
+<div class="topstrip" aria-hidden="true">
+  <span style="background:var(--white)"></span><span style="background:var(--hisp)"></span>
+  <span style="background:var(--asian)"></span><span style="background:var(--other)"></span>
+  <span style="background:var(--black)"></span>
+</div>
+
+<header>
+  <div class="hero-inner">
+    <p class="kicker">Optimism &middot; Race &middot; Income</p>
+    <h1>The Optimism <span class="gap">Gap</span></h1>
+    <p class="dek">Americans disagree enormously about how much better their lives will get. The least hopeful group is not the one the headlines would guess &mdash; and the divide is widest among the poor.</p>
+    <div class="meta">
+      <span><b>Gallup US Daily</b> 2008&ndash;2017</span>
+      <span><b>Unweighted</b></span>
+      <span><b id="m-n">2.46M</b> interviews</span>
+      <span>Construct: <b>expectation</b> (future&minus;current ladder)</span>
+    </div>
+  </div>
+</header>
+
+<main>
+<article>
+
+<div class="prose">
+  <p class="lede">Ask Americans where their lives stand today on a 0-to-10 ladder, then where they think their lives will be in about five years. The difference &mdash; call it the <b>hope gap</b> &mdash; measures optimism. Pool 2.46&nbsp;million interviews and a striking pattern appears. <b>White Americans are the least optimistic group in the country</b>, even though they rate their <em>current</em> lives higher than most. Black Americans report the most optimism by a wide margin, and the contrast is sharpest exactly where you might expect resignation instead: among the poor.</p>
+
+  <p>Among low-income respondents, the average white American expects life to climb just <b id="p-wlow">0.47</b> rungs over five years; the average low-income Black American expects a climb of <b id="p-blow">1.52</b> rungs &mdash; more than three times as much. White optimism barely moves across the income ladder (<span id="p-wrange">0.47, 0.42, 0.44</span> from low to high income). Black optimism is high throughout and <em>highest among the poor</em>. This is the reversal that the economists Carol Graham and Sergio Pinto called &ldquo;unequal hopes&rdquo;: the people with the least are often the most hopeful, and the warning sign is not their despair but the flat, low expectations of the white working class.</p>
+</div>
+
+<figure>
+  <div class="figwrap">
+    <div class="card">
+      <p class="chart-title">The optimism plane</p>
+      <p class="chart-sub">Each group sits at its current ladder (horizontal) and its expected future ladder (vertical). The bold diagonal is &ldquo;no change.&rdquo; <b>Height above the line is optimism.</b></p>
+      <div class="controls" role="group" aria-label="Grouping">
+        <span class="lab">Group by</span>
+        <button class="tg" id="g-race" aria-pressed="true">Race</button>
+        <button class="tg" id="g-ri" aria-pressed="false">Race &times; income</button>
+        <button class="tg" id="g-age" aria-pressed="false">White vs Black, by age</button>
+      </div>
+      <div class="chips" id="chips"></div>
+      <div id="plane" style="position:relative;"></div>
+    </div>
+  </div>
+  <figcaption><b>Distance above the diagonal is the hope gap.</b> White points (amber) hug the line &mdash; futures barely rise above the present. Black points (teal) float far above it. Toggle to race&times;income to watch the white cluster stay pinned to the diagonal while every other group lifts off. Gallup US Daily, 2008&ndash;2017, unweighted. <span id="cap-n"></span></figcaption>
+</figure>
+
+<div class="prose">
+  <h2><span class="num">02 / Widens as income falls</span>Hope rises as income falls &mdash; for everyone but white Americans</h2>
+  <p>The reversal is not a quirk of one income band. Black Americans out-hope white Americans at every level of income, and the gap between them <em>grows as income drops</em>: from <b id="p-wbhigh">0.74</b> ladder rungs among high earners to <b id="p-wblow">1.05</b> rungs among the poorest. The underlying ladders explain why. A low-income white respondent rates life today at <b id="p-wlc">6.33</b> and expects <b id="p-wlf">6.80</b> in five years &mdash; almost flat. A low-income Black respondent starts at a similar <b id="p-blc">6.55</b> but expects <b id="p-blf">8.07</b> &mdash; a future that soars. Higher current ladders, lower expected gains: white Americans are, on this measure, the country&rsquo;s least hopeful group.</p>
+
+  <p>Hispanic (<span id="p-hrange">0.92&ndash;1.11</span>), Asian (<span id="p-arange">0.81&ndash;1.10</span>) and respondents grouped as Other (<span id="p-orange">0.69&ndash;1.10</span>) all out-hope white Americans at most income levels too. White expectations stand apart for how little they rise.</p>
+
+  <h2><span class="num">03 / Not an age artifact</span>Optimism fades with age &mdash; but the reversal survives</h2>
+  <p>Younger people everywhere expect more from the future, so a natural worry is that the racial pattern is really an age-composition story. It is not. Optimism does fall steeply with age for both groups &mdash; the average hope gap turns <em>negative</em> in the oldest bands, where people expect life to slip rather than rise &mdash; yet within <em>every</em> age band the Black hope gap exceeds the white one. The smallest within-band difference is still <b id="p-agemin">0.50</b> ladder rungs, among those aged 76&ndash;85. The reversal holds from the youngest adults to the oldest.</p>
+</div>
+
+<figure>
+  <div class="figwrap">
+    <div class="card">
+      <p class="chart-title">Within every age band, Black optimism sits above white</p>
+      <p class="chart-sub">Mean hope gap (future&minus;current ladder) by age. Both lines fall with age; the teal line stays above the amber one throughout.</p>
+      <div id="agechart" style="position:relative;"></div>
+    </div>
+  </div>
+  <figcaption>Optimism declines with age and turns negative late in life &mdash; older respondents expect their lives to slip. But the Black&ndash;white ordering never flips. Income levels pooled. Unweighted.</figcaption>
+</figure>
+
+<div class="prose">
+  <h2><span class="num">04 / The despair connection</span>Where white futures look dim, deaths of despair run high</h2>
+  <p>Low white optimism is not just a curiosity. Graham and Pinto tied it to one of the bleakest features of recent American life: the geography of &ldquo;deaths of despair&rdquo; &mdash; suicide, alcohol and drug-related mortality &mdash; documented by Anne Case and Angus Deaton. Across the <b id="p-wcty">1,118</b> counties with at least 300 white respondents and county mortality data, the place-level measure that tracks despair mortality most closely is not how white residents rate their lives today, but how they rate their <em>futures</em>.</p>
+
+  <p>County white future-ladder correlates with deaths-of-despair mortality at a Spearman <b id="p-rfut">&minus;0.45</b> &mdash; stronger than the current ladder&rsquo;s <b id="p-rcur">&minus;0.39</b>. Sorting counties into five equal groups by despair mortality, the average white future ladder falls steadily from <b id="p-dq1">7.60</b> in the lowest-mortality fifth to <b id="p-dq5">7.30</b> in the highest. This is an <em>ecological</em> pattern &mdash; about places, not individuals &mdash; but it echoes the literature: dim expectations and despair mortality share the same map.</p>
+</div>
+
+<figure>
+  <div class="figwrap">
+    <div class="card">
+      <p class="chart-title">Dimmer white futures, deadlier places</p>
+      <p class="chart-sub">Counties grouped into fifths by deaths-of-despair mortality. White current and future ladders both fall &mdash; the future ladder falls further.</p>
+      <div id="despairchart" style="position:relative;"></div>
+    </div>
+  </div>
+  <figcaption>Ecological, &ldquo;places where&rdquo; &mdash; never about individual deaths. Despair mortality is a static county join (~2018, JEC Social Capital Project) covering <span id="cap-despair">1,341</span> larger counties. Spearman correlations across <span id="cap-wcty">1,118</span> white-county aggregates. Unweighted.</figcaption>
+</figure>
+
+<div class="callout">
+  <h3>What this does &mdash; and doesn&rsquo;t &mdash; show</h3>
+  <p>These figures are <b>unweighted</b> and <b>descriptive</b>: associations, not causes. The hope gap is an <b>expectation</b>, not a realized outcome &mdash; high optimism does not mean a better life will follow. Graham and Pinto&rsquo;s point runs the other way: it is the <em>low</em> optimism of the white working class that has proven a warning sign. The race categories are coarse self-report, and group differences in how people use the Cantril ladder &mdash; response styles &mdash; are a candidate explanation that deserves to be named, not waved away. The despair cut is ecological: it describes places, never people. What is unusual here is the sheer size of the gaps &mdash; about a full ladder rung &mdash; which dwarfs most well-being differences. They remain descriptive all the same.</p>
+</div>
+
+<div class="prose">
+  <p>The familiar story expects the disadvantaged to be the most resigned. The data flip it. Black Americans, Hispanic Americans and others living on low incomes look toward markedly brighter futures; white Americans &mdash; rating their present lives higher &mdash; expect the least improvement of all. Whatever its cause, the optimism gap is one of the largest, and most counter-intuitive, divides in American well-being.</p>
+</div>
+
+</article>
+</main>
+
+<footer>
+  <div class="prose">
+    <h2>Notes &amp; data</h2>
+    <p><b>Source.</b> Gallup US Daily, 2008&ndash;2017 (a research extract). All figures are <b>unweighted</b> &mdash; this extract carries no survey weight, so estimates are not nationally representative; they describe the people interviewed. <b id="f-n">2,456,863</b> interviews carry both a current and a future ladder rating.</p>
+    <h3>Construct</h3>
+    <ul>
+      <li><b>Current ladder</b> (<span style="font-family:var(--mono)">ladder</span>): present life on Cantril&rsquo;s 0-to-10 self-anchoring ladder &mdash; evaluative well-being.</li>
+      <li><b>Future ladder</b> (<span style="font-family:var(--mono)">ladder_future</span>): anticipated life in about five years on the same scale &mdash; an expectation.</li>
+      <li><b>Hope gap</b>: future minus current ladder &mdash; a derived measure of optimism. Because both items are asked every year, the difference is safe to pool across 2008&ndash;2017.</li>
+    </ul>
+    <h3>Despair mortality</h3>
+    <p>County deaths-of-despair mortality (<span style="font-family:var(--mono)">cty_despair_mortality</span>: suicide, alcohol and drug deaths per 100,000) comes from the JEC Social Capital Project (~2018 vintage). It is a <b>static</b> county join &mdash; one value per county, attached to every interview year &mdash; and covers <b>1,341</b> larger counties. The county analysis is <b>ecological</b>: it relates place averages, not individuals, and says nothing about who died.</p>
+    <h3>Method</h3>
+    <p>Group means are simple unweighted averages over <span style="font-family:var(--mono)">race</span> (White / Black / Hispanic / Asian / Other), <span style="font-family:var(--mono)">income3</span> and <span style="font-family:var(--mono)">age_group</span>. County correlations are Spearman rank correlations across counties with at least 300 white respondents and despair-mortality data, with 95% bootstrap intervals (1,000 county resamples). Tabulation in DuckDB; the embedded <span style="font-family:var(--mono)">DATA</span> is byte-identical to the analysis output.</p>
+    <h3>Literature</h3>
+    <ul>
+      <li>Graham &amp; Pinto (2019). <a href="https://doi.org/10.1007/s00148-018-0687-y">Unequal hopes and lives in the USA: optimism, race, place and premature mortality</a>. <i>Journal of Population Economics.</i></li>
+      <li>O&rsquo;Connor &amp; Graham (2019). <a href="https://doi.org/10.1016/j.jebo.2019.10.018">Longer, more optimistic, lives: Historic optimism and life expectancy in the United States</a>. <i>Journal of Economic Behavior &amp; Organization.</i></li>
+      <li>Case &amp; Deaton (2015). <a href="https://doi.org/10.1073/pnas.1518393112">Rising morbidity and mortality in midlife among white non-Hispanic Americans in the 21st century</a>. <i>PNAS.</i></li>
+      <li>Cantril (1965). <a href="https://archive.org/details/patternofhumanco0000cant">The Pattern of Human Concerns</a> (the self-anchoring ladder).</li>
+      <li>Diener (1984). <a href="https://doi.org/10.1037/0033-2909.95.3.542">Subjective well-being</a>. <i>Psychological Bulletin.</i></li>
+    </ul>
+    <p style="margin-top:26px;">Gallup US Daily 2008&ndash;2017, unweighted. <span class="endmark">&#9632;</span></p>
+  </div>
+</footer>
+
+<script type="module">
+import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+
+const DATA = {"meta":{"title":"The Optimism Gap","slug":"the-optimism-gap","dataset":"Gallup US Daily (2008-2017 extract)","years":"2008-2017","weight":"unweighted (this Gallup US Daily extract carries no survey weight)","construct":{"current":"ladder \u2014 current life, 0-10 Cantril ladder (evaluative)","future":"ladder_future \u2014 anticipated life in ~5 years, same 0-10 ladder (anticipated/expectation)","hope_gap":"hope gap = ladder_future - ladder (derived; optimism = how much better life is expected to get)"},"pooling":"hope gap is a continuous difference of two ladder items asked every year; pooled 2008-2017 (no regime break)","despair":"cty_despair_mortality: suicide+alcohol+drug deaths per 100,000, JEC Social Capital Project (~2018); static county join over 1,341 larger counties; ecological 'places where' cut","min_n_cty":300,"races":["White","Black","Hispanic","Asian","Other"],"incomes":["Low Income","Mid Income","High Income"],"mortality_per":100000,"boot_reps":1000,"plane":{"lo":6.15,"hi":8.63}},"national":{"n_all":3530270,"n_pair":2456863,"cur":7.019,"fut":7.541,"gap":0.504},"race_income":[{"race":"Asian","income":"Low Income","income_short":"Low","n":9195,"cur":6.607,"fut":7.711,"gap":1.105},{"race":"Asian","income":"Mid Income","income_short":"Mid","n":14959,"cur":6.999,"fut":7.975,"gap":0.976},{"race":"Asian","income":"High Income","income_short":"High","n":15643,"cur":7.393,"fut":8.198,"gap":0.805},{"race":"Black","income":"Low Income","income_short":"Low","n":74895,"cur":6.55,"fut":8.072,"gap":1.522},{"race":"Black","income":"Mid Income","income_short":"Mid","n":59241,"cur":7.06,"fut":8.428,"gap":1.368},{"race":"Black","income":"High Income","income_short":"High","n":27156,"cur":7.449,"fut":8.632,"gap":1.183},{"race":"Hispanic","income":"Low Income","income_short":"Low","n":76283,"cur":6.685,"fut":7.609,"gap":0.924},{"race":"Hispanic","income":"Mid Income","income_short":"Mid","n":49468,"cur":7.142,"fut":8.248,"gap":1.106},{"race":"Hispanic","income":"High Income","income_short":"High","n":24592,"cur":7.553,"fut":8.471,"gap":0.918},{"race":"Other","income":"Low Income","income_short":"Low","n":19388,"cur":6.152,"fut":7.25,"gap":1.098},{"race":"Other","income":"Mid Income","income_short":"Mid","n":16910,"cur":6.943,"fut":7.834,"gap":0.891},{"race":"Other","income":"High Income","income_short":"High","n":9091,"cur":7.408,"fut":8.097,"gap":0.689},{"race":"White","income":"Low Income","income_short":"Low","n":473703,"cur":6.331,"fut":6.803,"gap":0.473},{"race":"White","income":"Mid Income","income_short":"Mid","n":676301,"cur":7.121,"fut":7.541,"gap":0.42},{"race":"White","income":"High Income","income_short":"High","n":428342,"cur":7.598,"fut":8.042,"gap":0.444}],"race_marginal":{"White":{"n":1912394,"cur":7.061,"fut":7.424,"gap":0.363},"Black":{"n":190566,"cur":6.934,"fut":8.291,"gap":1.356},"Hispanic":{"n":176500,"cur":7.003,"fut":7.943,"gap":0.94},"Asian":{"n":46864,"cur":7.075,"fut":7.983,"gap":0.908},"Other":{"n":56401,"cur":6.76,"fut":7.616,"gap":0.855}},"headline":{"white_gap_low":0.473,"white_gap_mid":0.42,"white_gap_high":0.444,"black_gap_low":1.522,"black_gap_mid":1.368,"black_gap_high":1.183,"wb_gap_low":1.049,"wb_gap_high":0.739,"wb_ratio_low":3.22,"white_low_cur":6.331,"white_low_fut":6.803,"black_low_cur":6.55,"black_low_fut":8.072,"white_gap_range":[0.473,0.42,0.444],"black_gap_range":[1.522,1.368,1.183]},"age_rows":[{"age":"[18,24]","age_label":"18-24","white_gap":1.484,"black_gap":2.062,"white_n":92563,"black_n":21741,"diff":0.578},{"age":"(24,35]","age_label":"25-35","white_gap":1.4,"black_gap":2.127,"white_n":187112,"black_n":31798,"diff":0.727},{"age":"(35,45]","age_label":"36-45","white_gap":1.095,"black_gap":1.823,"white_n":233267,"black_n":30880,"diff":0.728},{"age":"(45,55]","age_label":"46-55","white_gap":0.839,"black_gap":1.483,"white_n":356573,"black_n":37863,"diff":0.644},{"age":"(55,65]","age_label":"56-65","white_gap":0.23,"black_gap":0.893,"white_n":441009,"black_n":35938,"diff":0.663},{"age":"(65,75]","age_label":"66-75","white_gap":-0.423,"black_gap":0.154,"white_n":352808,"black_n":20726,"diff":0.577},{"age":"(75,85]","age_label":"76-85","white_gap":-0.848,"black_gap":-0.353,"white_n":189652,"black_n":7980,"diff":0.495},{"age":"(85,94]","age_label":"86-94","white_gap":-1.301,"black_gap":-0.671,"white_n":39305,"black_n":1319,"diff":0.63}],"age_check":{"reversal_holds_all_bands":true,"min_diff":0.495},"despair":{"correlations":[{"key":"fut","label":"White future ladder (~5 yrs)","construct":"expectation","rho":-0.452,"lo":-0.499,"hi":-0.402,"n_counties":1118},{"key":"cur","label":"White current ladder","construct":"evaluative","rho":-0.388,"lo":-0.439,"hi":-0.332,"n_counties":1118},{"key":"gap","label":"White hope gap (future - current)","construct":"derived","rho":-0.203,"lo":-0.262,"hi":-0.144,"n_counties":1118}],"quintiles":[{"q":1,"n_counties":224,"mort_mid":35.9,"cur":7.164,"fut":7.602,"gap":0.439},{"q":2,"n_counties":223,"mort_mid":45.0,"cur":7.119,"fut":7.499,"gap":0.38},{"q":3,"n_counties":222,"mort_mid":52.5,"cur":7.047,"fut":7.431,"gap":0.385},{"q":4,"n_counties":225,"mort_mid":61.8,"cur":7.001,"fut":7.377,"gap":0.375},{"q":5,"n_counties":224,"mort_mid":78.1,"cur":6.986,"fut":7.295,"gap":0.309}],"n_white_counties":1118,"n_despair_counties":1341,"coverage":0.892}};
+
+/* ---------- palette ---------- */
+const css = getComputedStyle(document.documentElement);
+const C = {
+  White: css.getPropertyValue('--white').trim(),
+  Black: css.getPropertyValue('--black').trim(),
+  Hispanic: css.getPropertyValue('--hisp').trim(),
+  Asian: css.getPropertyValue('--asian').trim(),
+  Other: css.getPropertyValue('--other').trim(),
+};
+const INK = css.getPropertyValue('--ink').trim();
+const INK2 = css.getPropertyValue('--ink2').trim();
+const HAIR = css.getPropertyValue('--hair').trim();
+const GRID = css.getPropertyValue('--grid').trim();
+const fmt2 = d3.format('.2f');
+const fmtN = d3.format(',');
+
+/* ---------- meta fill ---------- */
+document.getElementById('cap-n').textContent = 'N = ' + fmtN(DATA.national.n_pair) + ' interviews.';
+
+/* ====================================================================
+   THE OPTIMISM PLANE
+   x = current ladder, y = future ladder, 45-degree no-change diagonal.
+   ==================================================================== */
+const tip = (() => {
+  const el = document.createElement('div'); el.className = 'tip'; document.body.appendChild(el);
+  return {
+    show(html, x, y){ el.innerHTML = html; el.style.opacity = 1;
+      const r = el.getBoundingClientRect();
+      el.style.left = Math.min(window.scrollX + x + 14, window.scrollX + window.innerWidth - r.width - 8) + 'px';
+      el.style.top = (window.scrollY + y - r.height - 12) + 'px'; },
+    hide(){ el.style.opacity = 0; }
+  };
+})();
+
+const planeHost = document.getElementById('plane');
+const chipsHost = document.getElementById('chips');
+let mode = 'race';
+
+const AGE_ROWS = DATA.age_rows;
+
+function planeData(m){
+  if(m === 'race'){
+    return DATA.race_marginal && Object.keys(DATA.race_marginal).map(r => ({
+      race: r, key: r, label: r, cur: DATA.race_marginal[r].cur, fut: DATA.race_marginal[r].fut,
+      gap: +(DATA.race_marginal[r].fut - DATA.race_marginal[r].cur).toFixed(3),
+      n: DATA.race_marginal[r].n, r: 13, income: null
+    }));
+  }
+  if(m === 'ri'){
+    const sz = {Low: 7, Mid: 11, High: 16};
+    return DATA.race_income.map(d => ({
+      race: d.race, key: d.race + '|' + d.income_short, label: d.race + ' · ' + d.income_short,
+      cur: d.cur, fut: d.fut, gap: d.gap, n: d.n, r: sz[d.income_short], income: d.income
+    }));
+  }
+  // age: white vs black points, size by age recency (younger bigger)
+  const out = [];
+  AGE_ROWS.forEach((a, i) => {
+    const rad = 16 - i * 1.4;
+    out.push({race:'White', key:'W'+a.age_label, label:'White · '+a.age_label, cur:0, fut:0,
+      gapOnly:true, gap:a.white_gap, n:a.white_n, r:rad, age:a.age_label});
+    out.push({race:'Black', key:'B'+a.age_label, label:'Black · '+a.age_label, cur:0, fut:0,
+      gapOnly:true, gap:a.black_gap, n:a.black_n, r:rad, age:a.age_label});
+  });
+  return out;
+}
+
+function drawPlane(){
+  planeHost.innerHTML = '';
+  const W = Math.min(planeHost.clientWidth || 900, 1000), H = Math.round(W * 0.72);
+  const m = {t:14, r:18, b:54, l:56};
+  const iw = W - m.l - m.r, ih = H - m.t - m.b;
+
+  const svg = d3.select(planeHost).append('svg')
+    .attr('viewBox', `0 0 ${W} ${H}`)
+    .attr('role','img')
+    .attr('aria-label','The optimism plane: current ladder on the horizontal axis, expected future ladder on the vertical axis, with a bold 45-degree no-change diagonal. Distance above the diagonal is optimism. White groups sit near the line; Black groups sit far above it.');
+  const g = svg.append('g').attr('transform', `translate(${m.l},${m.t})`);
+
+  if(mode === 'age'){ drawAgePlane(g, iw, ih); return; }
+
+  const data = planeData(mode);
+  const lo = DATA.meta.plane.lo - 0.25, hi = DATA.meta.plane.hi + 0.25;
+  const x = d3.scaleLinear().domain([lo, hi]).range([0, iw]);
+  const y = d3.scaleLinear().domain([lo, hi]).range([ih, 0]);
+
+  // grid
+  const ticks = d3.range(Math.ceil(lo), Math.floor(hi) + 1);
+  g.append('g').selectAll('line.gx').data(ticks).join('line')
+    .attr('x1', d=>x(d)).attr('x2', d=>x(d)).attr('y1',0).attr('y2',ih)
+    .attr('stroke', GRID).attr('stroke-width',1);
+  g.append('g').selectAll('line.gy').data(ticks).join('line')
+    .attr('y1', d=>y(d)).attr('y2', d=>y(d)).attr('x1',0).attr('x2',iw)
+    .attr('stroke', GRID).attr('stroke-width',1);
+
+  // 45-degree no-change diagonal (bold, unmissable)
+  g.append('line').attr('x1', x(lo)).attr('y1', y(lo)).attr('x2', x(hi)).attr('y2', y(hi))
+    .attr('stroke', INK).attr('stroke-width', 2.4).attr('opacity', .9);
+  g.append('text').attr('x', x(hi) - 4).attr('y', y(hi) + 18)
+    .attr('text-anchor','end').attr('font', '600 12px var(--sans)').attr('fill', INK2)
+    .attr('font-style','italic').text('no change');
+
+  // optimism band shading above diagonal
+  g.append('path')
+    .attr('d', `M${x(lo)},${y(lo)} L${x(hi)},${y(hi)} L${x(lo)},${y(hi)} Z`)
+    .attr('fill', INK).attr('opacity', .035);
+  g.append('text').attr('x', x(lo)+10).attr('y', y(hi)+16).attr('font','italic 600 12px var(--sans)')
+    .attr('fill', INK2).text('↑ more optimistic');
+
+  // axes
+  g.append('g').attr('transform', `translate(0,${ih})`).call(d3.axisBottom(x).tickValues(ticks).tickSize(0).tickPadding(8))
+    .call(s => s.select('.domain').attr('stroke', HAIR))
+    .call(s => s.selectAll('text').attr('font','12px var(--sans)').attr('fill', INK2));
+  g.append('g').call(d3.axisLeft(y).tickValues(ticks).tickSize(0).tickPadding(8))
+    .call(s => s.select('.domain').attr('stroke', HAIR))
+    .call(s => s.selectAll('text').attr('font','12px var(--sans)').attr('fill', INK2));
+  g.append('text').attr('x', iw/2).attr('y', ih + 44).attr('text-anchor','middle')
+    .attr('font','600 12.5px var(--sans)').attr('fill', INK).text('Current ladder (life today, 0–10)');
+  g.append('text').attr('transform','rotate(-90)').attr('x', -ih/2).attr('y', -40).attr('text-anchor','middle')
+    .attr('font','600 12.5px var(--sans)').attr('fill', INK).text('Expected future ladder (~5 yrs)');
+
+  // connector from diagonal foot up to each point: shows the optimism rise
+  g.append('g').selectAll('line.conn').data(data).join('line')
+    .attr('x1', d=>x(d.cur)).attr('y1', d=>y(d.cur))
+    .attr('x2', d=>x(d.cur)).attr('y2', d=>y(d.fut))
+    .attr('stroke', d=>C[d.race]).attr('stroke-width', 1.6).attr('opacity', .45)
+    .attr('stroke-dasharray', '2,3');
+
+  // points
+  const pts = g.append('g').selectAll('g.pt').data(data, d=>d.key).join('g').attr('class','pt')
+    .attr('transform', d=>`translate(${x(d.cur)},${y(d.fut)})`)
+    .attr('tabindex',0).attr('role','listitem')
+    .attr('aria-label', d=> `${d.label}: current ${fmt2(d.cur)}, future ${fmt2(d.fut)}, optimism ${fmt2(d.gap)}`);
+  pts.append('circle').attr('r', d=>d.r)
+    .attr('fill', d=>C[d.race]).attr('opacity', .82)
+    .attr('stroke','#fff').attr('stroke-width', 1.6);
+
+  // labels for race mode (clean) and race-income (only Low/High to avoid clutter)
+  if(mode === 'race'){
+    pts.append('text').attr('x', 0).attr('y', d=>-d.r-6).attr('text-anchor','middle')
+      .attr('font','700 12.5px var(--sans)').attr('fill', d=>C[d.race]).text(d=>d.race);
+  } else {
+    pts.filter(d=>d.income !== 'Mid Income').append('text')
+      .attr('x', d=>d.r+5).attr('y', 4).attr('text-anchor','start')
+      .attr('font','600 10.5px var(--sans)').attr('fill', INK2)
+      .text(d=>d.race === 'White' || d.race === 'Black' ? d.race + ' ' + (d.income === 'Low Income'?'low':'high') : '');
+  }
+
+  const onEnter = (ev,d) => {
+    tip.show(`<b>${d.label}</b><div class="row"><span>Current</span><span>${fmt2(d.cur)}</span></div>`
+      + `<div class="row"><span>Future</span><span>${fmt2(d.fut)}</span></div>`
+      + `<div class="row"><span>Hope gap</span><span>${fmt2(d.gap)}</span></div>`
+      + `<div class="tn">N = ${fmtN(d.n)}</div>`, ev.clientX, ev.clientY);
+  };
+  pts.on('mouseenter', onEnter).on('mousemove', onEnter).on('mouseleave', tip.hide)
+     .on('focus', function(ev,d){ const b=this.getBoundingClientRect(); onEnter({clientX:b.x+window.scrollX,clientY:b.y+window.scrollY}, d); })
+     .on('blur', tip.hide);
+}
+
+function drawAgePlane(g, iw, ih){
+  // age mode reuses the plane host but plots hope gap (y) vs age (x) for white & black
+  const data = AGE_ROWS;
+  const x = d3.scalePoint().domain(data.map(d=>d.age_label)).range([0, iw]).padding(0.5);
+  const ylo = d3.min(data, d=>Math.min(d.white_gap, d.black_gap)) - 0.3;
+  const yhi = d3.max(data, d=>Math.max(d.white_gap, d.black_gap)) + 0.3;
+  const y = d3.scaleLinear().domain([ylo, yhi]).range([ih, 0]);
+
+  // zero line
+  g.append('line').attr('x1',0).attr('x2',iw).attr('y1',y(0)).attr('y2',y(0))
+    .attr('stroke', INK).attr('stroke-width',1.5).attr('stroke-dasharray','4,3').attr('opacity',.5);
+  g.append('text').attr('x', iw).attr('y', y(0)-6).attr('text-anchor','end')
+    .attr('font','italic 11px var(--sans)').attr('fill',INK2).text('no change');
+
+  g.append('g').attr('transform',`translate(0,${ih})`).call(d3.axisBottom(x).tickSize(0).tickPadding(8))
+    .call(s=>s.select('.domain').attr('stroke',HAIR))
+    .call(s=>s.selectAll('text').attr('font','11px var(--sans)').attr('fill',INK2));
+  g.append('g').call(d3.axisLeft(y).ticks(6).tickSize(0).tickPadding(8))
+    .call(s=>s.select('.domain').attr('stroke',HAIR))
+    .call(s=>s.selectAll('text').attr('font','12px var(--sans)').attr('fill',INK2));
+  g.append('text').attr('transform','rotate(-90)').attr('x',-ih/2).attr('y',-40).attr('text-anchor','middle')
+    .attr('font','600 12.5px var(--sans)').attr('fill',INK).text('Hope gap (future − current)');
+  g.append('text').attr('x',iw/2).attr('y',ih+42).attr('text-anchor','middle')
+    .attr('font','600 12.5px var(--sans)').attr('fill',INK).text('Age band');
+
+  const line = key => d3.line().x(d=>x(d.age_label)).y(d=>y(d[key]));
+  [['white_gap','White'],['black_gap','Black']].forEach(([k,race])=>{
+    g.append('path').datum(data).attr('fill','none').attr('stroke',C[race]).attr('stroke-width',3)
+      .attr('d', line(k));
+    g.selectAll('c'+race).data(data).join('circle')
+      .attr('cx',d=>x(d.age_label)).attr('cy',d=>y(d[k])).attr('r',5)
+      .attr('fill',C[race]).attr('stroke','#fff').attr('stroke-width',1.6)
+      .attr('tabindex',0).attr('role','listitem')
+      .attr('aria-label',d=>`${race}, age ${d.age_label}: hope gap ${fmt2(d[k])}`)
+      .on('mouseenter mousemove', (ev,d)=>tip.show(
+        `<b>${race} · ${d.age_label}</b><div class="row"><span>Hope gap</span><span>${fmt2(d[k])}</span></div>`
+        +`<div class="tn">N = ${fmtN(race==='White'?d.white_n:d.black_n)}</div>`, ev.clientX, ev.clientY))
+      .on('mouseleave', tip.hide);
+  });
+  // end labels
+  g.append('text').attr('x',x(data[0].age_label)).attr('y',y(data[0].white_gap)-12)
+    .attr('font','700 12px var(--sans)').attr('fill',C.White).text('White');
+  g.append('text').attr('x',x(data[0].age_label)).attr('y',y(data[0].black_gap)-12)
+    .attr('font','700 12px var(--sans)').attr('fill',C.Black).text('Black');
+}
+
+function drawChips(){
+  const races = mode === 'age' ? ['White','Black'] : DATA.meta.races;
+  let extra = '';
+  if(mode === 'ri') extra = '<span style="margin-left:6px;color:var(--ink2)">circle size = income (small low → large high)</span>';
+  if(mode === 'age') extra = '<span style="margin-left:6px;color:var(--ink2)">left = youngest, right = oldest</span>';
+  chipsHost.innerHTML = races.map(r=>`<span><span class="sw" style="background:${C[r]}"></span>${r}</span>`).join('') + extra;
+}
+
+function setMode(m){
+  mode = m;
+  for(const [id,mm] of [['g-race','race'],['g-ri','ri'],['g-age','age']]){
+    document.getElementById(id).setAttribute('aria-pressed', String(mm===m));
+  }
+  drawChips(); drawPlane();
+}
+document.getElementById('g-race').onclick = ()=>setMode('race');
+document.getElementById('g-ri').onclick = ()=>setMode('ri');
+document.getElementById('g-age').onclick = ()=>setMode('age');
+
+/* ====================================================================
+   AGE CHART (standalone, always race mode lines)
+   ==================================================================== */
+function drawAgeChart(){
+  const host = document.getElementById('agechart'); host.innerHTML='';
+  const W = Math.min(host.clientWidth||900, 1000), H = Math.round(W*0.52);
+  const m={t:16,r:64,b:46,l:54}, iw=W-m.l-m.r, ih=H-m.t-m.b;
+  const svg=d3.select(host).append('svg').attr('viewBox',`0 0 ${W} ${H}`).attr('role','img')
+    .attr('aria-label','Mean hope gap by age band for White and Black respondents. Both fall with age; the Black line stays above the White line in every band.');
+  const g=svg.append('g').attr('transform',`translate(${m.l},${m.t})`);
+  const data=AGE_ROWS;
+  const x=d3.scalePoint().domain(data.map(d=>d.age_label)).range([0,iw]).padding(0.5);
+  const ylo=d3.min(data,d=>d.white_gap)-0.3, yhi=d3.max(data,d=>d.black_gap)+0.3;
+  const y=d3.scaleLinear().domain([ylo,yhi]).range([ih,0]);
+
+  g.append('line').attr('x1',0).attr('x2',iw).attr('y1',y(0)).attr('y2',y(0))
+    .attr('stroke',INK).attr('stroke-width',1.4).attr('stroke-dasharray','4,3').attr('opacity',.45);
+  g.append('text').attr('x',2).attr('y',y(0)-5).attr('font','italic 11px var(--sans)').attr('fill',INK2).text('no change');
+
+  g.append('g').attr('transform',`translate(0,${ih})`).call(d3.axisBottom(x).tickSize(0).tickPadding(7))
+    .call(s=>s.select('.domain').attr('stroke',HAIR)).call(s=>s.selectAll('text').attr('font','11px var(--sans)').attr('fill',INK2));
+  g.append('g').call(d3.axisLeft(y).ticks(6).tickSize(0).tickPadding(8))
+    .call(s=>s.select('.domain').attr('stroke',HAIR)).call(s=>s.selectAll('text').attr('font','12px var(--sans)').attr('fill',INK2));
+  g.append('text').attr('transform','rotate(-90)').attr('x',-ih/2).attr('y',-39).attr('text-anchor','middle')
+    .attr('font','600 12px var(--sans)').attr('fill',INK).text('Hope gap');
+
+  [['white_gap','White','white_n'],['black_gap','Black','black_n']].forEach(([k,race,nk])=>{
+    g.append('path').datum(data).attr('fill','none').attr('stroke',C[race]).attr('stroke-width',3.2)
+      .attr('d', d3.line().x(d=>x(d.age_label)).y(d=>y(d[k])));
+    g.selectAll('q'+race).data(data).join('circle')
+      .attr('cx',d=>x(d.age_label)).attr('cy',d=>y(d[k])).attr('r',5).attr('fill',C[race])
+      .attr('stroke','#fff').attr('stroke-width',1.5)
+      .attr('tabindex',0).attr('role','listitem').attr('aria-label',d=>`${race}, ${d.age_label}: ${fmt2(d[k])}`)
+      .on('mouseenter mousemove',(ev,d)=>tip.show(`<b>${race} · ${d.age_label}</b>`
+        +`<div class="row"><span>Hope gap</span><span>${fmt2(d[k])}</span></div>`
+        +`<div class="tn">N = ${fmtN(d[nk])}</div>`,ev.clientX,ev.clientY))
+      .on('mouseleave',tip.hide);
+    const last=data[data.length-1];
+    g.append('text').attr('x',x(last.age_label)+9).attr('y',y(last[k])+4)
+      .attr('font','700 12px var(--sans)').attr('fill',C[race]).text(race);
+  });
+}
+
+/* ====================================================================
+   DESPAIR CHART: white cur & fut ladder by despair-mortality quintile
+   ==================================================================== */
+function drawDespair(){
+  const host=document.getElementById('despairchart'); host.innerHTML='';
+  const W=Math.min(host.clientWidth||900,1000), H=Math.round(W*0.5);
+  const m={t:16,r:70,b:52,l:54}, iw=W-m.l-m.r, ih=H-m.t-m.b;
+  const svg=d3.select(host).append('svg').attr('viewBox',`0 0 ${W} ${H}`).attr('role','img')
+    .attr('aria-label','White current and future ladder across five county groups ordered by deaths-of-despair mortality. Both fall as despair mortality rises; the future ladder falls more.');
+  const g=svg.append('g').attr('transform',`translate(${m.l},${m.t})`);
+  const q=DATA.despair.quintiles;
+  const x=d3.scalePoint().domain(q.map(d=>d.q)).range([0,iw]).padding(0.5);
+  const ylo=d3.min(q,d=>d.cur)-0.2, yhi=d3.max(q,d=>d.fut)+0.2;
+  const y=d3.scaleLinear().domain([ylo,yhi]).range([ih,0]);
+
+  g.append('g').selectAll('line').data(y.ticks(5)).join('line')
+    .attr('x1',0).attr('x2',iw).attr('y1',d=>y(d)).attr('y2',d=>y(d)).attr('stroke',GRID);
+
+  g.append('g').attr('transform',`translate(0,${ih})`)
+    .call(d3.axisBottom(x).tickFormat(d=>'Q'+d).tickSize(0).tickPadding(8))
+    .call(s=>s.select('.domain').attr('stroke',HAIR)).call(s=>s.selectAll('text').attr('font','12px var(--sans)').attr('fill',INK2));
+  g.append('g').call(d3.axisLeft(y).ticks(5).tickSize(0).tickPadding(8))
+    .call(s=>s.select('.domain').attr('stroke',HAIR)).call(s=>s.selectAll('text').attr('font','12px var(--sans)').attr('fill',INK2));
+  g.append('text').attr('x',iw/2).attr('y',ih+42).attr('text-anchor','middle')
+    .attr('font','600 12px var(--sans)').attr('fill',INK).text('County deaths-of-despair mortality → (Q1 lowest, Q5 highest)');
+  g.append('text').attr('transform','rotate(-90)').attr('x',-ih/2).attr('y',-39).attr('text-anchor','middle')
+    .attr('font','600 12px var(--sans)').attr('fill',INK).text('White ladder (0–10)');
+
+  const series=[['fut','Future ladder',C.White,1],['cur','Current ladder','#b9a88e',0]];
+  series.forEach(([k,lab,col])=>{
+    g.append('path').datum(q).attr('fill','none').attr('stroke',col).attr('stroke-width',3)
+      .attr('stroke-dasharray', k==='cur'?'5,4':null)
+      .attr('d',d3.line().x(d=>x(d.q)).y(d=>y(d[k])));
+    g.selectAll('z'+k).data(q).join('circle').attr('cx',d=>x(d.q)).attr('cy',d=>y(d[k])).attr('r',5)
+      .attr('fill',col).attr('stroke','#fff').attr('stroke-width',1.5)
+      .attr('tabindex',0).attr('role','listitem').attr('aria-label',d=>`${lab}, Q${d.q}: ${fmt2(d[k])}`)
+      .on('mouseenter mousemove',(ev,d)=>tip.show(`<b>${lab} · Q${d.q}</b>`
+        +`<div class="row"><span>Value</span><span>${fmt2(d[k])}</span></div>`
+        +`<div class="row"><span>Median mortality</span><span>${d.mort_mid}/100k</span></div>`
+        +`<div class="tn">${d.n_counties} counties</div>`,ev.clientX,ev.clientY))
+      .on('mouseleave',tip.hide);
+    g.append('text').attr('x',x(q[q.length-1].q)+9).attr('y',y(q[q.length-1][k])+4)
+      .attr('font','700 12px var(--sans)').attr('fill',col).text(lab.split(' ')[0]);
+  });
+}
+
+/* ---------- init + responsive ---------- */
+function renderAll(){ drawChips(); drawPlane(); drawAgeChart(); drawDespair(); }
+renderAll();
+let rt; window.addEventListener('resize', ()=>{ clearTimeout(rt); rt=setTimeout(renderAll, 180); });
+</script>
+<!--SL_BOOKNAV_START-->
+<style>
+.slbn{font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;background:#0f1417;border-top:1px solid #27313a;color:#9fb0ba;padding:24px 20px 40px;margin:48px 0 0}
+.slbn-in{max-width:1080px;margin:0 auto;display:flex;align-items:stretch;gap:12px}
+.slbn a{flex:1 1 0;min-width:0;text-decoration:none;color:inherit;border:1px solid #27313a;border-radius:10px;padding:13px 15px;display:flex;flex-direction:column;gap:4px;background:#161d22;transition:border-color .15s,transform .15s}
+.slbn a:hover{border-color:#3fa9a0;transform:translateY(-2px)}
+.slbn a:focus-visible{outline:2px solid #3fa9a0;outline-offset:2px}
+.slbn a.slbn-next{text-align:right;align-items:flex-end}
+.slbn a.slbn-toc{flex:0 0 auto;min-width:120px;justify-content:center;align-items:center;text-align:center}
+.slbn .slbn-dir{font:700 10px/1 inherit;letter-spacing:.13em;text-transform:uppercase;color:#6b7c87}
+.slbn .slbn-ttl{font:700 14px/1.3 inherit;color:#eef2f4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.slbn a.slbn-disabled{opacity:.38;pointer-events:none}
+@media(max-width:640px){.slbn-in{flex-wrap:wrap}.slbn a{flex:1 1 100%}.slbn a.slbn-next{text-align:left;align-items:flex-start}.slbn a.slbn-toc{order:-1}}
+</style>
+<nav class="slbn" aria-label="Book navigation"><div class="slbn-in"><a class="slbn-prev" href="../read.html?ch=out-of-reach" target="_top"><span class="slbn-dir">‹ Previous</span><span class="slbn-ttl">Out of Reach — When the American Dream Stopped Feeling Possible</span></a><a class="slbn-toc" href="../index.html#book" target="_top"><span class="slbn-dir">The Scissors</span><span class="slbn-ttl">Chapter 23 / 36</span></a><a class="slbn-next" href="../read.html?ch=the-satisfaction-treadmill" target="_top"><span class="slbn-dir">Next ›</span><span class="slbn-ttl">The Satisfaction Treadmill</span></a></div></nav>
+<!--SL_BOOKNAV_END-->
+</body>
+</html>

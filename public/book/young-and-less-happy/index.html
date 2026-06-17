@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Young and Less Happy — America's youngest adults hit a 50-year low</title>
+<meta name="description" content="GSS data, 1972–2024: happiness still rises gently with age, but the young-adult end of the curve has fallen to the lowest level in the survey's history.">
+<style>
+  :root{
+    --paper:#faf6ef;
+    --paper-deep:#f1eadf;
+    --ink:#2b2118;
+    --ink-soft:#5c5044;
+    --ink-faint:#8a7d6e;
+    --rule:#e3d9c8;
+    --accent:#c44d12;       /* burnt orange — the 2015–24 era */
+    --accent-soft:#f3ddcf;
+    --era1:#aebfd1;          /* sequential cool ramp for earlier eras */
+    --era2:#7d9cb8;
+    --era3:#46708f;
+    --old-line:#46708f;
+    --max-col:760px;
+    --max-wide:920px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:Georgia,"Iowan Old Style","Times New Roman",serif;
+    font-size:18px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  .col{max-width:var(--max-col);margin:0 auto;padding:0 20px}
+  .wide{max-width:var(--max-wide);margin:0 auto;padding:0 20px}
+
+  header.masthead{padding:64px 0 8px;text-align:left}
+  .kicker{
+    font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+    font-size:12px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--accent);font-weight:700;margin:0 0 18px;
+  }
+  h1{
+    font-size:clamp(34px,6.2vw,58px);
+    line-height:1.04;letter-spacing:-.015em;
+    margin:0 0 18px;font-weight:700;
+  }
+  h1 .lowlight{color:var(--accent)}
+  .dek{
+    font-size:clamp(18px,2.6vw,22px);line-height:1.5;color:var(--ink-soft);
+    margin:0 0 26px;max-width:640px;font-style:italic;
+  }
+  .byline{
+    font-family:ui-sans-serif,system-ui,sans-serif;font-size:13px;color:var(--ink-faint);
+    border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
+    padding:10px 0;display:flex;gap:18px;flex-wrap:wrap;
+  }
+  .byline b{color:var(--ink-soft);font-weight:600}
+
+  main p{margin:0 0 1.25em}
+  main section{margin:44px 0}
+  h2{
+    font-size:clamp(23px,3.4vw,30px);line-height:1.2;margin:1.6em 0 .6em;
+    letter-spacing:-.01em;
+  }
+  .lede::first-letter{
+    font-size:3.4em;float:left;line-height:.82;
+    padding:.06em .12em 0 0;color:var(--accent);font-weight:700;
+  }
+
+  .statstrip{
+    display:flex;gap:0;flex-wrap:wrap;margin:38px 0;
+    border-top:3px solid var(--ink);border-bottom:1px solid var(--rule);
+  }
+  .stat{flex:1 1 180px;padding:18px 18px 18px 0;min-width:160px}
+  .stat + .stat{border-left:1px solid var(--rule);padding-left:18px}
+  .stat .num{
+    font-size:clamp(30px,4.6vw,42px);font-weight:700;letter-spacing:-.02em;line-height:1.05;
+  }
+  .stat .num.hot{color:var(--accent)}
+  .stat .lbl{
+    font-family:ui-sans-serif,system-ui,sans-serif;font-size:12.5px;
+    color:var(--ink-soft);line-height:1.45;margin-top:6px;
+  }
+
+  figure{margin:34px 0;padding:0}
+  .fig-head{
+    font-family:ui-sans-serif,system-ui,sans-serif;
+    margin:0 0 4px;
+  }
+  .fig-head .fig-title{font-size:17px;font-weight:700;letter-spacing:-.01em}
+  .fig-head .fig-sub{font-size:13.5px;color:var(--ink-soft);margin-top:3px;line-height:1.5}
+  .chart-wrap{position:relative;margin-top:14px}
+  .chart-wrap svg{display:block;width:100%;height:auto}
+  figcaption{
+    font-family:ui-sans-serif,system-ui,sans-serif;font-size:12.5px;color:var(--ink-faint);
+    margin-top:10px;line-height:1.5;border-top:1px solid var(--rule);padding-top:8px;
+  }
+
+  .controls{
+    display:flex;gap:8px;flex-wrap:wrap;align-items:center;
+    font-family:ui-sans-serif,system-ui,sans-serif;margin:14px 0 2px;
+  }
+  .controls .grp-label{font-size:12px;color:var(--ink-faint);letter-spacing:.06em;text-transform:uppercase;margin-right:2px}
+  button.pill{
+    font-family:inherit;font-size:13px;font-weight:600;
+    border:1.5px solid var(--rule);background:#fff;color:var(--ink-soft);
+    border-radius:999px;padding:6px 13px;cursor:pointer;line-height:1;
+    display:inline-flex;align-items:center;gap:7px;
+    transition:border-color .15s, background .15s, color .15s;
+  }
+  button.pill .dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+  button.pill[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:var(--paper)}
+  button.pill:hover{border-color:var(--ink-soft)}
+  button.pill:focus-visible, button.step:focus-visible{
+    outline:3px solid var(--accent);outline-offset:2px;
+  }
+  button.step{
+    font-family:inherit;font-size:13px;font-weight:700;
+    border:1.5px solid var(--accent);background:var(--accent);color:#fff;
+    border-radius:8px;padding:7px 14px;cursor:pointer;line-height:1;
+  }
+  button.step:hover{filter:brightness(1.08)}
+
+  .tip{
+    position:absolute;pointer-events:none;z-index:5;
+    background:var(--ink);color:var(--paper);
+    font-family:ui-sans-serif,system-ui,sans-serif;font-size:12.5px;line-height:1.45;
+    padding:8px 11px;border-radius:7px;max-width:230px;
+    box-shadow:0 3px 14px rgba(43,33,24,.28);
+    opacity:0;transition:opacity .12s;
+  }
+  .tip b{font-size:13.5px}
+  .tip .tip-era{font-weight:700}
+
+  .pullquote{
+    margin:40px 0;padding:6px 0 6px 22px;border-left:4px solid var(--accent);
+    font-size:clamp(20px,3vw,25px);line-height:1.4;font-style:italic;color:var(--ink-soft);
+  }
+  .pullquote em{color:var(--accent);font-style:inherit}
+
+  .note-box{
+    background:var(--accent-soft);border-radius:10px;padding:16px 20px;
+    font-family:ui-sans-serif,system-ui,sans-serif;font-size:14px;line-height:1.6;
+    color:var(--ink-soft);margin:26px 0;
+  }
+  .note-box b{color:var(--ink)}
+
+  footer{
+    margin-top:70px;border-top:3px solid var(--ink);
+    background:#f3ecdf;padding:36px 0 60px;
+  }
+  footer h2{font-size:20px;margin:0 0 14px}
+  footer .col{font-family:ui-sans-serif,system-ui,sans-serif;font-size:13.5px;line-height:1.7;color:var(--ink-soft)}
+  footer ul{padding-left:18px;margin:.5em 0}
+  footer li{margin-bottom:.55em}
+  footer cite{font-style:italic}
+
+  text.axis-lab, .tick text{
+    font-family:ui-sans-serif,system-ui,sans-serif;
+  }
+  @media (max-width:520px){
+    body{font-size:16.5px}
+    .stat{flex:1 1 45%}
+    .stat + .stat{border-left:none;padding-left:0}
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="col">
+    <p class="kicker">Well-being in America · An archive in five parts</p>
+    <h1>Young and <span class="lowlight">Less Happy</span></h1>
+    <p class="dek">For half a century, America's youngest adults were modestly less happy than their elders — and reliably so. In the 2020s they fell to the lowest levels ever recorded in the nation's longest-running social survey.</p>
+    <div class="byline">
+      <span><b>Data:</b> General Social Survey, 1972–2024</span>
+      <span><b>N:</b> 70,869 adults</span>
+      <span><b>Measure:</b> general happiness (3-point, weighted)</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="col">
+    <section aria-label="Introduction">
+      <p class="lede">Since 1972, the General Social Survey has asked Americans a question of almost comic simplicity: <em>Taken all together, how would you say things are these days — would you say that you are very happy, pretty happy, or not too happy?</em> Three boxes, no nuance. And for most of five decades, the answers barely moved. Around 31 percent of adults called themselves "very happy," a clear majority settled on "pretty happy," and the averages by age traced the same gentle slope, survey after survey: the young a little lower, the old a little higher.</p>
+      <p>That stability is what makes the last few years so striking. Between 1972 and 1989, adults aged 18–29 averaged 2.16 on the 3-point scale — a touch below the 2.28 of those 60 and over, but comfortably in "pretty happy" territory. Through the 1990s and 2000s the young held almost exactly that line. Then it gave way. Across 2015–2024, the young-adult average fell to 1.97. In 2021 it touched 1.80 — the lowest reading for either group tracked here in the survey's 52-year history — and in 2024 it stood at 1.91, still below anything recorded before 2018. Just 20.7 percent of 18-to-29-year-olds now describe themselves as "very happy."</p>
+
+      <div class="statstrip" role="group" aria-label="Key statistics">
+        <div class="stat">
+          <div class="num">~31%</div>
+          <div class="lbl">of all American adults called themselves "very happy," 1972–2024</div>
+        </div>
+        <div class="stat">
+          <div class="num hot">20.7%</div>
+          <div class="lbl">of 18–29-year-olds say "very happy" in 2015–2024 — down from roughly 29% in the 1970s–80s</div>
+        </div>
+        <div class="stat">
+          <div class="num hot">1.80</div>
+          <div class="lbl">young-adult average in 2021, the lowest in the survey's history; 1.91 in 2024</div>
+        </div>
+      </div>
+
+      <p>Older Americans dipped too — from 2.28 in the first era to 2.10 in the most recent — but far less, and they remain the happiest group in the data. The result is not a reordering of the age curve. It is something quieter and, arguably, more unsettling: the same old gradient, now rising out of a much deeper hole at the young end.</p>
+    </section>
+
+    <section aria-label="What the curve does and does not show">
+      <h2>The shape that didn't change — and the level that did</h2>
+      <p>A famous literature, associated with the economist David Blanchflower, holds that well-being follows a U over the life course: high in youth, bottoming near midlife, recovering in old age. Richard Easterlin and others have long disputed it, arguing the U is fragile — appearing in some surveys and specifications, vanishing in others. Honesty requires saying plainly which camp this data falls in: <strong>in the GSS happiness item, there is no midlife U.</strong> In every era of the survey, average happiness rises gently and somewhat noisily with age. Young adults have <em>always</em> been among the least happy Americans; people past 60 have always been the happiest. Nothing flipped, and no U broke. The midlife-dip pattern may well be real in other datasets and other measures — life-satisfaction ladders, daily-affect diaries — but it does not appear in this coarse, three-box question.</p>
+      <p>What changed is the <em>level</em>. Each curve below is one era of the survey, pooled so every age cell rests on hundreds of respondents. The three twentieth- and early-twenty-first-century curves sit nearly on top of one another — four decades of stasis. The 2015–2024 curve sits below all of them at every age, and it sags hardest exactly where the others begin: at 18–24, where the era average is 1.92, the lowest point anywhere on the chart, with only about 17 percent saying "very happy."</p>
+    </section>
+  </div>
+
+  <div class="wide">
+    <figure aria-label="Age profile of happiness by survey era">
+      <div class="fig-head">
+        <div class="fig-title">The age–happiness curve, four eras of the GSS</div>
+        <div class="fig-sub">Weighted mean of general happiness (1 = not too happy, 3 = very happy) by age bracket. Hover or tap any point for its value and sample size. Use the pills to spotlight an era, or step through them in order.</div>
+      </div>
+      <div class="controls" id="profile-controls" role="toolbar" aria-label="Era and metric controls for the age-profile chart">
+        <span class="grp-label">Spotlight</span>
+        <span id="era-pills"></span>
+        <button class="step" id="step-btn" aria-label="Step the spotlight through the eras in order">Step through eras &#8594;</button>
+        <span class="grp-label" style="margin-left:10px">Metric</span>
+        <span id="metric-pills"></span>
+      </div>
+      <div class="chart-wrap" id="profile-chart">
+        <div class="tip" id="profile-tip" role="status" aria-live="polite"></div>
+      </div>
+      <figcaption>GSS cumulative file, 1972–2024, weighted by <code>wtssps</code>. Eras pool multiple survey years; every plotted cell has at least ~500 respondents (raw N; the smallest plotted cell is 535; cells under raw N&nbsp;=&nbsp;50 would be suppressed, and none are). Vertical axis is zoomed to make change visible — the full happiness scale runs 1–3. The 2015–2024 era includes the 2021–22 push-to-web surveys — see the mode note below.</figcaption>
+    </figure>
+  </div>
+
+  <div class="col">
+    <section aria-label="Reading the chart">
+      <p>Two things reward a slow look. First, the three earlier curves are almost interchangeable — at ages 25–29, the eras from 1972 to 2014 land within a single hundredth of one another. Whatever else changed in American life between Watergate and the iPhone, this blunt instrument registered almost none of it. Second, the orange curve is not uniformly displaced: the deficit is largest among the youngest and narrows with age, so the slope of the 2015–24 curve is visibly steeper at its left end. Today's 75-and-overs sit only modestly below their predecessors. Today's 21-year-olds sit in territory the survey had simply never charted.</p>
+
+      <div class="pullquote">The age curve still rises. It just rises, now, <em>out of a hole</em> — and the hole is where adulthood begins.</div>
+
+      <p>A useful summary number is the gap between old (60+) and young (18–29). In 1972–1989 it was 0.11 points in favor of the old. It then narrowed for decades — to 0.09 in 1990–2004 and just 0.06 in 2005–2014, mostly because older adults' happiness eased while the young held steady. Since 2015 the gap has widened back to 0.12, its largest value in the record, and for the opposite reason: this time it is the young who fell.</p>
+    </section>
+
+    <section aria-label="The timeline">
+      <h2>When the floor gave way</h2>
+      <p>Pooling eras shows the shape; the year-by-year series shows the timing. For more than forty years the two lines below run roughly parallel — older Americans a shade above, young adults a shade below, both bouncing inside a narrow band. In 2016 and 2018 the young-adult line drifts near the bottom of that historical band — low readings, but no lower than the 2008 dip, which fully rebounded within two surveys. Then comes 2021: young adults at 1.80, the lowest point in either series, with older adults posting their own record low at just over 2.0.</p>
+      <p>A necessary caution sits right on top of that low point. In 2021 and 2022, COVID forced the GSS to abandon its traditional in-person interviews for a push-to-web design, and self-administered surveys reliably elicit gloomier answers to questions like this one — people shade toward candor when no interviewer is watching. Level shifts across that boundary are therefore partly artifactual, and the shaded band in the chart marks the affected years. But the mode change cannot carry the whole story: the 2024 reading of 1.91, collected under a mixed-mode design, sits below every pre-2018 value in the series — including that 2008 dip. Older adults, surveyed the same way, fell far less and partially rebounded.</p>
+    </section>
+  </div>
+
+  <div class="wide">
+    <figure aria-label="Yearly time series of happiness for young and old adults">
+      <div class="fig-head">
+        <div class="fig-title">Fifty-two years, two generations</div>
+        <div class="fig-sub">Weighted mean happiness by survey year: adults 18–29 versus adults 60 and over. Hover or tap for yearly values.</div>
+      </div>
+      <div class="chart-wrap" id="series-chart">
+        <div class="tip" id="series-tip" role="status" aria-live="polite"></div>
+      </div>
+      <figcaption>GSS, 1972–2024, weighted by <code>wtssps</code>. Points mark the years a survey was actually fielded (the GSS moved to a biennial schedule in 1994; there was no 2020 survey); the dashed segment bridges 2019–20, when none was. Vertical axis is zoomed to make change visible — the full happiness scale runs 1–3. Shaded band: 2021–22 push-to-web mode change — levels across it are not fully comparable to the in-person years.</figcaption>
+    </figure>
+  </div>
+
+  <div class="col">
+    <section aria-label="The very happy share">
+      <h2>The thinning of "very happy"</h2>
+      <p>Averages on a 3-point scale compress a lot. A second cut makes the change concrete: the share of young adults willing to tick the top box. For three straight eras spanning 1972 to 2014 that share held near 28 percent. In 2015–2024 it fell to 20.7 percent — roughly one in five. The top of the distribution thinned at the same time the bottom swelled; this is not a story of mild reshuffling between "very" and "pretty."</p>
+    </section>
+  </div>
+
+  <div class="wide">
+    <figure aria-label="Share of young adults saying very happy, by era">
+      <div class="fig-head">
+        <div class="fig-title">Share of 18–29-year-olds saying "very happy"</div>
+      </div>
+      <div class="chart-wrap" id="very-chart"></div>
+      <figcaption>GSS, weighted by <code>wtssps</code>. Era samples of 18–29-year-olds range from 1,978 to 6,127 respondents.</figcaption>
+    </figure>
+  </div>
+
+  <div class="col">
+    <section aria-label="Interpretation">
+      <h2>What this is — and isn't — evidence of</h2>
+      <p>The GSS finding lands amid a broader literature reaching the same verdict. Blanchflower, Bryson and Xu (2025), surveying data across dozens of countries, document a marked deterioration in youth mental health and well-being since the mid-2010s — severe enough, they argue, that the very age profile of well-being is being reshaped, with the young no longer enjoying the relative buoyancy earlier cohorts did at the same age. The GSS, with its half-century of identical wording, is one of the cleanest American windows onto that shift, and it agrees: something changed for young adults in the late 2010s, and it has not changed back.</p>
+      <p>What the GSS cannot do is say why. The usual suspects — smartphones and social media, pandemic-era isolation during formative years, housing and economic precarity, a documented rise in loneliness — are all consistent with the timing, and none can be tested with a single descriptive item. Nor should the size of the move be oversold: on a 1-to-3 scale, the young-adult average fell about 0.19 points between the first and latest eras. That is enormous by the glacial standards of this series — several times any era-to-era movement in the prior four decades — but most young Americans still say they are pretty happy. The signal here is not mass despair; it is a cohort entering adulthood reporting less happiness than any cohort the survey has ever observed at that age, on a question too blunt to exaggerate.</p>
+      <p>The old gradient offers one guarded reason for hope: in every era, this measure rises with age. If today's young adults eventually climb the same slope, their low start may read, decades from now, as a deep but survivable trough. Whether they climb it — or carry the deficit with them — is the question the next fifty years of this survey will answer.</p>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="col">
+    <h2>Notes &amp; data</h2>
+    <ul>
+      <li><b>Source.</b> General Social Survey (GSS) cumulative file, 1972–2024, NORC at the University of Chicago (Davis &amp; Smith, principal investigators of the original design). Item: <code>happy</code> — "Taken all together, how would you say things are these days…" coded 1 = not too happy, 2 = pretty happy, 3 = very happy.</li>
+      <li><b>Weighting.</b> All estimates are weighted with <code>wtssps</code>; no unweighted GSS figures appear anywhere in this article. Total analytic sample N&nbsp;=&nbsp;70,869. Age-by-era cells range from 535 to 3,097 respondents; yearly samples range from 1,337 to 4,014.</li>
+      <li><b>Suppression and pooling.</b> Cells with raw N&nbsp;&lt;&nbsp;50 are suppressed by rule (none triggered it here); era curves pool multiple survey years precisely to keep age cells well above that floor.</li>
+      <li><b>Construct.</b> This is an <em>evaluative</em> well-being measure — a global self-assessment — and a coarse one: a single 3-point item. It cannot detect changes in affect, meaning, or anything finer than movement among three boxes. Treat magnitudes accordingly.</li>
+      <li><b>Mode change.</b> The 2021 and 2022 rounds used a push-to-web, self-administered design forced by COVID; earlier rounds were predominantly face-to-face. Self-administration tends to lower reported happiness, so level comparisons across 2018→2021 are partly artifactual. The 2024 round used a mixed-mode design. The mode-robust core of the finding is therefore 2024: a youth reading of 1.91 that sits below every value recorded before 2018. The 2016–2018 readings drift near the bottom of the historical band, but the comparably low 2008 reading fully rebounded, so those years alone cannot establish a pre-pandemic decline.</li>
+      <li><b>Geography.</b> The GSS public file carries census region and urbanicity only — no state identifiers — so no sub-national mapping is possible or attempted here.</li>
+      <li><b>Reading.</b> D.G. Blanchflower, A. Bryson &amp; X. Xu (2025), "The declining mental health of the young and the global disappearance of the unhappiness hump," <cite>PLOS One</cite>. On the contested midlife-U: D.G. Blanchflower (2021), <cite>Journal of Population Economics</cite>, versus R.A. Easterlin's long-standing critique of the U-shape's robustness. J.A. Davis &amp; T.W. Smith, <cite>General Social Surveys</cite>, NORC.</li>
+    </ul>
+  </div>
+</footer>
+
+<script type="module">
+import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+
+const DATA = {"meta":{"title":"Young and Less Happy","dataset":"General Social Survey (GSS) cumulative file","years":"1972-2024","weight":"wtssps","construct":"evaluative","happy_scale":"1=Not too happy, 2=Pretty happy, 3=Very happy (higher=happier)","suppression":"cells with raw n<50 suppressed; eras pool multiple survey years","mode_flag":"2021-2022 used push-to-web mode (post-COVID); level shifts vs 2018 may be partly artifactual"},"national":{"n":70869,"hmean":2.177,"very":0.3103},"profiles":[{"era":"1972-1989","age":"18-24","age_mid":21,"n":3030,"hmean":2.1363,"very":0.2732},{"era":"1972-1989","age":"25-29","age_mid":27,"n":3097,"hmean":2.1997,"very":0.3072},{"era":"1972-1989","age":"30-34","age_mid":32,"n":2776,"hmean":2.2221,"very":0.3234},{"era":"1972-1989","age":"35-39","age_mid":37,"n":2446,"hmean":2.2285,"very":0.3306},{"era":"1972-1989","age":"40-44","age_mid":42,"n":2047,"hmean":2.2106,"very":0.3159},{"era":"1972-1989","age":"45-49","age_mid":47,"n":1818,"hmean":2.2449,"very":0.3545},{"era":"1972-1989","age":"50-54","age_mid":52,"n":1754,"hmean":2.2481,"very":0.371},{"era":"1972-1989","age":"55-59","age_mid":57,"n":1748,"hmean":2.2035,"very":0.3478},{"era":"1972-1989","age":"60-64","age_mid":62,"n":1603,"hmean":2.272,"very":0.3916},{"era":"1972-1989","age":"65-69","age_mid":67,"n":1542,"hmean":2.2965,"very":0.4111},{"era":"1972-1989","age":"70-74","age_mid":72,"n":1203,"hmean":2.2855,"very":0.4015},{"era":"1972-1989","age":"75+","age_mid":80,"n":1534,"hmean":2.2602,"very":0.3822},{"era":"1990-2004","age":"18-24","age_mid":21,"n":1713,"hmean":2.1335,"very":0.2504},{"era":"1990-2004","age":"25-29","age_mid":27,"n":1849,"hmean":2.2072,"very":0.3075},{"era":"1990-2004","age":"30-34","age_mid":32,"n":2161,"hmean":2.2476,"very":0.3412},{"era":"1990-2004","age":"35-39","age_mid":37,"n":2195,"hmean":2.2253,"very":0.3251},{"era":"1990-2004","age":"40-44","age_mid":42,"n":2082,"hmean":2.1961,"very":0.312},{"era":"1990-2004","age":"45-49","age_mid":47,"n":1767,"hmean":2.1936,"very":0.3031},{"era":"1990-2004","age":"50-54","age_mid":52,"n":1455,"hmean":2.2496,"very":0.354},{"era":"1990-2004","age":"55-59","age_mid":57,"n":1116,"hmean":2.2552,"very":0.3563},{"era":"1990-2004","age":"60-64","age_mid":62,"n":992,"hmean":2.2656,"very":0.3608},{"era":"1990-2004","age":"65-69","age_mid":67,"n":918,"hmean":2.2929,"very":0.3912},{"era":"1990-2004","age":"70-74","age_mid":72,"n":895,"hmean":2.2768,"very":0.3686},{"era":"1990-2004","age":"75+","age_mid":80,"n":1434,"hmean":2.2181,"very":0.3509},{"era":"2005-2014","age":"18-24","age_mid":21,"n":959,"hmean":2.1368,"very":0.2615},{"era":"2005-2014","age":"25-29","age_mid":27,"n":1019,"hmean":2.2008,"very":0.3049},{"era":"2005-2014","age":"30-34","age_mid":32,"n":1095,"hmean":2.1852,"very":0.3053},{"era":"2005-2014","age":"35-39","age_mid":37,"n":1103,"hmean":2.1953,"very":0.3246},{"era":"2005-2014","age":"40-44","age_mid":42,"n":1074,"hmean":2.2045,"very":0.3164},{"era":"2005-2014","age":"45-49","age_mid":47,"n":1054,"hmean":2.1612,"very":0.2984},{"era":"2005-2014","age":"50-54","age_mid":52,"n":1108,"hmean":2.1328,"very":0.2931},{"era":"2005-2014","age":"55-59","age_mid":57,"n":1012,"hmean":2.1291,"very":0.2902},{"era":"2005-2014","age":"60-64","age_mid":62,"n":883,"hmean":2.1895,"very":0.3235},{"era":"2005-2014","age":"65-69","age_mid":67,"n":692,"hmean":2.2266,"very":0.3441},{"era":"2005-2014","age":"70-74","age_mid":72,"n":535,"hmean":2.2931,"very":0.3985},{"era":"2005-2014","age":"75+","age_mid":80,"n":965,"hmean":2.2082,"very":0.3506},{"era":"2015-2024","age":"18-24","age_mid":21,"n":1098,"hmean":1.9245,"very":0.1736},{"era":"2015-2024","age":"25-29","age_mid":27,"n":1191,"hmean":2.0323,"very":0.2482},{"era":"2015-2024","age":"30-34","age_mid":32,"n":1431,"hmean":2.0587,"very":0.2541},{"era":"2015-2024","age":"35-39","age_mid":37,"n":1397,"hmean":2.1279,"very":0.2874},{"era":"2015-2024","age":"40-44","age_mid":42,"n":1309,"hmean":2.0686,"very":0.2569},{"era":"2015-2024","age":"45-49","age_mid":47,"n":1163,"hmean":2.1064,"very":0.273},{"era":"2015-2024","age":"50-54","age_mid":52,"n":1190,"hmean":2.0384,"very":0.2285},{"era":"2015-2024","age":"55-59","age_mid":57,"n":1375,"hmean":2.0589,"very":0.2565},{"era":"2015-2024","age":"60-64","age_mid":62,"n":1367,"hmean":2.0561,"very":0.2388},{"era":"2015-2024","age":"65-69","age_mid":67,"n":1370,"hmean":2.1278,"very":0.2848},{"era":"2015-2024","age":"70-74","age_mid":72,"n":1053,"hmean":2.0714,"very":0.2722},{"era":"2015-2024","age":"75+","age_mid":80,"n":1423,"hmean":2.1286,"very":0.2989}],"era_flip":[{"era":"1972-1989","young_18_29":2.1646,"old_60plus":2.2785,"gap_old_minus_young":0.1139,"young_pct_very":0.2883,"n_young":6127,"n_old":5882},{"era":"1990-2004","young_18_29":2.1674,"old_60plus":2.2597,"gap_old_minus_young":0.0923,"young_pct_very":0.2767,"n_young":3562,"n_old":4239},{"era":"2005-2014","young_18_29":2.1665,"old_60plus":2.2229,"gap_old_minus_young":0.0565,"young_pct_very":0.2816,"n_young":1978,"n_old":3075},{"era":"2015-2024","young_18_29":1.973,"old_60plus":2.097,"gap_old_minus_young":0.124,"young_pct_very":0.2072,"n_young":2289,"n_old":5213}],"year_series":[{"year":1972,"survey_n":1606,"n_young":398,"n_old":359,"young":2.0943,"old":2.1066},{"year":1973,"survey_n":1500,"n_young":382,"n_old":320,"young":2.1395,"old":2.2509},{"year":1974,"survey_n":1480,"n_young":380,"n_old":333,"young":2.1037,"old":2.3408},{"year":1975,"survey_n":1485,"n_young":404,"n_old":344,"young":2.1205,"old":2.2999},{"year":1976,"survey_n":1499,"n_young":388,"n_old":385,"young":2.1661,"old":2.2302},{"year":1977,"survey_n":1527,"n_young":368,"n_old":328,"young":2.1536,"old":2.2948},{"year":1978,"survey_n":1517,"n_young":401,"n_old":335,"young":2.2225,"old":2.2708},{"year":1980,"survey_n":1462,"n_young":357,"n_old":358,"young":2.1672,"old":2.3333},{"year":1982,"survey_n":1855,"n_young":496,"n_old":448,"young":2.1663,"old":2.2898},{"year":1983,"survey_n":1573,"n_young":404,"n_old":368,"young":2.1415,"old":2.2664},{"year":1984,"survey_n":1445,"n_young":388,"n_old":337,"young":2.1924,"old":2.3314},{"year":1985,"survey_n":1530,"n_young":350,"n_old":389,"young":2.1901,"old":2.2615},{"year":1986,"survey_n":1449,"n_young":319,"n_old":376,"young":2.1542,"old":2.3061},{"year":1987,"survey_n":1780,"n_young":399,"n_old":425,"young":2.1775,"old":2.283},{"year":1988,"survey_n":1466,"n_young":354,"n_old":394,"young":2.2373,"old":2.3241},{"year":1989,"survey_n":1526,"n_young":339,"n_old":383,"young":2.2185,"old":2.278},{"year":1990,"survey_n":1361,"n_young":275,"n_old":360,"young":2.2629,"old":2.241},{"year":1991,"survey_n":1504,"n_young":301,"n_old":380,"young":2.1992,"old":2.2664},{"year":1993,"survey_n":1601,"n_young":301,"n_old":380,"young":2.1868,"old":2.2579},{"year":1994,"survey_n":2977,"n_young":519,"n_old":669,"young":2.1392,"old":2.2154},{"year":1996,"survey_n":2885,"n_young":588,"n_old":587,"young":2.15,"old":2.2856},{"year":1998,"survey_n":2806,"n_young":533,"n_old":612,"young":2.1318,"old":2.2878},{"year":2000,"survey_n":2777,"n_young":522,"n_old":623,"young":2.1836,"old":2.2738},{"year":2002,"survey_n":1369,"n_young":262,"n_old":333,"young":2.1476,"old":2.2766},{"year":2004,"survey_n":1337,"n_young":261,"n_old":295,"young":2.1572,"old":2.2093},{"year":2006,"survey_n":2986,"n_young":528,"n_old":722,"young":2.1649,"old":2.2962},{"year":2008,"survey_n":2015,"n_young":358,"n_old":524,"young":2.0857,"old":2.2174},{"year":2010,"survey_n":2039,"n_young":375,"n_old":554,"young":2.146,"old":2.1668},{"year":2012,"survey_n":1964,"n_young":330,"n_old":551,"young":2.2392,"old":2.1607},{"year":2014,"survey_n":2530,"n_young":387,"n_old":724,"young":2.194,"old":2.2382},{"year":2016,"survey_n":2859,"n_young":480,"n_old":856,"young":2.1258,"old":2.2142},{"year":2018,"survey_n":2344,"n_young":398,"n_old":716,"young":2.0917,"old":2.2216},{"year":2021,"survey_n":4014,"n_young":405,"n_old":1400,"young":1.8035,"old":2.0043},{"year":2022,"survey_n":3520,"n_young":551,"n_old":1104,"young":1.9923,"old":2.0491},{"year":2024,"survey_n":3281,"n_young":455,"n_old":1137,"young":1.9054,"old":2.0752}],"eras_order":["1972-1989","1990-2004","2005-2014","2015-2024"]};
+
+const ERAS = DATA.eras_order;
+const ERA_COLOR = {
+  "1972-1989": "#aebfd1",
+  "1990-2004": "#7d9cb8",
+  "2005-2014": "#46708f",
+  "2015-2024": "#c44d12"
+};
+const ACCENT = "#c44d12";
+const OLD_COLOR = "#46708f";
+const INK = "#2b2118";
+const FAINT = "#8a7d6e";
+const RULE = "#e3d9c8";
+
+const f2 = d3.format(".2f");
+const fpct = d => (100 * d).toFixed(1) + "%";
+const byEra = d3.group(DATA.profiles, d => d.era);
+
+/* ---------- shared helpers ---------- */
+function clearSvg(container){
+  container.querySelectorAll("svg").forEach(s => s.remove());
+}
+function baseSvg(container, w, h, label, descText){
+  const svg = d3.select(container).append("svg")
+    .attr("viewBox", `0 0 ${w} ${h}`)
+    .attr("role", "img")
+    .attr("aria-label", label);
+  svg.append("title").text(label);
+  svg.append("desc").text(descText);
+  return svg;
+}
+function placeTip(tipEl, wrap, px, py, html){
+  tipEl.innerHTML = html;
+  tipEl.style.opacity = 1;
+  const wrapW = wrap.clientWidth;
+  const tw = tipEl.offsetWidth;
+  let left = px - tw / 2;
+  left = Math.max(4, Math.min(wrapW - tw - 4, left));
+  tipEl.style.left = left + "px";
+  tipEl.style.top = Math.max(0, py - tipEl.offsetHeight - 14) + "px";
+}
+function hideTip(tipEl){ tipEl.style.opacity = 0; }
+
+/* =========================================================
+   1. SIGNATURE CHART — age profile by era
+   ========================================================= */
+const profileWrap = document.getElementById("profile-chart");
+const profileTip = document.getElementById("profile-tip");
+let focusEra = "2015-2024";       // null = all equal
+let metric = "hmean";             // or "very"
+
+function eraOpacity(era){
+  if (focusEra === null) return era === "2015-2024" ? 1 : 0.85;
+  return era === focusEra ? 1 : 0.28;
+}
+function eraWidth(era){
+  if (focusEra === null) return era === "2015-2024" ? 3 : 2;
+  return era === focusEra ? 3.5 : 1.75;
+}
+
+function drawProfile(){
+  clearSvg(profileWrap);
+  hideTip(profileTip);
+  const w = Math.max(320, profileWrap.clientWidth);
+  const h = Math.max(330, Math.min(470, w * 0.58));
+  const narrow = w < 520;
+  const m = { t: 26, r: narrow ? 16 : 90, b: 46, l: 48 };
+
+  const svg = baseSvg(profileWrap, w, h,
+    "Line chart of average happiness by age bracket, one line per survey era, 1972 to 2024.",
+    "Three earlier-era lines cluster near 2.2 at all ages; the 2015 to 2024 line sits below them at every age and lowest at ages 18 to 24, where it reaches 1.92.");
+
+  const x = d3.scaleLinear().domain([18, 83]).range([m.l, w - m.r]);
+  const yDom = metric === "hmean" ? [1.85, 2.35] : [0.13, 0.45];
+  const y = d3.scaleLinear().domain(yDom).range([h - m.b, m.t]);
+  const val = d => metric === "hmean" ? d.hmean : d.very;
+
+  // grid + y axis
+  const yTicks = y.ticks(metric === "hmean" ? 6 : 6);
+  svg.append("g").selectAll("line").data(yTicks).join("line")
+    .attr("x1", m.l).attr("x2", w - m.r)
+    .attr("y1", d => y(d)).attr("y2", d => y(d))
+    .attr("stroke", RULE).attr("stroke-width", 1);
+  svg.append("g").selectAll("text").data(yTicks).join("text")
+    .attr("x", m.l - 8).attr("y", d => y(d)).attr("dy", "0.32em")
+    .attr("text-anchor", "end").attr("font-size", 11.5).attr("fill", FAINT)
+    .attr("class", "axis-lab")
+    .text(d => metric === "hmean" ? f2(d) : Math.round(d * 100) + "%");
+
+  // x axis: age bracket midpoints
+  const brackets = byEra.get(ERAS[0]).map(d => ({ mid: d.age_mid, lab: d.age }));
+  const xLabels = narrow ? brackets.filter((_, i) => i % 2 === 0) : brackets;
+  svg.append("g").selectAll("text").data(xLabels).join("text")
+    .attr("x", d => x(d.mid)).attr("y", h - m.b + 20)
+    .attr("text-anchor", "middle").attr("font-size", 11).attr("fill", FAINT)
+    .attr("class", "axis-lab")
+    .text(d => d.lab);
+  svg.append("text")
+    .attr("x", (m.l + w - m.r) / 2).attr("y", h - 8)
+    .attr("text-anchor", "middle").attr("font-size", 11.5).attr("fill", FAINT)
+    .attr("class", "axis-lab")
+    .text("Age at interview");
+  svg.append("text")
+    .attr("x", m.l - 8).attr("y", m.t - 12)
+    .attr("text-anchor", "start").attr("font-size", 11.5).attr("fill", FAINT)
+    .attr("class", "axis-lab")
+    .text(metric === "hmean" ? "Mean happiness · 1–3 scale, axis zoomed" : "Share “very happy” (axis zoomed)");
+
+  const line = d3.line().x(d => x(d.age_mid)).y(d => y(val(d))).curve(d3.curveMonotoneX);
+
+  // era lines (draw focus era last so it sits on top)
+  const order = ERAS.filter(e => e !== (focusEra ?? "2015-2024"))
+                    .concat([focusEra ?? "2015-2024"]);
+  for (const era of order){
+    const pts = byEra.get(era);
+    svg.append("path").datum(pts)
+      .attr("fill", "none")
+      .attr("stroke", ERA_COLOR[era])
+      .attr("stroke-width", eraWidth(era))
+      .attr("stroke-opacity", eraOpacity(era))
+      .attr("stroke-linecap", "round")
+      .attr("d", line);
+    svg.append("g").selectAll("circle").data(pts).join("circle")
+      .attr("cx", d => x(d.age_mid)).attr("cy", d => y(val(d)))
+      .attr("r", era === (focusEra ?? "2015-2024") ? 4 : 3)
+      .attr("fill", ERA_COLOR[era])
+      .attr("fill-opacity", eraOpacity(era))
+      .attr("stroke", "#faf6ef").attr("stroke-width", 1.2);
+    // end label on wide layouts
+    if (!narrow){
+      const last = pts[pts.length - 1];
+      svg.append("text")
+        .attr("x", x(last.age_mid) + 10).attr("y", y(val(last)))
+        .attr("dy", "0.32em").attr("font-size", 11.5)
+        .attr("font-weight", era === "2015-2024" ? 700 : 500)
+        .attr("fill", ERA_COLOR[era])
+        .attr("fill-opacity", Math.max(0.55, eraOpacity(era)))
+        .attr("class", "axis-lab")
+        .text(era);
+    }
+  }
+
+  // annotation at the young end of 2015-24
+  const eraNew = byEra.get("2015-2024");
+  const p0 = eraNew[0];
+  const ax = x(p0.age_mid), ay = y(val(p0));
+  const annText = metric === "hmean"
+    ? `${f2(p0.hmean)} — lowest point on any curve`
+    : `${fpct(p0.very)} say “very happy”`;
+  svg.append("line")
+    .attr("x1", ax).attr("y1", ay + 8).attr("x2", ax).attr("y2", ay + 30)
+    .attr("stroke", ACCENT).attr("stroke-width", 1.2);
+  svg.append("text")
+    .attr("x", Math.max(m.l, ax - 4)).attr("y", ay + 46)
+    .attr("font-size", narrow ? 11 : 12).attr("font-weight", 700)
+    .attr("fill", ACCENT).attr("class", "axis-lab")
+    .text(narrow ? annText.split(" — ")[0] + (metric === "hmean" ? " — lowest ever" : "") : annText);
+  svg.append("text")
+    .attr("x", Math.max(m.l, ax - 4)).attr("y", ay + 61)
+    .attr("font-size", 11).attr("fill", FAINT).attr("class", "axis-lab")
+    .text("ages 18–24, 2015–24");
+
+  // hover layer
+  const allPts = DATA.profiles;
+  svg.append("rect")
+    .attr("x", m.l).attr("y", m.t)
+    .attr("width", w - m.l - m.r).attr("height", h - m.t - m.b)
+    .attr("fill", "transparent")
+    .on("mousemove touchmove", function(ev){
+      const [mx, my] = d3.pointer(ev, this.ownerSVGElement);
+      const near = d3.least(allPts, p =>
+        Math.hypot(x(p.age_mid) - mx, y(val(p)) - my));
+      if (!near || Math.hypot(x(near.age_mid) - mx, y(val(near)) - my) > 55){
+        hideTip(profileTip); return;
+      }
+      const scale = profileWrap.clientWidth / w;
+      placeTip(profileTip, profileWrap,
+        x(near.age_mid) * scale, y(val(near)) * scale,
+        `<span class="tip-era" style="color:${ERA_COLOR[near.era] === "#aebfd1" ? "#cfdcea" : "#fff"}">${near.era}</span> · ages ${near.age}<br>` +
+        `<b>${metric === "hmean" ? f2(near.hmean) + " mean" : fpct(near.very) + " very happy"}</b><br>` +
+        `${metric === "hmean" ? fpct(near.very) + " very happy" : f2(near.hmean) + " mean"} · N = ${near.n.toLocaleString()}`);
+    })
+    .on("mouseleave touchend", () => hideTip(profileTip));
+}
+
+/* controls */
+const pillsHost = document.getElementById("era-pills");
+const metricHost = document.getElementById("metric-pills");
+
+function buildControls(){
+  pillsHost.innerHTML = "";
+  for (const era of ERAS){
+    const b = document.createElement("button");
+    b.className = "pill";
+    b.setAttribute("aria-pressed", String(focusEra === era));
+    b.innerHTML = `<span class="dot" style="background:${ERA_COLOR[era]}"></span>${era}`;
+    b.addEventListener("click", () => {
+      focusEra = (focusEra === era) ? null : era;
+      buildControls(); drawProfile();
+    });
+    pillsHost.appendChild(b);
+  }
+  metricHost.innerHTML = "";
+  const metrics = [["hmean", "Mean (1–3)"], ["very", "% “very happy”"]];
+  for (const [key, lab] of metrics){
+    const b = document.createElement("button");
+    b.className = "pill";
+    b.setAttribute("aria-pressed", String(metric === key));
+    b.textContent = lab;
+    b.addEventListener("click", () => {
+      metric = key; buildControls(); drawProfile();
+    });
+    metricHost.appendChild(b);
+  }
+}
+document.getElementById("step-btn").addEventListener("click", () => {
+  const i = focusEra === null ? -1 : ERAS.indexOf(focusEra);
+  focusEra = ERAS[(i + 1) % ERAS.length];
+  buildControls(); drawProfile();
+});
+
+/* =========================================================
+   2. TIME SERIES — young vs old by year
+   ========================================================= */
+const seriesWrap = document.getElementById("series-chart");
+const seriesTip = document.getElementById("series-tip");
+
+function drawSeries(){
+  clearSvg(seriesWrap);
+  hideTip(seriesTip);
+  const w = Math.max(320, seriesWrap.clientWidth);
+  const h = Math.max(300, Math.min(430, w * 0.52));
+  const narrow = w < 520;
+  const m = { t: 30, r: narrow ? 44 : 60, b: 40, l: 46 };
+
+  const svg = baseSvg(seriesWrap, w, h,
+    "Time series of average happiness by year, 1972 to 2024, for adults 18 to 29 and adults 60 and over.",
+    "Both lines run roughly parallel for decades near 2.2; the young-adult line drops sharply between the 2018 and 2021 surveys, reaching 1.80 in 2021 and 1.91 in 2024. No survey was fielded in 2019 or 2020; a dashed segment bridges that gap, and a shaded band marks the 2021 to 2022 survey mode change.");
+
+  const x = d3.scaleLinear().domain([1971, 2025.5]).range([m.l, w - m.r]);
+  const y = d3.scaleLinear().domain([1.74, 2.4]).range([h - m.b, m.t]);
+
+  // mode-change band
+  svg.append("rect")
+    .attr("x", x(2020.5)).attr("y", m.t - 4)
+    .attr("width", x(2022.6) - x(2020.5)).attr("height", h - m.b - m.t + 4)
+    .attr("fill", ACCENT).attr("fill-opacity", 0.09);
+  svg.append("text")
+    .attr("x", x(2021.55)).attr("y", m.t - 10)
+    .attr("text-anchor", narrow ? "end" : "middle")
+    .attr("font-size", 10.5).attr("fill", ACCENT).attr("font-weight", 700)
+    .attr("class", "axis-lab")
+    .text("push-to-web mode change");
+
+  // grid + axes
+  const yTicks = y.ticks(6);
+  svg.append("g").selectAll("line").data(yTicks).join("line")
+    .attr("x1", m.l).attr("x2", w - m.r)
+    .attr("y1", d => y(d)).attr("y2", d => y(d))
+    .attr("stroke", RULE);
+  svg.append("g").selectAll("text").data(yTicks).join("text")
+    .attr("x", m.l - 8).attr("y", d => y(d)).attr("dy", "0.32em")
+    .attr("text-anchor", "end").attr("font-size", 11.5).attr("fill", FAINT)
+    .attr("class", "axis-lab").text(f2);
+  const xTicks = narrow ? [1972, 1985, 2000, 2012, 2024] : [1972, 1980, 1990, 2000, 2010, 2018, 2024];
+  svg.append("g").selectAll("text").data(xTicks).join("text")
+    .attr("x", d => x(d)).attr("y", h - m.b + 22)
+    .attr("text-anchor", "middle").attr("font-size", 11.5).attr("fill", FAINT)
+    .attr("class", "axis-lab").text(d => d);
+  svg.append("g").selectAll("line").data(xTicks).join("line")
+    .attr("x1", d => x(d)).attr("x2", d => x(d))
+    .attr("y1", h - m.b).attr("y2", h - m.b + 6)
+    .attr("stroke", FAINT);
+
+  const ys = DATA.year_series;
+  // Break the path wherever consecutive surveys are more than 2 years apart
+  // (no GSS was fielded in 2019–20), so the line never implies observed
+  // values across the gap; a dashed bridge marks the unsurveyed span.
+  const gapped = [];
+  ys.forEach((d, i) => {
+    if (i > 0 && d.year - ys[i - 1].year > 2) gapped.push(null);
+    gapped.push(d);
+  });
+  const mk = key => d3.line()
+    .defined(d => d !== null)
+    .x(d => x(d.year)).y(d => y(d[key]))
+    .curve(d3.curveMonotoneX)(gapped);
+
+  svg.append("path").attr("d", mk("old"))
+    .attr("fill", "none").attr("stroke", OLD_COLOR)
+    .attr("stroke-width", 2.2).attr("stroke-opacity", 0.85);
+  svg.append("path").attr("d", mk("young"))
+    .attr("fill", "none").attr("stroke", ACCENT).attr("stroke-width", 2.8);
+
+  // dashed bridge across the unsurveyed 2019–20 gap
+  const g18 = ys.find(d => d.year === 2018);
+  const g21 = ys.find(d => d.year === 2021);
+  for (const [key, color, sw, op] of [["old", OLD_COLOR, 1.7, 0.85], ["young", ACCENT, 2.1, 1]]){
+    svg.append("line")
+      .attr("x1", x(g18.year)).attr("y1", y(g18[key]))
+      .attr("x2", x(g21.year)).attr("y2", y(g21[key]))
+      .attr("stroke", color).attr("stroke-width", sw)
+      .attr("stroke-opacity", op).attr("stroke-dasharray", "4 5");
+  }
+
+  // point markers at the years a survey was actually fielded
+  for (const [key, color, op] of [["old", OLD_COLOR, 0.85], ["young", ACCENT, 1]]){
+    svg.append("g").selectAll("circle").data(ys).join("circle")
+      .attr("cx", d => x(d.year)).attr("cy", d => y(d[key]))
+      .attr("r", narrow ? 2 : 2.4)
+      .attr("fill", color).attr("fill-opacity", op);
+  }
+
+  // line end labels
+  const last = ys[ys.length - 1];
+  svg.append("text").attr("x", x(last.year) + 8).attr("y", y(last.old))
+    .attr("dy", "0.32em").attr("font-size", 12).attr("font-weight", 700)
+    .attr("fill", OLD_COLOR).attr("class", "axis-lab").text("60+");
+  svg.append("text").attr("x", x(last.year) + 8).attr("y", y(last.young) + 14)
+    .attr("dy", "0.32em").attr("font-size", 12).attr("font-weight", 700)
+    .attr("fill", ACCENT).attr("class", "axis-lab").text("18–29");
+
+  // annotations: 2021 and 2024 youth lows
+  const y21 = ys.find(d => d.year === 2021);
+  const y24 = ys.find(d => d.year === 2024);
+  for (const [pt, lab, dxT, dyT] of [
+      [y21, "1.80 — record low", narrow ? -116 : -132, 16],
+      [y24, "1.91 in 2024", narrow ? -34 : 12, narrow ? 30 : 26]]){
+    svg.append("circle")
+      .attr("cx", x(pt.year)).attr("cy", y(pt.young)).attr("r", 5)
+      .attr("fill", "#faf6ef").attr("stroke", ACCENT).attr("stroke-width", 2.4);
+    svg.append("text")
+      .attr("x", x(pt.year) + dxT).attr("y", y(pt.young) + dyT)
+      .attr("font-size", 11.5).attr("font-weight", 700)
+      .attr("fill", ACCENT).attr("class", "axis-lab")
+      .text(lab);
+  }
+
+  // hover
+  svg.append("rect")
+    .attr("x", m.l).attr("y", m.t)
+    .attr("width", w - m.l - m.r).attr("height", h - m.t - m.b)
+    .attr("fill", "transparent")
+    .on("mousemove touchmove", function(ev){
+      const [mx] = d3.pointer(ev, this.ownerSVGElement);
+      const yr = x.invert(mx);
+      const near = d3.least(ys, d => Math.abs(d.year - yr));
+      if (!near){ hideTip(seriesTip); return; }
+      svg.selectAll(".hover-rule").remove();
+      svg.append("line").attr("class", "hover-rule")
+        .attr("x1", x(near.year)).attr("x2", x(near.year))
+        .attr("y1", m.t).attr("y2", h - m.b)
+        .attr("stroke", INK).attr("stroke-opacity", 0.25)
+        .attr("stroke-dasharray", "3 3");
+      const scale = seriesWrap.clientWidth / w;
+      const modeNote = (near.year === 2021 || near.year === 2022)
+        ? "<br><span style='opacity:.75'>push-to-web survey</span>" : "";
+      placeTip(seriesTip, seriesWrap,
+        x(near.year) * scale, y(Math.max(near.young, near.old)) * scale,
+        `<b>${near.year}</b><br>` +
+        `<span style="color:#f0a47e">18–29: <b>${f2(near.young)}</b> · N = ${near.n_young.toLocaleString()}</span><br>` +
+        `<span style="color:#a8c4da">60+: <b>${f2(near.old)}</b> · N = ${near.n_old.toLocaleString()}</span>${modeNote}`);
+    })
+    .on("mouseleave touchend", () => {
+      svg.selectAll(".hover-rule").remove();
+      hideTip(seriesTip);
+    });
+}
+
+/* =========================================================
+   3. SMALL MULTIPLE — % very happy among 18–29, by era
+   ========================================================= */
+const veryWrap = document.getElementById("very-chart");
+
+function drawVery(){
+  clearSvg(veryWrap);
+  const w = Math.max(320, veryWrap.clientWidth);
+  const rows = DATA.era_flip;
+  const rowH = 38, m = { t: 8, r: 60, b: 26, l: w < 480 ? 86 : 110 };
+  const h = m.t + rows.length * rowH + m.b;
+
+  const svg = baseSvg(veryWrap, w, h,
+    "Bar chart of the share of 18 to 29 year olds saying very happy, by era.",
+    "About 28 percent in each era from 1972 to 2014, falling to 20.7 percent in 2015 to 2024.");
+
+  const x = d3.scaleLinear().domain([0, 0.34]).range([m.l, w - m.r]);
+
+  for (const t of [0, 0.1, 0.2, 0.3]){
+    svg.append("line")
+      .attr("x1", x(t)).attr("x2", x(t))
+      .attr("y1", m.t).attr("y2", h - m.b)
+      .attr("stroke", RULE);
+    svg.append("text")
+      .attr("x", x(t)).attr("y", h - m.b + 16)
+      .attr("text-anchor", "middle").attr("font-size", 11).attr("fill", FAINT)
+      .attr("class", "axis-lab").text(Math.round(t * 100) + "%");
+  }
+
+  rows.forEach((r, i) => {
+    const cy = m.t + i * rowH;
+    const isNew = r.era === "2015-2024";
+    svg.append("text")
+      .attr("x", m.l - 10).attr("y", cy + rowH / 2).attr("dy", "0.32em")
+      .attr("text-anchor", "end").attr("font-size", 12.5)
+      .attr("font-weight", isNew ? 700 : 500)
+      .attr("fill", isNew ? ACCENT : "#5c5044").attr("class", "axis-lab")
+      .text(r.era);
+    svg.append("rect")
+      .attr("x", x(0)).attr("y", cy + 7)
+      .attr("width", x(r.young_pct_very) - x(0)).attr("height", rowH - 14)
+      .attr("rx", 3)
+      .attr("fill", isNew ? ACCENT : ERA_COLOR[r.era]);
+    svg.append("text")
+      .attr("x", x(r.young_pct_very) + 7).attr("y", cy + rowH / 2).attr("dy", "0.32em")
+      .attr("font-size", 12.5).attr("font-weight", 700)
+      .attr("fill", isNew ? ACCENT : "#5c5044").attr("class", "axis-lab")
+      .text(fpct(r.young_pct_very));
+  });
+}
+
+/* ---------- boot + resize ---------- */
+buildControls();
+drawProfile();
+drawSeries();
+drawVery();
+
+let rAF = null;
+const ro = new ResizeObserver(() => {
+  if (rAF) cancelAnimationFrame(rAF);
+  rAF = requestAnimationFrame(() => { drawProfile(); drawSeries(); drawVery(); });
+});
+ro.observe(profileWrap);
+</script>
+<!--SL_BOOKNAV_START-->
+<style>
+.slbn{font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;background:#0f1417;border-top:1px solid #27313a;color:#9fb0ba;padding:24px 20px 40px;margin:48px 0 0}
+.slbn-in{max-width:1080px;margin:0 auto;display:flex;align-items:stretch;gap:12px}
+.slbn a{flex:1 1 0;min-width:0;text-decoration:none;color:inherit;border:1px solid #27313a;border-radius:10px;padding:13px 15px;display:flex;flex-direction:column;gap:4px;background:#161d22;transition:border-color .15s,transform .15s}
+.slbn a:hover{border-color:#3fa9a0;transform:translateY(-2px)}
+.slbn a:focus-visible{outline:2px solid #3fa9a0;outline-offset:2px}
+.slbn a.slbn-next{text-align:right;align-items:flex-end}
+.slbn a.slbn-toc{flex:0 0 auto;min-width:120px;justify-content:center;align-items:center;text-align:center}
+.slbn .slbn-dir{font:700 10px/1 inherit;letter-spacing:.13em;text-transform:uppercase;color:#6b7c87}
+.slbn .slbn-ttl{font:700 14px/1.3 inherit;color:#eef2f4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.slbn a.slbn-disabled{opacity:.38;pointer-events:none}
+@media(max-width:640px){.slbn-in{flex-wrap:wrap}.slbn a{flex:1 1 100%}.slbn a.slbn-next{text-align:left;align-items:flex-start}.slbn a.slbn-toc{order:-1}}
+</style>
+<nav class="slbn" aria-label="Book navigation"><div class="slbn-in"><a class="slbn-prev" href="../read.html?ch=despair-felt-and-fatal" target="_top"><span class="slbn-dir">‹ Previous</span><span class="slbn-ttl">Despair, Felt and Fatal</span></a><a class="slbn-toc" href="../index.html#book" target="_top"><span class="slbn-dir">The Scissors</span><span class="slbn-ttl">Chapter 12 / 36</span></a><a class="slbn-next" href="../read.html?ch=the-u-curve-inverts" target="_top"><span class="slbn-dir">Next ›</span><span class="slbn-ttl">The U-Curve Inverts</span></a></div></nav>
+<!--SL_BOOKNAV_END-->
+</body>
+</html>

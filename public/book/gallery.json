@@ -1,0 +1,446 @@
+{
+ "title": "The Scissors",
+ "description": "A data-journalism book in charts. Across fifty years of America and twenty years of the world, an evaluative “upper blade” — how people rate their lives — holds or rises while an experiential “lower blade” — how their days feel, and how connected and hopeful they are — falls and, since 2020, has not recovered. Each chapter is hand-built in D3 from four survey backbones (GSS, Gallup US Daily, Gallup World Poll 2005–2025, and the Integrated EVS–WVS Values Surveys); every figure is computed by a reproducible script and traced in claims.json.",
+ "articles": [
+  {
+   "slug": "the-scissors",
+   "title": "The Scissors",
+   "dek": "Two ways of measuring a life are coming apart: the rating people give it holds or climbs while the daily feel of it sinks. Across the Gallup World Poll, the GSS, and the Values Surveys, the gap between the evaluative and experiential blades keeps widening.",
+   "dataset": "Gallup World Poll 2006–2025 + GSS 1972–2024 + EVS–WVS",
+   "construct": "evaluative vs experiential",
+   "primaryViz": "dual-line divergence",
+   "thumbnailHint": "Two diverging blades — a resilient evaluative line and a falling experiential line — with the widening gap shaded, plus a US echo panel",
+   "path": "/articles/the-scissors/"
+  },
+  {
+   "slug": "plateau-in-the-tail",
+   "title": "The Plateau Is in the Tail, Not the Mean",
+   "dek": "For more than a decade, social science fought over whether money stops buying happiness around $75,000. Re-run the question on 1.8 million Gallup interviews — the same survey the fight began on — and the answer is that everyone was staring at the wrong line.",
+   "dataset": "Gallup US Daily ('Motherlode' extract), 2009–2017 (affect items 2009–2012)",
+   "construct": "evaluative vs experiential",
+   "primaryViz": "quantile-fan",
+   "thumbnailHint": "Income–ladder quantile fan splitting open from the single mean curve; affect satiation small multiples alongside",
+   "path": "/articles/plateau-in-the-tail/"
+  },
+  {
+   "slug": "money-buys-calm-not-joy",
+   "title": "Money Buys Calm, Not Joy",
+   "dek": "Across the income ladder, how people rate their lives climbs steeply while daily enjoyment plateaus above poverty and stress barely moves — what money most clearly buys is freedom from worry.",
+   "dataset": "Gallup US Daily ('Motherlode' extract), 2008–2012",
+   "construct": "evaluative vs experiential",
+   "primaryViz": "relationship",
+   "thumbnailHint": "Paired evaluative-ladder and experiential-affect traces across income, toggling to age",
+   "path": "/articles/money-buys-calm-not-joy/"
+  },
+  {
+   "slug": "income-life-vs-mood",
+   "title": "Money Moves Your Life Rating More Than Your Mood",
+   "dek": "Inside almost every country, richer people both rate their lives higher and feel better day to day — but the life-rating slope is steeper than the mood slope in 96% of countries, and the gap widens with development.",
+   "dataset": "Gallup World Poll, 2005–2020 (155 countries)",
+   "construct": "evaluative vs experiential",
+   "primaryViz": "twin-coefficient-distributions",
+   "thumbnailHint": "Two overlaid distributions of the ~155 country income slopes (life-rating vs mood, standardized), a meta-regression of the premium on development, and a diverging world map",
+   "path": "/articles/income-life-vs-mood/"
+  },
+  {
+   "slug": "the-great-convergence",
+   "title": "The Great Convergence",
+   "dek": "Since 1981 national life satisfaction grew more alike: the post-communist world climbed ~2 points out of its mid-1990s trough (Albania +2.4, Ukraine +2.2) while some wealthy nations slipped, and the cross-country spread fell 49%.",
+   "dataset": "Integrated EVS-WVS (Values Surveys), 1981-2022 (S017)",
+   "construct": "evaluative",
+   "primaryViz": "time-series",
+   "thumbnailHint": "Spaghetti of 56 national trajectories with a post-communist V, plus a catch-up scatter of change vs starting level",
+   "path": "/articles/the-great-convergence/"
+  },
+  {
+   "slug": "the-changing-recipe",
+   "title": "The Changing Recipe of a Good Life",
+   "dek": "Run the same model of life satisfaction in poor and rich countries and the ingredients shift: financial satisfaction’s grip eases, the sense of freedom nearly doubles in weight (0.14→0.27), and the pull of relative income rank fades to zero.",
+   "dataset": "Integrated EVS-WVS (Values Surveys), 1981-2022 (S017)",
+   "construct": "evaluative x domain x autonomy",
+   "primaryViz": "slope",
+   "thumbnailHint": "A four-line coefficient slope chart across World-Bank income tiers, plus a financial-satisfaction gradient steeper in poor countries",
+   "path": "/articles/the-changing-recipe/"
+  },
+  {
+   "slug": "the-freedom-to-be-happy",
+   "title": "The Freedom to Be Happy",
+   "dek": "Across 100+ countries and 40 years of the Values Surveys, the sense of freedom and control over one’s life predicts life satisfaction better than income or health — a within-country coefficient of 0.30, and r=0.77 across 107 national averages.",
+   "dataset": "Integrated EVS-WVS (Values Surveys), 1981-2022 (S017)",
+   "construct": "evaluative x perceived autonomy",
+   "primaryViz": "relationship",
+   "thumbnailHint": "A steep freedom→life-satisfaction gradient, a horse-race coefficient bar, and a 107-country freedom-vs-satisfaction scatter",
+   "path": "/articles/the-freedom-to-be-happy/"
+  },
+  {
+   "slug": "marriage-premium",
+   "title": "Does the Ring Still Matter?",
+   "dek": "For fifty years, married Americans have reported more happiness than everyone else — a gap that has barely budged, and that survives even after you account for who tends to marry.",
+   "dataset": "General Social Survey, 1972–2024 (weight wtssps)",
+   "construct": "evaluative",
+   "primaryViz": "raw-vs-adjusted-premium",
+   "thumbnailHint": "Married-minus-unmarried happiness premium over five decades, with a selection-adjusted shadow line and the shaded gap between them as 'what selection explains'",
+   "path": "/articles/marriage-premium/"
+  },
+  {
+   "slug": "the-mood-that-didnt-lift",
+   "title": "The Mood That Didn't Lift",
+   "dek": "From 2006 to 2025 the world's life-rating climbed back to a record high, but daily negative emotion stayed elevated — and peaked in 2022, not 2020. The recovery reached the ladder, not the day.",
+   "dataset": "Gallup World Poll, 2006–2025 (population-weighted)",
+   "construct": "experiential vs evaluative",
+   "primaryViz": "dual-axis time-series",
+   "thumbnailHint": "Negative-affect components rising over two decades on one axis with the recovering ladder on a second; 2020 and the 2022 peak annotated; region small-multiples",
+   "path": "/articles/the-mood-that-didnt-lift/"
+  },
+  {
+   "slug": "worst-year",
+   "title": "2020 Was Not the End",
+   "dek": "Re-examined across the full 2017–2025 arc, 2020's shock looks different: the world's life-rating recovered past its pre-pandemic baseline (+0.41 ladder points) while daily distress only half receded — and the worst year for negative emotion was 2022, not 2020.",
+   "dataset": "Gallup World Poll, 2017–2025 (115-country fixed panel)",
+   "construct": "evaluative vs experiential",
+   "primaryViz": "trajectory-slope",
+   "thumbnailHint": "Three-point country trajectories (2017–19 baseline → 2020 → 2024–25), ladder/worry toggle, population-weighted world band, distress-peaked-in-2022 marker",
+   "path": "/articles/worst-year/"
+  },
+  {
+   "slug": "despair-felt-and-fatal",
+   "title": "Despair, Felt and Fatal",
+   "dek": "Deaths of despair gave America a mortality map. Buried in 1,769,079 Gallup interviews is the question that map raises: which feeling lives in the places where people die? Not sadness. Not worry. Pain — and a future that looks shorter than the present.",
+   "dataset": "Gallup US Daily ('Motherlode' extract), 2008–2012 + county despair-mortality join (1,341 counties)",
+   "construct": "experiential + evaluative-future",
+   "primaryViz": "bivariate-choropleth",
+   "thumbnailHint": "3×3 bivariate county choropleth of despair mortality × reported pain, with a correlation-ranking dot plot",
+   "path": "/articles/despair-felt-and-fatal/"
+  },
+  {
+   "slug": "young-and-less-happy",
+   "title": "Young and Less Happy",
+   "dek": "In the GSS, happiness has always risen gently with age. Over the past decade the youngest adults fell to a 50-year low — 1.80 in 2021, 1.91 in 2024 — pulling away from everyone else.",
+   "dataset": "General Social Survey, 1972–2024",
+   "construct": "evaluative",
+   "primaryViz": "slope",
+   "thumbnailHint": "Age-profile lines by era, the 2015–24 curve dropping at the young end",
+   "path": "/articles/young-and-less-happy/"
+  },
+  {
+   "slug": "the-u-curve-inverts",
+   "title": "The U-Curve Inverts",
+   "dek": "The midlife dip and old-age rebound was a 20th-century pattern. In the rich world the young have lost their lead: the young-minus-old life-rating gap swung from +0.46 to −0.06 as the young fell and the old held.",
+   "dataset": "Gallup World Poll 2010–2025 + GSS",
+   "construct": "evaluative",
+   "primaryViz": "age-profile lines",
+   "thumbnailHint": "Early-vs-recent age profiles for the rich world showing the youthful peak collapsing to meet the oldest band, with world-vs-rich small multiples",
+   "path": "/articles/the-u-curve-inverts/"
+  },
+  {
+   "slug": "global-ageing-and-happiness",
+   "title": "The Two Clocks of Growing Old",
+   "dek": "As people age worldwide, the mind's agitations fall — stress peaks in midlife and anger hits a lifetime low by 65+ — while pain (18%→47%), sadness and health limits climb. Whether old-age worry eases or deepens is sorted by money: 0.31 in rich countries vs 0.47 in poor.",
+   "dataset": "Gallup World Poll, 2005–2020 (165 countries, 2.28M interviews)",
+   "construct": "experiential vs evaluative",
+   "primaryViz": "relationship",
+   "thumbnailHint": "Age-profile lines of daily feelings (stress/anger falling, pain/sadness rising) plus a worry-by-income crossover",
+   "path": "/articles/global-ageing-and-happiness/"
+  },
+  {
+   "slug": "long-retreat-of-trust",
+   "title": "The Long Retreat of Trust",
+   "dek": "The share of Americans who say most people can be trusted has nearly halved since 1972 — 47% to 25% — while the durable happiness gap between trusters and the wary held firm.",
+   "dataset": "General Social Survey, 1972–2024",
+   "construct": "social × evaluative",
+   "primaryViz": "time-series",
+   "thumbnailHint": "Long declining trust line with a linked happiness-premium ledger",
+   "path": "/articles/long-retreat-of-trust/"
+  },
+  {
+   "slug": "fifty-years-of-evenings",
+   "title": "Fifty Years of American Evenings",
+   "dek": "Since 1974 the General Social Survey has asked the same four questions: how often do you spend an evening with relatives, with friends, with neighbors, at a bar? The company thinned. The glow stayed. And the people who still gather now look happier, relative to those who don’t, than they did when the asking began.",
+   "dataset": "General Social Survey, 1974–2024 (weight wtssps)",
+   "construct": "social behavior × evaluative",
+   "primaryViz": "streamgraph",
+   "thumbnailHint": "Dusk-toned streamgraph of evenings-in-company over five decades with screen-time backdrop and happiness-gradient ribbons",
+   "path": "/articles/fifty-years-of-evenings/"
+  },
+  {
+   "slug": "someone-to-count-on",
+   "title": "Someone to Count On",
+   "dek": "Having someone to count on is worth about 1.5 ladder points — one of the largest gaps in well-being — and a generous welfare state, far from substituting for it, makes that private safety net matter more, not less.",
+   "dataset": "Gallup World Poll, 2005–2020 (155 countries)",
+   "construct": "evaluative vs experiential",
+   "primaryViz": "two-construct-meta-regression",
+   "thumbnailHint": "Two side-by-side meta-regressions of each country's social-support premium against national health spending — the evaluative life-rating premium sloping up, the experiential distress buffer deepening — with a world choropleth",
+   "path": "/articles/someone-to-count-on/"
+  },
+  {
+   "slug": "the-pew-not-the-prayer",
+   "title": "The Pew, Not the Prayer",
+   "dek": "Religion is good for happiness — but it's the showing up, not the believing, that does the work: attendance carries roughly twice the happiness of private prayer or belief, and survives when both are entered together.",
+   "dataset": "General Social Survey, 1972–2024 (weight wtssps)",
+   "construct": "social behavior vs private belief × evaluative",
+   "primaryViz": "horse-race-decomposition",
+   "thumbnailHint": "A shared happiness-vs-frequency frame with the attendance (social) gradient climbing steeply while prayer/belief (private) stays flat, plus an alone-vs-together coefficient panel and a within-health-band check",
+   "path": "/articles/the-pew-not-the-prayer/"
+  },
+  {
+   "slug": "losing-my-religion",
+   "title": "Losing My Religion",
+   "dek": "Americans leave the faith they were raised in at four times the rate they did fifty years ago — and what that costs in happiness depends less on where you started than on where you stand now.",
+   "dataset": "General Social Survey, 1972–2022 (weight wtssps)",
+   "construct": "religious trajectory × evaluative",
+   "primaryViz": "religious-trajectory-flow",
+   "thumbnailHint": "A raised-at-16 → now flow with four crossing ribbons (stable-religious, convert, leaver, stable-none) whose thickness and labels encode happiness and share, plus the rise of leaving and the narrowing penalty over time",
+   "path": "/articles/losing-my-religion/"
+  },
+  {
+   "slug": "does-generosity-pay",
+   "title": "Does Generosity Pay — Everywhere?",
+   "dek": "Across 155 countries, people who give — money, time, or a hand to a stranger — rate their lives higher and feel better day to day; the link holds in rich countries and poor ones alike, and is strongest for giving money.",
+   "dataset": "Gallup World Poll, 2005–2020 (155 countries)",
+   "construct": "evaluative vs experiential",
+   "primaryViz": "sorted-dot-and-interval",
+   "thumbnailHint": "Sorted forest plot of each country's giving premium with confidence whiskers, dots colored by income group, three prosocial acts toggleable, and the population-weighted world band highlighted",
+   "path": "/articles/does-generosity-pay/"
+  },
+  {
+   "slug": "alone",
+   "title": "Alone",
+   "dek": "Half a century of GSS data traces a quiet, broad withdrawal from in-person life — neighbors most of all — and the steep happiness gap that separates the connected from the isolated.",
+   "dataset": "General Social Survey, 1974–2024",
+   "construct": "social behavior × evaluative",
+   "primaryViz": "small-multiples + gradient",
+   "thumbnailHint": "Four venues of in-person socializing declining since 1974 with a young-adult toggle, paired with the very-happy gradient by connection and the 2018 loneliness gap",
+   "path": "/articles/alone/"
+  },
+  {
+   "slug": "out-of-reach",
+   "title": "Out of Reach — When the American Dream Stopped Feeling Possible",
+   "dek": "The belief that the system gives you a fair shot has quietly collapsed — agreement fell from 78% in 2000 to 45% in 2024 — and that belief is worth real happiness.",
+   "dataset": "General Social Survey, 1987–2024 (weight wtssps)",
+   "construct": "eudaimonic × evaluative",
+   "primaryViz": "belief-erosion-with-objective-counterpoint",
+   "thumbnailHint": "GSS mobility-belief optimism shares declining over time with confidence bands, Chetty's objective absolute-mobility-by-cohort curve overlaid on its own labeled axis, plus a happiness-by-belief gradient",
+   "path": "/articles/out-of-reach/"
+  },
+  {
+   "slug": "the-optimism-gap",
+   "title": "The Optimism Gap",
+   "dek": "Americans disagree enormously about how much better their lives will get — and the least hopeful group is the white working class, not the poor of color.",
+   "dataset": "Gallup US Daily, 2008–2017 (unweighted)",
+   "construct": "expectation vs evaluative",
+   "primaryViz": "optimism-plane",
+   "thumbnailHint": "Current vs expected-future ladder for each race-by-income group against a bold 45-degree no-change diagonal; white groups hug the line, Black groups float far above it — height above the diagonal is optimism",
+   "path": "/articles/the-optimism-gap/"
+  },
+  {
+   "slug": "the-satisfaction-treadmill",
+   "title": "The Satisfaction Treadmill",
+   "dek": "Real family incomes rose about a third from 1972 to 2022, but Americans' satisfaction with their finances never followed — the share 'pretty well satisfied' fell from 33% to 23%, and beneath the flat average the top and bottom thirds pulled apart from 0.43 to 0.62 points.",
+   "dataset": "General Social Survey, 1972-2024 (wtssps)",
+   "construct": "domain satisfaction (vs evaluative)",
+   "primaryViz": "time-series",
+   "thumbnailHint": "Dual-axis decoupling: a rising income index against a flat satisfaction line with recession bands, plus a diverging top/bottom-third wedge",
+   "path": "/articles/the-satisfaction-treadmill/"
+  },
+  {
+   "slug": "flip-counties-felt-it-first",
+   "title": "The Flip Counties Felt It First",
+   "dek": "In the 223 counties that voted for Barack Obama in 2012 and Donald Trump in 2016, people rated their day-to-day lives almost exactly like residents of similar counties that never flipped. What sagged, years before any ballots were cast, was the future.",
+   "dataset": "Gallup US Daily ('Motherlode' extract), 2008–2016 (2017 coda) + MIT/MEDSL county election join",
+   "construct": "evaluative + expectation (future ladder, standard-of-living trajectory)",
+   "primaryViz": "paired-trajectories",
+   "thumbnailHint": "Stacked twin time panels — parallel ladder lines above, sagging hope-gap lines below — with a flip-county map inset",
+   "path": "/articles/flip-counties-felt-it-first/"
+  },
+  {
+   "slug": "feeling-behind",
+   "title": "Feeling Behind",
+   "dek": "Financial satisfaction tracks where Americans think they rank more than the dollars they actually have: the perceived-rank gradient spans a full point and saturates at the top, and adding rank to a model collapses the income effect by about 61%.",
+   "dataset": "General Social Survey, 1972-2024 (wtssps)",
+   "construct": "domain satisfaction x relative position",
+   "primaryViz": "heatmap",
+   "thumbnailHint": "A 3x5 income-third by perceived-rank heatmap (climbs across, flat down) with a dual-gradient hook and a horse-race coefficient plot",
+   "path": "/articles/feeling-behind/"
+  },
+  {
+   "slug": "keeping-up-with-the-county",
+   "title": "Keeping Up With the County",
+   "dek": "Take two Americans on the same paycheck and drop one in a richer county — the comparison drags down the middle, barely touches the rich, and slightly lifts the poor.",
+   "dataset": "Gallup US Daily, 2008–2017 (unweighted) + county income context",
+   "construct": "evaluative",
+   "primaryViz": "conditioning-slopes",
+   "thumbnailHint": "Three own-income lines of mean ladder across county-income deciles whose slopes disagree — the middle tilts down (comparison), the poor tilt up (amenity) — with an income/inequality moderator toggle and a controlled-coefficient forest",
+   "path": "/articles/keeping-up-with-the-county/"
+  },
+  {
+   "slug": "geography-of-american-thriving",
+   "title": "The Geography of American Thriving",
+   "dek": "Across 2.46 million interviews, the share of Americans 'thriving' in how they rate their lives spans about 19 points between states — and at the county level it tracks income, rurality, and deaths of despair.",
+   "dataset": "Gallup US Daily ('Motherlode' extract), 2008–2017",
+   "construct": "evaluative",
+   "primaryViz": "choropleth",
+   "thumbnailHint": "US state→county choropleth of the thriving share, with a linked county scatter",
+   "path": "/articles/geography-of-american-thriving/"
+  },
+  {
+   "slug": "happiness-moved-inside-borders",
+   "title": "Happiness Moved Inside Borders",
+   "dek": "From 2006 to 2019 the world grew happier and nations grew more alike — but inside 39 of 42 countries, the distance between the happiest and unhappiest citizens widened.",
+   "dataset": "Gallup World Poll, 2006–2019 (42-country balanced panel)",
+   "construct": "evaluative",
+   "primaryViz": "distribution",
+   "thumbnailHint": "Ridgeline of the population-weighted ladder distribution widening over time",
+   "path": "/articles/happiness-moved-inside-borders/"
+  },
+  {
+   "slug": "black-white-two-measures",
+   "title": "Lower on the Ladder, Lighter in the Day",
+   "dek": "Ask whether Black or white Americans are happier and the honest answer is: by which measure? They rate their current lives slightly lower, yet report calmer days — less worry and less stress — at every income level, and most among the affluent.",
+   "dataset": "GSS 1972–2024 (wtssps) + Gallup US Daily 2008–2017 (unweighted)",
+   "construct": "evaluative vs experiential",
+   "primaryViz": "diverging-measures-panel",
+   "thumbnailHint": "A zero-centered panel of the Black-minus-white gap on each well-being measure, grouped into how-they-rate-their-lives vs how-their-days-feel, the two blocks leaning opposite ways; plus the calm gap by income and the 50-year GSS convergence",
+   "path": "/articles/black-white-two-measures/"
+  },
+  {
+   "slug": "gender-gap-two-ways",
+   "title": "The Gender Well-Being Paradox, Measured Two Ways",
+   "dek": "Across 155 countries, women rate their lives at least as high as men in nine of every ten places — yet report more daily worry, sadness, and stress. Two gender gaps, pointing opposite ways.",
+   "dataset": "Gallup World Poll, 2005–2020 (155 countries)",
+   "construct": "evaluative vs experiential",
+   "primaryViz": "back-to-back-distributions",
+   "thumbnailHint": "Two opposing coefficient distributions (the evaluative gap near zero, the affect gap clearly positive), each with a Gender-Inequality-Index gradient, plus a diverging world map",
+   "path": "/articles/gender-gap-two-ways/"
+  },
+  {
+   "slug": "out-of-place",
+   "title": "Out of Place — The Geography of the LGBT Well-Being Gap",
+   "dek": "Daily distress runs high for LGBT Americans everywhere, but how poorly they rate their lives widens where the county climate turns hostile — and in those same places, fewer people say they are LGBT at all, so the widening gap is a lower bound.",
+   "dataset": "Gallup US Daily, 2012–2017 (unweighted) + county/state context",
+   "construct": "evaluative vs experiential",
+   "primaryViz": "two-construct-climate-gradient + state map",
+   "thumbnailHint": "Two stacked gap curves across a county structural-stigma index — the evaluative ladder gap sloping away from zero while the experiential gaps stay flat and high — with a falling LGBT-identification line, plus a state-level gap choropleth",
+   "path": "/articles/out-of-place/"
+  },
+  {
+   "slug": "feeling-rich-being-rich",
+   "title": "Feeling Rich Is Not the Same as Being Rich",
+   "dek": "Money buys the feeling of enough everywhere and never stops — but Central Asia feels richer than its GDP, southern Africa poorer, and the countries that rate their lives best are not the ones that feel paid.",
+   "dataset": "Gallup World Poll, 2016–2020 (147–150 countries; enough_money coda 2013–15)",
+   "construct": "felt adequacy (domain perception) vs evaluative",
+   "primaryViz": "annotated-scatter",
+   "thumbnailHint": "Felt-adequacy vs log-GNI scatter with named over- and under-performing countries, plus quintile-gradient small multiples by income group",
+   "path": "/articles/feeling-rich-being-rich/"
+  },
+  {
+   "slug": "faith-where-its-normative",
+   "title": "Faith Pays Off Where Faith Is the Norm",
+   "dek": "Being religious lifts your life rating only a little — and no more in devout societies than secular ones — but faith's experiential dividends, less daily distress and more felt support, swell sharply where religion is the social norm.",
+   "dataset": "Gallup World Poll, 2005–2020 (153 countries)",
+   "construct": "evaluative + experiential + social",
+   "primaryViz": "meta-regression-scatter",
+   "thumbnailHint": "Each country's within-country religiosity premium plotted against the national religiosity norm, with a coefficient distribution showing secular-country negatives and a diverging world map",
+   "path": "/articles/faith-where-its-normative/"
+  },
+  {
+   "slug": "whose-america-is-thriving",
+   "title": "Whose America Is Thriving? Whoever Just Won",
+   "dek": "Across a decade of daily interviews, Americans rated their own lives higher when their party held the White House — and the partisan gap flipped sign at each handover. Both sides do it; it is the winning that moves the mood.",
+   "dataset": "Gallup US Daily, 2008–2017 (unweighted)",
+   "construct": "evaluative",
+   "primaryViz": "power-banded-timeline",
+   "thumbnailHint": "Two partisan ladder lines over 2008–2017 with White-House-control bands behind them and a Republican-minus-Democrat gap ribbon that flips color at the 2009 and 2017 inaugurations",
+   "path": "/articles/whose-america-is-thriving/"
+  },
+  {
+   "slug": "closing-the-scissors",
+   "title": "Closing the Scissors",
+   "dek": "What actually lifts a life? Run the horse race across the GSS, Gallup World, and the Values Surveys and the same answer recurs: perceived freedom, health, and connection rival or beat income — and income barely touches the daily-emotion blade at all.",
+   "dataset": "GSS + Gallup World Poll + EVS–WVS",
+   "construct": "evaluative vs experiential",
+   "primaryViz": "coefficient forest",
+   "thumbnailHint": "Per-dataset standardized-coefficient forest plots, evaluative and experiential columns, freedom and connection highlighted against income",
+   "path": "/articles/closing-the-scissors/"
+  },
+  {
+   "slug": "community-and-the-isolated",
+   "title": "Does Community Substitute for Connection?",
+   "dek": "Fifty years of social-capital theory promised that civic-rich places would matter most for people with the thinnest personal ties — or, in the rival telling, least. In 921,639 Gallup interviews, the answer is sharper than either story: the gap barely moves at all.",
+   "dataset": "Gallup US Daily ('Motherlode' extract), 2008–2012 + JEC county social-capital index",
+   "construct": "evaluative (experiential placebo)",
+   "primaryViz": "gap-ribbon",
+   "thumbnailHint": "Two thick lines (connected vs isolated) across county social-capital deciles with the gap ribbon as protagonist",
+   "path": "/articles/community-and-the-isolated/"
+  },
+  {
+   "slug": "female-happiness-paradox",
+   "title": "The Paradox That Didn't Hold",
+   "dek": "In the 1970s American women called themselves happier than men. A famous study watched that lead vanish — extend the data eighteen more years and the decline doesn't continue, it dissolves into noise.",
+   "dataset": "General Social Survey, 1972–2024 (weight wtssps)",
+   "construct": "evaluative",
+   "primaryViz": "diverging-gap",
+   "thumbnailHint": "Zero-centered women-minus-men happiness gap over time with a bootstrap band, the S&W 2006 endpoint marked, and life-stage small multiples",
+   "path": "/articles/female-happiness-paradox/"
+  },
+  {
+   "slug": "religion-conditional-dividend",
+   "title": "Religion's Conditional Dividend",
+   "dek": "Across 143 countries, faith tracks higher life evaluation and better days — but mainly where life is hard. As nations grow richer and safer, the religious advantage bends toward zero.",
+   "dataset": "Gallup World Poll, 2009–2019 (143 countries)",
+   "construct": "evaluative vs experiential",
+   "primaryViz": "gap-vs-condition-scatter",
+   "thumbnailHint": "Zero-centered religious-minus-non-religious happiness gap per country plotted against national HDI, with a fitted curve bending toward zero in rich nations, region-colored",
+   "path": "/articles/religion-conditional-dividend/"
+  },
+  {
+   "slug": "the-post-communist-mood",
+   "title": "The Post-Communist Mood",
+   "dek": "After 1989, life satisfaction across the former Eastern bloc collapsed to a 1999 trough (~5.7), then recovered and converged toward the West — the cross-country spread shrank as Romania (+1.6) and the Baltics climbed.",
+   "dataset": "European Values Study (EVS), 1981–2017",
+   "construct": "evaluative",
+   "primaryViz": "trajectory + convergence scatter",
+   "thumbnailHint": "National life-satisfaction trajectories 1981–2017, post-communist V-shape vs flat West, plus a 1990-level-vs-change catch-up scatter",
+   "path": "/articles/the-post-communist-mood/"
+  },
+  {
+   "slug": "left-right-and-content",
+   "title": "Left, Right, and Content",
+   "dek": "Across Europe, the further right people place themselves, the more satisfied with life they report — a clean gradient from 6.85 (far left) to 7.42 (far right), and it survives adjustment for who sits where.",
+   "dataset": "European Values Study (EVS), 1981–2017",
+   "construct": "evaluative",
+   "primaryViz": "political gradient + country-gap forest",
+   "thumbnailHint": "Life-satisfaction rising across the 1–10 left–right scale, a sorted country forest of the right-minus-left gap, and a weak inequality moderator",
+   "path": "/articles/left-right-and-content/"
+  },
+  {
+   "slug": "the-autonomy-engine",
+   "title": "The Autonomy Engine",
+   "dek": "The feeling of freedom and control over your own life is Europe's strongest correlate of life satisfaction — stronger than health — positive in almost every country, and it rose most in the post-communist East.",
+   "dataset": "European Values Study (EVS), 1981–2017",
+   "construct": "evaluative × perceived autonomy",
+   "primaryViz": "per-country coefficient beeswarm (the engine)",
+   "thumbnailHint": "Within-country freedom→satisfaction coefficients for ~37 countries as a beeswarm, the steep freedom gradient, a freedom-vs-health horse race, and freedom's rise in the East",
+   "path": "/articles/the-autonomy-engine/"
+  },
+  {
+   "slug": "the-family-premium-in-europe",
+   "title": "The Family Premium in Secular Europe",
+   "dek": "In secular, low-fertility Europe marriage still carries a clear life-satisfaction premium (married 7.25 vs widowed 6.31) — but having children does not: the satisfaction line stays flat from zero kids to four.",
+   "dataset": "European Values Study (EVS), 1981–2017",
+   "construct": "evaluative",
+   "primaryViz": "marriage premium vs the flat children line",
+   "thumbnailHint": "Married-vs-unmarried premium by country beside a deliberately flat life-satisfaction-by-number-of-children line — marriage moves it, children don't",
+   "path": "/articles/the-family-premium-in-europe/"
+  },
+  {
+   "slug": "map-of-european-contentment",
+   "title": "The Map of European Contentment",
+   "dek": "A 2017 map of European life satisfaction: a Nordic and Alpine peak (Switzerland 8.0, Norway 8.0, Finland 7.9) above a still-lagging East (Ukraine and Bulgaria 6.2) — and the same geography largely repeats for freedom and health.",
+   "dataset": "European Values Study (EVS), 2017 wave",
+   "construct": "evaluative",
+   "primaryViz": "Europe choropleth + component small-multiples",
+   "thumbnailHint": "A sequential-scale Europe choropleth of life satisfaction with small-multiple maps of perceived freedom, health, and happiness, plus a ranked bar",
+   "path": "/articles/map-of-european-contentment/"
+  }
+ ]
+}

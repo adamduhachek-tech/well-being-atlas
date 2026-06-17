@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Happiness Moved Inside Borders</title>
+<meta name="description" content="Gallup World Poll, 2006–2019: the world got happier and nations grew more alike, while the gap between each country's happiest and unhappiest people widened.">
+<style>
+  :root{
+    --bg:#0e1320;
+    --panel:#161d30;
+    --panel-edge:#26304a;
+    --ink:#e9e6dc;
+    --ink-dim:#b3b0a4;
+    --ink-faint:#7e7c72;
+    --hairline:#2a3350;
+    --accent-hi:#c2df23;   /* viridis ~0.88 : within / late years */
+    --accent-lo:#3a6c8e;   /* viridis ~0.42 : between / early years */
+    --sand:#d8d2bf;
+    --maxw:760px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:var(--bg);
+    background-image:
+      linear-gradient(var(--hairline) 1px, transparent 1px),
+      linear-gradient(90deg, var(--hairline) 1px, transparent 1px);
+    background-size:64px 64px;
+    background-attachment:fixed;
+    color:var(--ink);
+    font:18px/1.65 Georgia, "Iowan Old Style", "Times New Roman", serif;
+    overflow-x:hidden;
+  }
+  body::before{
+    content:"";
+    position:fixed; inset:0; pointer-events:none;
+    background:radial-gradient(ellipse 120% 90% at 50% 0%, rgba(14,19,32,0) 30%, rgba(14,19,32,.92) 100%);
+  }
+  .skip{
+    position:absolute; left:-9999px; top:0;
+    background:var(--accent-hi); color:#10131c; padding:.5em 1em; z-index:10; font-family:inherit;
+  }
+  .skip:focus{left:8px; top:8px}
+  header, main, footer{position:relative; z-index:1}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 20px}
+  header{padding:72px 0 8px}
+  .kicker{
+    font:700 12px/1 "Helvetica Neue", Arial, sans-serif;
+    letter-spacing:.24em; text-transform:uppercase; color:var(--accent-hi);
+  }
+  h1{
+    font-size:clamp(34px, 6.5vw, 56px);
+    line-height:1.06; margin:.35em 0 .25em; font-weight:700; letter-spacing:-.01em;
+  }
+  .dek{font-size:clamp(19px,2.6vw,23px); line-height:1.45; color:var(--ink-dim); font-style:italic; margin:0 0 18px}
+  .byline{
+    font:400 13px/1.6 "Helvetica Neue", Arial, sans-serif;
+    color:var(--ink-faint); border-top:1px solid var(--panel-edge); padding-top:12px;
+  }
+  h2{
+    font-size:clamp(24px,3.6vw,31px); line-height:1.2; margin:2.2em 0 .5em; letter-spacing:-.005em;
+  }
+  p{margin:0 0 1.1em}
+  a{color:var(--accent-hi); text-decoration-color:rgba(194,223,35,.4); text-underline-offset:3px}
+  a:focus-visible, button:focus-visible, input:focus-visible{outline:2px solid var(--accent-hi); outline-offset:2px}
+  strong{color:#fff}
+  em{color:inherit}
+
+  .statrow{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:26px 0 6px;
+  }
+  .stat{
+    background:var(--panel); border:1px solid var(--panel-edge); border-radius:10px; padding:14px 14px 12px;
+  }
+  .stat .lab{font:700 10.5px/1.35 "Helvetica Neue", Arial, sans-serif; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint)}
+  .stat .val{font-size:clamp(18px,3vw,26px); font-weight:700; margin-top:6px; line-height:1.15}
+  .stat .sub{font:400 12px/1.4 "Helvetica Neue", Arial, sans-serif; color:var(--ink-dim); margin-top:4px}
+  .stat.up .val{color:var(--accent-hi)}
+  .stat.down .val{color:#7fb2d4}
+  .stat.mean .val{color:var(--sand)}
+  @media(max-width:520px){
+    .statrow{grid-template-columns:1fr; gap:8px}
+    .stat{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap}
+    .stat .lab{flex-basis:100%}
+  }
+
+  figure{margin:34px 0; }
+  .fig{
+    background:var(--panel); border:1px solid var(--panel-edge); border-radius:14px;
+    padding:18px 18px 14px; box-shadow:0 18px 50px -28px rgba(0,0,0,.8);
+  }
+  .figtitle{font:700 16px/1.35 "Helvetica Neue", Arial, sans-serif; margin:0 0 2px; color:#fff}
+  .figsub{font:400 13px/1.5 "Helvetica Neue", Arial, sans-serif; color:var(--ink-dim); margin:0 0 12px}
+  figcaption{font:400 12.5px/1.55 "Helvetica Neue", Arial, sans-serif; color:var(--ink-faint); margin-top:10px}
+  .chart svg{display:block; width:100%; height:auto}
+
+  .controls{
+    display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+    font:400 13px/1.4 "Helvetica Neue", Arial, sans-serif; margin:6px 0 10px;
+  }
+  button.play{
+    font:700 12px/1 "Helvetica Neue", Arial, sans-serif; letter-spacing:.06em;
+    background:transparent; color:var(--accent-hi); border:1.5px solid var(--accent-hi);
+    border-radius:999px; padding:8px 16px; cursor:pointer;
+  }
+  button.play:hover{background:rgba(194,223,35,.12)}
+  input[type=range]{
+    flex:1 1 140px; min-width:120px; accent-color:var(--accent-hi); cursor:pointer; height:22px;
+  }
+  .yearbig{font:700 18px/1 "Helvetica Neue", Arial, sans-serif; color:#fff; min-width:52px; font-variant-numeric:tabular-nums}
+  .readout{
+    font:400 13px/1.6 "Helvetica Neue", Arial, sans-serif; color:var(--ink-dim);
+    border-top:1px dashed var(--hairline); padding-top:8px; margin-top:2px; min-height:3em;
+  }
+  .readout b{color:#fff; font-variant-numeric:tabular-nums}
+  .readout .chip{display:inline-block; width:9px; height:9px; border-radius:2px; margin-right:5px; vertical-align:baseline}
+
+  .decomp{margin-top:16px}
+  .decomp .dlab{font:400 13px/1.5 "Helvetica Neue", Arial, sans-serif; color:var(--ink-dim); margin-bottom:7px}
+  .decomp .dlab b{color:#fff}
+  .bar{
+    display:flex; height:42px; border-radius:8px; overflow:hidden; border:1px solid var(--panel-edge);
+  }
+  .bar .seg{
+    display:flex; align-items:center; justify-content:center;
+    font:700 13px/1 "Helvetica Neue", Arial, sans-serif; white-space:nowrap; overflow:hidden;
+    transition:width .55s cubic-bezier(.4,0,.2,1);
+  }
+  .bar .within{background:var(--accent-hi); color:#161a10}
+  .bar .between{background:var(--accent-lo); color:#eaf2f7}
+  .barkey{display:flex; justify-content:space-between; font:400 11.5px/1.5 "Helvetica Neue", Arial, sans-serif; color:var(--ink-faint); margin-top:5px}
+
+  .duo{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+  @media(max-width:560px){.duo{grid-template-columns:1fr}}
+  .duo .panelt{font:700 13px/1.3 "Helvetica Neue", Arial, sans-serif; color:#fff; margin:0 0 4px}
+  .legend{display:flex; gap:18px; font:400 12.5px/1.4 "Helvetica Neue", Arial, sans-serif; color:var(--ink-dim); margin:2px 0 10px; flex-wrap:wrap}
+  .legend .sw{display:inline-block; width:18px; height:10px; border-radius:2px; margin-right:6px; vertical-align:-1px}
+
+  .note{
+    border-left:3px solid var(--accent-lo); padding:4px 0 4px 18px; margin:1.6em 0; color:var(--ink-dim);
+  }
+  footer{
+    margin-top:70px; border-top:1px solid var(--panel-edge);
+    background:rgba(10,14,24,.65); padding:42px 0 80px;
+    font:400 14px/1.7 "Helvetica Neue", Arial, sans-serif; color:var(--ink-dim);
+  }
+  footer h2{font-family:Georgia, serif; font-size:22px; margin-top:0; color:var(--ink)}
+  footer ul{padding-left:20px; margin:0 0 1em}
+  footer li{margin-bottom:.65em}
+  .ridgehit{cursor:pointer}
+  @media (prefers-reduced-motion: reduce){
+    .bar .seg{transition:none}
+    html{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to article</a>
+
+<header>
+  <div class="wrap">
+    <p class="kicker">An Atlas of Feeling · The Distribution</p>
+    <h1>Happiness Moved Inside Borders</h1>
+    <p class="dek">Between 2006 and 2019 the world got happier, and nations grew more alike — yet inside almost every country in the panel, 39 of 42, the distance between the happiest and unhappiest citizens widened.</p>
+    <p class="byline">Source: Gallup World Poll, Cantril ladder (0–10) · Fixed balanced panel of 42 countries, 2006–2019 · Population-weighted · <a href="#notes">Notes &amp; data</a></p>
+  </div>
+</header>
+
+<main id="main">
+  <div class="wrap">
+
+    <p>Ask people to place their lives on a ladder — zero the worst life they can imagine, ten the best — and for most of the modern history of this question, the obvious story was geographic. Rich countries clustered high, poor countries clustered low, and the great gulf in human well-being ran <em>between</em> nations. Fourteen years of Gallup World Poll data, tracked through a fixed panel of 42 countries surveyed every single year from 2006 to 2019, show that gulf quietly changing its address.</p>
+
+    <p>Three things happened at once. The population-weighted world average climbed from <strong>4.96 to 5.43</strong> — the world, on this measure, got happier. The spread <em>between</em> countries' averages narrowed, from a population-weighted standard deviation of <strong>0.89 to 0.70</strong>: nations converged. And the spread <em>within</em> countries — the typical distance of a citizen's answer from their own national average — widened from <strong>1.92 to 2.37</strong> ladder points, a rise of about <strong>24%</strong>. Nor is that an artifact of a few big movers: on a robust three-year-average basis, comparing 2006–08 with 2017–19, within-country dispersion rose in <strong>39 of the 42</strong> panel countries. The salient divide in how life feels stopped being a matter of which country you live in and became, increasingly, a matter of who you are inside it.</p>
+
+    <div class="statrow" role="group" aria-label="Headline figures, 2006 to 2019">
+      <div class="stat up">
+        <div class="lab">Within countries</div>
+        <div class="val">1.92 → 2.37</div>
+        <div class="sub">Mean ladder SD inside countries, +24%</div>
+      </div>
+      <div class="stat down">
+        <div class="lab">Between countries</div>
+        <div class="val">0.89 → 0.70</div>
+        <div class="sub">SD of country averages — nations converged</div>
+      </div>
+      <div class="stat mean">
+        <div class="lab">World average</div>
+        <div class="val">4.96 → 5.43</div>
+        <div class="sub">Population-weighted mean ladder score</div>
+      </div>
+    </div>
+
+    <h2>Watch the middle thin and the edges fill</h2>
+
+    <p>Averages hide this story completely; the shape of the distribution tells it. Below is the population-weighted distribution of ladder answers across the 42-country panel — what share of people stood on each rung, year by year. In 2006 humanity piled up in the middle rungs. By 2019 the pile is flatter: the middle has thinned and both edges have filled in, the very bottom rung and the very top rung most of all. The world's center of gravity drifted up the ladder even as its tails fattened.</p>
+
+    <figure>
+      <div class="fig">
+        <p class="figtitle">Where the world stood on the ladder, 2006 → 2019</p>
+        <p class="figsub">Share of people at each rung (0 = worst possible life, 10 = best), population-weighted across the 42-country panel. Tick on each baseline marks that year's distribution mean.</p>
+        <div class="controls">
+          <button class="play" id="ridgePlay" aria-label="Play animation through years">▶ Play</button>
+          <span class="yearbig" id="ridgeYearLab">2006</span>
+          <input type="range" id="ridgeSlider" min="0" max="13" step="1" value="0" aria-label="Select year, 2006 to 2019">
+        </div>
+        <div class="chart" id="ridgeChart"></div>
+        <div class="readout" id="ridgeReadout" aria-live="polite"></div>
+        <figcaption>Hover, tap, or use the slider to highlight a year. Each curve is one year's distribution of answers; curves overlap to make the change in shape easy to compare.</figcaption>
+      </div>
+    </figure>
+
+    <h2>Two kinds of inequality, moving in opposite directions</h2>
+
+    <p>Put the two dispersions on the same axis — both are in ladder points, so they are directly comparable — and the scissors open. Within-country dispersion climbs; between-country dispersion sinks. The series is honest-to-goodness survey data and it is noisy: 2006 itself sits a little high, and the line wobbles year to year. The robust signal is not any single step but the level shift — within-country dispersion sat around 1.8–1.9 through 2006–2010 and around 2.3–2.4 by 2018–2019. Treat the trend, not the jitter, as the finding.</p>
+
+    <figure>
+      <div class="fig">
+        <p class="figtitle">The scissors: dispersion within vs. between countries</p>
+        <p class="figsub">Standard deviation of ladder scores, 2006–2019, population-weighted across the 42-country panel.</p>
+        <div class="legend" aria-hidden="true">
+          <span><span class="sw" style="background:var(--accent-hi)"></span>Within countries (mean of country SDs)</span>
+          <span><span class="sw" style="background:var(--accent-lo)"></span>Between countries (SD of country means)</span>
+          <span><span class="sw" style="background:var(--sand); height:3px; vertical-align:3px"></span>World mean (lower panel)</span>
+        </div>
+        <div class="chart" id="scissorChart"></div>
+        <div class="readout" id="scissorReadout" aria-live="polite"></div>
+
+        <div class="decomp" id="decomp">
+          <p class="dlab">Of all the variation in how people rate their lives, the share found <b>inside</b> countries rather than between them — <b id="decompYear">2019</b>:</p>
+          <div class="bar" role="img" id="decompBar" aria-label="Variance decomposition bar: share of total ladder variance within countries versus between countries, updating by year">
+            <div class="seg within" id="segWithin" style="width:88%">—</div>
+            <div class="seg between" id="segBetween" style="width:12%">—</div>
+          </div>
+          <div class="barkey"><span>← within countries</span><span>between countries →</span></div>
+        </div>
+        <figcaption>Hover or tap the chart to read any year; the decomposition bar follows. Variance shares are computed from the squared dispersions (within-SD² and between-SD²).</figcaption>
+      </div>
+    </figure>
+
+    <p>The decomposition makes the headline literal. Square the dispersions and you can ask: of the total variation in life evaluations across this panel, how much lives inside countries versus between them? Already in 2006 most of it sat inside borders — but by 2019 the within-country share had grown further while the between-country share shrank, in both absolute and relative terms. If you wanted to predict how someone rates their life, knowing their country told you less in 2019 than it did in 2006; knowing their position within their country told you more.</p>
+
+    <h2>Two countries, one pattern</h2>
+
+    <p>The aggregate ridgeline can feel abstract, so here are the two heaviest weights in the panel, each pooled over three survey years to strip out single-year noise. China widened as it rose: its average climbed from about <strong>4.77 to 5.12</strong>, the upper rungs filled in fastest — the share at 8 and above more than doubled — and yet the very bottom rung grew too, stretching the distribution at both ends (SD <strong>1.85 → 2.26</strong>). The United States took the opposite route to the same destination. Its average <em>fell</em>, from about <strong>7.34 to 6.94</strong>, as people drained out of rungs 8 and above into the middle and lower-middle of the ladder; but the distribution did not tighten as it sank, it spread (SD <strong>1.79 → 1.93</strong>). One country widened while rising, the other while falling: two different national trajectories, the same within-country widening found in 39 of the 42 panel countries.</p>
+
+    <figure>
+      <div class="fig">
+        <p class="figtitle">Inside two countries: 2006–08 vs. 2017–19</p>
+        <p class="figsub">Share of respondents at each ladder rung, survey-weighted within country and pooled over three-year windows. Both panels share the same vertical scale.</p>
+        <div class="legend" aria-hidden="true">
+          <span><span class="sw" id="swEarly"></span>2006–08 (outline)</span>
+          <span><span class="sw" id="swLate"></span>2017–19 (filled)</span>
+        </div>
+        <div class="duo">
+          <div>
+            <p class="panelt">United States</p>
+            <div class="chart" id="usaChart"></div>
+          </div>
+          <div>
+            <p class="panelt">China</p>
+            <div class="chart" id="chnChart"></div>
+          </div>
+        </div>
+        <figcaption>Pooled distributions of Cantril ladder responses, 2006–08 vs. 2017–19, from the same balanced panel, drawn on one shared vertical scale. Both countries end the period wider than they began — the United States at a lower average, China at a higher one.</figcaption>
+      </div>
+    </figure>
+
+    <h2>What this can and cannot say</h2>
+
+    <p>First, the panel. Holding the set of countries fixed — the same 42, present every year — is what makes 2006 and 2019 an apples-to-apples comparison rather than an artifact of Gallup adding and dropping countries. The price is coverage: this panel excludes much of the world, including most of Western Europe and several large countries that were not surveyed in every year. The panel does include the United States, China, Indonesia, Bangladesh and Vietnam, so it carries real demographic weight, and all "world" figures here are population-weighted — never a plain average of country means, which would let small countries swamp large ones. But "the world" in this piece means <em>this panel's</em> world.</p>
+
+    <p>Second, the clock stops in 2019, deliberately. The pandemic scrambled both survey operations and well-being itself; ending the series pre-pandemic keeps the trend clean, and means nothing here speaks to what happened after.</p>
+
+    <p>Third, the ladder is an <em>evaluative</em> measure — a judgment about one's life as a whole, not yesterday's mood — and cultures differ in how they use response scales. Some lean on the midpoint; others use the extremes freely. That mostly threatens comparisons of <em>levels</em> across countries. The within-country trend is more protected: each country is compared with its own past, and the dispersion rose inside countries across very different cultures at once — in 39 of the 42 panel countries on the pooled 2006–08 vs. 2017–19 comparison.</p>
+
+    <p class="note">This finding also has a history worth being straight about. Stevenson and Wolfers (2008) documented the <em>opposite</em> movement in the postwar United States: happiness inequality there <em>fell</em> for decades even as income inequality rose. The widening shown here is a different era and a global panel — and it is corroborated: the World Happiness Report 2024 likewise reports within-country well-being inequality rising across most regions of the world. The reversal of direction, from Stevenson and Wolfers' converging America to this diverging world, is part of what makes the trend notable.</p>
+
+    <p>What the data describe, then, is a redistribution of difference. The world's average citizen climbed half a rung. The gap between nations closed by a fifth of a ladder point. And inside borders — in 39 of the 42 panel countries, rich and poor alike — the typical citizen's distance from their own national average grew by almost half a rung. Whatever is pulling well-being apart is operating less at the level of flags and more at the level of lives. The atlas of feeling still has borders drawn on it; they just explain less than they used to.</p>
+
+  </div>
+</main>
+
+<footer id="notes">
+  <div class="wrap">
+    <h2>Notes &amp; data</h2>
+    <ul>
+      <li><strong>Source.</strong> Gallup World Poll, 2006–2019. Well-being measure: the Cantril ladder, an <strong>evaluative</strong> construct — respondents rate their life from 0 (worst possible) to 10 (best possible). This article is about the <em>dispersion</em> of those ratings over time, not only their level.</li>
+      <li><strong>Panel.</strong> A <strong>fixed balanced panel of 42 countries</strong>, each present in every survey year 2006–2019 (with at least 300 ladder responses per year). This is a deliberate apples-to-apples choice and it <strong>excludes much of the world</strong> — most of Western Europe, India, Brazil, Russia and others are absent because they were not surveyed (or did not meet the threshold) in every year. Results describe this panel, not all of humanity.</li>
+      <li><strong>Weighting.</strong> Within each country-year, statistics use Gallup's survey weights (<code>wgt</code>). Across countries, all "world" figures are <strong>population-weighted</strong> by an adult-population proxy (<code>ctry_pop_millions</code>) — never a plain average of country means. "Within-country SD" is the population-weighted mean of country-level weighted SDs; "between-country SD" is the population-weighted SD of country-level weighted means.</li>
+      <li><strong>Headline figures.</strong> Within-country SD: 1.92 (2006) → 2.37 (2019), about +24%. Between-country SD: 0.89 → 0.70. Population-weighted world mean: 4.96 → 5.43. On a robust three-year-average basis (2006–08 vs. 2017–19 pooled), within-country dispersion rose in <strong>39 of the 42</strong> panel countries. Variance shares in the decomposition bar are computed as within-SD² and between-SD² relative to their sum.</li>
+      <li><strong>Caveats.</strong> The series <strong>ends in 2019 (pre-pandemic)</strong> by design. The within-SD series is noisy year to year — 2006 itself sits somewhat high; the robust pattern is the shift from roughly 1.8–1.9 in 2006–2010 to roughly 2.3–2.4 in 2018–2019, not a smooth climb. Cross-cultural differences in response style affect comparisons of levels across countries; within-country trends are less exposed but not immune.</li>
+      <li><strong>Related work.</strong> Stevenson, B. &amp; Wolfers, J. (2008), "Happiness Inequality in the United States" — found US happiness inequality <em>falling</em> over the postwar decades, the opposite direction from the 2006–2019 global pattern shown here. World Happiness Report 2024 (Helliwell et&nbsp;al., eds.) — reports within-country well-being inequality rising across most world regions, consistent with this analysis. Cantril, H. (1965), <em>The Pattern of Human Concerns</em>, for the ladder itself.</li>
+      <li><strong>Reproducibility.</strong> All figures on this page are drawn from the aggregated series embedded in the page (yearly distribution shares over rungs 0–10, within/between dispersion, world mean, per-country pooled SDs, and US/China example distributions pooled over 2006–08 and 2017–19). No individual-level microdata are included.</li>
+    </ul>
+  </div>
+</footer>
+
+<script type="module">
+import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+
+const DATA = {"meta":{"title":"Happiness Moved Inside Borders","dataset":"Gallup World Poll","years":"2006-2019","weight":"wgt (within-country) + population weights (ctry_pop_millions)","construct":"evaluative (Cantril ladder 0-10, dispersion over time)","panel_note":"Fixed balanced panel of 42 countries present every year 2006-2019 (apples-to-apples; excludes much of the world).","method":"per country-year: wgt-weighted ladder mean & SD; across countries population-weighted by adult-population proxy ctry_pop_millions","caveats":"ends 2019 (pre-pandemic); cross-cultural response styles affect levels; balanced panel excludes countries not surveyed every year"},"panel":["ARG","ARM","AZE","BGD","BLR","CHN","CMR","COL","CRI","DOM","ECU","GEO","GHA","GTM","HND","IDN","KAZ","KEN","KGZ","KHM","KOR","LTU","MDA","NER","NIC","NPL","PAN","PER","PHL","PSE","SEN","SLV","TCD","THA","TJK","TZA","UGA","UKR","USA","VNM","ZAF","ZWE"],"n_panel":42,"within_rose_count":39,"within_total":42,"per_country_sd":[{"iso3":"ARG","early_sd":2.053,"late_sd":2.379,"delta":0.326},{"iso3":"ARM","early_sd":1.883,"late_sd":2.264,"delta":0.381},{"iso3":"AZE","early_sd":1.685,"late_sd":1.63,"delta":-0.055},{"iso3":"BGD","early_sd":1.773,"late_sd":2.302,"delta":0.529},{"iso3":"BLR","early_sd":1.788,"late_sd":1.757,"delta":-0.031},{"iso3":"CHN","early_sd":1.852,"late_sd":2.26,"delta":0.408},{"iso3":"CMR","early_sd":1.753,"late_sd":2.823,"delta":1.069},{"iso3":"COL","early_sd":2.413,"late_sd":2.643,"delta":0.23},{"iso3":"CRI","early_sd":2.077,"late_sd":2.126,"delta":0.049},{"iso3":"DOM","early_sd":3.006,"late_sd":3.283,"delta":0.278},{"iso3":"ECU","early_sd":2.196,"late_sd":2.556,"delta":0.36},{"iso3":"GEO","early_sd":1.881,"late_sd":2.055,"delta":0.174},{"iso3":"GHA","early_sd":1.791,"late_sd":2.535,"delta":0.744},{"iso3":"GTM","early_sd":2.118,"late_sd":2.876,"delta":0.758},{"iso3":"HND","early_sd":2.69,"late_sd":3.081,"delta":0.391},{"iso3":"IDN","early_sd":1.591,"late_sd":2.502,"delta":0.911},{"iso3":"KAZ","early_sd":1.824,"late_sd":1.9,"delta":0.077},{"iso3":"KEN","early_sd":1.578,"late_sd":2.802,"delta":1.224},{"iso3":"KGZ","early_sd":1.632,"late_sd":1.959,"delta":0.327},{"iso3":"KHM","early_sd":1.449,"late_sd":2.822,"delta":1.373},{"iso3":"KOR","early_sd":2.102,"late_sd":2.069,"delta":-0.032},{"iso3":"LTU","early_sd":1.921,"late_sd":2.062,"delta":0.141},{"iso3":"MDA","early_sd":1.915,"late_sd":2.087,"delta":0.173},{"iso3":"NER","early_sd":1.515,"late_sd":3.141,"delta":1.626},{"iso3":"NIC","early_sd":2.74,"late_sd":2.825,"delta":0.086},{"iso3":"NPL","early_sd":1.599,"late_sd":2.9,"delta":1.302},{"iso3":"PAN","early_sd":2.222,"late_sd":2.707,"delta":0.485},{"iso3":"PER","early_sd":2.317,"late_sd":2.627,"delta":0.31},{"iso3":"PHL","early_sd":2.244,"late_sd":2.626,"delta":0.382},{"iso3":"PSE","early_sd":2.403,"late_sd":2.556,"delta":0.153},{"iso3":"SEN","early_sd":1.456,"late_sd":2.307,"delta":0.851},{"iso3":"SLV","early_sd":2.161,"late_sd":2.624,"delta":0.463},{"iso3":"TCD","early_sd":1.54,"late_sd":3.04,"delta":1.5},{"iso3":"THA","early_sd":1.693,"late_sd":2.205,"delta":0.511},{"iso3":"TJK","early_sd":1.576,"late_sd":1.972,"delta":0.396},{"iso3":"TZA","early_sd":1.735,"late_sd":2.778,"delta":1.043},{"iso3":"UGA","early_sd":1.654,"late_sd":2.967,"delta":1.313},{"iso3":"UKR","early_sd":1.975,"late_sd":2.183,"delta":0.208},{"iso3":"USA","early_sd":1.791,"late_sd":1.929,"delta":0.138},{"iso3":"VNM","early_sd":1.387,"late_sd":1.772,"delta":0.385},{"iso3":"ZAF","early_sd":1.895,"late_sd":2.765,"delta":0.869},{"iso3":"ZWE","early_sd":1.875,"late_sd":2.599,"delta":0.724}],"inequality":[{"year":2006,"n_countries":42,"within_sd":1.915,"between_sd":0.8891,"global_mean":4.9556},{"year":2007,"n_countries":42,"within_sd":1.7788,"between_sd":0.8694,"global_mean":5.2294},{"year":2008,"n_countries":42,"within_sd":1.7951,"between_sd":0.8132,"global_mean":5.1709},{"year":2009,"n_countries":42,"within_sd":1.8649,"between_sd":0.9126,"global_mean":5.0476},{"year":2010,"n_countries":42,"within_sd":1.8843,"between_sd":0.8943,"global_mean":5.1265},{"year":2011,"n_countries":42,"within_sd":1.8823,"between_sd":0.8009,"global_mean":5.3554},{"year":2012,"n_countries":42,"within_sd":2.015,"between_sd":0.7473,"global_mean":5.3289},{"year":2013,"n_countries":42,"within_sd":1.8988,"between_sd":0.8666,"global_mean":5.3446},{"year":2014,"n_countries":42,"within_sd":1.9373,"between_sd":0.8411,"global_mean":5.3946},{"year":2015,"n_countries":42,"within_sd":2.1002,"between_sd":0.7356,"global_mean":5.353},{"year":2016,"n_countries":42,"within_sd":2.1522,"between_sd":0.7338,"global_mean":5.3465},{"year":2017,"n_countries":42,"within_sd":2.2559,"between_sd":0.7655,"global_mean":5.2742},{"year":2018,"n_countries":42,"within_sd":2.335,"between_sd":0.6926,"global_mean":5.34},{"year":2019,"n_countries":42,"within_sd":2.3732,"between_sd":0.6979,"global_mean":5.4332}],"ridge_rungs":[0,1,2,3,4,5,6,7,8,9,10],"ridgeline":[{"year":2006,"dist":[0.0266,0.0383,0.0571,0.1069,0.1341,0.2786,0.1485,0.0911,0.0722,0.0193,0.0273]},{"year":2007,"dist":[0.0144,0.0274,0.0453,0.0842,0.1334,0.2876,0.1686,0.112,0.0755,0.0275,0.024]},{"year":2008,"dist":[0.015,0.0231,0.0476,0.1,0.1359,0.2889,0.1604,0.1002,0.0804,0.0267,0.0217]},{"year":2009,"dist":[0.0178,0.0314,0.0615,0.1081,0.131,0.2851,0.1459,0.0924,0.0703,0.0296,0.0269]},{"year":2010,"dist":[0.0156,0.0297,0.0524,0.1141,0.1325,0.2824,0.1383,0.096,0.0767,0.0309,0.0315]},{"year":2011,"dist":[0.0161,0.0204,0.0454,0.0883,0.1135,0.2934,0.1554,0.1141,0.0881,0.0307,0.0346]},{"year":2012,"dist":[0.026,0.0253,0.0432,0.0848,0.1103,0.2883,0.1446,0.113,0.0953,0.0322,0.0368]},{"year":2013,"dist":[0.0167,0.0257,0.045,0.0882,0.1104,0.2966,0.1453,0.1119,0.0933,0.0309,0.0361]},{"year":2014,"dist":[0.0192,0.0235,0.0387,0.0875,0.1199,0.2853,0.1392,0.1221,0.0914,0.0286,0.0447]},{"year":2015,"dist":[0.0284,0.0319,0.0438,0.0795,0.0977,0.2926,0.1364,0.114,0.1011,0.031,0.0437]},{"year":2016,"dist":[0.0335,0.0287,0.0416,0.0853,0.1116,0.2698,0.1364,0.1148,0.0959,0.0304,0.0521]},{"year":2017,"dist":[0.0434,0.0395,0.0475,0.0765,0.0857,0.286,0.1273,0.1198,0.0905,0.0261,0.0576]},{"year":2018,"dist":[0.0498,0.0334,0.0414,0.073,0.0881,0.2895,0.1289,0.1087,0.0858,0.03,0.0714]},{"year":2019,"dist":[0.0513,0.0299,0.0393,0.0695,0.0917,0.2803,0.1233,0.106,0.0961,0.0295,0.0832]}],"examples":{"USA":{"early":[0.0045,0.0043,0.009,0.0142,0.0301,0.0928,0.1029,0.2041,0.2994,0.1386,0.1],"late":[0.0045,0.0083,0.0174,0.0225,0.051,0.1141,0.1133,0.2413,0.2474,0.0948,0.0853]},"CHN":{"early":[0.0253,0.0369,0.0566,0.0974,0.1423,0.318,0.1849,0.0803,0.042,0.007,0.0093],"late":[0.0499,0.0309,0.0408,0.077,0.0916,0.3222,0.155,0.0963,0.0732,0.0177,0.0454]}},"examples_meta":{"early_years":"2006-2008 pooled","late_years":"2017-2019 pooled"}};
+
+if (DATA) init(DATA);
+else document.querySelectorAll(".chart").forEach(el => {
+  el.innerHTML = '<p style="font:13px/1.5 Helvetica,Arial,sans-serif;color:#7e7c72;padding:24px 8px">Data not yet injected.</p>';
+});
+
+function init(D){
+  const YEARS  = D.inequality.map(d => d.year);
+  const RUNGS  = D.ridge_rungs;
+  const NY     = YEARS.length;
+  const ineqBy = new Map(D.inequality.map(d => [d.year, d]));
+  const distBy = new Map(D.ridgeline.map(d => [d.year, d.dist]));
+
+  const yearT     = y => (y - YEARS[0]) / (YEARS[NY-1] - YEARS[0]);
+  const yearColor = y => d3.interpolateViridis(0.22 + 0.72 * yearT(y));
+  const C_WITHIN  = getComputedStyle(document.documentElement).getPropertyValue("--accent-hi").trim();
+  const C_BETWEEN = getComputedStyle(document.documentElement).getPropertyValue("--accent-lo").trim();
+  const C_SAND    = getComputedStyle(document.documentElement).getPropertyValue("--sand").trim();
+  const C_FAINT   = "#7e7c72";
+  const C_GRID    = "#2a3350";
+
+  document.getElementById("swEarly").style.background = yearColor(2006);
+  document.getElementById("swLate").style.background  = yearColor(2019);
+
+  const fmt1 = d3.format(".2f");
+  const fmtP = d3.format(".1%");
+  const distMean = dist => d3.sum(dist.map((p,i) => p * RUNGS[i]));
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------------- shared state ---------------- */
+  let ridgeYear = YEARS[0];
+  let scissorYear = YEARS[NY-1];
+
+  /* ================= RIDGELINE ================= */
+  const ridgeBox  = document.getElementById("ridgeChart");
+  const ridgeOut  = document.getElementById("ridgeReadout");
+  const slider    = document.getElementById("ridgeSlider");
+  const yearLab   = document.getElementById("ridgeYearLab");
+  const playBtn   = document.getElementById("ridgePlay");
+  let ridgeRefs = null;
+
+  function drawRidge(){
+    ridgeBox.innerHTML = "";
+    const W = Math.max(320, ridgeBox.clientWidth);
+    const narrow = W < 480;
+    const M = {top: 30, right: narrow ? 14 : 26, bottom: 34, left: narrow ? 44 : 56};
+    const rowStep = narrow ? 26 : 32;
+    const H = M.top + rowStep * (NY - 1) + rowStep * 2.0 + M.bottom;
+
+    const svg = d3.select(ridgeBox).append("svg")
+      .attr("viewBox", `0 0 ${W} ${H}`)
+      .attr("role", "img")
+      .attr("aria-label", "Ridgeline chart of the population-weighted distribution of Cantril ladder answers for each year from 2006 to 2019. Over time the middle of the distribution thins and the shares at the lowest and highest rungs grow.");
+    svg.append("title").text("Where the world stood on the ladder, 2006 to 2019");
+    svg.append("desc").text("Fourteen overlapping density-style curves, one per year, over ladder rungs 0 to 10. Later years show a flatter middle and thicker tails, especially at rungs 0 and 10. A tick on each baseline marks that year's mean, which drifts upward.");
+
+    const x = d3.scaleLinear().domain([0, 10]).range([M.left, W - M.right]);
+    const yBase = i => M.top + rowStep * 1.9 + i * rowStep;     // baseline per year row
+    const hScale = (rowStep * 2.0) / 0.30;                       // peak share ~0.30 spans ~2 rows
+
+    // x axis (rungs)
+    const ax = svg.append("g").attr("font-family","Helvetica,Arial,sans-serif").attr("font-size",11).attr("fill",C_FAINT);
+    RUNGS.forEach(r => {
+      ax.append("line").attr("x1",x(r)).attr("x2",x(r))
+        .attr("y1", M.top).attr("y2", yBase(NY-1) + 4)
+        .attr("stroke", C_GRID).attr("stroke-dasharray","2,5").attr("stroke-width",0.7);
+      ax.append("text").attr("x",x(r)).attr("y", yBase(NY-1) + 20).attr("text-anchor","middle").text(r);
+    });
+    ax.append("text").attr("x", x(0)).attr("y", M.top - 14).attr("text-anchor","start")
+      .text("worst possible life");
+    ax.append("text").attr("x", x(10)).attr("y", M.top - 14).attr("text-anchor","end")
+      .text("best possible life");
+
+    const area = d3.area()
+      .x((p,i) => x(RUNGS[i]))
+      .y1(p => -p * hScale)
+      .y0(0)
+      .curve(d3.curveCatmullRom.alpha(0.6));
+    const line = d3.line()
+      .x((p,i) => x(RUNGS[i]))
+      .y(p => -p * hScale)
+      .curve(d3.curveCatmullRom.alpha(0.6));
+
+    const rows = svg.append("g").selectAll("g.row")
+      .data(D.ridgeline)
+      .join("g")
+      .attr("class","row")
+      .attr("transform", (d,i) => `translate(0,${yBase(i)})`);
+
+    rows.append("path")
+      .attr("class","ridgefill")
+      .attr("d", d => area(d.dist))
+      .attr("fill", d => yearColor(d.year))
+      .attr("fill-opacity", 0.45);
+
+    rows.append("path")
+      .attr("class","ridgeline")
+      .attr("d", d => line(d.dist))
+      .attr("fill","none")
+      .attr("stroke", d => d3.color(yearColor(d.year)).brighter(0.6))
+      .attr("stroke-width", 1.4);
+
+    rows.append("line")   // mean tick
+      .attr("class","meantick")
+      .attr("x1", d => x(distMean(d.dist))).attr("x2", d => x(distMean(d.dist)))
+      .attr("y1", 2).attr("y2", 9)
+      .attr("stroke", C_SAND).attr("stroke-width", 2);
+
+    rows.append("text")
+      .attr("class","ylab")
+      .attr("x", M.left - 8).attr("y", 4)
+      .attr("text-anchor","end")
+      .attr("font-family","Helvetica,Arial,sans-serif")
+      .attr("font-size", narrow ? 11 : 12)
+      .attr("fill", C_FAINT)
+      .text(d => d.year);
+
+    // invisible hit rows (mouse + touch + click)
+    rows.append("rect")
+      .attr("class","ridgehit")
+      .attr("x", 0).attr("y", -rowStep * 1.6)
+      .attr("width", W).attr("height", rowStep * 1.9)
+      .attr("fill","transparent")
+      .on("pointerenter pointerdown", (ev,d) => setRidgeYear(d.year));
+
+    ridgeRefs = {rows};
+    paintRidge();
+  }
+
+  function paintRidge(){
+    if(!ridgeRefs) return;
+    const {rows} = ridgeRefs;
+    rows.select(".ridgefill")
+      .attr("fill-opacity", d => d.year === ridgeYear ? 0.92 : 0.30);
+    rows.select(".ridgeline")
+      .attr("stroke-width", d => d.year === ridgeYear ? 2.4 : 1.1)
+      .attr("stroke-opacity", d => d.year === ridgeYear ? 1 : 0.65);
+    rows.select(".ylab")
+      .attr("fill", d => d.year === ridgeYear ? "#ffffff" : C_FAINT)
+      .attr("font-weight", d => d.year === ridgeYear ? 700 : 400);
+    rows.select(".meantick")
+      .attr("stroke-opacity", d => d.year === ridgeYear ? 1 : 0.45);
+  }
+
+  function setRidgeYear(y, fromSlider){
+    ridgeYear = y;
+    if(!fromSlider) slider.value = YEARS.indexOf(y);
+    yearLab.textContent = y;
+    const q = ineqBy.get(y), dist = distBy.get(y);
+    ridgeOut.innerHTML =
+      `<span class="chip" style="background:${yearColor(y)}"></span><b>${y}</b> — ` +
+      `within-country SD <b>${fmt1(q.within_sd)}</b> · between-country SD <b>${fmt1(q.between_sd)}</b> · ` +
+      `world mean <b>${fmt1(q.global_mean)}</b><br>` +
+      `share at rung 0: <b>${fmtP(dist[0])}</b> · rung 10: <b>${fmtP(dist[10])}</b> · middle rungs 4–6: <b>${fmtP(dist[4]+dist[5]+dist[6])}</b>`;
+    paintRidge();
+  }
+
+  slider.addEventListener("input", () => setRidgeYear(YEARS[+slider.value], true));
+
+  let timer = null;
+  playBtn.addEventListener("click", () => {
+    if(timer){ timer.stop(); timer = null; playBtn.textContent = "▶ Play"; return; }
+    let i = ridgeYear >= YEARS[NY-1] ? 0 : YEARS.indexOf(ridgeYear);
+    playBtn.textContent = "❚❚ Pause";
+    const step = reduceMotion ? 900 : 520;
+    setRidgeYear(YEARS[i]);
+    timer = d3.interval(() => {
+      i++;
+      if(i >= NY){ timer.stop(); timer = null; playBtn.textContent = "▶ Play"; return; }
+      setRidgeYear(YEARS[i]);
+    }, step);
+  });
+
+  /* ================= SCISSORS (dual line + mean strip) ================= */
+  const scisBox = document.getElementById("scissorChart");
+  const scisOut = document.getElementById("scissorReadout");
+  const segW = document.getElementById("segWithin");
+  const segB = document.getElementById("segBetween");
+  const decompYearEl = document.getElementById("decompYear");
+  let scisRefs = null;
+
+  function drawScissors(){
+    scisBox.innerHTML = "";
+    const W = Math.max(320, scisBox.clientWidth);
+    const narrow = W < 480;
+    const Hmain = narrow ? 230 : 280, Hstrip = narrow ? 78 : 92, gap = 26;
+    const H = Hmain + gap + Hstrip + 30;
+    const M = {top: 16, right: narrow ? 14 : 18, bottom: 4, left: narrow ? 38 : 46};
+
+    const svg = d3.select(scisBox).append("svg")
+      .attr("viewBox", `0 0 ${W} ${H}`)
+      .attr("role","img")
+      .attr("aria-label","Line chart, 2006 to 2019. Within-country standard deviation of ladder scores rises from 1.92 to 2.37 while between-country standard deviation falls from 0.89 to 0.70. A lower panel shows the population-weighted world mean rising from 4.96 to 5.43.");
+    svg.append("title").text("Dispersion within versus between countries, with the world mean");
+    svg.append("desc").text("Two diverging lines: within-country dispersion climbing, between-country dispersion declining, both in ladder points. The series is noisy year to year. Below, a strip shows the world mean ladder score drifting upward.");
+
+    const x = d3.scalePoint().domain(YEARS).range([M.left, W - M.right]).padding(0.2);
+    const y = d3.scaleLinear().domain([0, 2.5]).range([Hmain, M.top]);
+    const yM = d3.scaleLinear().domain([4.8, 5.6]).range([Hmain + gap + Hstrip, Hmain + gap + 8]);
+
+    const gAx = svg.append("g").attr("font-family","Helvetica,Arial,sans-serif").attr("font-size",11).attr("fill",C_FAINT);
+    [0,0.5,1.0,1.5,2.0,2.5].forEach(v => {
+      gAx.append("line").attr("x1",M.left).attr("x2",W-M.right).attr("y1",y(v)).attr("y2",y(v))
+        .attr("stroke",C_GRID).attr("stroke-width", v === 0 ? 1.1 : 0.7);
+      gAx.append("text").attr("x",M.left-7).attr("y",y(v)+4).attr("text-anchor","end").text(v === 0 ? "0" : fmt1(v).replace(/0$/,""));
+    });
+    [4.8,5.2,5.6].forEach(v => {
+      gAx.append("line").attr("x1",M.left).attr("x2",W-M.right).attr("y1",yM(v)).attr("y2",yM(v))
+        .attr("stroke",C_GRID).attr("stroke-width",0.7);
+      gAx.append("text").attr("x",M.left-7).attr("y",yM(v)+4).attr("text-anchor","end").text(v.toFixed(1));
+    });
+    YEARS.forEach(yr => {
+      if(narrow && yr % 2 === 1 && yr !== 2019) return;
+      gAx.append("text").attr("x",x(yr)).attr("y",H-8).attr("text-anchor","middle").text(narrow ? "’"+String(yr).slice(2) : yr);
+    });
+    gAx.append("text").attr("x",M.left).attr("y",M.top-2).attr("text-anchor","start")
+      .attr("font-weight",700).attr("fill","#b3b0a4").text("SD (ladder points)");
+    gAx.append("text").attr("x",M.left).attr("y",Hmain+gap-1).attr("text-anchor","start")
+      .attr("font-weight",700).attr("fill","#b3b0a4").text("World mean (0–10)");
+
+    const lw = d3.line().x(d=>x(d.year)).y(d=>y(d.within_sd)).curve(d3.curveMonotoneX);
+    const lb = d3.line().x(d=>x(d.year)).y(d=>y(d.between_sd)).curve(d3.curveMonotoneX);
+    const lm = d3.line().x(d=>x(d.year)).y(d=>yM(d.global_mean)).curve(d3.curveMonotoneX);
+
+    svg.append("path").datum(D.inequality).attr("d",lw)
+      .attr("fill","none").attr("stroke",C_WITHIN).attr("stroke-width",2.6);
+    svg.append("path").datum(D.inequality).attr("d",lb)
+      .attr("fill","none").attr("stroke",C_BETWEEN).attr("stroke-width",2.6);
+    svg.append("path").datum(D.inequality).attr("d",lm)
+      .attr("fill","none").attr("stroke",C_SAND).attr("stroke-width",2);
+
+    // direct labels at the line ends
+    const last = D.inequality[NY-1];
+    const lbls = svg.append("g").attr("font-family","Helvetica,Arial,sans-serif").attr("font-size",11.5).attr("font-weight",700);
+    lbls.append("text").attr("x",x(last.year)).attr("y",y(last.within_sd)-10)
+      .attr("text-anchor","end").attr("fill",C_WITHIN).text("within " + fmt1(last.within_sd));
+    lbls.append("text").attr("x",x(last.year)).attr("y",y(last.between_sd)+18)
+      .attr("text-anchor","end").attr("fill","#8fc1de").text("between " + fmt1(last.between_sd));
+    lbls.append("text").attr("x",x(last.year)).attr("y",yM(last.global_mean)-8)
+      .attr("text-anchor","end").attr("fill",C_SAND).text("mean " + fmt1(last.global_mean));
+
+    const cursor = svg.append("line")
+      .attr("y1", M.top).attr("y2", Hmain + gap + Hstrip)
+      .attr("stroke", "#e9e6dc").attr("stroke-width", 1).attr("stroke-dasharray","3,3")
+      .attr("opacity", 0);
+    const dots = svg.append("g");
+    const mkDot = c => dots.append("circle").attr("r",4.5).attr("fill",c).attr("stroke","#0e1320").attr("stroke-width",1.5).attr("opacity",0);
+    const dW = mkDot(C_WITHIN), dB = mkDot(C_BETWEEN), dM = mkDot(C_SAND);
+
+    svg.append("rect")
+      .attr("x",M.left).attr("y",M.top).attr("width",W-M.left-M.right).attr("height",Hmain+gap+Hstrip-M.top)
+      .attr("fill","transparent")
+      .on("pointermove pointerdown", ev => {
+        const px = d3.pointer(ev)[0];
+        const yr = YEARS.reduce((a,b) => Math.abs(x(b)-px) < Math.abs(x(a)-px) ? b : a);
+        setScissorYear(yr);
+      })
+      .on("pointerleave", () => { /* keep last year shown */ });
+
+    scisRefs = {x, y, yM, cursor, dW, dB, dM};
+    setScissorYear(scissorYear, true);
+  }
+
+  function setScissorYear(yr, silentMotion){
+    scissorYear = yr;
+    const q = ineqBy.get(yr);
+    if(scisRefs){
+      const {x,y,yM,cursor,dW,dB,dM} = scisRefs;
+      cursor.attr("x1",x(yr)).attr("x2",x(yr)).attr("opacity",0.55);
+      dW.attr("cx",x(yr)).attr("cy",y(q.within_sd)).attr("opacity",1);
+      dB.attr("cx",x(yr)).attr("cy",y(q.between_sd)).attr("opacity",1);
+      dM.attr("cx",x(yr)).attr("cy",yM(q.global_mean)).attr("opacity",1);
+    }
+    scisOut.innerHTML =
+      `<b>${yr}</b> — within <b style="color:${C_WITHIN}">${fmt1(q.within_sd)}</b> · ` +
+      `between <b style="color:#8fc1de">${fmt1(q.between_sd)}</b> · ` +
+      `world mean <b style="color:${C_SAND}">${fmt1(q.global_mean)}</b> (42 countries, population-weighted)`;
+    updateDecomp(yr);
+  }
+
+  function updateDecomp(yr){
+    const q = ineqBy.get(yr);
+    const vw = q.within_sd * q.within_sd;
+    const vb = q.between_sd * q.between_sd;
+    const shareW = vw / (vw + vb);
+    decompYearEl.textContent = yr;
+    segW.style.width = (shareW*100).toFixed(1) + "%";
+    segB.style.width = ((1-shareW)*100).toFixed(1) + "%";
+    segW.textContent = Math.round(shareW*100) + "% within";
+    segB.textContent = Math.round((1-shareW)*100) + "%";
+    document.getElementById("decompBar").setAttribute("aria-label",
+      `Variance decomposition, ${yr}: ${Math.round(shareW*100)} percent of total ladder variance is within countries, ${Math.round((1-shareW)*100)} percent between countries.`);
+  }
+
+  // animate decomposition 2006 -> 2019 once when it scrolls into view
+  let decompAnimated = false;
+  const io = new IntersectionObserver(entries => {
+    if(decompAnimated || !entries.some(e => e.isIntersecting)) return;
+    decompAnimated = true;
+    io.disconnect();
+    if(reduceMotion){ setScissorYear(YEARS[NY-1]); return; }
+    let i = 0;
+    setScissorYear(YEARS[0]);
+    const t = d3.interval(() => {
+      i++;
+      if(i >= NY){ t.stop(); return; }
+      setScissorYear(YEARS[i]);
+    }, 240);
+  }, {threshold: 0.5});
+  io.observe(document.getElementById("decomp"));
+
+  /* ================= EXAMPLES (USA / CHN) ================= */
+  // One shared y-scale across both countries and both periods, so shapes compare fairly.
+  const EX_MAX = d3.max(Object.values(D.examples).flatMap(e => e.early.concat(e.late)));
+  const EX_EARLY = D.examples_meta.early_years, EX_LATE = D.examples_meta.late_years;
+
+  function drawExample(boxId, code, name){
+    const box = document.getElementById(boxId);
+    box.innerHTML = "";
+    const W = Math.max(260, box.clientWidth);
+    const H = Math.round(W * 0.62);
+    const M = {top: 14, right: 10, bottom: 26, left: 10};
+    const eEarly = D.examples[code].early, eLate = D.examples[code].late;
+
+    const svg = d3.select(box).append("svg")
+      .attr("viewBox", `0 0 ${W} ${H}`)
+      .attr("role","img")
+      .attr("aria-label", `${name}: distribution of ladder answers, ${EX_EARLY} (outline) versus ${EX_LATE} (filled), on the same vertical scale as the other country. The later distribution is wider.`);
+    svg.append("title").text(`${name}: ladder distribution, ${EX_EARLY} vs ${EX_LATE}`);
+    svg.append("desc").text(`Overlaid distribution curves over rungs 0 to 10 for ${name}, comparing ${EX_EARLY} and ${EX_LATE} survey-weighted response shares. Both example panels share one vertical scale; a reference line marks 30 percent of respondents.`);
+
+    const x = d3.scaleLinear().domain([0,10]).range([M.left, W-M.right]);
+    const y = d3.scaleLinear().domain([0, EX_MAX*1.08]).range([H-M.bottom, M.top]);
+
+    const gAx = svg.append("g").attr("font-family","Helvetica,Arial,sans-serif").attr("font-size",10.5).attr("fill",C_FAINT);
+    [0,2,4,6,8,10].forEach(r => {
+      gAx.append("line").attr("x1",x(r)).attr("x2",x(r)).attr("y1",M.top).attr("y2",H-M.bottom)
+        .attr("stroke",C_GRID).attr("stroke-dasharray","2,5").attr("stroke-width",0.7);
+      gAx.append("text").attr("x",x(r)).attr("y",H-9).attr("text-anchor","middle").text(r);
+    });
+    // y reference: one labeled gridline at 30% of respondents (shared across panels)
+    const yRef = 0.30;
+    gAx.append("line").attr("x1",x(0)).attr("x2",x(10)).attr("y1",y(yRef)).attr("y2",y(yRef))
+      .attr("stroke",C_GRID).attr("stroke-width",1);
+    gAx.append("text").attr("x",x(10)).attr("y",y(yRef)-4).attr("text-anchor","end")
+      .text("30% of respondents");
+
+    // clip so the smoothed curves cannot dip below the zero baseline on near-zero tails
+    const clipId = boxId + "-clip";
+    svg.append("clipPath").attr("id", clipId).append("rect")
+      .attr("x", 0).attr("y", 0).attr("width", W).attr("height", H - M.bottom);
+    const gPlot = svg.append("g").attr("clip-path", `url(#${clipId})`);
+
+    const area = d3.area().x((p,i)=>x(RUNGS[i])).y0(H-M.bottom).y1(p=>y(p)).curve(d3.curveCatmullRom.alpha(0.6));
+    const line = d3.line().x((p,i)=>x(RUNGS[i])).y(p=>y(p)).curve(d3.curveCatmullRom.alpha(0.6));
+
+    gPlot.append("path").attr("d", area(eLate))
+      .attr("fill", yearColor(2019)).attr("fill-opacity",0.55);
+    gPlot.append("path").attr("d", line(eLate))
+      .attr("fill","none").attr("stroke", d3.color(yearColor(2019)).brighter(0.5)).attr("stroke-width",2);
+    gPlot.append("path").attr("d", line(eEarly))
+      .attr("fill","none").attr("stroke", d3.color(yearColor(2006)).brighter(1.1))
+      .attr("stroke-width",2).attr("stroke-dasharray","5,3");
+  }
+
+  /* ================= render + resize ================= */
+  function renderAll(){
+    drawRidge();
+    drawScissors();
+    drawExample("usaChart","USA","United States");
+    drawExample("chnChart","CHN","China");
+    setRidgeYear(ridgeYear);
+  }
+  renderAll();
+
+  let rT = null;
+  window.addEventListener("resize", () => {
+    clearTimeout(rT);
+    rT = setTimeout(renderAll, 160);
+  });
+}
+</script>
+<!--SL_BOOKNAV_START-->
+<style>
+.slbn{font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;background:#0f1417;border-top:1px solid #27313a;color:#9fb0ba;padding:24px 20px 40px;margin:48px 0 0}
+.slbn-in{max-width:1080px;margin:0 auto;display:flex;align-items:stretch;gap:12px}
+.slbn a{flex:1 1 0;min-width:0;text-decoration:none;color:inherit;border:1px solid #27313a;border-radius:10px;padding:13px 15px;display:flex;flex-direction:column;gap:4px;background:#161d22;transition:border-color .15s,transform .15s}
+.slbn a:hover{border-color:#3fa9a0;transform:translateY(-2px)}
+.slbn a:focus-visible{outline:2px solid #3fa9a0;outline-offset:2px}
+.slbn a.slbn-next{text-align:right;align-items:flex-end}
+.slbn a.slbn-toc{flex:0 0 auto;min-width:120px;justify-content:center;align-items:center;text-align:center}
+.slbn .slbn-dir{font:700 10px/1 inherit;letter-spacing:.13em;text-transform:uppercase;color:#6b7c87}
+.slbn .slbn-ttl{font:700 14px/1.3 inherit;color:#eef2f4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.slbn a.slbn-disabled{opacity:.38;pointer-events:none}
+@media(max-width:640px){.slbn-in{flex-wrap:wrap}.slbn a{flex:1 1 100%}.slbn a.slbn-next{text-align:left;align-items:flex-start}.slbn a.slbn-toc{order:-1}}
+</style>
+<nav class="slbn" aria-label="Book navigation"><div class="slbn-in"><a class="slbn-prev" href="../read.html?ch=geography-of-american-thriving" target="_top"><span class="slbn-dir">‹ Previous</span><span class="slbn-ttl">The Geography of American Thriving</span></a><a class="slbn-toc" href="../index.html#book" target="_top"><span class="slbn-dir">The Scissors</span><span class="slbn-ttl">Chapter 29 / 36</span></a><a class="slbn-next" href="../read.html?ch=black-white-two-measures" target="_top"><span class="slbn-dir">Next ›</span><span class="slbn-ttl">Lower on the Ladder, Lighter in the Day</span></a></div></nav>
+<!--SL_BOOKNAV_END-->
+</body>
+</html>

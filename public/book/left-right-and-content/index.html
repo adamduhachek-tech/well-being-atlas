@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Left, Right, and Content — Political self-placement and life satisfaction across Europe</title>
+<style>
+  :root{
+    --bg:#f6f4ef;
+    --bg-deep:#ece8df;
+    --panel:#fffdf8;
+    --ink:#191815;
+    --ink-dim:#4a473f;
+    --ink-faint:#8a857a;
+    --hair:rgba(25,24,21,.14);
+    --hair-soft:rgba(25,24,21,.07);
+    --left:#3b6ca8;
+    --left-deep:#274d7d;
+    --left-soft:rgba(59,108,168,.14);
+    --right:#b5394c;
+    --right-deep:#8a2536;
+    --right-soft:rgba(181,57,76,.14);
+    --neutral:#9a9488;
+    --accent:#b5394c;
+    --rule:#b6ada0;
+    --serif:'Hoefler Text','Iowan Old Style',Georgia,'Times New Roman',serif;
+    --sans:'Avenir Next',system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+    --mono:'SFMono-Regular',ui-monospace,'Cascadia Mono',Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--serif); font-size:18.5px; line-height:1.64; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility}
+  a{color:var(--left-deep); text-decoration:none; border-bottom:1px solid rgba(39,77,125,.4)}
+  a:hover,a:focus-visible{color:var(--accent); border-bottom-color:var(--accent)}
+  a:focus-visible,button:focus-visible,[tabindex]:focus-visible{outline:2.5px solid var(--accent); outline-offset:2px; border-radius:3px}
+  .wrap{max-width:716px; margin:0 auto; padding:0 22px}
+  .wide{max-width:1060px; margin:0 auto; padding:0 22px}
+  header{padding:74px 0 22px}
+  .kicker{font-family:var(--sans); font-size:12px; letter-spacing:.28em; text-transform:uppercase; color:var(--accent); margin:0 0 20px; font-weight:600}
+  h1{font-size:clamp(34px,6.4vw,62px); line-height:1.0; margin:0 0 22px; font-weight:700; letter-spacing:-.022em}
+  h1 .l{color:var(--left-deep)} h1 .r{color:var(--right-deep)}
+  .dek{font-size:clamp(18px,2.5vw,23px); font-style:italic; color:var(--ink-dim); max-width:680px; margin:0 0 26px; line-height:1.46}
+  .byline{font-family:var(--sans); font-size:13px; color:var(--ink-faint); letter-spacing:.04em}
+  .byline b{color:var(--ink-dim); font-weight:600}
+  main p{margin:0 0 1.34em}
+  h2{font-size:clamp(24px,3.5vw,34px); line-height:1.13; margin:1.9em 0 .5em; letter-spacing:-.013em; font-weight:700}
+  .lead{font-size:clamp(19px,2.4vw,22px); line-height:1.5; color:var(--ink)}
+  .drop::first-letter{float:left; font-size:3.55em; line-height:.8; padding:9px 11px 0 0; color:var(--accent); font-weight:700; font-family:var(--serif)}
+  strong{font-weight:700}
+  .l-t{color:var(--left-deep); font-weight:700}
+  .r-t{color:var(--right-deep); font-weight:700}
+  .num{font-variant-numeric:tabular-nums}
+  .figwrap{margin:42px auto 16px}
+  figure{margin:0; background:var(--panel); border:1px solid var(--hair); border-radius:14px; padding:24px 24px 16px; box-shadow:0 1px 0 rgba(25,24,21,.04)}
+  figure h4{font-family:var(--sans); font-size:18.5px; margin:0 0 5px; font-weight:700; color:var(--ink); letter-spacing:-.01em}
+  figure .sub{font-family:var(--sans); font-size:13.5px; color:var(--ink-dim); margin:0 0 14px; line-height:1.5}
+  figcaption{font-family:var(--sans); font-size:12.5px; color:var(--ink-faint); line-height:1.55; margin-top:12px; border-top:1px solid var(--hair-soft); padding-top:11px}
+  svg{width:100%; height:auto; display:block; overflow:visible}
+  text{font-family:var(--sans)}
+  .legend{display:flex; flex-wrap:wrap; gap:6px 16px; font-family:var(--sans); font-size:12px; color:var(--ink-dim); margin:0 0 10px; align-items:center}
+  .legend span.li{display:inline-flex; align-items:center; gap:6px}
+  .dot{width:11px; height:11px; border-radius:50%; display:inline-block}
+  .swatch{width:22px; height:9px; border-radius:2px; display:inline-block}
+  .tip{position:absolute; pointer-events:none; opacity:0; background:var(--ink); color:#fff; font-family:var(--sans); font-size:12.5px; line-height:1.5; padding:10px 12px; border-radius:8px; max-width:260px; z-index:30; transition:opacity .08s; box-shadow:0 6px 22px rgba(25,24,21,.34)}
+  .tip b{color:#fff; font-weight:700}
+  .tip .row{display:flex; justify-content:space-between; gap:14px; font-variant-numeric:tabular-nums}
+  .tip .muted{color:#b3aea4}
+  .tip .tag{font-size:10.5px; letter-spacing:.06em; text-transform:uppercase; margin-top:4px}
+  .smcap{font-family:var(--sans); font-size:11px; letter-spacing:.04em; fill:var(--ink-faint)}
+  .axlab{font-family:var(--sans); font-size:12px; fill:var(--ink-faint)}
+  .note{font-family:var(--sans); font-size:14px; line-height:1.5; color:var(--ink-dim); background:var(--bg-deep); border-left:3px solid var(--rule); border-radius:0 8px 8px 0; padding:14px 16px; margin:26px 0}
+  table.fallback{border-collapse:collapse; width:100%; font-family:var(--sans); font-size:12.5px; margin-top:8px}
+  table.fallback caption{text-align:left; color:var(--ink-faint); font-size:12px; margin-bottom:6px}
+  table.fallback th,table.fallback td{border:1px solid var(--hair-soft); padding:4px 8px; text-align:right}
+  table.fallback th:first-child,table.fallback td:first-child{text-align:left}
+  footer{font-family:var(--sans); font-size:13.5px; color:var(--ink-dim); line-height:1.62; padding:30px 0 80px}
+  footer h2{font-family:var(--sans); font-size:15px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint); margin:0 0 14px; font-weight:700}
+  footer p{margin:0 0 1em; max-width:740px}
+  footer a{color:var(--left-deep)}
+  hr.sep{border:0; border-top:1px solid var(--hair); max-width:1060px; margin:46px auto 0}
+  .pill{font-family:var(--sans); font-size:11px; letter-spacing:.08em; text-transform:uppercase; font-weight:600; padding:2px 8px; border-radius:20px; display:inline-block; vertical-align:middle}
+  .pill-eval{background:var(--right-soft); color:var(--right-deep)}
+  .pill-id{background:var(--left-soft); color:var(--left-deep)}
+  @media (prefers-reduced-motion: reduce){*{transition:none!important; animation:none!important}}
+</style>
+</head>
+<body>
+<header class="wrap">
+  <p class="kicker">European Values Study · Politics &amp; well-being</p>
+  <h1><span class="l">Left</span>, <span class="r">Right</span>, and Content</h1>
+  <p class="dek">Across Europe, the further right people place themselves on the political spectrum, the more satisfied with life they tend to say they are — a gap of about half a point on a ten-point scale that opens up inside almost every country, and leans a little wider, though only loosely, where societies are more unequal.</p>
+  <p class="byline">By the numbers · <b>European Values Study (EVS), 1981–2017</b> · weighted (<span style="font-family:var(--mono)">weight</span>)</p>
+</header>
+
+<main>
+<div class="wrap">
+  <p class="lead drop">Ask a European to put themselves on a line that runs from <span class="l-t">1, the far left</span>, to <span class="r-t">10, the far right</span> — and then ask, separately, how satisfied they are with their life as a whole. Line up the two answers across four decades and more than two hundred thousand interviews, and a quiet, persistent pattern emerges: the people who place themselves on the right report slightly more contentment with their lives than the people who place themselves on the left.</p>
+
+  <p>It is not a chasm. Give every country an equal say — so that no large nation drowns out the rest — and mean life satisfaction climbs from <strong class="num">6.67</strong> at the far-left end of the scale to <strong class="num">7.35</strong> at the far-right end: a span of about <strong class="num">0.68</strong> of a point on the 1–10 ladder. (Pooled across every respondent instead, the same gap is a slightly narrower <strong class="num">0.57</strong>.) Modest, by the standards of well-being research. But it is remarkably stubborn. The slope tilts the same way inside nearly every country in Europe, it survives a first pass at demographic controls, and it grows steeper in the places where the gap between rich and poor is widest.</p>
+</div>
+
+<div class="figwrap wide">
+  <figure>
+    <h4>Step rightward, and reported life satisfaction edges up</h4>
+    <p class="sub">Mean life satisfaction (1–10) at each point of political self-placement, from far left to far right, with every country given equal weight. The line itself runs cool on the left to warm on the right; the shaded band is the 95% bootstrap interval for the equal-country mean (resampling countries).</p>
+    <div id="chart-grad" style="position:relative"></div>
+    <figcaption id="cap-grad"></figcaption>
+  </figure>
+</div>
+
+<div class="wrap">
+  <p>The climb is gentle and not perfectly smooth — the middle of the scale, where most Europeans cluster, is a broad plateau rather than a clean staircase — but the two ends are unmistakably apart, and the curve stays comfortably inside its own confidence band the whole way up. Translate the whole line into a single slope, and life satisfaction rises by roughly <strong class="num">0.08</strong> of a point for every step rightward.</p>
+
+  <p>Half a tenth of a point per step sounds like nothing. But the question lurking underneath is whether it is real or an artefact of <em>who</em> sits where. Perhaps the right simply skews older, more married, more religiously settled — and those are the things doing the work. Demean every respondent against their own country's average and add controls for age, sex, education and marital status, and the slope barely moves: from <strong class="num">0.077</strong> across <strong class="num">131,032</strong> respondents to <strong class="num">0.079</strong> across <strong class="num">101,904</strong>. The association is not the composition of the two camps. Something travels with the self-placement itself.</p>
+
+  <h2>A tilt inside almost every nation</h2>
+  <p>The cleanest way to see how general this is: step inside each country and compare the people who lean right (placing themselves 7 or above) against those who lean left (4 or below), holding the comparison within national borders so that no country's overall mood can drive it.</p>
+</div>
+
+<div class="figwrap wide">
+  <figure>
+    <h4>The right-minus-left satisfaction gap, country by country</h4>
+    <p class="sub">Within each country, mean life satisfaction among those leaning right (self-placement 7–10) minus those leaning left (1–4). Bars right of zero mean the right reports more satisfaction. Coloured by political bloc; hover for detail.</p>
+    <div class="legend" id="leg-forest"></div>
+    <div id="chart-forest" style="position:relative"></div>
+    <figcaption id="cap-forest"></figcaption>
+  </figure>
+</div>
+
+<div class="wrap">
+  <p>Of the <strong class="num">37</strong> countries with enough respondents on both sides to measure, all but one tilt the same way: in <strong class="num">36</strong> of them the right reports more satisfaction than the left, and the median country's slope is positive at <strong class="num">0.07</strong> per step. Only <span class="r-t">North Macedonia</span> bucks it, by a hair’s width (a gap of <strong class="num">−0.04</strong>, well inside the noise). At the other extreme the gap is enormous: <strong class="num">1.37</strong> of a point in <span class="r-t">Ukraine</span> and <strong class="num">1.30</strong> in <span class="r-t">Russia</span> — more than two full ladder rungs separating their left and right tails — with the Baltics, Bulgaria and Turkey close behind.</p>
+
+  <p>That roster is a clue in itself. The widest gaps cluster in the post-communist world, where for a generation "the left" carried the memory of a discredited regime and "the right" meant the reformers and winners of the transition. In the long-stable democracies of Western Europe the gap is real but small — <strong class="num">0.14</strong> in <span class="r-t">Germany</span>, <strong class="num">0.19</strong> in <span class="r-t">Italy</span>, <strong class="num">0.24</strong> in <span class="r-t">France</span> — a faint echo of the same tilt rather than a canyon.</p>
+
+  <h2>Wider where the country is more unequal</h2>
+  <p>If the gap is partly about who feels like a winner, inequality should sharpen it: the more a society's rewards are spread unevenly, the more it should matter which side of the political divide you identify with. The pattern leans that way, though loosely.</p>
+</div>
+
+<div class="figwrap wide">
+  <figure>
+    <h4>More unequal countries show a wider left–right gap</h4>
+    <p class="sub">Each dot is a country: its income inequality (Gini) against its right-minus-left life-satisfaction gap. The dashed line is the cross-country fit. Coloured by bloc; hover for detail.</p>
+    <div class="legend" id="leg-scatter"></div>
+    <div id="chart-scatter" style="position:relative"></div>
+    <figcaption id="cap-scatter"></figcaption>
+  </figure>
+</div>
+
+<div class="wrap">
+  <p>The relationship is positive but weak — a correlation of <strong class="num">0.14</strong> across the <strong class="num">37</strong> countries, with the gap rising by about <strong class="num">0.01</strong> of a point for each extra Gini point. It is the right direction for the "winners and losers" reading, and consistent with the idea that ideology matters more for contentment where the material stakes of being on the winning side are higher. But the cloud is loose, and a single relationship this faint should be held lightly: inequality nudges the gap, it does not govern it. Ukraine and Russia, the two largest gaps, are not the two most unequal countries — history is clearly doing work that the Gini coefficient alone cannot capture.</p>
+
+  <h2>Why might the right report more contentment?</h2>
+  <p>This is the part that resists a tidy answer, and the honest move is to lay out the candidates rather than pick a favourite. The best-known explanation comes from <a href="https://doi.org/10.1111/j.1467-9280.2008.02124.x">Napier and Jost (2008)</a>, who found the same conservative-happiness gap in the United States and traced much of it to <em>system justification</em> — the tendency to see the existing social order as fair, which makes inequality easier to live with and one's own position easier to accept. On that reading, the gap is less about being right-wing than about a worldview that smooths the friction between how things are and how they ought to be.</p>
+
+  <p>Other work points elsewhere. <a href="https://doi.org/10.1177/1948550610386870">Onraet and colleagues (2011)</a>, working across European samples, link right-leaning attitudes to a stronger sense of order and lower perceived threat — psychological comforts of their own. And a 47-country meta-analysis by <a href="https://doi.org/10.1007/s10902-015-9624-x">Joshanloo and Weijers (2016)</a> confirms the gap is real and consistent, while stressing that it is modest and varies sharply with national context — exactly the texture the inequality slope here hints at.</p>
+
+  <h2>What this does, and does not, show</h2>
+  <p><strong>Association, not a lever.</strong> Self-placement and life satisfaction are both reported in the same survey, and the same buoyant temperament — dispositional optimism, a habit of looking on the bright side — could plausibly nudge a person both rightward and toward a higher ladder score. Cross-sectional data of this kind cannot disentangle that from any causal story, and the mechanisms literature it builds on is itself contested. Read the gap as a real, repeated pattern, not as proof that moving rightward would make anyone happier.</p>
+
+  <p><strong>An identity, not a policy.</strong> Left–right self-placement is how people <em>locate themselves</em> on a familiar political map, not a measure of any specific belief, party or vote. Its meaning shifts across borders — "the left" in post-communist Europe is not "the left" in Scandinavia — which is part of why the gap’s size swings so wildly from country to country.</p>
+
+  <p><strong>Evaluative only.</strong> Every well-being measure here is a reflective judgement — how satisfied people say they are with life as a whole. The European Values Study carries no "yesterday" measures of momentary mood, so nothing here speaks to whether the right or the left has better <em>days</em>; only to how they sum up their lives. The companion piece <a href="../the-freedom-to-be-happy/index.html">The Freedom to Be Happy</a> follows a related thread — the felt sense of control — through the same family of surveys.</p>
+
+  <p><strong>An unbalanced patchwork.</strong> The surveys are a mosaic of different countries in different waves between 1981 and 2017, pooled here to draw the shape of the relationship rather than to track it over time. Country gaps rest on cells suppressed below an effective N of 50 on either side; the inequality slope is one weak correlation across 37 countries, not a law.</p>
+</div>
+
+<hr class="sep">
+<div class="wide">
+<footer>
+  <h2>Notes &amp; data</h2>
+  <p><strong>Source.</strong> European Values Study (EVS), waves 1–7, fieldwork 1981–2017, pooled across 37 European countries with measurable left and right tails. Two questions carry the piece: political self-placement on a 1 (far left) to 10 (far right) scale, and life satisfaction (“all things considered, how satisfied are you with your life as a whole?”) on a 1–10 scale. The United States and Canada, which appear in early EVS waves, are excluded as non-European.</p>
+  <p><strong>Weighting.</strong> Every within-country estimate is weighted by the survey weight <span style="font-family:var(--mono)">weight</span>; statistics are never reported unweighted. The pooled gradient weights each country equally — every country one vote — so that large nations do not dominate; it represents the <em>average national experience, not the population-weighted European one</em>. Cross-country figures (the gradient, the inequality slope) likewise treat the country as the unit.</p>
+  <p><strong>Constructs.</strong> Life satisfaction is <strong>evaluative</strong> well-being — a global, reflective judgement of one's life. Political self-placement is an <strong>identity / attitudinal</strong> measure, not a well-being outcome, and is kept distinct throughout. The EVS contains no experiential “yesterday” affect items, so no claim is made about momentary feeling.</p>
+  <p><strong>Method.</strong> The gradient is the survey-weighted mean of life satisfaction at each self-placement point, computed within each country and then averaged across countries with equal weight; the band is a 95% percentile interval from a bootstrap of fifteen hundred resamples of countries (fixed seed). Its per-country cells use a more lenient floor — effective N of at least 10 on each side — because each point is then averaged across at least five countries and guarded by a pooled effective N of at least 50; the stricter effective-N-50 suppression below applies to the per-country gap figures. The pooled far-right-minus-far-left gap is 0.57; the equal-country version is 0.68. The within-country slope (0.077) is a country-demeaned weighted least-squares fit of life satisfaction on self-placement (N = 131,032); adding age, sex, education and marital status moves it to 0.079 (N = 101,904). Each country's gap is the weighted mean satisfaction among those placing themselves 7–10 minus those placing 1–4, with country-side cells below an effective N of 50 suppressed (effective N = (Σw)² ⁄ Σw²). The inequality relationship is a Pearson correlation (r = 0.14) of the country gap against its Gini coefficient across 37 countries.</p>
+  <p><strong>Further reading.</strong> Jaime Napier &amp; John Jost, <a href="https://doi.org/10.1111/j.1467-9280.2008.02124.x">“Why Are Conservatives Happier Than Liberals?”</a> (<em>Psychological Science</em>, 2008); Jasper Van Assche / Alain Van Hiel and colleagues, work on right-wing attitudes, order and well-being (cf. Onraet et al., <em>Social Psychological and Personality Science</em>, 2011); Mohsen Joshanloo &amp; Dan Weijers, <a href="https://doi.org/10.1007/s10902-015-9624-x">“Conservatism predicts lower well-being”</a> meta-analysis (<em>Journal of Happiness Studies</em>, 2016).</p>
+  <p style="color:var(--ink-faint)">Construct labels — <span class="pill pill-eval">evaluative</span> life satisfaction · <span class="pill pill-id">identity</span> left–right self-placement. Cross-sectional association, not causation; effects are modest and the mechanism is contested.</p>
+</footer>
+</div>
+</main>
+
+<div class="tip" id="tip" role="status" aria-live="polite"></div>
+
+<script type="module">
+import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+const DATA = {"meta":{"slug":"left-right-and-content","title":"Left, Right, and Content","dataset":"European Values Study (EVS), 1981-2017","colors":{"left":"#3B6CA8","right":"#B5394C","neutral":"#9a9488","western":"#3B6CA8","post_communist":"#B5394C","accent":"#B5394C","grid":"rgba(25,24,21,.08)"}},"grad":[{"lr":1,"life_eq":6.674,"life_pooled":6.85,"n_countries":37,"lo":6.405,"hi":6.915,"lo_pooled":6.788,"hi_pooled":6.919,"n":8245},{"lr":2,"life_eq":6.685,"life_pooled":6.935,"n_countries":37,"lo":6.402,"hi":6.956,"lo_pooled":6.871,"hi_pooled":6.996,"n":6374},{"lr":3,"life_eq":6.695,"life_pooled":7.119,"n_countries":37,"lo":6.444,"hi":6.935,"lo_pooled":7.081,"hi_pooled":7.155,"n":15366},{"lr":4,"life_eq":6.709,"life_pooled":7.149,"n_countries":37,"lo":6.465,"hi":6.938,"lo_pooled":7.115,"hi_pooled":7.182,"n":15892},{"lr":5,"life_eq":6.848,"life_pooled":7.085,"n_countries":37,"lo":6.639,"hi":7.062,"lo_pooled":7.064,"hi_pooled":7.106,"n":50578},{"lr":6,"life_eq":6.95,"life_pooled":7.273,"n_countries":37,"lo":6.743,"hi":7.163,"lo_pooled":7.241,"hi_pooled":7.304,"n":22615},{"lr":7,"life_eq":6.991,"life_pooled":7.363,"n_countries":37,"lo":6.801,"hi":7.179,"lo_pooled":7.332,"hi_pooled":7.397,"n":17100},{"lr":8,"life_eq":7.102,"life_pooled":7.409,"n_countries":37,"lo":6.903,"hi":7.309,"lo_pooled":7.376,"hi_pooled":7.444,"n":15399},{"lr":9,"life_eq":7.216,"life_pooled":7.42,"n_countries":37,"lo":7.034,"hi":7.415,"lo_pooled":7.357,"hi_pooled":7.48,"n":5674},{"lr":10,"life_eq":7.349,"life_pooled":7.417,"n_countries":37,"lo":7.151,"hi":7.54,"lo_pooled":7.356,"hi_pooled":7.478,"n":9277}],"country_gaps":[{"country":"Albania","gap":0.433,"slope":0.0609,"mean_left":6.541,"mean_right":6.975,"n_left":881,"n_right":761,"gini":29.0,"gni":11886.0,"bloc":"post-communist"},{"country":"Armenia","gap":0.091,"slope":0.0233,"mean_left":6.2,"mean_right":6.291,"n_left":858,"n_right":682,"gini":33.6,"gni":9144.0,"bloc":"post-communist"},{"country":"Azerbaijan","gap":0.298,"slope":0.0545,"mean_left":6.253,"mean_right":6.551,"n_left":243,"n_right":596,"gini":26.6,"gni":15600.0,"bloc":"post-communist"},{"country":"Belarus","gap":0.381,"slope":0.0827,"mean_left":6.1,"mean_right":6.482,"n_left":331,"n_right":545,"gini":25.4,"gni":16323.0,"bloc":"post-communist"},{"country":"Bosnia Herzegovina","gap":0.33,"slope":0.0348,"mean_left":7.129,"mean_right":7.459,"n_left":630,"n_right":637,"gini":33.0,"gni":11716.0,"bloc":"post-communist"},{"country":"Bulgaria","gap":0.907,"slope":0.1315,"mean_left":5.463,"mean_right":6.37,"n_left":968,"n_right":1107,"gini":37.4,"gni":18740.0,"bloc":"post-communist"},{"country":"Croatia","gap":0.354,"slope":0.0587,"mean_left":7.058,"mean_right":7.411,"n_left":878,"n_right":718,"gini":31.1,"gni":22162.0,"bloc":"post-communist"},{"country":"Cyprus","gap":0.062,"slope":0.0305,"mean_left":7.434,"mean_right":7.497,"n_left":227,"n_right":265,"gini":34.0,"gni":31568.0,"bloc":"western"},{"country":"Czechia","gap":0.607,"slope":0.1042,"mean_left":6.832,"mean_right":7.439,"n_left":1513,"n_right":2244,"gini":25.9,"gni":30588.0,"bloc":"post-communist"},{"country":"Estonia","gap":0.899,"slope":0.1348,"mean_left":6.265,"mean_right":7.165,"n_left":444,"n_right":818,"gini":32.7,"gni":28993.0,"bloc":"post-communist"},{"country":"Finland","gap":0.356,"slope":0.0838,"mean_left":7.672,"mean_right":8.028,"n_left":902,"n_right":1442,"gini":27.1,"gni":41002.0,"bloc":"western"},{"country":"France","gap":0.241,"slope":0.0555,"mean_left":6.862,"mean_right":7.103,"n_left":2196,"n_right":1340,"gini":32.7,"gni":39254.0,"bloc":"western"},{"country":"Georgia","gap":0.407,"slope":0.0953,"mean_left":6.211,"mean_right":6.618,"n_left":358,"n_right":1073,"gini":37.9,"gni":9186.0,"bloc":"post-communist"},{"country":"Germany","gap":0.135,"slope":0.04,"mean_left":7.234,"mean_right":7.368,"n_left":3250,"n_right":1927,"gini":31.7,"gni":46136.0,"bloc":"western"},{"country":"Greece","gap":0.456,"slope":0.0807,"mean_left":6.679,"mean_right":7.135,"n_left":706,"n_right":592,"gini":36.0,"gni":24648.0,"bloc":"western"},{"country":"Hungary","gap":0.452,"slope":0.0887,"mean_left":6.316,"mean_right":6.768,"n_left":802,"n_right":1041,"gini":30.4,"gni":25393.0,"bloc":"post-communist"},{"country":"Italy","gap":0.192,"slope":0.0352,"mean_left":7.066,"mean_right":7.258,"n_left":2518,"n_right":1806,"gini":35.4,"gni":35299.0,"bloc":"western"},{"country":"Latvia","gap":0.694,"slope":0.118,"mean_left":5.899,"mean_right":6.593,"n_left":389,"n_right":974,"gini":34.2,"gni":25002.0,"bloc":"post-communist"},{"country":"Lithuania","gap":0.821,"slope":0.1359,"mean_left":5.813,"mean_right":6.634,"n_left":541,"n_right":777,"gini":37.4,"gni":28314.0,"bloc":"post-communist"},{"country":"Moldova","gap":0.496,"slope":0.0852,"mean_left":6.344,"mean_right":6.84,"n_left":125,"n_right":331,"gini":25.9,"gni":5554.0,"bloc":"post-communist"},{"country":"Montenegro","gap":0.194,"slope":0.0524,"mean_left":7.364,"mean_right":7.559,"n_left":361,"n_right":268,"gini":31.9,"gni":16779.0,"bloc":"post-communist"},{"country":"Netherlands","gap":0.239,"slope":0.0489,"mean_left":7.78,"mean_right":8.018,"n_left":2123,"n_right":2083,"gini":28.2,"gni":47900.0,"bloc":"western"},{"country":"North Macedonia","gap":-0.039,"slope":-0.01,"mean_left":7.207,"mean_right":7.167,"n_left":476,"n_right":679,"gini":35.6,"gni":12505.0,"bloc":"post-communist"},{"country":"Northern Ireland","gap":0.596,"slope":0.1193,"mean_left":7.543,"mean_right":8.139,"n_left":248,"n_right":463,"gini":33.2,"gni":39116.0,"bloc":"western"},{"country":"Norway","gap":0.342,"slope":0.0699,"mean_left":7.743,"mean_right":8.085,"n_left":1176,"n_right":1431,"gini":27.5,"gni":68012.0,"bloc":"western"},{"country":"Poland","gap":0.36,"slope":0.071,"mean_left":6.797,"mean_right":7.157,"n_left":664,"n_right":1295,"gini":30.8,"gni":26150.0,"bloc":"post-communist"},{"country":"Romania","gap":0.417,"slope":0.0578,"mean_left":6.288,"mean_right":6.704,"n_left":671,"n_right":1121,"gini":35.9,"gni":22646.0,"bloc":"post-communist"},{"country":"Russia","gap":1.301,"slope":0.239,"mean_left":4.975,"mean_right":6.277,"n_left":856,"n_right":878,"gini":37.7,"gni":24233.0,"bloc":"post-communist"},{"country":"Serbia","gap":0.267,"slope":0.0506,"mean_left":6.711,"mean_right":6.978,"n_left":550,"n_right":572,"gini":28.5,"gni":13019.0,"bloc":"post-communist"},{"country":"Slovakia","gap":0.565,"slope":0.0996,"mean_left":6.687,"mean_right":7.252,"n_left":1239,"n_right":969,"gini":26.5,"gni":29467.0,"bloc":"post-communist"},{"country":"Slovenia","gap":0.088,"slope":0.0111,"mean_left":7.342,"mean_right":7.43,"n_left":881,"n_right":500,"gini":25.4,"gni":30594.0,"bloc":"post-communist"},{"country":"Spain","gap":0.238,"slope":0.0323,"mean_left":6.978,"mean_right":7.217,"n_left":2919,"n_right":1331,"gini":36.2,"gni":34258.0,"bloc":"western"},{"country":"Sweden","gap":0.357,"slope":0.0758,"mean_left":7.632,"mean_right":7.989,"n_left":1645,"n_right":1729,"gini":29.2,"gni":47766.0,"bloc":"western"},{"country":"Switzerland","gap":0.209,"slope":0.0576,"mean_left":7.996,"mean_right":8.205,"n_left":1317,"n_right":1092,"gini":32.3,"gni":57625.0,"bloc":"western"},{"country":"Turkey","gap":0.817,"slope":0.1236,"mean_left":5.471,"mean_right":6.288,"n_left":504,"n_right":954,"gini":41.9,"gni":24804.0,"bloc":"western"},{"country":"Ukraine","gap":1.365,"slope":0.2273,"mean_left":5.066,"mean_right":6.431,"n_left":612,"n_right":834,"gini":25.0,"gni":8130.0,"bloc":"post-communist"},{"country":"United Kingdom","gap":0.412,"slope":0.0907,"mean_left":7.396,"mean_right":7.808,"n_left":1512,"n_right":1414,"gini":33.2,"gni":39116.0,"bloc":"western"}],"gap_gini":{"r":0.137,"slope":0.0099,"intercept":0.1259,"n":37,"x0":25.0,"x1":41.9},"slope_dist":{"share_pos":0.973,"median":0.071,"n_countries":37},"headline":{"life_lr1":6.85,"life_lr10":7.417,"life_span_pooled":0.567,"life_lr1_eq":6.674,"life_lr10_eq":7.349,"life_span_eq":0.675,"slope_overall":0.0773,"slope_controlled":0.0785,"r_gap_gini":0.137,"slope_gini":0.0099,"n_countries_gap":37,"n_countries_gini":37,"share_pos_slope":0.973,"median_slope":0.071,"n_total":166520,"n_slope":131032,"n_controlled":101904}};
+const C = DATA.meta.colors;
+const tip = document.getElementById("tip");
+function showTip(html, ev){
+  tip.innerHTML = html; tip.style.opacity = 1;
+  const pad=14, w=tip.offsetWidth, h=tip.offsetHeight;
+  let x=ev.clientX+pad, y=ev.clientY+pad;
+  if(x+w>window.innerWidth-6) x=ev.clientX-w-pad;
+  if(y+h>window.innerHeight-6) y=ev.clientY-h-pad;
+  tip.style.left=x+"px"; tip.style.top=y+"px";
+}
+function hideTip(){ tip.style.opacity=0; }
+// diverging left->right colour ramp (cool blue -> warm red), perceptually anchored at midpoint
+const lrColor = d3.scaleLinear().domain([1,3.5,5.5,7,10])
+  .range([C.left, "#8aa6c8", "#c9b8ad", "#cf7e7e", C.right]).interpolate(d3.interpolateLab);
+
+/* ============================ HERO: GRADIENT ============================ */
+(function(){
+  const W=1000,H=460,M={t:30,r:54,b:62,l:56};
+  const svg=d3.select("#chart-grad").append("svg").attr("viewBox",`0 0 ${W} ${H}`).attr("width","100%")
+    .attr("role","img")
+    .attr("aria-label","Line chart. Mean life satisfaction rises from about 6.7 at the far left of the political scale to about 7.3 at the far right, an equal-country gap of roughly two-thirds of a point.");
+  svg.append("desc").text("Mean life satisfaction at each point of left-right political self-placement across European countries, each country weighted equally, with a 95% bootstrap band.");
+  const g=svg.append("g").attr("transform",`translate(${M.l},${M.t})`);
+  const iw=W-M.l-M.r, ih=H-M.t-M.b;
+  const rows=DATA.grad;
+  const x=d3.scaleLinear().domain([1,10]).range([0,iw]);
+  const y=d3.scaleLinear().domain([6.35,7.6]).range([ih,0]);
+
+  // soft diverging wash behind the plot (lifted so it reads as design, not noise)
+  const defs=svg.append("defs");
+  const grad=defs.append("linearGradient").attr("id","lr-wash").attr("x1","0").attr("x2","1").attr("y1","0").attr("y2","0");
+  [[0,C.left,0.14],[0.5,"#cdbfb4",0.05],[1,C.right,0.14]].forEach(([o,c,op])=>grad.append("stop").attr("offset",o).attr("stop-color",c).attr("stop-opacity",op));
+  g.append("rect").attr("x",0).attr("y",0).attr("width",iw).attr("height",ih).attr("fill","url(#lr-wash)");
+
+  // diverging stroke gradient for the LINE itself — carries the cool->warm metaphor
+  // across the flagship chart, anchored to the same lrColor ramp as the dots.
+  const strokeGrad=defs.append("linearGradient").attr("id","lr-stroke").attr("gradientUnits","userSpaceOnUse")
+    .attr("x1",x(1)).attr("x2",x(10)).attr("y1",0).attr("y2",0);
+  [1,2,3,4,5,6,7,8,9,10].forEach(v=>strokeGrad.append("stop")
+    .attr("offset",((v-1)/9*100)+"%").attr("stop-color",lrColor(v)));
+
+  // gridlines + y labels
+  g.append("g").selectAll("line").data(y.ticks(5)).join("line").attr("x1",0).attr("x2",iw)
+    .attr("y1",d=>y(d)).attr("y2",d=>y(d)).attr("stroke","var(--hair-soft)");
+  g.append("g").selectAll("text.yl").data(y.ticks(5)).join("text").attr("class","axlab")
+    .attr("x",-10).attr("y",d=>y(d)+4).attr("text-anchor","end").text(d=>d.toFixed(1));
+  g.append("text").attr("class","smcap").attr("transform",`translate(-42,${ih/2}) rotate(-90)`).attr("text-anchor","middle").text("mean life satisfaction (1–10) →");
+
+  // x labels + scale caption
+  g.append("g").selectAll("text.xl").data(d3.range(1,11)).join("text").attr("class","axlab")
+    .attr("x",d=>x(d)).attr("y",ih+22).attr("text-anchor","middle").text(d=>d);
+  g.append("text").attr("class","smcap").attr("x",0).attr("y",ih+44).attr("fill",C.left).attr("font-weight",700).text("← far left");
+  g.append("text").attr("class","smcap").attr("x",iw).attr("y",ih+44).attr("text-anchor","end").attr("fill",C.right).attr("font-weight",700).text("far right →");
+  g.append("text").attr("class","smcap").attr("x",iw/2).attr("y",ih+44).attr("text-anchor","middle").text("political self-placement (1–10)");
+
+  // bootstrap band
+  const area=d3.area().x(d=>x(d.lr)).y0(d=>y(d.lo)).y1(d=>y(d.hi)).curve(d3.curveMonotoneX);
+  g.append("path").datum(rows).attr("fill","var(--neutral)").attr("opacity",.13).attr("d",area);
+
+  // main line: equal-country gradient
+  const line=d3.line().x(d=>x(d.lr)).y(d=>y(d.life_eq)).curve(d3.curveMonotoneX);
+  const path=g.append("path").datum(rows).attr("fill","none").attr("stroke","url(#lr-stroke)").attr("stroke-width",3.8).attr("stroke-linecap","round").attr("d",line);
+  // animate draw
+  const L=path.node().getTotalLength();
+  path.attr("stroke-dasharray",`${L} ${L}`).attr("stroke-dashoffset",L)
+    .transition().duration(1100).ease(d3.easeCubicOut).attr("stroke-dashoffset",0);
+
+  // points coloured along the diverging ramp
+  g.selectAll("circle.pt").data(rows).join("circle").attr("class","pt")
+    .attr("cx",d=>x(d.lr)).attr("cy",d=>y(d.life_eq)).attr("r",6)
+    .attr("fill",d=>lrColor(d.lr)).attr("stroke","var(--panel)").attr("stroke-width",2.2)
+    .attr("tabindex",0).attr("role","button")
+    .attr("aria-label",d=>`Self-placement ${d.lr}: equal-country mean life satisfaction ${d.life_eq.toFixed(2)}`)
+    .style("opacity",0)
+    .on("mousemove",(ev,d)=>showTip(`<b>Self-placement ${d.lr}</b>`+
+      `<div class="row"><span class="muted">equal-country mean</span><b>${d.life_eq.toFixed(2)}</b></div>`+
+      `<div class="row"><span class="muted">pooled mean</span><b>${d.life_pooled.toFixed(2)}</b></div>`+
+      `<div class="row"><span class="muted">N respondents</span><b>${d.n.toLocaleString()}</b></div>`+
+      `<div class="tag" style="color:#cf9090">evaluative · ${d.n_countries} countries</div>`,ev))
+    .on("mouseleave",hideTip)
+    .on("focus",function(ev,d){const r=this.getBoundingClientRect();showTip(`<b>Self-placement ${d.lr}</b><div class="row"><span class="muted">equal-country</span><b>${d.life_eq.toFixed(2)}</b></div>`,{clientX:r.x+r.width/2,clientY:r.y});})
+    .on("blur",hideTip)
+    .transition().delay((d,i)=>500+i*55).duration(300).style("opacity",1);
+
+  // endpoint annotations
+  const d1=rows[0], d10=rows[rows.length-1];
+  function endLabel(d,dy,anchor){
+    g.append("text").attr("class","smcap").attr("font-weight",700).attr("fill",lrColor(d.lr))
+      .attr("x",x(d.lr)).attr("y",y(d.life_eq)+dy).attr("text-anchor",anchor).text(d.life_eq.toFixed(2));
+  }
+  endLabel(d1,-14,"start");
+  endLabel(d10,22,"end");
+
+  // gap bracket annotation on the far-right side
+  const gx=x(10)+18;
+  g.append("line").attr("x1",gx).attr("x2",gx).attr("y1",y(d1.life_eq)).attr("y2",y(d10.life_eq))
+    .attr("stroke","var(--accent)").attr("stroke-width",1.4);
+  g.append("line").attr("x1",gx-4).attr("x2",gx+4).attr("y1",y(d1.life_eq)).attr("y2",y(d1.life_eq)).attr("stroke","var(--accent)").attr("stroke-width",1.4);
+  g.append("line").attr("x1",gx-4).attr("x2",gx+4).attr("y1",y(d10.life_eq)).attr("y2",y(d10.life_eq)).attr("stroke","var(--accent)").attr("stroke-width",1.4);
+  g.append("text").attr("class","smcap").attr("font-weight",700).attr("fill","var(--accent)")
+    .attr("x",gx+8).attr("y",(y(d1.life_eq)+y(d10.life_eq))/2-2).text("+0.68");
+  g.append("text").attr("class","smcap").attr("fill","var(--ink-faint)")
+    .attr("x",gx+8).attr("y",(y(d1.life_eq)+y(d10.life_eq))/2+13).text("equal-country");
+
+  // inline note: pooled span
+  g.append("text").attr("class","smcap").attr("x",6).attr("y",14).attr("fill","var(--ink-faint)")
+    .text(`pooled far-right minus far-left: +0.57`);
+
+  document.getElementById("cap-grad").innerHTML=`Life satisfaction rises from ${d1.life_eq.toFixed(2)} at the far left to ${d10.life_eq.toFixed(2)} at the far right when every country is given equal weight — a gap of +0.68. Pooled across all respondents the gap is +0.57. European Values Study (EVS), 1981–2017; within-country survey weight, countries weighted equally (average national experience, not population-weighted); evaluative. The shaded band is the 95% bootstrap interval for the equal-country mean (resampling countries), so it wraps the plotted line.`;
+
+  const t=d3.select("#chart-grad").append("table").attr("class","fallback").style("display","none");
+  t.append("caption").text("Mean life satisfaction by political self-placement (equal-country)"); const hr=t.append("thead").append("tr");
+  ["Self-placement","Life satisfaction","N"].forEach(s=>hr.append("th").text(s)); const tb=t.append("tbody");
+  rows.forEach(d=>{const r=tb.append("tr"); r.append("td").text(d.lr); r.append("td").text(d.life_eq.toFixed(2)); r.append("td").text(d.n);});
+})();
+
+/* ===================== SECONDARY: COUNTRY FOREST ===================== */
+(function(){
+  const data=DATA.country_gaps.slice().sort((a,b)=>d3.descending(a.gap,b.gap));
+  const blocColor=b=> b==="post-communist" ? C.post_communist : C.western;
+  // legend
+  const leg=d3.select("#leg-forest");
+  [["Post-communist",C.post_communist],["Western",C.western]].forEach(([t,c])=>{
+    const s=leg.append("span").attr("class","li"); s.append("span").attr("class","dot").style("background",c); s.append("text").text(t);
+  });
+  const rowH=18, M={t:14,r:64,b:40,l:140};
+  const iw=1000-M.l-M.r, ih=data.length*rowH;
+  const W=1000, H=ih+M.t+M.b;
+  const svg=d3.select("#chart-forest").append("svg").attr("viewBox",`0 0 ${W} ${H}`).attr("width","100%")
+    .attr("role","img")
+    .attr("aria-label",`Horizontal bar chart of ${data.length} countries. In 36 of 37, the political right reports higher life satisfaction than the left; gaps range from minus 0.04 in North Macedonia to plus 1.37 in Ukraine.`);
+  svg.append("desc").text("Right-minus-left life satisfaction gap for each European country, sorted largest to smallest, coloured by political bloc.");
+  const g=svg.append("g").attr("transform",`translate(${M.l},${M.t})`);
+  const maxg=d3.max(data,d=>d.gap);
+  const x=d3.scaleLinear().domain([Math.min(0,d3.min(data,d=>d.gap)),maxg]).nice().range([0,iw]);
+  const y=d3.scaleBand().domain(data.map(d=>d.country)).range([0,ih]).padding(0.28);
+
+  // x grid + ticks
+  g.append("g").selectAll("line").data(x.ticks(6)).join("line").attr("x1",d=>x(d)).attr("x2",d=>x(d))
+    .attr("y1",0).attr("y2",ih).attr("stroke","var(--hair-soft)");
+  g.append("g").selectAll("text.xt").data(x.ticks(6)).join("text").attr("class","axlab")
+    .attr("x",d=>x(d)).attr("y",ih+20).attr("text-anchor","middle").text(d=>d3.format("+.1f")(d).replace("+0.0","0.0"));
+  g.append("text").attr("class","smcap").attr("x",iw/2).attr("y",ih+38).attr("text-anchor","middle")
+    .text("right-minus-left life-satisfaction gap (points on 1–10) →");
+  // zero rule
+  g.append("line").attr("x1",x(0)).attr("x2",x(0)).attr("y1",-4).attr("y2",ih).attr("stroke","var(--ink-dim)").attr("stroke-width",1.2);
+
+  // bars
+  g.selectAll("rect.bar").data(data).join("rect").attr("class","bar")
+    .attr("x",d=>x(Math.min(0,d.gap))).attr("y",d=>y(d.country)).attr("height",y.bandwidth())
+    .attr("rx",2.5).attr("fill",d=>blocColor(d.bloc)).attr("opacity",.9)
+    .attr("width",0)
+    .attr("tabindex",0).attr("role","button")
+    .attr("aria-label",d=>`${d.country}: right-minus-left gap ${d.gap.toFixed(2)} points`)
+    .on("mousemove",(ev,d)=>showTip(`<b>${d.country}</b>`+
+      `<div class="row"><span class="muted">right − left gap</span><b>${d3.format("+.2f")(d.gap)}</b></div>`+
+      `<div class="row"><span class="muted">mean (right 7–10)</span><b>${d.mean_right.toFixed(2)}</b></div>`+
+      `<div class="row"><span class="muted">mean (left 1–4)</span><b>${d.mean_left.toFixed(2)}</b></div>`+
+      `<div class="row"><span class="muted">N left / right</span><b>${d.n_left.toLocaleString()} / ${d.n_right.toLocaleString()}</b></div>`+
+      `<div class="tag" style="color:#cf9090">${d.bloc} · evaluative</div>`,ev))
+    .on("mouseleave",hideTip)
+    .on("focus",function(ev,d){const r=this.getBoundingClientRect();showTip(`<b>${d.country}</b><div class="row"><span class="muted">gap</span><b>${d3.format("+.2f")(d.gap)}</b></div>`,{clientX:r.x+r.width/2,clientY:r.y});})
+    .on("blur",hideTip)
+    .transition().delay((d,i)=>i*16).duration(550).ease(d3.easeCubicOut)
+    .attr("width",d=>Math.abs(x(d.gap)-x(0)));
+
+  // country labels
+  g.selectAll("text.cl").data(data).join("text").attr("class","cl")
+    .attr("x",-10).attr("y",d=>y(d.country)+y.bandwidth()/2+3.5).attr("text-anchor","end")
+    .attr("font-family","var(--sans)").attr("font-size",11.5).attr("fill","var(--ink-dim)").text(d=>d.country);
+
+  // value labels on bars
+  g.selectAll("text.vl").data(data).join("text").attr("class","vl")
+    .attr("y",d=>y(d.country)+y.bandwidth()/2+3.5)
+    .attr("x",d=>d.gap>=0? x(d.gap)+5 : x(d.gap)-5)
+    .attr("text-anchor",d=>d.gap>=0?"start":"end")
+    .attr("font-family","var(--sans)").attr("font-size",10.5).attr("font-weight",700)
+    .attr("fill",d=>blocColor(d.bloc)).style("opacity",0).text(d=>d3.format("+.2f")(d.gap))
+    .transition().delay((d,i)=>250+i*16).duration(300).style("opacity",1);
+
+  const gapPos=data.filter(d=>d.gap>0).length;
+  document.getElementById("cap-forest").innerHTML=`In ${gapPos} of ${data.length} countries the right's mean tops the left's — the gap the bars plot. (A separate per-step measure, the within-country slope, is positive in the same number; its median is +${DATA.slope_dist.median.toFixed(2)} of a point per step.) Gaps are widest in the post-communist world (Ukraine +1.37, Russia +1.30) and smallest in stable Western democracies. European Values Study (EVS), 1981–2017; within-country survey weight; right = self-placement 7–10, left = 1–4; cells below effective N 50 per side suppressed; evaluative.`;
+
+  const t=d3.select("#chart-forest").append("table").attr("class","fallback").style("display","none");
+  t.append("caption").text("Right-minus-left life-satisfaction gap by country"); const hr=t.append("thead").append("tr");
+  ["Country","Gap","Bloc"].forEach(s=>hr.append("th").text(s)); const tb=t.append("tbody");
+  data.forEach(d=>{const r=tb.append("tr"); r.append("td").text(d.country); r.append("td").text(d3.format("+.2f")(d.gap)); r.append("td").text(d.bloc);});
+})();
+
+/* ===================== TERTIARY: GAP vs GINI SCATTER ===================== */
+(function(){
+  const pts=DATA.country_gaps.slice(), fit=DATA.gap_gini;
+  const blocColor=b=> b==="post-communist" ? C.post_communist : C.western;
+  // legend
+  const leg=d3.select("#leg-scatter");
+  [["Post-communist",C.post_communist],["Western",C.western]].forEach(([t,c])=>{
+    const s=leg.append("span").attr("class","li"); s.append("span").attr("class","dot").style("background",c); s.append("text").text(t);
+  });
+  const W=1000,H=520,M={t:22,r:30,b:56,l:58};
+  const svg=d3.select("#chart-scatter").append("svg").attr("viewBox",`0 0 ${W} ${H}`).attr("width","100%")
+    .attr("role","img")
+    .attr("aria-label","Scatter plot of each country's income inequality (Gini) against its right-minus-left life-satisfaction gap. The fit slopes gently upward; the correlation is a weak 0.14.");
+  svg.append("desc").text("Country income inequality on the horizontal axis against the right-minus-left life satisfaction gap on the vertical axis, with a fitted line.");
+  const g=svg.append("g").attr("transform",`translate(${M.l},${M.t})`);
+  const iw=W-M.l-M.r, ih=H-M.t-M.b;
+  const x=d3.scaleLinear().domain([24,43]).range([0,iw]);
+  const y=d3.scaleLinear().domain([-0.1,1.45]).range([ih,0]);
+
+  g.append("g").selectAll("line.h").data(y.ticks(6)).join("line").attr("x1",0).attr("x2",iw)
+    .attr("y1",d=>y(d)).attr("y2",d=>y(d)).attr("stroke","var(--hair-soft)");
+  g.append("g").selectAll("line.v").data(x.ticks(7)).join("line").attr("x1",d=>x(d)).attr("x2",d=>x(d))
+    .attr("y1",0).attr("y2",ih).attr("stroke","var(--hair-soft)");
+  g.append("g").selectAll("text.yt").data(y.ticks(6)).join("text").attr("class","axlab")
+    .attr("x",-10).attr("y",d=>y(d)+4).attr("text-anchor","end").text(d=>d3.format("+.1f")(d).replace("+0.0","0.0"));
+  g.append("g").selectAll("text.xt").data(x.ticks(7)).join("text").attr("class","axlab")
+    .attr("x",d=>x(d)).attr("y",ih+22).attr("text-anchor","middle").text(d=>d);
+  g.append("text").attr("class","smcap").attr("x",iw/2).attr("y",ih+44).attr("text-anchor","middle").text("income inequality — Gini coefficient →");
+  g.append("text").attr("class","smcap").attr("transform",`translate(-44,${ih/2}) rotate(-90)`).attr("text-anchor","middle").text("right-minus-left satisfaction gap →");
+
+  // zero line
+  g.append("line").attr("x1",0).attr("x2",iw).attr("y1",y(0)).attr("y2",y(0)).attr("stroke","var(--ink-dim)").attr("stroke-width",1).attr("stroke-dasharray","2 3").attr("opacity",.5);
+
+  // fit line
+  const fx0=fit.x0, fx1=fit.x1;
+  g.append("line").attr("x1",x(fx0)).attr("y1",y(fit.intercept+fit.slope*fx0)).attr("x2",x(fx1)).attr("y2",y(fit.intercept+fit.slope*fx1))
+    .attr("stroke","var(--accent)").attr("stroke-width",1.8).attr("stroke-dasharray","6 4").attr("opacity",.75);
+
+  // labelled standouts
+  const named=new Set(["Ukraine","Russia","Bulgaria","Turkey","Germany","Slovenia","North Macedonia"]);
+  g.selectAll("circle").data(pts).join("circle")
+    .attr("cx",d=>x(d.gini)).attr("cy",d=>y(d.gap)).attr("r",d=>named.has(d.country)?6.5:5)
+    .attr("fill",d=>blocColor(d.bloc)).attr("opacity",.82)
+    .attr("stroke",d=>named.has(d.country)?"var(--ink)":"var(--panel)").attr("stroke-width",d=>named.has(d.country)?1.3:1)
+    .attr("tabindex",0).attr("role","button")
+    .attr("aria-label",d=>`${d.country}: Gini ${d.gini}, gap ${d.gap.toFixed(2)}`)
+    .on("mousemove",(ev,d)=>showTip(`<b>${d.country}</b>`+
+      `<div class="row"><span class="muted">Gini</span><b>${d.gini.toFixed(1)}</b></div>`+
+      `<div class="row"><span class="muted">right − left gap</span><b>${d3.format("+.2f")(d.gap)}</b></div>`+
+      `<div class="tag" style="color:#cf9090">${d.bloc} · evaluative</div>`,ev))
+    .on("mouseleave",hideTip)
+    .on("focus",function(ev,d){const r=this.getBoundingClientRect();showTip(`<b>${d.country}</b><div class="row"><span class="muted">Gini</span><b>${d.gini.toFixed(1)}</b></div><div class="row"><span class="muted">gap</span><b>${d3.format("+.2f")(d.gap)}</b></div>`,{clientX:r.x+r.width/2,clientY:r.y});})
+    .on("blur",hideTip);
+
+  g.selectAll("text.lbl").data(pts.filter(d=>named.has(d.country))).join("text").attr("class","smcap")
+    .attr("x",d=>x(d.gini)+9).attr("y",d=>y(d.gap)+(d.gap>1?4:(d.country==="North Macedonia"?14:-7)))
+    .attr("fill","var(--ink-dim)").attr("font-weight",700).text(d=>d.country);
+
+  g.append("text").attr("class","smcap").attr("x",iw-4).attr("y",14).attr("text-anchor","end").attr("fill","var(--ink-dim)").attr("font-weight",700)
+    .text(`r = ${fit.r.toFixed(2)} · ${fit.n} countries`);
+
+  document.getElementById("cap-scatter").innerHTML=`The left–right gap leans wider in more unequal countries, but the link is weak — a correlation of ${fit.r.toFixed(2)} across ${fit.n} countries, the gap rising about ${fit.slope.toFixed(2)} of a point per Gini point. History matters more than inequality alone: Ukraine and Russia post the largest gaps without being the most unequal. European Values Study (EVS), 1981–2017; within-country survey weight; each country one observation; evaluative.`;
+
+  const t=d3.select("#chart-scatter").append("table").attr("class","fallback").style("display","none");
+  t.append("caption").text("Country gap against Gini"); const hr=t.append("thead").append("tr");
+  ["Country","Gini","Gap"].forEach(s=>hr.append("th").text(s)); const tb=t.append("tbody");
+  pts.sort((a,b)=>b.gap-a.gap).forEach(d=>{const r=tb.append("tr"); r.append("td").text(d.country); r.append("td").text(d.gini.toFixed(1)); r.append("td").text(d3.format("+.2f")(d.gap));});
+})();
+</script>
+</body>
+</html>

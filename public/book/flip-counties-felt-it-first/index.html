@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="In the 223 counties that voted Obama in 2012 and Trump in 2016, Gallup interviews show day-to-day life ratings tracking similar communities almost step for step, while expectations for the future sagged years before the election.">
+<title>The Flip Counties Felt It First</title>
+<style>
+  :root{
+    --paper:#fbfaf6;
+    --paper2:#f1efe8;
+    --card:#ffffff;
+    --ink:#191a1e;
+    --ink2:#5c5e66;
+    --hair:#dcdad1;
+    --accent:#7a5c2e;
+    --flip:#B5394C;
+    --flipsoft:#d99aa4;
+    --cmp:#4d5560;
+    --cmpsoft:#b4bac3;
+    --dem:#3B6CA8;
+    --rep:#B5394C;
+    --nodata:#e9e7df;
+    --sans: ui-sans-serif, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+  }
+  *{ box-sizing:border-box; }
+  html{ -webkit-text-size-adjust:100%; }
+  body{ margin:0; background:var(--paper); color:var(--ink); font:18px/1.66 var(--serif); }
+  a{ color:var(--accent); text-decoration:underline; text-decoration-color:rgba(122,92,46,.4); text-underline-offset:2.5px; }
+  a:hover{ text-decoration-color:var(--accent); }
+  a:focus-visible, button:focus-visible{ outline:3px solid var(--accent); outline-offset:2px; border-radius:3px; }
+  .prose{ max-width:680px; margin:0 auto; padding:0 22px; }
+  .prose p{ margin:1.15em 0; }
+
+  .flagbar{ height:6px; display:flex; }
+  .flagbar i{ flex:1; }
+  .flagbar i:first-child{ background:var(--dem); }
+  .flagbar i:last-child{ background:var(--rep); }
+  .flagbar i.mid{ flex:0 0 38%; background:linear-gradient(90deg,var(--dem),var(--rep)); opacity:.25; }
+
+  header.hero{ padding:56px 0 6px; }
+  .kicker{ font:700 12px/1.4 var(--sans); letter-spacing:.22em; text-transform:uppercase; color:var(--flip); margin:0; }
+  h1{ font-size:clamp(2.3rem, 6.4vw, 3.9rem); line-height:1.05; letter-spacing:-.015em; margin:.38em 0 .35em; font-weight:800; }
+  .dek{ font-size:clamp(1.06rem, 2.5vw, 1.3rem); line-height:1.5; color:var(--ink2); margin:0; max-width:640px; }
+  .meta{ font:13px/1.6 var(--sans); color:var(--ink2); border-top:1px solid var(--hair); border-bottom:1px solid var(--hair);
+    padding:10px 0; margin-top:26px; display:flex; gap:8px 22px; flex-wrap:wrap; }
+  .meta b{ color:var(--ink); font-weight:600; }
+
+  .dropcap::first-letter{ font-size:3.4em; float:left; line-height:.8; padding:7px 10px 0 0; font-weight:800; color:var(--flip); }
+  h2{ font-size:clamp(1.45rem, 3.5vw, 1.95rem); line-height:1.16; margin:2.6em 0 .5em; letter-spacing:-.01em; }
+  .secnum{ display:block; font:700 12px/1 var(--sans); letter-spacing:.24em; color:var(--flip); margin-bottom:12px; }
+
+  .stats{ display:grid; grid-template-columns:repeat(auto-fit, minmax(150px,1fr)); gap:1px;
+    background:var(--hair); border:1px solid var(--hair); margin:34px 0; }
+  .stat{ background:var(--card); padding:14px 16px 12px; }
+  .stat b{ display:block; font:700 26px/1.15 var(--serif); letter-spacing:-.01em; }
+  .stat span{ font:12px/1.45 var(--sans); color:var(--ink2); }
+
+  figure{ margin:44px auto; width:min(1100px,100%); padding:0 22px; }
+  .figtitle{ font:700 17.5px/1.3 var(--sans); margin:0 0 3px; }
+  .figsub{ font:13px/1.5 var(--sans); color:var(--ink2); margin:0 0 12px; max-width:780px; }
+  .figbody{ position:relative; }
+  figcaption{ font:12.5px/1.55 var(--sans); color:var(--ink2); margin-top:10px; max-width:800px; }
+  svg{ display:block; }
+  svg text{ font-family:var(--sans); }
+
+  .controls{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin:4px 0 14px; }
+  .ctl-label{ font:600 11.5px/1 var(--sans); letter-spacing:.13em; text-transform:uppercase; color:var(--ink2); margin-right:2px; }
+  .ctl-gap{ flex:0 0 10px; }
+  button.btn{ font:600 13px/1 var(--sans); padding:8px 14px; border:1px solid var(--hair); background:var(--card);
+    color:var(--ink); border-radius:999px; cursor:pointer; touch-action:manipulation; }
+  button.btn:hover{ border-color:#aaa493; }
+  button.btn[aria-pressed="true"]{ background:var(--ink); color:var(--paper); border-color:var(--ink); }
+
+  .vizwrap{ display:grid; grid-template-columns:minmax(0,1fr) 320px; gap:10px 26px; align-items:start; }
+  @media (max-width:860px){ .vizwrap{ grid-template-columns:1fr; } }
+  .mapside h4{ font:700 13.5px/1.35 var(--sans); margin:6px 0 2px; }
+  .mapside .hint{ font:12px/1.5 var(--sans); color:var(--ink2); margin:2px 0 6px; }
+  .maplegend{ display:flex; gap:14px; flex-wrap:wrap; font:12px/1.4 var(--sans); color:var(--ink2); margin-top:6px; }
+  .maplegend i{ display:inline-block; width:11px; height:11px; border-radius:2px; margin-right:5px; vertical-align:-1px; }
+
+  .tip{ position:absolute; pointer-events:none; z-index:6; opacity:0; transition:opacity .12s;
+    background:var(--card); border:1px solid var(--hair); border-radius:6px;
+    box-shadow:0 8px 22px rgba(40,38,30,.16); padding:8px 11px; font:13px/1.5 var(--sans); color:var(--ink); max-width:240px; }
+  .tip b{ font-size:13.5px; }
+  .tip .tipnote{ color:var(--ink2); font-size:12px; }
+
+  .county{ cursor:default; }
+  .county.live{ cursor:crosshair; }
+
+  ul.shows{ padding-left:20px; }
+  ul.shows li{ margin:13px 0; }
+  ul.shows li::marker{ color:var(--flip); font-weight:700; }
+  ul.shows b{ font-family:var(--sans); font-size:15px; }
+
+  footer{ margin-top:74px; background:var(--paper2); border-top:1px solid var(--hair);
+    padding:42px 0 80px; font:14px/1.7 var(--sans); color:#43443f; }
+  footer h2{ font:700 13px/1 var(--sans); letter-spacing:.22em; text-transform:uppercase; color:var(--ink); margin:0 0 18px; }
+  footer h3{ font:700 13px/1.4 var(--sans); margin:26px 0 6px; color:var(--ink); }
+  footer ul{ padding-left:18px; margin:.4em 0; }
+  footer li{ margin:7px 0; }
+</style>
+</head>
+<body>
+<div class="flagbar" aria-hidden="true"><i></i><i class="mid"></i><i></i></div>
+
+<header class="hero">
+  <div class="prose">
+    <p class="kicker">Gallup US Daily · 2008–2016 · counties that flipped</p>
+    <h1>The Flip Counties Felt It First</h1>
+    <p class="dek">In the 223 counties that voted for Barack Obama in 2012 and Donald Trump in 2016, people rated their day-to-day lives almost exactly like residents of similar counties that never flipped. What sagged, years before any ballots were cast, was the future.</p>
+    <div class="meta">
+      <span><b>Data</b> Gallup US Daily, 3,530,270 interviews</span>
+      <span><b>Of which</b> 213,784 in flip counties</span>
+      <span><b>Statistics</b> unweighted sample estimates</span>
+      <span><b>Mode</b> descriptive, not causal</span>
+    </div>
+  </div>
+</header>
+
+<div class="prose">
+  <p class="dropcap">The roughly two hundred counties that swung from Obama to Trump have carried more interpretive weight per capita than any other patch of American ground. Were they economically wrecked? Status-anxious? Simply contrarian? Most of the evidence marshaled on every side is aggregate — trade exposure, mortality, median wage — or collected after 2016, when memory had already been reorganized by the result. Almost none of it asks what people in those places said about their own lives, year by year, before anything flipped.</p>
+  <p>Gallup's daily tracking poll did ask. From 2008 through 2016 it interviewed Americans every night — 3,530,270 interviews in this extract, geocoded to county, including 213,784 in the 223 counties that voted Democratic in 2012 and Republican in 2016. Interviewers asked people to place their current life on a 0-to-10 ladder, to guess where their life would stand in five years, and to say whether their standard of living was getting better or worse. Because the questions were asked in real time, they cannot be contaminated by hindsight.</p>
+  <p>Comparing flip-county residents with residents of demographically similar non-flip counties — matched on urbanicity, census region, and county income — the file shows a quiet, specific pattern. Assessments of the <em>present</em> ran nearly parallel for nine straight years: flip counties sat about 0.05 of a ladder rung below their matched comparison in 2014–2016, roughly where they had always sat. Assessments of the <em>future</em> did not. The "hope gap" — how much higher people place their life in five years than today — grew steadily everywhere as the recovery matured, but it grew more slowly in the flip counties, and the shortfall peaked around 2014, two years before the election. Not misery. Foreclosed expectation.</p>
+</div>
+
+<div class="prose">
+  <div class="stats">
+    <div class="stat"><b>223</b><span>counties flipped Obama 2012 → Trump 2016 in this file</span></div>
+    <div class="stat"><b>213,784</b><span>Gallup interviews conducted in them, 2008–2017</span></div>
+    <div class="stat"><b>−0.05</b><span>flip-county shortfall in <em>current</em> ladder, 2014–16 — basically unchanged since 2008</span></div>
+    <div class="stat"><b>−0.13</b><span>flip-county dip in the <em>hope gap</em> at its 2014 peak, model-adjusted</span></div>
+  </div>
+</div>
+
+<figure>
+  <p class="figtitle">The present stayed parallel. The future sagged.</p>
+  <p class="figsub">Annual unweighted means, residents of the 223 flip counties (red) vs. non-flip counties post-stratified to the same urbanicity-region-income mix (gray). Bands are 95% confidence intervals; dashed tails show 2017 as a coda. Vertical rules mark the 2012 and 2016 elections. Hover or tap a flip county on the map to ghost its own trajectory.</p>
+  <div class="controls" id="ctl-outcome">
+    <span class="ctl-label">Lower panel</span>
+    <button class="btn" data-k="hope_gap" aria-pressed="true">Hope gap</button>
+    <button class="btn" data-k="ladder_future" aria-pressed="false">Future ladder</button>
+    <button class="btn" data-k="stdliving_better" aria-pressed="false">Standard of living</button>
+    <button class="btn" data-k="worry" aria-pressed="false">Worry</button>
+    <span class="ctl-gap"></span>
+    <span class="ctl-label">Compare with</span>
+    <button class="btn" data-c="matched" aria-pressed="true">Matched counties</button>
+    <button class="btn" data-c="all" aria-pressed="false">All non-flip</button>
+  </div>
+  <div class="figbody vizwrap">
+    <div id="panels"></div>
+    <aside class="mapside">
+      <h4>Where the flips happened</h4>
+      <p class="hint" id="maphint">Solid red counties have at least 200 ladder interviews in each three-year window and can be traced individually; paler red flips are shown on the map only.</p>
+      <div id="usmap"></div>
+      <div class="maplegend">
+        <span><i style="background:var(--rep)"></i>flip county (traceable)</span>
+        <span><i style="background:var(--flipsoft)"></i>flip county (small N)</span>
+        <span><i style="background:var(--nodata)"></i>did not flip</span>
+      </div>
+    </aside>
+    <div class="tip" id="tip1"></div>
+  </div>
+  <figcaption>Hope gap = anticipated ladder in five years minus current ladder (a derived expectation measure). Standard of living is a −1/0/+1 index of "getting worse / the same / getting better" (domain perception). Worry is the share who experienced worry much of yesterday (experiential); its survey design changed in 2013, so the two segments are drawn apart and should never be read across the break. The 2008-to-2009 level shift in the ladder items hits both groups identically; read the space between the lines, not the levels.</figcaption>
+</figure>
+
+<div class="prose">
+  <h2><span class="secnum">What the chart holds still</span>Same kind of place, different slope</h2>
+  <p>Flip counties are not a random slice of America: they are disproportionately small-town and rural, concentrated in the Midwest, middling in income (their average 2016 Republican margin was 11.3 points — they did not merely tip, they lurched). So the gray line is not the national average. It is a comparison group built from the nearly three thousand counties that never flipped, re-weighted inside 33 cells — urbanicity band (metro, small city, rural) by census region by county-income tercile — to carry exactly the flip counties' mix. This is coarsened stratification, the descriptive journalist's version of matching, not a causal design; it holds still the obvious confounders and nothing more.</p>
+  <p>Against that yardstick, the top panel is the dog that didn't bark. Current-life ratings in flip counties recovered from the crisis on the same schedule as everywhere comparable, drifting upward from about 6.9 to 7.0 on the ladder. The gap between the lines in 2014–2016 averaged 0.05 rungs — versus 0.045 back in 2008–2010. Nine years of macroeconomic drama, and the distance between flip America and matched America in the <em>present tense</em> moved by less than a hundredth of a rung per year.</p>
+  <p>The bottom panel moves. In 2009–2010 flip-county residents expected their lives five years out to be about as much better as matched residents did: the hope-gap difference was a rounding error (−0.016 on average through 2010). Then matched counties' expectations climbed with the recovery and flip counties' expectations stalled. By 2014 the raw difference reached −0.105 ladder rungs — flip residents at 0.37, matched residents at 0.47 — the widest of the series. The standard-of-living item tells the same story in a different grammar: everyone's "getting better" index rose sharply after 2011, but flip counties trailed by −0.061 in 2016 on the −1-to-+1 scale, double their early shortfall. Both are trajectory measures; both sag while the level measure holds.</p>
+  <p>And worry? Nothing. Within each survey regime, flip-county residents reported worry at essentially the matched rate — 26 percent versus 27 percent in 2016. Whatever was happening in these places, it did not register as day-to-day distress. It registered as a discount on the future.</p>
+</div>
+
+<figure>
+  <p class="figtitle">Adjusting for who lives there sharpens the contrast</p>
+  <p class="figsub">Flip-county × year coefficients (2008 = reference) from an event-study-shaped descriptive regression: outcome on flip × year, age group, race, education, income, and matching-cell fixed effects. Whiskers are 95% confidence intervals, standard errors clustered by county. A point below zero means flip-county residents lost ground relative to comparable people in comparable non-flip counties.</p>
+  <div class="figbody" id="eventfig"><div class="tip" id="tip2"></div></div>
+  <figcaption>Ordinary least squares on individual interviews, 2008–2016; comparison pool is a deterministic 10% subsample of non-flip residents of flip-occupied cells. This is a descriptive decomposition with an event-study shape, not a causal estimate: counties were not assigned to flip.</figcaption>
+</figure>
+
+<div class="prose">
+  <p>The regression is where the story gets its edge. Once you compare flip-county residents with <em>demographically similar</em> people in similar non-flip counties, their ratings of the present actually <em>gained</em> ground after 2008 — the flip × 2016 coefficient on the current ladder is +0.09, statistically solid. Their expectations went the other way: the hope-gap coefficients are negative in every single year, bottoming at −0.13 in 2014 (clearly distinguishable from zero) before narrowing to −0.06 by 2016 (no longer so). Present brightening, future dimming, within the same kind of person in the same kind of place. That scissors pattern is the file's genuinely new contribution to a stale argument: it is hard to square with a story of pure material immiseration, and uncomfortably easy to square with one about expectations that stopped being believed.</p>
+  <p>Timing matters as much as sign. The expectations shortfall is not a 2016 phenomenon — it is a 2011-to-2014 phenomenon that had already begun to close before the campaign. The flip counties felt it first; by the time the rest of the country was arguing about them, the worst of the sag was behind them.</p>
+
+  <h2><span class="secnum">The composition check</span>Is it just who lives there?</h2>
+  <p>Counties change residents, and flip counties skew white and non-college — exactly the groups whose national mood shifted most. So restrict <em>both</em> groups to white respondents without a four-year degree and re-run the comparison. The early-2010s sag survives: in 2014, white non-college flip residents' hope gap trailed their matched counterparts by −0.064. But the late-period deficit does not: averaged over 2014–2016 the restricted difference is −0.007 — effectively zero — because flip-county whites without degrees caught back up in 2015 and 2016. Read plainly: the mid-decade expectations slump in flip counties was real and visible within this fixed demographic slice, while the portion that lingered into 2015–16 in the aggregate numbers partly reflects who lives in these counties rather than something extra happening to each resident. Honest accounting cuts both ways.</p>
+</div>
+
+<figure>
+  <p class="figtitle">White non-college residents only: the sag appears, then closes</p>
+  <p class="figsub">Hope gap (anticipated minus current ladder), restricted to white respondents with high school or some college, in flip counties vs. the matched non-flip comparison re-weighted on the same cells. Bands are 95% confidence intervals.</p>
+  <div class="figbody" id="wncfig"><div class="tip" id="tip3"></div></div>
+  <figcaption>Restriction applied to both groups; matched weights recomputed from the flip group's white non-college interview distribution. Sample sizes halve after 2012 with Gallup's redesign, so the late-period bands widen.</figcaption>
+</figure>
+
+<div class="prose">
+  <h2><span class="secnum">Reading honestly</span>What this does — and doesn't — show</h2>
+  <ul class="shows">
+    <li><b>It shows</b> that in the counties that would later flip, measures of <em>expected</em> wellbeing (the hope gap, the future ladder, the standard-of-living trend item) lagged a matched comparison through the early 2010s, peaking around 2014, while measures of <em>current</em> wellbeing stayed parallel — and, person-for-person, slightly improved. The divergence preceded the flip; it did not follow it.</li>
+    <li><b>It does not show</b> that dimmed expectations <em>caused</em> anyone's vote. Counties were not assigned to flip, and this file records no individual's ballot. County vote context is an attribute joined to interviews by geography; "residents of counties that later flipped" is the only honest subject for every sentence here.</li>
+    <li><b>It does not adjudicate</b> economic anxiety versus status threat. A sagging hope gap is consistent with both — expectations can be foreclosed by a shuttered plant or by a felt loss of standing. What the data rule out, in these counties, is the cartoon of acute present-tense misery: life today was rated fine, futures were marked down, and daily worry never budged.</li>
+    <li><b>The magnitudes are modest.</b> A tenth of a ladder rung at the 2014 peak is a faint signal by individual standards — detectable only because the samples are enormous. Faint is not fake: it is the difference between a place where expectations climbed with the recovery and a place where they idled.</li>
+    <li><b>Composition is part of the story.</b> Within white non-college residents the mid-decade sag appears and then closes; some of the aggregate late-period shortfall reflects demographic mix. The cleanest claim is about the early 2010s, and that is where this article stakes it.</li>
+  </ul>
+  <p>The op-ed war over the flip counties has mostly argued about what their 2016 vote revealed. Three million interviews suggest the more interesting fact sits earlier: between roughly 2011 and 2014, in places that looked unremarkable by every present-tense measure, the future quietly got marked down — and the people living there said so, out loud, to a stranger on the phone, years before anyone thought to ask why.</p>
+</div>
+
+<footer>
+  <div class="prose">
+    <h2>Notes &amp; data</h2>
+    <p><b>Source.</b> Gallup US Daily tracking ("Motherlode" extract), 3,530,270 interviews, 2008–2017; repeated cross-section of US adults, geocoded to county via ZIP (ZIP-to-FIPS assignment is approximate for multi-county ZIPs). The file ends in 2017, which is shown only as a dashed coda; all claims concern the 2008–2016 run-up. <b>This extract contains no survey weight variable: every figure on this page is an unweighted sample estimate</b>, suited to contrasts and trends rather than population levels.</p>
+    <h3>Groups and matching</h3>
+    <ul>
+      <li>Flip counties: the 223 counties with <i>cty_flipped_2016</i> = 1 — carried by Obama in 2012 and Trump in 2016 — per MIT Election Data + Science Lab (MEDSL) county presidential returns, joined to interviews as a static county attribute on zero-padded FIPS. The election context is a geographic join, not survey data; no respondent's vote is observed.</li>
+      <li>Matched comparison: non-flip counties post-stratified to the flip group's fixed pooled 2008–2016 interview shares across 33 cells = RUCC band (codes 1–3 / 4–6 / 7–9, USDA 2013) × census region (derived from state FIPS) × county median-household-income tercile (cut points $41,789 and $50,894, ACS via the JEC Social Capital county file). Coarsened stratification for descriptive comparison — not a causal design. An "all non-flip" toggle shows the unmatched contrast.</li>
+      <li>Per-county hover trajectories are shipped only for the 44 flip counties with at least 200 ladder interviews in each window (2008–10, 2011–13, 2014–16); smaller counties are suppressed to avoid noise masquerading as biography.</li>
+    </ul>
+    <h3>Measures (construct labels)</h3>
+    <ul>
+      <li><i>ladder</i> — current Cantril ladder, 0–10: evaluative.</li>
+      <li><i>ladder_future</i> — anticipated ladder in ~5 years: evaluative-future, an expectation measure.</li>
+      <li><i>hope gap</i> — ladder_future minus ladder, computed within respondent: derived expectation.</li>
+      <li><i>stdliving_better</i> — standard of living getting better/same/worse, scored +1/0/−1: domain perception. Module coverage shrinks sharply after 2013 (about 2,000 flip-county interviews per year), hence the wide late bands.</li>
+      <li><i>worry</i> — experienced worry much of yesterday: experiential. Yesterday-affect items shift discontinuously at 2013 with Gallup's redesign; segments are drawn within regime only and never trended across the break.</li>
+      <li>Annual flip-county interview counts for the ladder items run a little over twenty thousand a year through 2012 and about half that afterward (exact per-year counts ship inside the chart data and tooltips). The 2008→2009 level shift in ladder items affects both groups alike; contrasts, not levels, carry the claims.</li>
+    </ul>
+    <h3>Model</h3>
+    <p>The event-study-shaped descriptive: OLS of each outcome on flip × year dummies (2008 reference), age group, race, education (3 levels), income (3 levels), and matching-cell fixed effects; standard errors clustered by county; estimated on all flip-county interviews plus a deterministic hash-based 10% subsample of non-flip residents of flip-occupied cells (n ≈ 280,226 for the hope gap). Fitted with statsmodels. It decomposes descriptive divergence; it does not identify a causal effect of anything.</p>
+    <h3>Related work</h3>
+    <ul>
+      <li>Autor, Dorn, Hanson &amp; Majlesi (2020), "Importing Political Polarization?", <i>American Economic Review</i>. <a href="https://doi.org/10.1257/aer.20170011">doi.org</a></li>
+      <li>Mutz (2018), "Status threat, not economic hardship, explains the 2016 presidential vote", <i>PNAS</i>. <a href="https://doi.org/10.1073/pnas.1718155115">doi.org</a></li>
+      <li>Sides, Tesler &amp; Vavreck (2018), <i>Identity Crisis</i>, Princeton University Press. <a href="https://press.princeton.edu/books/hardcover/9780691174198/identity-crisis">princeton.edu</a></li>
+      <li>Graham &amp; Pinto (2019), "Unequal hopes and lives in the USA", <i>Journal of Population Economics</i>. <a href="https://doi.org/10.1007/s00148-018-0687-y">doi.org</a></li>
+      <li>Herrin et al. (2018), "Population well-being and electoral shifts", <i>PLOS ONE</i>. <a href="https://doi.org/10.1371/journal.pone.0193401">doi.org</a></li>
+    </ul>
+    <p>Map geometry: US Atlas county TopoJSON (us-atlas), Albers USA projection. Partisan colors (Democratic <span style="color:var(--dem);font-weight:700">#3B6CA8</span> / Republican <span style="color:var(--rep);font-weight:700">#B5394C</span>) are used solely to mark group identity of flip counties; every other hue is editorial. All numbers on this page are computed by <i>analysis/flip-counties-felt-it-first/build_data.py</i> and recorded in <i>claims.json</i>.</p>
+  </div>
+</footer>
+
+<script type="module">
+import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+import * as topojson from "https://cdn.jsdelivr.net/npm/topojson-client@3/+esm";
+
+const DATA = {"meta":{"title":"The Flip Counties Felt It First","dataset":"Gallup US Daily ('Motherlode' extract)","years":"2008-2017 (2017 shown only as a coda)","weight":"unweighted (this Gallup extract has no survey weight variable)","n_total_rows":3530270,"n_flip_counties":223,"n_flip_interviews":213784,"matching":"non-flip counties post-stratified to the flip group's fixed pooled 2008-2016 interview shares across 33 cells = RUCC band (1-3/4-6/7-9) x census region x county median-household-income tercile","income_terciles_usd":[41789,50894],"hover_min_n":200,"n_hover_counties":44,"windows":["2008-10","2011-13","2014-16"],"event_model":"OLS: outcome ~ flip x year dummies (2008 ref) + age group + race + education + income + matching-cell FE; SE clustered by county; comparison pool is a deterministic hash-based 10% subsample of non-flip residents of flip-occupied cells","ecological_note":"county vote context is a county attribute joined on FIPS (MIT/MEDSL); it says nothing about any individual respondent's vote","geo_note":"ZIP-to-FIPS county assignment is approximate for multi-county ZIPs","affect_note":"yesterday-affect items (worry) shift discontinuously at 2013; never trended across it"},"years":[2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"series":{"ladder":{"flip":{"mean":[6.529,6.944,6.995,6.955,6.967,6.989,6.993,7.051,7.045,7.155],"n":[23016,19992,21784,21797,20816,10548,10184,10170,10222,9379],"se":[0.0137,0.014,0.0134,0.0132,0.0137,0.0194,0.02,0.0195,0.0197,0.0199]},"matched":{"mean":[6.588,6.993,7.022,6.98,6.999,7.006,7.034,7.084,7.126,7.13],"n":[325041,278306,325079,325755,326859,164194,163125,158942,163687,148204],"se":[0.0059,0.0059,0.006,0.0057,0.0059,0.0084,0.0084,0.0086,0.0083,0.0092]},"all":{"mean":[6.707,7.039,7.064,7.03,7.037,7.059,7.089,7.147,7.166,7.181],"n":[328740,281378,328665,329408,330310,166246,165228,160970,165860,150120],"se":[0.0036,0.0037,0.0034,0.0034,0.0034,0.0048,0.0049,0.0048,0.0047,0.0049]}},"ladder_future":{"flip":{"mean":[7.262,7.301,7.358,7.327,7.409,7.347,7.371,7.459,7.508,7.653],"n":[21578,19047,20710,20691,19674,10223,9838,9878,9918,9181],"se":[0.0154,0.0175,0.0165,0.0166,0.0166,0.0234,0.0241,0.0235,0.0232,0.0235]},"matched":{"mean":[7.323,7.372,7.415,7.427,7.495,7.433,7.515,7.545,7.618,7.705],"n":[305579,265093,309241,309776,309325,158780,158046,154325,159257,144952],"se":[0.0067,0.0074,0.0074,0.0071,0.0071,0.0097,0.0102,0.0101,0.0104,0.0105]},"all":{"mean":[7.459,7.458,7.494,7.527,7.567,7.504,7.59,7.641,7.698,7.801],"n":[309004,267964,312600,313207,312568,160740,160058,156282,161351,146807],"se":[0.0039,0.0046,0.0042,0.0041,0.0041,0.0058,0.0058,0.0057,0.0055,0.0057]}},"hope_gap":{"flip":{"mean":[0.71,0.347,0.352,0.357,0.427,0.343,0.366,0.399,0.445,0.496],"n":[21530,19028,20685,20663,19638,10202,9819,9855,9893,9170],"se":[0.0146,0.0161,0.0152,0.015,0.0152,0.0212,0.0211,0.0208,0.0209,0.0212]},"matched":{"mean":[0.712,0.368,0.377,0.43,0.476,0.415,0.471,0.449,0.48,0.565],"n":[304977,264685,308803,309323,308793,158427,157724,154064,158966,144703],"se":[0.0062,0.007,0.0068,0.0066,0.0065,0.0088,0.0091,0.0086,0.0102,0.0096]},"all":{"mean":[0.728,0.406,0.415,0.479,0.509,0.433,0.49,0.483,0.518,0.609],"n":[308395,267548,312157,312745,312029,160379,159730,156017,161057,146552],"se":[0.0038,0.0044,0.0039,0.0038,0.0037,0.0053,0.0052,0.0052,0.0051,0.0053]}},"stdliving_better":{"flip":{"mean":[-0.151,-0.103,-0.045,-0.082,0.013,0.082,0.142,0.209,0.245,0.373],"n":[22111,23084,21557,11571,10023,10448,1998,2020,2010,1853],"se":[0.0059,0.0056,0.0059,0.0081,0.0088,0.0086,0.0196,0.0193,0.0189,0.0187]},"matched":{"mean":[-0.097,-0.081,-0.02,-0.009,0.061,0.134,0.195,0.255,0.306,0.397],"n":[312311,321465,321966,173006,156396,162914,32162,31257,32711,29399],"se":[0.0025,0.0024,0.0026,0.0035,0.0037,0.0037,0.009,0.0084,0.0079,0.0079]},"all":{"mean":[-0.048,-0.063,-0.001,0.02,0.089,0.168,0.237,0.303,0.333,0.424],"n":[315883,325023,325500,174913,157994,164948,32595,31645,33104,29743],"se":[0.0016,0.0015,0.0015,0.0021,0.0022,0.0022,0.0048,0.0047,0.0046,0.0046]}},"worry":{"flip":{"mean":[0.289,0.297,0.284,0.292,0.287,0.28,0.275,0.265,0.261,0.287],"n":[23150,23333,21827,21855,20887,10585,10223,10194,10252,9400],"se":[0.003,0.003,0.0031,0.0031,0.0031,0.0044,0.0044,0.0044,0.0043,0.0047]},"matched":{"mean":[0.288,0.298,0.289,0.296,0.291,0.291,0.277,0.274,0.27,0.302],"n":[327105,325603,326137,326767,327963,164763,163693,159366,164150,148616],"se":[0.0013,0.0013,0.0014,0.0013,0.0014,0.0019,0.0019,0.0019,0.0019,0.002]},"all":{"mean":[0.287,0.303,0.291,0.297,0.291,0.289,0.277,0.273,0.273,0.302],"n":[330837,329227,329732,330438,331432,166825,165807,161400,166327,150546],"se":[0.0008,0.0008,0.0008,0.0008,0.0008,0.0011,0.0011,0.0011,0.0011,0.0012]}}},"series_wnc":{"ladder":{"flip":{"mean":[6.29,6.77,6.819,6.801,6.767,6.794,6.769,6.852,6.846,6.979],"n":[12800,10885,11796,10946,10769,5354,5264,5376,5339,4674],"se":[0.0189,0.0198,0.019,0.0192,0.0197,0.0286,0.0291,0.0275,0.0286,0.0294]},"matched":{"mean":[6.325,6.809,6.805,6.802,6.776,6.79,6.834,6.882,6.928,6.933],"n":[145826,125410,142924,131087,137182,66651,67570,67021,66178,56663],"se":[0.0091,0.009,0.0096,0.0094,0.0095,0.0143,0.014,0.0139,0.0139,0.015]}},"hope_gap":{"flip":{"mean":[0.64,0.25,0.204,0.233,0.356,0.202,0.233,0.329,0.348,0.438],"n":[11802,10263,11104,10268,10076,5133,5031,5172,5150,4553],"se":[0.0208,0.0234,0.0219,0.0221,0.0226,0.0322,0.0311,0.0308,0.0297,0.0319]},"matched":{"mean":[0.627,0.219,0.234,0.255,0.323,0.23,0.297,0.297,0.338,0.467],"n":[134983,118374,134755,123544,128294,63821,64903,64417,63866,55186],"se":[0.0098,0.0109,0.011,0.0109,0.0107,0.0149,0.0149,0.0142,0.0173,0.0154]}},"stdliving_better":{"flip":{"mean":[-0.203,-0.152,-0.101,-0.144,-0.05,0.001,0.083,0.104,0.138,0.321],"n":[12379,12676,11662,5815,5200,5309,1040,1070,1093,903],"se":[0.0078,0.0075,0.008,0.0114,0.0121,0.0122,0.0275,0.0271,0.0261,0.0275]},"matched":{"mean":[-0.161,-0.139,-0.106,-0.108,-0.056,0.015,0.076,0.148,0.199,0.352],"n":[141581,145285,141727,69878,65591,66127,13345,13136,13274,11303],"se":[0.0036,0.0035,0.0039,0.0055,0.0058,0.0059,0.0144,0.0138,0.0125,0.0133]}}},"event":{"ladder":{"years":[2009,2010,2011,2012,2013,2014,2015,2016],"coef":[0.0891,0.1164,0.1221,0.1188,0.1417,0.093,0.0846,0.0862],"lo":[0.0272,0.0551,0.0622,0.0512,0.0644,0.0248,0.0077,0.0243],"hi":[0.1511,0.1778,0.1821,0.1863,0.219,0.1611,0.1616,0.148],"n":290381,"flip_main":-0.1149},"hope_gap":{"years":[2009,2010,2011,2012,2013,2014,2015,2016],"coef":[-0.057,-0.0818,-0.1031,-0.0774,-0.0967,-0.1322,-0.053,-0.0581],"lo":[-0.1163,-0.1481,-0.159,-0.1366,-0.174,-0.1953,-0.1251,-0.1234],"hi":[0.0024,-0.0155,-0.0473,-0.0183,-0.0195,-0.0691,0.0191,0.0072],"n":280226,"flip_main":0.0874},"stdliving_better":{"years":[2009,2010,2011,2012,2013,2014,2015,2016],"coef":[0.0613,0.0678,0.0035,0.0189,0.0347,-0.0323,-0.0006,0.035],"lo":[0.036,0.0388,-0.0279,-0.0148,0.0024,-0.0912,-0.0576,-0.0191],"hi":[0.0867,0.0967,0.0348,0.0526,0.0669,0.0266,0.0563,0.089],"n":199645,"flip_main":-0.0519}},"gaps":{"ladder":{"early":-0.045,"late":-0.052},"ladder_future":{"early":-0.063,"late":-0.113},"hope_gap":{"early":-0.016,"late":-0.063},"stdliving_better":{"early":-0.034,"late":-0.053}},"flip_fips":["01005","01035","05147","08015","08021","08055","08071","08101","09015","10001","12065","12087","12103","12111","13007","13093","13099","13225","13239","13289","17003","17015","17057","17071","17073","17085","17095","17131","17155","17187","17195","18035","18091","18123","18127","18167","19005","19015","19017","19019","19031","19033","19037","19039","19043","19045","19057","19061","19065","19067","19089","19097","19099","19101","19105","19111","19115","19127","19131","19139","19157","19171","19175","19179","19187","19191","19193","19195","21063","21073","23001","23003","23007","23011","23017","23019","23025","23029","24039","26017","26025","26045","26053","26073","26085","26099","26101","26115","26145","26155","26159","27007","27013","27023","27027","27045","27047","27055","27061","27069","27071","27073","27087","27099","27103","27107","27131","27151","27155","27169","28009","28017","28107","28149","30005","30041","30085","31173","33007","33011","33019","34015","34033","35007","35023","35061","36007","36011","36015","36023","36031","36033","36053","36057","36063","36069","36071","36075","36077","36083","36085","36089","36091","36099","36103","36105","36113","36115","37017","37073","37077","37117","37127","37153","37155","38005","38073","38081","38091","39007","39043","39113","39123","39133","39143","39151","39155","39173","41009","41057","42049","42079","42095","44003","45011","45017","45023","45029","45031","45065","46031","46037","46091","46109","46137","47069","48245","50009","51029","51033","51057","51125","51193","51550","51580","53009","53015","53027","53045","53049","55001","55011","55021","55023","55029","55033","55041","55043","55053","55057","55059","55065","55069","55077","55091","55099","55101","55103","55111","55113","55121","55123","55139"],"county_series":{"08101":{"n":[580,567,311],"lad":[6.878,6.852,7.026],"gap":[0.397,0.281,0.405]},"09015":{"n":[517,395,210],"lad":[6.752,6.881,6.762],"gap":[0.586,0.38,0.48]},"10001":{"n":[515,479,243],"lad":[6.998,6.935,6.975],"gap":[0.659,0.53,0.652]},"12103":{"n":[3082,2444,1643],"lad":[6.839,6.992,7.104],"gap":[0.378,0.459,0.368]},"12111":{"n":[728,706,447],"lad":[6.525,6.921,7.105],"gap":[0.756,0.443,0.442]},"18035":{"n":[427,355,207],"lad":[6.93,6.93,6.966],"gap":[0.451,0.409,0.421]},"18127":{"n":[560,511,286],"lad":[6.954,7.041,7.301],"gap":[0.664,0.454,0.157]},"18167":{"n":[381,330,209],"lad":[6.766,6.855,6.818],"gap":[0.55,0.554,0.432]},"19193":{"n":[330,327,202],"lad":[6.958,7.018,7.158],"gap":[0.22,0.412,0.437]},"23001":{"n":[580,421,212],"lad":[6.583,6.91,7.005],"gap":[0.403,0.375,0.28]},"23011":{"n":[790,539,312],"lad":[6.785,6.948,7.08],"gap":[0.479,0.212,0.328]},"23019":{"n":[862,600,402],"lad":[6.903,6.907,6.881],"gap":[0.299,0.375,0.162]},"26025":{"n":[446,369,210],"lad":[6.809,6.778,6.8],"gap":[0.564,0.562,0.512]},"26045":{"n":[415,350,208],"lad":[6.981,7.06,6.856],"gap":[0.414,0.354,0.41]},"26099":{"n":[1965,1706,953],"lad":[6.675,6.896,6.869],"gap":[0.677,0.613,0.56]},"26115":{"n":[437,365,200],"lad":[6.712,7.225,6.895],"gap":[0.383,0.243,0.316]},"26145":{"n":[633,532,259],"lad":[6.649,6.964,7.174],"gap":[0.397,0.458,0.441]},"33011":{"n":[1576,1242,598],"lad":[6.916,6.994,7.152],"gap":[0.523,0.513,0.568]},"34015":{"n":[1002,723,396],"lad":[6.761,6.828,7.02],"gap":[0.649,0.52,0.435]},"36007":{"n":[928,754,414],"lad":[6.861,6.822,6.928],"gap":[0.418,0.337,0.341]},"36063":{"n":[919,678,376],"lad":[6.826,6.739,6.997],"gap":[0.454,0.33,0.333]},"36069":{"n":[504,355,209],"lad":[6.954,7.177,7.134],"gap":[0.373,0.329,0.27]},"36071":{"n":[1163,775,556],"lad":[6.85,6.963,7.115],"gap":[0.684,0.586,0.652]},"36075":{"n":[456,380,231],"lad":[6.726,7.005,6.983],"gap":[0.462,0.401,0.374]},"36083":{"n":[725,496,352],"lad":[6.919,6.992,7.261],"gap":[0.536,0.345,0.478]},"36085":{"n":[1058,817,583],"lad":[6.776,6.836,6.902],"gap":[0.901,0.813,0.884]},"36089":{"n":[545,423,240],"lad":[6.774,6.927,6.804],"gap":[0.261,0.232,0.422]},"36091":{"n":[1014,742,409],"lad":[6.927,7.237,7.166],"gap":[0.483,0.32,0.214]},"36103":{"n":[4238,3161,2213],"lad":[6.94,7.017,7.101],"gap":[0.551,0.565,0.655]},"39113":{"n":[2017,1643,992],"lad":[6.797,6.934,6.944],"gap":[0.569,0.527,0.407]},"39133":{"n":[537,428,268],"lad":[6.706,7.145,6.989],"gap":[0.633,0.476,0.508]},"39151":{"n":[1290,994,591],"lad":[6.762,6.97,6.953],"gap":[0.487,0.451,0.403]},"39155":{"n":[763,600,355],"lad":[6.442,6.965,6.837],"gap":[0.57,0.212,0.434]},"39173":{"n":[386,370,218],"lad":[6.788,7.149,7.138],"gap":[0.515,0.416,0.524]},"42049":{"n":[1441,1156,606],"lad":[6.706,6.988,7.059],"gap":[0.642,0.217,0.401]},"42079":{"n":[1456,1082,614],"lad":[6.734,6.784,6.875],"gap":[0.481,0.213,0.225]},"42095":{"n":[1260,903,550],"lad":[6.941,6.981,6.944],"gap":[0.496,0.467,0.43]},"44003":{"n":[743,533,320],"lad":[6.791,6.914,7.062],"gap":[0.563,0.409,0.288]},"48245":{"n":[694,660,402],"lad":[6.983,7.083,7.04],"gap":[0.527,0.455,0.618]},"51550":{"n":[675,632,368],"lad":[7.139,7.133,7.188],"gap":[0.697,0.669,0.664]},"53015":{"n":[558,457,228],"lad":[6.627,7.033,7.066],"gap":[0.385,0.074,0.198]},"55059":{"n":[513,455,229],"lad":[6.912,6.82,6.878],"gap":[0.513,0.624,0.312]},"55101":{"n":[739,624,333],"lad":[6.685,6.87,7.288],"gap":[0.559,0.503,0.397]},"55139":{"n":[628,581,272],"lad":[6.858,6.954,7.015],"gap":[0.477,0.348,0.2]}}};
+
+const YEARS = DATA.years;
+const FLIP = getComputedStyle(document.documentElement).getPropertyValue("--flip").trim() || "#B5394C";
+const CMP  = getComputedStyle(document.documentElement).getPropertyValue("--cmp").trim() || "#4d5560";
+const STATE_AB = {"01":"AL","02":"AK","04":"AZ","05":"AR","06":"CA","08":"CO","09":"CT","10":"DE","11":"DC","12":"FL","13":"GA","15":"HI","16":"ID","17":"IL","18":"IN","19":"IA","20":"KS","21":"KY","22":"LA","23":"ME","24":"MD","25":"MA","26":"MI","27":"MN","28":"MS","29":"MO","30":"MT","31":"NE","32":"NV","33":"NH","34":"NJ","35":"NM","36":"NY","37":"NC","38":"ND","39":"OH","40":"OK","41":"OR","42":"PA","44":"RI","45":"SC","46":"SD","47":"TN","48":"TX","49":"UT","50":"VT","51":"VA","53":"WA","54":"WV","55":"WI","56":"WY"};
+
+const CFG = {
+  hope_gap:        {label:"Hope gap: anticipated ladder in 5 yrs minus current (rungs)", fmt:d3.format("+.2f"), ghost:"gap"},
+  ladder_future:   {label:"Anticipated ladder in ~5 years (0–10)", fmt:d3.format(".2f"), ghost:null},
+  stdliving_better:{label:"Standard of living getting better (−1…+1 index)", fmt:d3.format("+.2f"), ghost:null},
+  worry:           {label:"Experienced worry much of yesterday (share)", fmt:d3.format(".0%"), ghost:null, broken:true}
+};
+const state = { outcome:"hope_gap", cmp:"matched", ghostFips:null };
+
+function pts(key, grp){
+  const s = DATA.series[key][grp];
+  return YEARS.map((y,i)=>({y, m:s.mean[i], se:s.se[i], n:s.n[i]})).filter(d=>d.m!=null);
+}
+function ciLo(d){ return d.se==null? d.m : d.m-1.96*d.se; }
+function ciHi(d){ return d.se==null? d.m : d.m+1.96*d.se; }
+
+const panelsBox = d3.select("#panels");
+const tip1 = d3.select("#tip1");
+
+function drawPanels(){
+  panelsBox.selectAll("*").remove();
+  const W = Math.max(300, panelsBox.node().clientWidth);
+  const narrow = W < 520;
+  const M = {l:44, r:narrow?14:30, t:24, gap:46, b:26};
+  const hTop = narrow?170:200, hBot = narrow?190:225;
+  const H = M.t + hTop + M.gap + hBot + M.b;
+  const svg = panelsBox.append("svg").attr("width",W).attr("height",H)
+      .attr("viewBox",`0 0 ${W} ${H}`).attr("role","img")
+      .attr("aria-label","Two stacked line charts comparing flip counties with matched counties, 2008 to 2017");
+  const x = d3.scaleLinear().domain([2008,2017]).range([M.l, W-M.r]);
+  const cmpKey = state.cmp, key = state.outcome, cfg = CFG[key];
+
+  function panel(top, h, key2, title, isTop){
+    const g = svg.append("g").attr("transform",`translate(0,${top})`);
+    const f = pts(key2,"flip"), c = pts(key2,cmpKey);
+    const allv = f.concat(c).flatMap(d=>[ciLo(d),ciHi(d)]);
+    // include ghost values so it never escapes the panel
+    const gh = ghostVals(key2);
+    const ext = d3.extent(allv.concat(gh));
+    const pad = (ext[1]-ext[0])*0.18 || 0.1;
+    const yd = [ext[0]-pad, ext[1]+pad];
+    const y = d3.scaleLinear().domain(yd).range([h,0]).nice();
+    // grid + axes
+    g.append("g").call(d3.axisLeft(y).ticks(narrow?4:5).tickSize(-(W-M.l-M.r)).tickPadding(8))
+      .attr("transform",`translate(${M.l},0)`)
+      .call(s=>{ s.select(".domain").remove();
+        s.selectAll("line").attr("stroke","#e4e1d8");
+        s.selectAll("text").attr("fill","#6f7178").attr("font-size",11); });
+    const xt = narrow?[2008,2010,2012,2014,2016]:[2008,2009,2010,2011,2012,2013,2014,2015,2016,2017];
+    g.append("g").attr("transform",`translate(0,${h})`)
+      .call(d3.axisBottom(x).tickValues(xt).tickFormat(d=>"’"+String(d).slice(2)).tickSize(4).tickPadding(6))
+      .call(s=>{ s.select(".domain").attr("stroke","#c9c6bb");
+        s.selectAll("line").attr("stroke","#c9c6bb");
+        s.selectAll("text").attr("fill","#6f7178").attr("font-size",11); });
+    // election rules
+    for (const ey of [2012,2016]){
+      g.append("line").attr("x1",x(ey)).attr("x2",x(ey)).attr("y1",-6).attr("y2",h)
+        .attr("stroke","#9b988c").attr("stroke-dasharray","2 4");
+      if (isTop) g.append("text").attr("x",x(ey)).attr("y",-10).attr("text-anchor","middle")
+        .attr("font-size",10).attr("fill","#85827a").text(ey===2012?"’12 election":"’16 election");
+    }
+    g.append("text").attr("x",M.l-36).attr("y",-8).attr("font-size",12.5).attr("font-weight",700)
+      .attr("fill","#34353a").text(title);
+
+    const segs = segments(key2, f), segsC = segments(key2, c);
+    const area = d3.area().x(d=>x(d.y)).y0(d=>y(ciLo(d))).y1(d=>y(ciHi(d)));
+    const line = d3.line().x(d=>x(d.y)).y(d=>y(d.m));
+    function drawGroup(segList, color, soft){
+      for (const seg of segList){
+        const solid = seg.filter(d=>d.y<=2016), coda = seg.filter(d=>d.y>=2016);
+        g.append("path").attr("d",area(seg)).attr("fill",soft).attr("opacity",.35);
+        if (solid.length>1) g.append("path").attr("d",line(solid)).attr("fill","none")
+          .attr("stroke",color).attr("stroke-width",2.2);
+        if (coda.length>1) g.append("path").attr("d",line(coda)).attr("fill","none")
+          .attr("stroke",color).attr("stroke-width",1.6).attr("stroke-dasharray","3 4").attr("opacity",.7);
+        for (const d of seg) g.append("circle").attr("cx",x(d.y)).attr("cy",y(d.m)).attr("r",d.y===2017?2.4:2.8)
+          .attr("fill",d.y===2017?"#fff":color).attr("stroke",color).attr("stroke-width",1.2);
+      }
+    }
+    drawGroup(segsC, CMP, "#c2c7ce");
+    drawGroup(segs, FLIP, "#e4b4bc");
+    // regime-break annotation for worry
+    if (cfg.broken && !isTop){
+      g.append("rect").attr("x",x(2012.45)).attr("width",x(2013)-x(2012.45)).attr("y",0).attr("height",h)
+        .attr("fill","#efede4");
+      g.append("text").attr("x",x(2012.72)).attr("y",14).attr("text-anchor","middle").attr("font-size",10)
+        .attr("fill","#85827a").text("survey");
+      g.append("text").attr("x",x(2012.72)).attr("y",26).attr("text-anchor","middle").attr("font-size",10)
+        .attr("fill","#85827a").text("redesign");
+    }
+    // direct labels at line ends
+    const lf = f[f.length-1], lc = c[c.length-1];
+    if (lf && lc){
+      const sep = Math.abs(y(lf.m)-y(lc.m))<14;
+      g.append("text").attr("x",x(2017)+5).attr("y",y(lf.m)+ (sep? (y(lf.m)<y(lc.m)?-4:10):4))
+        .attr("font-size",11).attr("font-weight",700).attr("fill",FLIP).text(narrow?"flip":"flip counties");
+      g.append("text").attr("x",x(2017)+5).attr("y",y(lc.m)+ (sep? (y(lc.m)<y(lf.m)?-4:10):4))
+        .attr("font-size",11).attr("font-weight",700).attr("fill",CMP).text(cmpKey==="matched"?(narrow?"matched":"matched"):"all non-flip");
+    }
+    // ghost county trajectory
+    drawGhost(g, x, y, key2);
+    // hover readout
+    hoverLayer(g, x, y, h, key2, f, c, isTop);
+    return g;
+  }
+
+  function segments(key2, arr){
+    if (!CFG[key2] || !CFG[key2].broken) return [arr];
+    return [arr.filter(d=>d.y<=2012), arr.filter(d=>d.y>=2013)];
+  }
+  function ghostVals(key2){
+    if (!state.ghostFips) return [];
+    const cs = DATA.county_series[state.ghostFips];
+    if (!cs) return [];
+    if (key2==="ladder") return cs.lad;
+    if (key2==="hope_gap") return cs.gap;
+    return [];
+  }
+  function drawGhost(g, x, y, key2){
+    const vals = ghostVals(key2);
+    if (!vals.length) return;
+    const mid = [2009,2012,2015];
+    const gl = d3.line().x((d,i)=>x(mid[i])).y(d=>y(d));
+    g.append("path").attr("d",gl(vals)).attr("fill","none").attr("stroke","#7e1d2d")
+      .attr("stroke-width",1.8).attr("stroke-dasharray","5 3");
+    vals.forEach((v,i)=> g.append("circle").attr("cx",x(mid[i])).attr("cy",y(v)).attr("r",3.2)
+      .attr("fill","#7e1d2d"));
+  }
+  function hoverLayer(g, x, y, h, key2, f, c, isTop){
+    const cfg2 = isTop? CFG_ladder : CFG[key2];
+    g.append("rect").attr("x",M.l).attr("width",W-M.l-M.r).attr("y",0).attr("height",h)
+      .attr("fill","transparent")
+      .on("pointermove", ev=>{
+        const yr = Math.round(x.invert(d3.pointer(ev, g.node())[0]));
+        const df = f.find(d=>d.y===yr), dc = c.find(d=>d.y===yr);
+        if (!df && !dc){ tip1.style("opacity",0); return; }
+        const fb = d3.select("#panels").node().getBoundingClientRect();
+        const wrap = d3.select(".vizwrap").node().getBoundingClientRect();
+        tip1.style("opacity",1)
+          .style("left", Math.min(ev.clientX - wrap.left + 14, wrap.width-230)+"px")
+          .style("top",  (ev.clientY - wrap.top + 12)+"px")
+          .html(`<b>${yr}</b><br>` +
+            (df?`<span style="color:${FLIP};font-weight:700">flip</span> ${cfg2.fmt(df.m)} <span class="tipnote">(n ${d3.format(",")(df.n)})</span><br>`:"") +
+            (dc?`<span style="color:${CMP};font-weight:700">${state.cmp==="matched"?"matched":"all non-flip"}</span> ${cfg2.fmt(dc.m)} <span class="tipnote">(n ${d3.format(",")(dc.n)})</span>`:""));
+      })
+      .on("pointerleave", ()=> tip1.style("opacity",0));
+  }
+  const CFG_ladder = {label:"Current Cantril ladder (0–10)", fmt:d3.format(".2f")};
+
+  panel(M.t, hTop, "ladder", "THE PRESENT — current ladder (0–10)", true);
+  panel(M.t+hTop+M.gap, hBot, key, "THE TRAJECTORY — "+cfg.label, false);
+}
+
+// ---------------- map ----------------
+const mapBox = d3.select("#usmap");
+let GEO = null;
+function drawMap(){
+  if (!GEO) return;
+  mapBox.selectAll("*").remove();
+  const W = Math.max(240, mapBox.node().clientWidth);
+  const H = W*0.62;
+  const svg = mapBox.append("svg").attr("width",W).attr("height",H)
+    .attr("viewBox",`0 0 ${W} ${H}`).attr("role","img")
+    .attr("aria-label","US county map highlighting the 223 Obama-to-Trump flip counties");
+  const counties = topojson.feature(GEO, GEO.objects.counties);
+  const proj = d3.geoAlbersUsa().fitSize([W,H], counties);
+  const path = d3.geoPath(proj);
+  const flipSet = new Set(DATA.flip_fips);
+  const liveSet = new Set(Object.keys(DATA.county_series));
+  svg.append("g").selectAll("path").data(counties.features).join("path")
+    .attr("class", d=> flipSet.has(d.id) ? (liveSet.has(d.id)?"county live":"county") : "county")
+    .attr("d", path)
+    .attr("fill", d=> flipSet.has(d.id) ? (liveSet.has(d.id)? FLIP : "#d99aa4") : "#e9e7df")
+    .attr("stroke", d=> flipSet.has(d.id) ? "#fff" : "none")
+    .attr("stroke-width",.3)
+    .on("pointerenter", (ev,d)=>{
+      if (!flipSet.has(d.id)) return;
+      const nm = (d.properties&&d.properties.name? d.properties.name : d.id) + ", " + (STATE_AB[d.id.slice(0,2)]||"");
+      const wrap = d3.select(".vizwrap").node().getBoundingClientRect();
+      if (liveSet.has(d.id)){
+        state.ghostFips = d.id; drawPanels();
+        const cs = DATA.county_series[d.id];
+        tip1.style("opacity",1)
+          .style("left", Math.min(ev.clientX-wrap.left+14, wrap.width-230)+"px")
+          .style("top", (ev.clientY-wrap.top+12)+"px")
+          .html(`<b>${nm}</b><br><span class="tipnote">ladder ${cs.lad.map(v=>v.toFixed(1)).join(" → ")} across ’08–10, ’11–13, ’14–16<br>n ${cs.n.map(v=>d3.format(",")(v)).join(" / ")} — dashed line on the chart</span>`);
+      } else {
+        tip1.style("opacity",1)
+          .style("left", Math.min(ev.clientX-wrap.left+14, wrap.width-230)+"px")
+          .style("top", (ev.clientY-wrap.top+12)+"px")
+          .html(`<b>${nm}</b><br><span class="tipnote">flip county — under 200 interviews per window, trajectory suppressed</span>`);
+      }
+      d3.select(ev.currentTarget).attr("stroke","#191a1e").attr("stroke-width",.9).raise();
+    })
+    .on("pointerleave", (ev,d)=>{
+      tip1.style("opacity",0);
+      d3.select(ev.currentTarget).attr("stroke", flipSet.has(d.id)?"#fff":"none").attr("stroke-width",.3);
+      if (state.ghostFips){ state.ghostFips = null; drawPanels(); }
+    });
+  svg.append("path")
+    .attr("d", path(topojson.mesh(GEO, GEO.objects.states, (a,b)=>a!==b)))
+    .attr("fill","none").attr("stroke","#fbfaf6").attr("stroke-width",.7);
+}
+
+// ---------------- event-study figure ----------------
+const evBox = d3.select("#eventfig");
+const tip2 = d3.select("#tip2");
+function drawEvent(){
+  evBox.selectAll("svg").remove();
+  const Wfull = Math.max(300, evBox.node().clientWidth);
+  const stack = Wfull < 640;
+  const deps = [["ladder","Current ladder (evaluative)"],["hope_gap","Hope gap (expectation)"],["stdliving_better","Standard of living (perception)"]];
+  const pw = stack? Wfull : Math.floor(Wfull/3), ph = 240;
+  const W = stack? Wfull : pw*3, H = stack? ph*3 : ph;
+  const svg = evBox.append("svg").attr("width",W).attr("height",H).attr("viewBox",`0 0 ${W} ${H}`)
+    .attr("role","img").attr("aria-label","Event-study coefficients for three outcomes, 2009 to 2016");
+  const ydom = [-0.25, 0.25];
+  deps.forEach(([dep,title],pi)=>{
+    const e = DATA.event[dep];
+    const ox = stack? 0 : pi*pw, oy = stack? pi*ph : 0;
+    const m = {l:46,r:14,t:34,b:30};
+    const g = svg.append("g").attr("transform",`translate(${ox},${oy})`);
+    const x = d3.scalePoint().domain(e.years).range([m.l, pw-m.r]).padding(.5);
+    const y = d3.scaleLinear().domain(ydom).range([ph-m.b, m.t]);
+    g.append("g").attr("transform",`translate(${m.l},0)`)
+      .call(d3.axisLeft(y).ticks(5).tickFormat(d3.format("+.1f")).tickSize(-(pw-m.l-m.r)).tickPadding(7))
+      .call(s=>{ s.select(".domain").remove();
+        s.selectAll("line").attr("stroke","#e4e1d8");
+        s.selectAll("text").attr("fill","#6f7178").attr("font-size",10.5); });
+    g.append("g").attr("transform",`translate(0,${ph-m.b})`)
+      .call(d3.axisBottom(x).tickFormat(d=>"’"+String(d).slice(2)).tickSize(4).tickPadding(5))
+      .call(s=>{ s.select(".domain").attr("stroke","#c9c6bb");
+        s.selectAll("line").attr("stroke","#c9c6bb");
+        s.selectAll("text").attr("fill","#6f7178").attr("font-size",10.5); });
+    g.append("line").attr("x1",m.l).attr("x2",pw-m.r).attr("y1",y(0)).attr("y2",y(0))
+      .attr("stroke","#8d8a7f").attr("stroke-width",1);
+    g.append("text").attr("x",m.l).attr("y",18).attr("font-size",12.5).attr("font-weight",700)
+      .attr("fill","#34353a").text(title);
+    e.years.forEach((yr,i)=>{
+      const sig = e.lo[i]>0 || e.hi[i]<0;
+      g.append("line").attr("x1",x(yr)).attr("x2",x(yr)).attr("y1",y(e.lo[i])).attr("y2",y(e.hi[i]))
+        .attr("stroke", sig? FLIP : "#a9adb5").attr("stroke-width",1.6);
+      g.append("circle").attr("cx",x(yr)).attr("cy",y(e.coef[i])).attr("r",3.6)
+        .attr("fill", sig? FLIP : "#fff").attr("stroke", sig? FLIP : "#7c818a").attr("stroke-width",1.4)
+        .on("pointerenter", ev=>{
+          const wrap = evBox.node().getBoundingClientRect();
+          tip2.style("opacity",1)
+            .style("left", Math.min(ev.clientX-wrap.left+12, wrap.width-220)+"px")
+            .style("top",(ev.clientY-wrap.top+10)+"px")
+            .html(`<b>${yr}</b> flip × year: ${d3.format("+.3f")(e.coef[i])}<br><span class="tipnote">95% CI [${d3.format("+.3f")(e.lo[i])}, ${d3.format("+.3f")(e.hi[i])}]</span>`);
+        })
+        .on("pointerleave", ()=> tip2.style("opacity",0));
+    });
+  });
+}
+
+// ---------------- white non-college figure ----------------
+const wncBox = d3.select("#wncfig");
+const tip3 = d3.select("#tip3");
+function drawWnc(){
+  wncBox.selectAll("svg").remove();
+  const W = Math.max(300, Math.min(760, wncBox.node().clientWidth));
+  const narrow = W < 520;
+  const M = {l:44,r:narrow?60:96,t:18,b:28}, h=250, H=h+M.t+M.b;
+  const svg = wncBox.append("svg").attr("width",W).attr("height",H).attr("viewBox",`0 0 ${W} ${H}`)
+    .attr("role","img").attr("aria-label","Hope gap among white non-college respondents, flip versus matched counties");
+  const s = DATA.series_wnc.hope_gap;
+  const mk = grp => YEARS.map((y,i)=>({y, m:s[grp].mean[i], se:s[grp].se[i], n:s[grp].n[i]})).filter(d=>d.m!=null);
+  const f = mk("flip"), c = mk("matched");
+  const x = d3.scaleLinear().domain([2008,2017]).range([M.l, W-M.r]);
+  const ext = d3.extent(f.concat(c).flatMap(d=>[ciLo(d),ciHi(d)]));
+  const y = d3.scaleLinear().domain([ext[0]-0.04, ext[1]+0.04]).range([M.t+h, M.t]).nice();
+  svg.append("g").attr("transform",`translate(${M.l},0)`)
+    .call(d3.axisLeft(y).ticks(5).tickFormat(d3.format("+.1f")).tickSize(-(W-M.l-M.r)).tickPadding(7))
+    .call(g=>{ g.select(".domain").remove();
+      g.selectAll("line").attr("stroke","#e4e1d8");
+      g.selectAll("text").attr("fill","#6f7178").attr("font-size",11); });
+  svg.append("g").attr("transform",`translate(0,${M.t+h})`)
+    .call(d3.axisBottom(x).tickValues(narrow?[2008,2010,2012,2014,2016]:d3.range(2008,2018)).tickFormat(d=>"’"+String(d).slice(2)).tickSize(4).tickPadding(6))
+    .call(g=>{ g.select(".domain").attr("stroke","#c9c6bb");
+      g.selectAll("line").attr("stroke","#c9c6bb");
+      g.selectAll("text").attr("fill","#6f7178").attr("font-size",11); });
+  for (const ey of [2012,2016])
+    svg.append("line").attr("x1",x(ey)).attr("x2",x(ey)).attr("y1",M.t-4).attr("y2",M.t+h)
+      .attr("stroke","#9b988c").attr("stroke-dasharray","2 4");
+  const area = d3.area().x(d=>x(d.y)).y0(d=>y(ciLo(d))).y1(d=>y(ciHi(d)));
+  const line = d3.line().x(d=>x(d.y)).y(d=>y(d.m));
+  function grp(arr,color,soft,label){
+    const solid = arr.filter(d=>d.y<=2016), coda = arr.filter(d=>d.y>=2016);
+    svg.append("path").attr("d",area(arr)).attr("fill",soft).attr("opacity",.35);
+    svg.append("path").attr("d",line(solid)).attr("fill","none").attr("stroke",color).attr("stroke-width",2.2);
+    svg.append("path").attr("d",line(coda)).attr("fill","none").attr("stroke",color).attr("stroke-width",1.6)
+      .attr("stroke-dasharray","3 4").attr("opacity",.7);
+    arr.forEach(d=> svg.append("circle").attr("cx",x(d.y)).attr("cy",y(d.m)).attr("r",d.y===2017?2.2:2.7)
+      .attr("fill",d.y===2017?"#fff":color).attr("stroke",color).attr("stroke-width",1.1));
+    const last = arr[arr.length-1];
+    svg.append("text").attr("x",x(2017)+5).attr("y",y(last.m)+4).attr("font-size",11).attr("font-weight",700)
+      .attr("fill",color).text(label);
+  }
+  grp(c, CMP, "#c2c7ce", narrow?"matched":"matched non-flip");
+  grp(f, FLIP, "#e4b4bc", narrow?"flip":"flip counties");
+  svg.append("rect").attr("x",M.l).attr("y",M.t).attr("width",W-M.l-M.r).attr("height",h).attr("fill","transparent")
+    .on("pointermove", ev=>{
+      const yr = Math.round(x.invert(d3.pointer(ev, svg.node())[0]));
+      const df = f.find(d=>d.y===yr), dc = c.find(d=>d.y===yr);
+      if (!df && !dc){ tip3.style("opacity",0); return; }
+      const wrap = wncBox.node().getBoundingClientRect();
+      tip3.style("opacity",1)
+        .style("left", Math.min(ev.clientX-wrap.left+12, wrap.width-220)+"px")
+        .style("top",(ev.clientY-wrap.top+10)+"px")
+        .html(`<b>${yr}</b><br>`+
+          (df?`<span style="color:${FLIP};font-weight:700">flip</span> ${d3.format("+.2f")(df.m)} <span class="tipnote">(n ${d3.format(",")(df.n)})</span><br>`:"")+
+          (dc?`<span style="color:${CMP};font-weight:700">matched</span> ${d3.format("+.2f")(dc.m)} <span class="tipnote">(n ${d3.format(",")(dc.n)})</span>`:""));
+    })
+    .on("pointerleave", ()=> tip3.style("opacity",0));
+}
+
+// ---------------- controls ----------------
+d3.select("#ctl-outcome").selectAll("button[data-k]").on("click", function(){
+  state.outcome = this.dataset.k;
+  d3.select("#ctl-outcome").selectAll("button[data-k]").attr("aria-pressed", function(){ return String(this.dataset.k===state.outcome); });
+  drawPanels();
+});
+d3.select("#ctl-outcome").selectAll("button[data-c]").on("click", function(){
+  state.cmp = this.dataset.c;
+  d3.select("#ctl-outcome").selectAll("button[data-c]").attr("aria-pressed", function(){ return String(this.dataset.c===state.cmp); });
+  drawPanels();
+});
+
+let rt=null;
+window.addEventListener("resize", ()=>{ clearTimeout(rt); rt=setTimeout(()=>{ drawPanels(); drawMap(); drawEvent(); drawWnc(); }, 150); });
+
+drawPanels(); drawEvent(); drawWnc();
+fetch("./geo.topojson").then(r=>r.json()).then(t=>{ GEO=t; drawMap(); });
+</script>
+<!--SL_BOOKNAV_START-->
+<style>
+.slbn{font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;background:#0f1417;border-top:1px solid #27313a;color:#9fb0ba;padding:24px 20px 40px;margin:48px 0 0}
+.slbn-in{max-width:1080px;margin:0 auto;display:flex;align-items:stretch;gap:12px}
+.slbn a{flex:1 1 0;min-width:0;text-decoration:none;color:inherit;border:1px solid #27313a;border-radius:10px;padding:13px 15px;display:flex;flex-direction:column;gap:4px;background:#161d22;transition:border-color .15s,transform .15s}
+.slbn a:hover{border-color:#3fa9a0;transform:translateY(-2px)}
+.slbn a:focus-visible{outline:2px solid #3fa9a0;outline-offset:2px}
+.slbn a.slbn-next{text-align:right;align-items:flex-end}
+.slbn a.slbn-toc{flex:0 0 auto;min-width:120px;justify-content:center;align-items:center;text-align:center}
+.slbn .slbn-dir{font:700 10px/1 inherit;letter-spacing:.13em;text-transform:uppercase;color:#6b7c87}
+.slbn .slbn-ttl{font:700 14px/1.3 inherit;color:#eef2f4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.slbn a.slbn-disabled{opacity:.38;pointer-events:none}
+@media(max-width:640px){.slbn-in{flex-wrap:wrap}.slbn a{flex:1 1 100%}.slbn a.slbn-next{text-align:left;align-items:flex-start}.slbn a.slbn-toc{order:-1}}
+</style>
+<nav class="slbn" aria-label="Book navigation"><div class="slbn-in"><a class="slbn-prev" href="../read.html?ch=the-satisfaction-treadmill" target="_top"><span class="slbn-dir">‹ Previous</span><span class="slbn-ttl">The Satisfaction Treadmill</span></a><a class="slbn-toc" href="../index.html#book" target="_top"><span class="slbn-dir">The Scissors</span><span class="slbn-ttl">Chapter 25 / 36</span></a><a class="slbn-next" href="../read.html?ch=feeling-behind" target="_top"><span class="slbn-dir">Next ›</span><span class="slbn-ttl">Feeling Behind</span></a></div></nav>
+<!--SL_BOOKNAV_END-->
+</body>
+</html>

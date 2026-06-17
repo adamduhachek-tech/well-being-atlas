@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Whose America Is Thriving? Whoever Just Won</title>
+<style>
+  :root{
+    --bg:#f4f1ec;
+    --bg-deep:#ebe6dd;
+    --panel:#fbf9f4;
+    --ink:#1d1c1a;
+    --ink-dim:#56524b;
+    --ink-faint:#8b867c;
+    --hairline:rgba(29,28,26,.14);
+    --hairline-soft:rgba(29,28,26,.08);
+    /* partisan hues, justified: these are self-identified partisans */
+    --dem:#3B6CA8;
+    --dem-soft:rgba(59,108,168,.16);
+    --dem-deep:#234a78;
+    --rep:#B5394C;
+    --rep-soft:rgba(181,57,76,.16);
+    --rep-deep:#7f2333;
+    --ind:#8A8170;
+    --ind-deep:#5f594c;
+    /* control bands */
+    --band-gop:rgba(181,57,76,.072);
+    --band-dem:rgba(59,108,168,.066);
+    --rule:#9a9180;
+    --accent:#b35a1e;
+    --serif:'Iowan Old Style', Georgia, 'Times New Roman', serif;
+    --sans:system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:var(--serif); font-size:18px; line-height:1.62;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--dem-deep); text-decoration:none; border-bottom:1px solid rgba(35,74,120,.4)}
+  a:hover,a:focus-visible{color:var(--accent); border-bottom-color:var(--accent)}
+  a:focus-visible,button:focus-visible,select:focus-visible{outline:2.5px solid var(--accent); outline-offset:2px; border-radius:3px}
+  .wrap{max-width:720px; margin:0 auto; padding:0 22px}
+  .wide{max-width:1020px; margin:0 auto; padding:0 22px}
+  header{padding:76px 0 26px}
+  .kicker{font-family:var(--sans); font-size:12px; letter-spacing:.26em; text-transform:uppercase; color:var(--accent); margin:0 0 20px; font-weight:600}
+  h1{font-size:clamp(33px,5.9vw,58px); line-height:1.03; margin:0 0 22px; font-weight:700; letter-spacing:-.018em}
+  .dek{font-size:clamp(18px,2.5vw,22px); font-style:italic; color:var(--ink-dim); max-width:640px; margin:0 0 26px; line-height:1.48}
+  .byline{font-family:var(--sans); font-size:13px; color:var(--ink-faint); letter-spacing:.04em}
+  .byline b{color:var(--ink-dim); font-weight:600}
+  main p{margin:0 0 1.35em}
+  main{padding-bottom:10px}
+  h2{font-size:clamp(23px,3.4vw,32px); line-height:1.15; margin:2.1em 0 .55em; letter-spacing:-.01em; font-weight:700}
+  h3.eyebrow{font-family:var(--sans); font-size:14px; letter-spacing:.16em; text-transform:uppercase; color:var(--accent); margin:2.4em 0 .5em; font-weight:600}
+  .lead{font-size:clamp(19px,2.4vw,22px); line-height:1.5; color:var(--ink)}
+  .drop::first-letter{
+    float:left; font-size:3.5em; line-height:.82; padding:8px 11px 0 0; color:var(--accent);
+    font-weight:700; font-family:var(--serif);
+  }
+  strong{font-weight:700}
+  .rep-t{color:var(--rep-deep); font-weight:700}
+  .dem-t{color:var(--dem-deep); font-weight:700}
+  .ind-t{color:var(--ind-deep); font-weight:700}
+  .figwrap{margin:40px auto 14px}
+  figure{margin:0; background:var(--panel); border:1px solid var(--hairline); border-radius:14px; padding:24px 22px 16px; box-shadow:0 1px 0 rgba(29,28,26,.04)}
+  figure h4{font-family:var(--sans); font-size:18px; margin:0 0 5px; font-weight:700; color:var(--ink); letter-spacing:-.01em}
+  figure .sub{font-family:var(--sans); font-size:13.5px; color:var(--ink-dim); margin:0 0 16px; line-height:1.5}
+  figcaption{font-family:var(--sans); font-size:12.5px; color:var(--ink-faint); line-height:1.55; margin-top:12px; border-top:1px solid var(--hairline-soft); padding-top:11px}
+  svg{width:100%; height:auto; display:block; overflow:visible}
+  text{font-family:var(--sans)}
+  .controls{display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center; margin:2px 0 14px; font-family:var(--sans)}
+  .seg{display:inline-flex; border:1px solid var(--hairline); border-radius:9px; overflow:hidden; background:var(--bg-deep)}
+  .seg button{font-family:var(--sans); font-size:13px; padding:7px 13px; border:0; background:transparent; color:var(--ink-dim); cursor:pointer; font-weight:500; letter-spacing:.01em}
+  .seg button[aria-pressed="true"]{background:var(--ink); color:var(--panel)}
+  .seg button:hover:not([aria-pressed="true"]){background:rgba(29,28,26,.07); color:var(--ink)}
+  .ctl-label{font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-faint); font-weight:600}
+  .legend{display:flex; flex-wrap:wrap; gap:7px 18px; font-family:var(--sans); font-size:13px; color:var(--ink-dim); margin:0 0 6px}
+  .legend span.li{display:inline-flex; align-items:center; gap:7px}
+  .swatch{width:16px; height:11px; border-radius:2px; display:inline-block}
+  .line-swatch{width:18px; height:0; border-top-width:3px; border-top-style:solid; display:inline-block}
+  .tip{position:absolute; pointer-events:none; opacity:0; background:var(--ink); color:var(--panel);
+    font-family:var(--sans); font-size:12.5px; line-height:1.5; padding:10px 12px; border-radius:8px;
+    max-width:250px; z-index:30; transition:opacity .08s; box-shadow:0 6px 22px rgba(29,28,26,.30)}
+  .tip b{color:#fff; font-weight:700}
+  .tip .row{display:flex; justify-content:space-between; gap:14px; font-variant-numeric:tabular-nums}
+  .tip .rep-k{color:#f0a3ad} .tip .dem-k{color:#a8c4e6} .tip .ind-k{color:#cfc7b6}
+  .tip .muted{color:#b8b2a6}
+  .tip hr{border:0; border-top:1px solid rgba(255,255,255,.18); margin:6px 0}
+  .smcap{font-family:var(--sans); font-size:11px; letter-spacing:.04em; fill:var(--ink-faint)}
+  .statband{display:grid; grid-template-columns:repeat(auto-fit,minmax(154px,1fr)); gap:12px; margin:30px 0 6px}
+  .stat{background:var(--bg-deep); border-radius:11px; padding:15px 16px}
+  .stat .v{font-family:var(--sans); font-size:25px; font-weight:700; letter-spacing:-.02em; line-height:1.05}
+  .stat .v.repv{color:var(--rep-deep)} .stat .v.demv{color:var(--dem-deep)}
+  .stat .l{font-family:var(--sans); font-size:12.5px; color:var(--ink-dim); margin-top:6px; line-height:1.4}
+  .pull{font-family:var(--sans); font-size:clamp(18px,2.3vw,21px); line-height:1.42; color:var(--ink);
+    border-left:3px solid var(--accent); padding:4px 0 4px 20px; margin:30px 0; font-weight:500}
+  .note{font-family:var(--sans); font-size:13px; color:var(--ink-dim); background:var(--bg-deep);
+    border-radius:10px; padding:13px 16px; margin:24px 0; line-height:1.55; border:1px solid var(--hairline-soft)}
+  .note b{color:var(--ink)}
+  footer{margin-top:54px; border-top:1px solid var(--hairline); background:var(--bg-deep)}
+  footer .wrap{padding-top:34px; padding-bottom:60px}
+  footer h3{font-family:var(--sans); font-size:13px; letter-spacing:.18em; text-transform:uppercase; color:var(--accent); margin:0 0 14px; font-weight:600}
+  footer p,footer li{font-family:var(--sans); font-size:13.5px; color:var(--ink-dim); line-height:1.6}
+  footer ul{padding-left:18px; margin:0 0 14px}
+  .refs li{margin-bottom:9px}
+  code{font-family:var(--sans); font-size:.92em; background:var(--bg-deep); padding:1px 5px; border-radius:4px}
+  .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0}
+  table.fallback{border-collapse:collapse; width:100%; font-family:var(--sans); font-size:12px; margin-top:10px}
+  table.fallback caption{font-family:var(--sans); font-size:12px; color:var(--ink-faint); text-align:left; margin-bottom:6px}
+  table.fallback th,table.fallback td{border:1px solid var(--hairline-soft); padding:3px 6px; text-align:right}
+  table.fallback th:first-child,table.fallback td:first-child{text-align:left}
+  @media (max-width:560px){
+    body{font-size:17px}
+    header{padding:54px 0 18px}
+    figure{padding:18px 14px 12px; border-radius:12px}
+    .wrap,.wide{padding:0 16px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none !important; animation:none !important}
+    html{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+<div class="tip" id="tip" role="status" aria-live="off"></div>
+
+<header>
+  <div class="wrap">
+    <p class="kicker">Partisanship &amp; well-being &middot; Gallup US Daily 2008&ndash;2017 &middot; unweighted</p>
+    <h1>Whose America is thriving? Whoever just won</h1>
+    <p class="dek">Across a decade of daily interviews, Americans rated their own lives higher when their party held the White House &mdash; and the partisan gap flipped sign at each handover. Both sides do it. It is the winning that moves the mood.</p>
+    <p class="byline">By the well-being desk &middot; <b>Gallup US Daily</b>, unweighted, 2008&ndash;2017</p>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+  <p class="lead drop">In 2008, with a Republican in the White House, Americans who called themselves Republicans rated their lives well above Democrats &mdash; about <strong class="rep-t">7.1</strong> against <strong class="dem-t">6.5</strong> on the standard 0-to-10 &ldquo;ladder of life,&rdquo; a gap of <strong>0.63</strong> of a rung. Eight years and one change of administration later, that order had quietly collapsed. By 2012, near the end of President Obama's first term, Democrats had pulled ahead. And in 2017, Donald Trump's first year, the Republican lead came roaring back to <strong>0.31</strong> &mdash; the widest it had been since Bush.</p>
+
+  <p>The number doing the work here is the <strong>Republican-minus-Democrat ladder gap</strong>, and over ten years it behaves less like a fact about either party's disposition than like a scoreboard. When a Republican holds the presidency, it runs positive. When a Democrat does, it shrinks toward zero and dips below. It crosses the line in the years around each transition. The party that just won the White House feels better about its own life; the party that just lost feels worse. This is the partisan winner-and-loser effect, and in these data it is not subtle.</p>
+
+  <p>A caution before the chart, because it matters throughout: this Gallup extract carries <strong>no survey weight</strong>, so every figure here is an <em>unweighted</em> sample average. That is fine for the thing we care about &mdash; the <em>contrast</em> between groups and how it moves over time &mdash; but it means the levels need not match Gallup's published, weighted numbers. And all of it is association, not cause. Nobody's life measurably improved because their candidate won; what changed is how people answered a question about their lives.</p>
+</div>
+
+<div class="wide figwrap">
+  <figure>
+    <h4>The scoreboard: life evaluations follow the White House</h4>
+    <p class="sub">Mean ladder score by party, 2008&ndash;2017. The backdrop is shaded by who controls the White House &mdash; <span class="rep-t">red for Republican</span>, <span class="dem-t">blue for Democratic</span> &mdash; with the 2009 and 2017 inaugurations marked. The ribbon between the party lines is the Republican-minus-Democrat gap; it is filled in the color of whichever party is ahead, and it flips when control changes.</p>
+    <div class="controls" id="ctl-main">
+      <span class="ctl-label">Outcome</span>
+      <span class="seg" role="group" aria-label="Choose outcome measure">
+        <button data-metric="ladder" aria-pressed="true">Current ladder</button>
+        <button data-metric="thriving" aria-pressed="false">% Thriving</button>
+        <button data-metric="future" aria-pressed="false">Future ladder</button>
+      </span>
+      <span class="ctl-label" style="margin-left:6px">Adjust</span>
+      <span class="seg" role="group" aria-label="Composition adjustment">
+        <button data-comp="raw" aria-pressed="true">Raw</button>
+        <button data-comp="within" aria-pressed="false">Within cells</button>
+      </span>
+    </div>
+    <div class="legend" aria-hidden="true">
+      <span class="li"><span class="line-swatch" style="border-top-color:var(--rep)"></span>Republicans</span>
+      <span class="li"><span class="line-swatch" style="border-top-color:var(--dem)"></span>Democrats</span>
+      <span class="li"><span class="line-swatch" style="border-top-color:var(--ind);border-top-style:dashed"></span>Independents</span>
+      <span class="li"><span class="swatch" style="background:var(--band-gop);border:1px solid var(--rep-soft)"></span>GOP White House</span>
+      <span class="li"><span class="swatch" style="background:var(--band-dem);border:1px solid var(--dem-soft)"></span>Dem White House</span>
+    </div>
+    <div id="chart-main" style="position:relative"></div>
+    <figcaption id="cap-main">Gallup US Daily, <b>unweighted</b>. Hover or focus a year for both party means, the gap, and the sample. <em>Within cells</em> recomputes the partisan gap inside age&times;education&times;income cells; it is available for the current ladder.</figcaption>
+  </figure>
+</div>
+
+<div class="wrap">
+  <h2>A scoreboard, not a temperament</h2>
+  <p>Read the chart from the left. Under Bush, the <span class="rep-t">red line</span> sits clearly above the <span class="dem-t">blue</span>, and the ribbon between them is red: Republicans rate their lives higher. Then 2009 arrives, Obama is inaugurated, and the lines converge so fast they nearly touch. By 2010 the gap is essentially zero &mdash; <strong>0.02</strong> of a rung &mdash; and in <strong>2012</strong> it goes negative: Democrats, at <strong class="dem-t">7.16</strong>, edge out Republicans at <strong class="rep-t">6.98</strong>. The ribbon, for the only sustained stretch in the decade, turns blue.</p>
+
+  <p>Then the second handover. Across 2017, with Trump in office, the red line jumps to <strong class="rep-t">7.38</strong> &mdash; its highest point anywhere in the series &mdash; while the blue line slips to <strong class="dem-t">7.07</strong>. The gap snaps back to <strong>+0.31</strong>, the biggest Republican lead since 2008. Two transitions, two clean reversals, pointed in opposite directions. That symmetry is the whole argument: it is not that one party is constitutionally sunnier. It is that <em>holding power</em> lifts a party's self-reported well-being, whichever party holds it.</p>
+
+  <div class="statband" id="statband"></div>
+
+  <p>It would be easy to mistake this for the older, much-cited claim that conservatives simply report being happier than liberals &mdash; the finding Jaime Napier and John Jost <a href="https://journals.sagepub.com/doi/10.1111/j.1467-9280.2008.02124.x">put on the map in 2008</a>. There is a grain of that here: averaged over the whole decade Republicans do sit a touch above Democrats. But a fixed temperament cannot change sign. The thing that flips at each inauguration is doing something a disposition cannot do, and it lines up far too neatly with who controls the executive branch to be about personality. It is closer to what Patrick Flavin <a href="https://journals.sagepub.com/doi/10.1177/13540688231167191">documents across U.S. states</a>: a party's supporters report more life satisfaction when their party runs the government.</p>
+
+  <p class="pull">A temperament does not reverse on Inauguration Day. A scoreboard does.</p>
+
+  <p>One group never leads. <span class="ind-t">Independents</span> sit below both parties in every single year, climbing slowly from about <strong class="ind-t">6.3</strong> in 2008 to <strong class="ind-t">6.9</strong> in 2017 but never catching either partisan line. Whatever the winner's bump is made of, you apparently have to pick a side to feel it.</p>
+</div>
+
+<div class="wide figwrap">
+  <figure>
+    <h4>The handovers, lined up: who bumps, who dips</h4>
+    <p class="sub">Each panel centers on an inauguration and shows each party's mean in the year before, the transition year, and (for 2009) the year after. The in-party rises; the out-party falls or stalls. Toggle between the current ladder and the forward-looking &ldquo;future&rdquo; ladder &mdash; the expectations move even harder.</p>
+    <div class="controls" id="ctl-event">
+      <span class="ctl-label">Outcome</span>
+      <span class="seg" role="group" aria-label="Choose outcome for the event study">
+        <button data-emetric="ladder" aria-pressed="true">Current ladder</button>
+        <button data-emetric="future" aria-pressed="false">Future ladder</button>
+      </span>
+    </div>
+    <div id="chart-event" style="position:relative"></div>
+    <figcaption id="cap-event">Gallup US Daily, <b>unweighted</b>. Slopes are drawn between adjacent year means; numbers on each segment give the change. Hover a point for its value and sample. The 2017 panel has no following year &mdash; the extract ends in 2017.</figcaption>
+  </figure>
+</div>
+
+<div class="wrap">
+  <h2>The winner's bump and the loser's dip</h2>
+  <p>Lined up at each inauguration, the mechanism is visible directly. At the <strong>2009</strong> handover, the incoming party's people rise: Democrats' mean ladder climbs <strong>+0.52</strong> of a rung in a single year, from 6.46 to 6.98. Republicans, the party leaving power, barely move &mdash; <strong>+0.08</strong>. (Independents also rise, +0.45, in a year when the financial crisis was easing for nearly everyone, which is part of why the out-party didn't actually fall here.) At the <strong>2017</strong> handover the pattern mirrors: Republicans rise <strong>+0.14</strong> while Democrats <em>fall</em> <strong>&minus;0.10</strong> &mdash; the cleanest winner's-bump-and-loser's-dip in the record.</p>
+
+  <p>The forward-looking ladder &mdash; where people place themselves <em>five years out</em> &mdash; is even more reactive, and it reveals an asymmetry worth stating plainly. When Bush handed off to Obama in 2009, Republicans' expectations for the future <em>dropped</em> <strong>&minus;0.31</strong> of a rung while Democrats' rose <strong>+0.24</strong>. When Obama handed off to Trump in 2017, Republicans' future ladder leapt <strong>+0.27</strong> while Democrats' edged down. Average the size of those moves and Republicans swing about <strong>0.29</strong> of a rung across the two transitions versus <strong>0.15</strong> for Democrats &mdash; Republicans are roughly twice as reactive on what they expect to come.</p>
+
+  <p>That is consistent with what Daniel Mandel and Eseosa Omorogbe <a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0114211">reported in 2014</a>: Republicans' stated happiness tracks the national political climate more tightly than Democrats'. We see it here specifically in <em>expectations</em> &mdash; the future ladder &mdash; more than in the current one. We report it because the data show it, not because it favors a tidy story; on the <em>current</em> ladder at 2009, it was actually Democrats who moved most, simply because they were the ones who had just won.</p>
+
+  <div class="note" id="note-future">
+    <b>A wrinkle, kept honest.</b> Democrats are the more optimistic party about the <em>future</em> for most of this decade: their five-year-out ladder runs above Republicans' from 2009 through 2016, even while Republicans hold their own on the present. It is only in 2017 that Republicans' future ladder vaults past &mdash; the one year the forward-looking gap turns red. The winner-and-loser effect rides on top of that baseline difference; it does not erase it.
+  </div>
+</div>
+
+<div class="wrap">
+  <h2>Is it the same people, or a different crowd?</h2>
+  <p>A reasonable objection: maybe the gap moves because the <em>mix</em> of who calls themselves a Republican or a Democrat shifts from year to year &mdash; a sorting story rather than a mood story. If, say, the most contented Americans drift toward the winning party's label, the average could swing without anyone's actual feelings changing.</p>
+
+  <p>Two checks push back. First, the party shares barely move: across the decade Republicans are <strong>42&ndash;46%</strong> of identifiers and Democrats <strong>44&ndash;50%</strong>, with no lurch that lines up with the ladder reversals. Second &mdash; the stronger test &mdash; we recompute the Republican-minus-Democrat ladder gap <em>within</em> cells defined by age, education, and income, then average across the 72 cells. This asks whether a Republican and a Democrat <em>of the same age, schooling, and income bracket</em> still differ, and by how much.</p>
+
+  <p>They do, and the gap survives almost intact. In 2008 the raw <strong>+0.63</strong> Republican lead is <strong>+0.50</strong> within cells. In 2012 the raw <strong>&minus;0.18</strong> Democratic lead is <strong>&minus;0.25</strong> within cells &mdash; if anything slightly larger once you hold composition fixed. In 2017 the raw <strong>+0.31</strong> is <strong>+0.25</strong> within cells. Same sign, same timing of the flips, similar magnitude. You can toggle the chart above to <em>Within cells</em> and watch the reversal hold. This is not a reshuffling of which contented people wear which label. It is, as far as these data can show, the same kinds of people rating their lives differently depending on who is in charge.</p>
+
+  <p class="pull">Hold age, education, and income fixed, and the flip is still there. The mood moved, not the membership.</p>
+</div>
+
+<div class="wrap">
+  <h2>What this does, and doesn't, show</h2>
+  <p>Four limits keep this honest. <strong>It is unweighted.</strong> This extract has no survey weight, so the levels are sample averages and should not be read as Gallup's official, weighted estimates of national well-being. We lean on contrasts and their movement, which are far more robust to the missing weight than any single level.</p>
+
+  <p><strong>It is association, not cause.</strong> Nothing here says winning the presidency <em>caused</em> anyone's life to improve. These are people's answers to a question about their lives, and those answers move with the political calendar. The honest reading is expressive: partly people feeling genuinely more hopeful when their side governs, partly the survey catching a thumb on the scale of self-report.</p>
+
+  <p><strong>These are repeated snapshots, not a panel.</strong> Gallup interviewed different Americans each day; we are not following the same individuals as they flip from elated to deflated. We are comparing the Republican identifiers of 2012 with the Republican identifiers of 2017 &mdash; overlapping populations, but not the same people tracked through time.</p>
+
+  <p><strong>There is only one year of Trump.</strong> The extract ends in 2017, so the striking 2017 surge is a <em>first-year</em> signal, not a verdict on an administration. Treat it as the opening data point of a pattern the earlier transitions already established, not as its conclusion. And note that the daily sample <a href="#notes">shrank roughly tenfold after 2012</a>: the post-2012 years rest on tens of thousands of interviews rather than hundreds of thousands, so their year-to-year wobble is real but noisier. The two transitions that anchor the story &mdash; 2009 and 2017 &mdash; both sit on large samples on at least one side, which is why we lean on them.</p>
+
+  <p>What's left, after all four caveats, is a clean and evenhanded fact. Over a decade of daily American life evaluations, the partisan gap in how people rated their own lives tracked who held the White House, reversed sign at each handover, and survived a check that held age, education, and income constant. Both parties felt better when they won. The scoreboard, not the temperament, is what moved.</p>
+</div>
+</main>
+
+<footer id="notes">
+  <div class="wrap">
+    <h3>Notes &amp; data</h3>
+    <p><b>Source.</b> Gallup US Daily, pooled 2008&ndash;2017, U.S. adults. Outcomes are the Cantril Self-Anchoring Striving Scale: <code>ladder</code> (where you stand on a 0&ndash;10 ladder of life today), <code>ladder_future</code> (where you expect to stand in about five years), and a derived <code>% Thriving</code> indicator. Construct: <b>evaluative</b> well-being throughout &mdash; the cognitive, &ldquo;all things considered&rdquo; judgment, distinct from momentary affect (Diener 1984; Kahneman &amp; Deaton 2010).</p>
+    <p><b>Thriving rule.</b> A respondent is counted <b>Thriving</b> when their current ladder is at least 7 <em>and</em> their anticipated five-year ladder is at least 8 &mdash; Gallup's standard two-part definition, requiring both items.</p>
+    <p><b>Party.</b> <code>party3</code> is the respondent's own self-reported party identification (Democrat / Republican / Independent). It is an individual attribute, <b>not</b> a county vote or a measure of how their area leans &mdash; so statements like &ldquo;Republicans reported&rdquo; refer to self-identified Republican respondents.</p>
+    <p><b>Weighting &amp; samples.</b> This extract contains <b>no survey-weight variable</b>; every statistic is an <b>unweighted</b> sample estimate. About <b>2,022,283</b> interviews carry both a ladder score and a party identity. Annual samples range from roughly <b>342,239</b> (2008) down to about <b>34,548</b> (2013): the Gallup daily program contracted sharply after 2012, so 2013&ndash;2015 rest on far fewer interviews than the 2008&ndash;2012 years, and later-year estimates are correspondingly noisier.</p>
+    <p><b>Composition check.</b> The within-cell gap recomputes the Republican-minus-Democrat ladder difference inside each age&times;education&times;income cell (72 cells) and averages those differences weighted by cell sample size, isolating the partisan gap from shifts in who identifies with each party.</p>
+    <p><b>Method.</b> Descriptive. Means and shares are simple unweighted averages by party and year; the &ldquo;swings&rdquo; are differences of adjacent-year means; the gap is one party's mean minus the other's. No causal model is fit, and no claim of causation is made.</p>
+    <h3 style="margin-top:24px">References</h3>
+    <ul class="refs">
+      <li>Napier, J. L. &amp; Jost, J. T. (2008). <a href="https://journals.sagepub.com/doi/10.1111/j.1467-9280.2008.02124.x">Why Are Conservatives Happier Than Liberals?</a> <em>Psychological Science</em>.</li>
+      <li>Mandel, D. R. &amp; Omorogbe, E. (2014). <a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0114211">Political Differences in Reactions to the National Political Climate</a>. <em>PLOS ONE</em>.</li>
+      <li>Flavin, P. (2024). <a href="https://journals.sagepub.com/doi/10.1177/13540688231167191">Partisan Identity, the Party in Power, and Subjective Well-Being</a>. <em>Party Politics</em>.</li>
+      <li>Kahneman, D. &amp; Deaton, A. (2010). <a href="https://www.pnas.org/doi/10.1073/pnas.1011492107">High Income Improves Evaluation of Life But Not Emotional Well-Being</a>. <em>PNAS</em>.</li>
+      <li>Diener, E. (1984). <a href="https://psycnet.apa.org/record/1984-23116-001">Subjective Well-Being</a>. <em>Psychological Bulletin</em>.</li>
+      <li>Gallup, Inc. <a href="https://www.gallup.com/178685/gallup-daily-tracking-methodology.aspx">Gallup Daily tracking methodology</a>.</li>
+    </ul>
+  </div>
+</footer>
+
+<script type="module">
+import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+
+const DATA = {"meta":{"slug":"whose-america-is-thriving","title":"Whose America Is Thriving? Whoever Just Won","dataset":"Gallup US Daily 2008-2017","weight":"unweighted (this Gallup US extract has no survey-weight variable)","construct":"evaluative (ladder, future ladder, % Thriving)","thriving_rule":"Thriving = current ladder >= 7 AND anticipated ladder (~5 yrs) >= 8","party_note":"party3 is the respondent's self-reported party identification (Democrat / Republican / Independent), not a county vote","control":{"2008":"GOP","2009":"DEM","2010":"DEM","2011":"DEM","2012":"DEM","2013":"DEM","2014":"DEM","2015":"DEM","2016":"DEM","2017":"GOP"},"transitions":[2009,2017],"n_total_rows":3530270,"n_ladder_total":2022283,"n_by_year":{"2008":342239,"2009":288723,"2010":332841,"2011":339692,"2012":315761,"2013":34548,"2014":50997,"2015":49983,"2016":115026,"2017":152473},"n_min":34548,"n_max":342239,"n_min_year":2013,"n_max_year":2008,"post2012_note":"the daily sample shrinks roughly tenfold after 2012 (about 34548 in 2013 vs about 342239 in 2008), widening later years' uncertainty","outcome_labels":{"ladder":"current ladder (0-10)","future":"anticipated ladder, ~5 yrs (0-10)","thriving":"% Thriving"},"party_colors":{"dem":"#3B6CA8","rep":"#B5394C","ind":"#8A8170"}},"years":[2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"series":{"ladder":{"rep":{"v":[7.082,7.165,7.105,7.078,6.98,7.141,7.168,7.253,7.241,7.378],"n":[142909,125138,154370,151757,143817,15053,22843,22388,52110,65847],"se":[0.0049,0.0053,0.0048,0.0049,0.0051,0.0155,0.0128,0.0126,0.0084,0.0072]},"dem":{"v":[6.455,6.976,7.088,7.053,7.157,7.048,7.07,7.087,7.166,7.07],"n":[171748,137668,147203,151903,145325,15554,22329,21967,51328,70732],"se":[0.005,0.0052,0.005,0.0049,0.0048,0.0154,0.013,0.0129,0.0082,0.007]},"ind":{"v":[6.301,6.752,6.739,6.717,6.717,6.708,6.818,6.879,6.887,6.895],"n":[27582,25917,31268,36032,26619,3941,5825,5628,11588,15894],"se":[0.0137,0.0136,0.0124,0.0115,0.0134,0.0349,0.029,0.0292,0.02,0.0172]}},"future":{"rep":{"v":[7.562,7.25,7.296,7.394,7.323,7.343,7.485,7.583,7.656,7.928],"n":[135511,120337,148000,145438,135934,14609,22213,21782,50704,64691],"se":[0.0057,0.0071,0.0063,0.0061,0.0064,0.0199,0.0156,0.0154,0.0099,0.0083]},"dem":{"v":[7.442,7.683,7.741,7.686,7.835,7.685,7.728,7.704,7.735,7.672],"n":[162201,131762,140884,145165,139127,15090,21758,21383,50218,69334],"se":[0.0054,0.006,0.0057,0.0057,0.0055,0.0176,0.0147,0.0148,0.0095,0.0083]},"ind":{"v":[6.968,7.212,7.264,7.321,7.36,7.334,7.509,7.574,7.599,7.774],"n":[25041,24146,29214,33591,24790,3749,5617,5437,11189,15382],"se":[0.0167,0.0171,0.0153,0.0143,0.0164,0.0421,0.034,0.0334,0.0232,0.0192]}},"thriving":{"rep":{"v":[0.532,0.501,0.497,0.508,0.486,0.519,0.54,0.556,0.564,0.621],"n":[135319,120185,147825,145269,135743,14588,22171,21756,50630,64600],"se":[0.0014,0.0014,0.0013,0.0013,0.0014,0.0041,0.0033,0.0034,0.0022,0.0019]},"dem":{"v":[0.418,0.528,0.552,0.539,0.574,0.545,0.55,0.552,0.566,0.543],"n":[161890,131596,140719,144983,138928,15063,21713,21336,50130,69250],"se":[0.0012,0.0014,0.0013,0.0013,0.0013,0.0041,0.0034,0.0034,0.0022,0.0019]},"ind":{"v":[0.387,0.459,0.464,0.467,0.47,0.473,0.487,0.504,0.512,0.525],"n":[24960,24091,29156,33519,24717,3736,5607,5425,11161,15335],"se":[0.0031,0.0032,0.0029,0.0027,0.0032,0.0082,0.0067,0.0068,0.0047,0.004]}}},"gap":{"ladder":[0.627,0.189,0.017,0.025,-0.177,0.093,0.098,0.166,0.075,0.308],"future":[0.12,-0.433,-0.445,-0.292,-0.512,-0.342,-0.243,-0.121,-0.079,0.256],"thriving":[0.114,-0.027,-0.055,-0.031,-0.088,-0.026,-0.01,0.004,-0.002,0.078]},"crossings":[{"from":2011,"to":2012,"gap_from":0.025,"gap_to":-0.177},{"from":2012,"to":2013,"gap_from":-0.177,"gap_to":0.093}],"transitions":{"2009":{"year":2009,"ladder":{"rep":0.083,"dem":0.521,"ind":0.451},"future":{"rep":-0.312,"dem":0.241,"ind":0.244},"thriving":{"rep":-0.031,"dem":0.11,"ind":0.072}},"2017":{"year":2017,"ladder":{"rep":0.137,"dem":-0.096,"ind":0.008},"future":{"rep":0.272,"dem":-0.063,"ind":0.175},"thriving":{"rep":0.057,"dem":-0.023,"ind":0.013}}},"react":{"ladder":{"rep":0.11,"dem":0.308,"ind":0.23},"future":{"rep":0.292,"dem":0.152,"ind":0.209}},"event":{"ladder":{"2009":{"rep":[7.082,7.165,7.105],"dem":[6.455,6.976,7.088],"ind":[6.301,6.752,6.739]},"2017":{"rep":[7.241,7.378,null],"dem":[7.166,7.07,null],"ind":[6.887,6.895,null]}},"future":{"2009":{"rep":[7.562,7.25,7.296],"dem":[7.442,7.683,7.741],"ind":[6.968,7.212,7.264]},"2017":{"rep":[7.656,7.928,null],"dem":[7.735,7.672,null],"ind":[7.599,7.774,null]}}},"comp":{"2008":{"raw":0.627,"within":0.504,"cells":72},"2012":{"raw":-0.177,"within":-0.248,"cells":72},"2017":{"raw":0.308,"within":0.249,"cells":72}},"mix":{"rep":[0.417,0.43,0.464,0.447,0.455,0.438,0.451,0.458,0.457,0.432],"dem":[0.502,0.482,0.442,0.447,0.46,0.456,0.442,0.44,0.449,0.465],"ind":[0.081,0.088,0.094,0.106,0.085,0.105,0.106,0.102,0.095,0.103]},"cit":{"napier_jost_2008":"Napier & Jost (2008), Psychological Science: conservatives report higher subjective well-being than liberals (rationalization-of-inequality account).","mandel_omorogbe_2014":"Mandel & Omorogbe (2014), PLOS ONE: Republicans' reported happiness is more sensitive to the national political climate than Democrats'.","flavin_2024":"Flavin (2024), Party Politics: a party's supporters report greater life satisfaction when their party controls government.","kahneman_deaton_2010":"Kahneman & Deaton (2010), PNAS: evaluative well-being (the Cantril ladder) rises with income without satiation, distinct from experienced affect.","diener_1984":"Diener (1984), Psychological Bulletin: foundational review distinguishing the cognitive/evaluative component of subjective well-being."}};
+
+const tip = document.getElementById("tip");
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const REP = css("--rep"), DEM = css("--dem"), IND = css("--ind");
+const REP_DEEP = css("--rep-deep"), DEM_DEEP = css("--dem-deep");
+const INK = css("--ink"), DIM = css("--ink-dim"), FAINT = css("--ink-faint"), RULE = css("--rule");
+const PARTY = { rep:{c:REP, name:"Republicans", dash:null}, dem:{c:DEM, name:"Democrats", dash:null}, ind:{c:IND, name:"Independents", dash:"4 3"} };
+const YEARS = DATA.years;
+
+const fmt2 = v => v == null ? "—" : v.toFixed(2);
+const fmtN = n => n == null ? "—" : n.toLocaleString("en-US");
+const fmtGap = g => (g >= 0 ? "+" : "−") + Math.abs(g).toFixed(2);
+const fmtPct = v => v == null ? "—" : (v*100).toFixed(1) + "%";
+const isThr = m => m === "thriving";
+const valFmt = (v,m) => isThr(m) ? fmtPct(v) : fmt2(v);
+
+function showTip(html, ev){
+  tip.innerHTML = html;
+  tip.style.opacity = 1;
+  const pad = 14, w = tip.offsetWidth, h = tip.offsetHeight;
+  let x = ev.clientX + pad, y = ev.clientY + pad;
+  if (x + w > window.innerWidth - 8) x = ev.clientX - w - pad;
+  if (y + h > window.innerHeight - 8) y = ev.clientY - h - pad;
+  tip.style.left = (x + window.scrollX) + "px";
+  tip.style.top = (y + window.scrollY) + "px";
+}
+const hideTip = () => { tip.style.opacity = 0; };
+
+/* ---------------- stat band ---------------- */
+function fillStats(){
+  const cards = [
+    {v:"+0.63", cls:"repv", l:"Republican ladder lead in 2008, under Bush"},
+    {v:"−0.18", cls:"demv", l:"The gap in 2012 — Democrats ahead under Obama"},
+    {v:"+0.31", cls:"repv", l:"Republican lead in 2017 — biggest since 2008"},
+    {v:"0", cls:"", l:"Years Independents led either party, 2008–2017"},
+  ];
+  document.getElementById("statband").innerHTML = cards.map(c =>
+    `<div class="stat"><div class="v ${c.cls}">${c.v}</div><div class="l">${c.l}</div></div>`).join("");
+}
+
+/* ================= MAIN: power-banded partisan timeline ================= */
+const mainState = { metric:"ladder", comp:"raw" };
+const mainHost = d3.select("#chart-main");
+
+// build the per-year series for the current metric/comp selection
+function mainSeries(){
+  const m = mainState.metric;
+  const s = DATA.series[m];
+  const out = { rep:[], dem:[], ind:[], gap:[] };
+  for (let i = 0; i < YEARS.length; i++){
+    out.rep.push(s.rep.v[i]); out.dem.push(s.dem.v[i]); out.ind.push(s.ind.v[i]);
+    out.gap.push(s.rep.v[i] != null && s.dem.v[i] != null ? s.rep.v[i] - s.dem.v[i] : null);
+  }
+  // within-cell adjustment (ladder only): for the years we have, rebuild rep/dem so their
+  // difference equals the within-cell gap, centered on the raw midpoint so the lines stay legible.
+  if (mainState.comp === "within" && m === "ladder"){
+    for (const k of Object.keys(DATA.comp)){
+      const i = YEARS.indexOf(+k);
+      if (i < 0) continue;
+      const mid = (out.rep[i] + out.dem[i]) / 2, g = DATA.comp[k].within;
+      out.rep[i] = mid + g/2; out.dem[i] = mid - g/2; out.gap[i] = g;
+    }
+  }
+  return out;
+}
+
+function drawMain(){
+  mainHost.selectAll("*").remove();
+  const m = mainState.metric, thr = isThr(m);
+  const ser = mainSeries();
+  const W = Math.max(320, mainHost.node().clientWidth);
+  const H = W < 540 ? 380 : 460;
+  const mar = { t:30, r:W<540?14:22, b:64, l:W<540?42:52 };
+  const iw = W - mar.l - mar.r, ih = H - mar.t - mar.b;
+
+  const svg = mainHost.append("svg")
+    .attr("viewBox", `0 0 ${W} ${H}`).attr("role","img")
+    .attr("aria-label", "Power-banded partisan timeline of mean life-evaluation by party, 2008 to 2017. The background is shaded by which party controls the White House. Republican and Democratic lines cross around 2010 to 2012 under a Democratic president and diverge again, Republican-high, in 2017 under a Republican president; independents stay below both throughout.");
+  const g = svg.append("g").attr("transform", `translate(${mar.l},${mar.t})`);
+
+  const x = d3.scalePoint().domain(YEARS).range([0, iw]).padding(0);
+  // y-domain from the visible series
+  const vals = [];
+  ["rep","dem","ind"].forEach(k => ser[k].forEach(v => { if (v != null) vals.push(v); }));
+  let lo = d3.min(vals), hi = d3.max(vals), padv = (hi-lo)*0.18 + (thr?0.01:0.05);
+  const y = d3.scaleLinear().domain([lo-padv, hi+padv]).range([ih, 0]).nice();
+
+  /* --- control bands --- */
+  const xpos = yr => x(yr);
+  const halfStep = iw / (YEARS.length - 1) / 2;
+  YEARS.forEach((yr,i) => {
+    const ctrl = DATA.meta.control[yr];
+    const x0 = i === 0 ? 0 : xpos(yr) - halfStep;
+    const x1 = i === YEARS.length-1 ? iw : xpos(yr) + halfStep;
+    g.append("rect").attr("x", x0).attr("y", 0).attr("width", x1-x0).attr("height", ih)
+      .attr("fill", ctrl === "GOP" ? "var(--band-gop)" : "var(--band-dem)");
+  });
+  // band label centered in each regime
+  const regimes = [{lab:"Bush", c:"GOP", y0:2008, y1:2008},
+                   {lab:"Obama", c:"DEM", y0:2009, y1:2016},
+                   {lab:"Trump", c:"GOP", y0:2017, y1:2017}];
+  regimes.forEach(r => {
+    const cx = (xpos(r.y0) + xpos(r.y1)) / 2;
+    g.append("text").attr("x", cx).attr("y", 14).attr("text-anchor","middle")
+      .attr("class","smcap").style("font-weight",600)
+      .style("fill", r.c === "GOP" ? "var(--rep-deep)" : "var(--dem-deep)")
+      .style("opacity",.78).text(r.lab + " ·" + (r.c==="GOP"?" GOP":" Dem"));
+  });
+
+  /* --- grid + y axis --- */
+  const ticks = y.ticks(thr ? 5 : 6);
+  g.selectAll(".grid").data(ticks).join("line").attr("class","grid")
+    .attr("x1",0).attr("x2",iw).attr("y1",d=>y(d)).attr("y2",d=>y(d))
+    .attr("stroke","var(--hairline-soft)").attr("stroke-width",1);
+  g.selectAll(".yl").data(ticks).join("text").attr("class","yl")
+    .attr("x",-8).attr("y",d=>y(d)+3.5).attr("text-anchor","end")
+    .attr("font-size",11).attr("fill",FAINT)
+    .text(d => thr ? Math.round(d*100)+"%" : d.toFixed(1));
+
+  /* --- inauguration rules --- */
+  DATA.meta.transitions.forEach(yr => {
+    const xr = xpos(yr) - halfStep; // boundary just before the inauguration-year column
+    g.append("line").attr("x1",xr).attr("x2",xr).attr("y1",-4).attr("y2",ih)
+      .attr("stroke",INK).attr("stroke-width",1).attr("stroke-dasharray","2 3").attr("opacity",.55);
+    g.append("text").attr("x",xr+4).attr("y",ih+34).attr("font-size",10.5).attr("fill",DIM)
+      .attr("font-weight",600).text((yr===2009?"Obama":"Trump")+" inaug. "+yr);
+  });
+
+  /* --- the gap ribbon (rep vs dem), filled by who leads --- */
+  const pts = YEARS.map((yr,i) => ({ yr, i, rep:ser.rep[i], dem:ser.dem[i] }))
+                   .filter(d => d.rep != null && d.dem != null);
+  const areaR = d3.area().x(d=>xpos(d.yr)).y0(d=>y(d.dem)).y1(d=>y(d.rep)).curve(d3.curveMonotoneX);
+  // split into red (rep>=dem) and blue segments by clipping with two areas + clip on sign
+  // simpler: draw full ribbon twice with clipPaths above/below the dem line is complex; instead
+  // draw per-segment polygons colored by the leading party at the segment midpoint.
+  for (let k = 0; k < pts.length-1; k++){
+    const a = pts[k], b = pts[k+1];
+    const repLead = ((a.rep-a.dem) + (b.rep-b.dem)) / 2 >= 0;
+    g.append("path").attr("d",
+      `M${xpos(a.yr)},${y(a.dem)} L${xpos(a.yr)},${y(a.rep)} L${xpos(b.yr)},${y(b.rep)} L${xpos(b.yr)},${y(b.dem)} Z`)
+      .attr("fill", repLead ? "var(--rep-soft)" : "var(--dem-soft)").attr("stroke","none");
+  }
+
+  /* --- lines --- */
+  const line = k => d3.line().defined(d=>d!=null).x((d,i)=>xpos(YEARS[i])).y(d=>y(d)).curve(d3.curveMonotoneX);
+  const drawLine = (key) => {
+    const p = PARTY[key];
+    g.append("path").datum(ser[key]).attr("fill","none").attr("stroke",p.c)
+      .attr("stroke-width", key==="ind"?2:3).attr("stroke-linecap","round")
+      .attr("stroke-dasharray", p.dash || null).attr("d", line(key));
+  };
+  drawLine("ind"); drawLine("dem"); drawLine("rep");
+
+  // end-of-line party labels
+  ["rep","dem","ind"].forEach(key => {
+    const arr = ser[key]; let li = arr.length-1; while (li>=0 && arr[li]==null) li--;
+    if (li<0) return;
+    g.append("text").attr("x", xpos(YEARS[li])+6).attr("y", y(arr[li])+3.5)
+      .attr("font-size",11.5).attr("font-weight",700).attr("fill",PARTY[key].c)
+      .text(key==="rep"?"R":key==="dem"?"D":"Ind");
+  });
+
+  /* --- dots --- */
+  ["dem","rep","ind"].forEach(key => {
+    g.selectAll(".dot-"+key).data(ser[key].map((v,i)=>({v,i}))).join("circle")
+      .attr("cx",d=>xpos(YEARS[d.i])).attr("cy",d=>d.v==null?-99:y(d.v))
+      .attr("r",key==="ind"?2.6:3.4).attr("fill",PARTY[key].c)
+      .attr("opacity",d=>d.v==null?0:1);
+  });
+
+  /* --- x axis --- */
+  g.selectAll(".xl").data(YEARS).join("text").attr("class","xl")
+    .attr("x",d=>xpos(d)).attr("y",ih+16).attr("text-anchor","middle")
+    .attr("font-size",11).attr("fill",FAINT).text(d=>`'`+String(d).slice(2));
+
+  /* --- hover layer --- */
+  const focus = g.append("line").attr("y1",0).attr("y2",ih).attr("stroke",INK)
+    .attr("stroke-width",1).attr("opacity",0);
+  const sd = DATA.series[m];
+  g.append("rect").attr("width",iw).attr("height",ih).attr("fill","transparent")
+    .style("cursor","crosshair")
+    .on("mousemove", function(ev){
+      const mx = d3.pointer(ev,this)[0];
+      let best=0, bd=1e9;
+      YEARS.forEach((yr,i)=>{ const dd=Math.abs(xpos(yr)-mx); if(dd<bd){bd=dd;best=i;} });
+      const yr = YEARS[best];
+      focus.attr("x1",xpos(yr)).attr("x2",xpos(yr)).attr("opacity",.4);
+      const gapv = ser.rep[best]!=null && ser.dem[best]!=null ? ser.rep[best]-ser.dem[best] : null;
+      const lead = gapv==null ? "" : (gapv>=0 ? "Republican" : "Democratic")+" lead";
+      const compTag = (mainState.comp==="within" && m==="ladder") ? ` <span class="muted">(within cells)</span>` : "";
+      showTip(
+        `<b>${yr}</b> · ${DATA.meta.control[yr]==="GOP"?"GOP":"Dem"} White House${compTag}<hr>`+
+        `<div class="row"><span class="rep-k">Republicans</span><span>${valFmt(ser.rep[best],m)}</span></div>`+
+        `<div class="row"><span class="dem-k">Democrats</span><span>${valFmt(ser.dem[best],m)}</span></div>`+
+        `<div class="row"><span class="ind-k">Independents</span><span>${valFmt(ser.ind[best],m)}</span></div>`+
+        `<hr><div class="row"><span>R − D gap</span><span>${thr?(gapv>=0?"+":"−")+Math.abs(gapv*100).toFixed(1)+" pp":fmtGap(gapv)}</span></div>`+
+        (lead?`<div class="row"><span class="muted">${lead}</span></div>`:"")+
+        `<div class="row"><span class="muted">N (R / D)</span><span>${fmtN(sd.rep.n[best])} / ${fmtN(sd.dem.n[best])}</span></div>`,
+        ev);
+    })
+    .on("mouseleave", ()=>{ focus.attr("opacity",0); hideTip(); });
+
+  // accessible fallback table (built once)
+  buildFallback();
+}
+
+/* fallback data table for the main chart (screen-reader / no-JS-marks safety) */
+function buildFallback(){
+  if (document.getElementById("main-fallback")) return;
+  const sd = DATA.series.ladder;
+  let rows = YEARS.map((yr,i)=>
+    `<tr><td>${yr}</td><td>${DATA.meta.control[yr]}</td><td>${fmt2(sd.rep.v[i])}</td><td>${fmt2(sd.dem.v[i])}</td><td>${fmt2(sd.ind.v[i])}</td><td>${fmtGap(sd.rep.v[i]-sd.dem.v[i])}</td></tr>`).join("");
+  const tbl = `<table class="fallback" id="main-fallback"><caption>Mean current ladder by party and year (unweighted), with the Republican-minus-Democrat gap.</caption>`+
+    `<thead><tr><th>Year</th><th>White House</th><th>Rep.</th><th>Dem.</th><th>Ind.</th><th>R − D</th></tr></thead><tbody>${rows}</tbody></table>`;
+  const det = document.createElement("details");
+  det.style.marginTop = "12px";
+  det.innerHTML = `<summary style="font-family:var(--sans);font-size:12.5px;color:var(--ink-faint);cursor:pointer">Show the underlying numbers</summary>${tbl}`;
+  document.getElementById("chart-main").after(det);
+}
+
+/* ================= EVENT-STUDY inset ================= */
+const eventState = { metric:"ladder" };
+const eventHost = d3.select("#chart-event");
+
+function drawEvent(){
+  eventHost.selectAll("*").remove();
+  const m = eventState.metric;
+  const ed = DATA.event[m];
+  const W = Math.max(320, eventHost.node().clientWidth);
+  const twoCol = W >= 640;
+  const panelW = twoCol ? (W-24)/2 : W;
+  const H = 300;
+
+  const trans = DATA.meta.transitions;
+  trans.forEach((t0, ti) => {
+    const data = ed[String(t0)];
+    const xLabels = t0===2009 ? [t0-1, t0, t0+1] : [t0-1, t0, ""];
+    const wrap = eventHost.append("div").style("display","inline-block")
+      .style("width", twoCol ? panelW+"px" : "100%")
+      .style("vertical-align","top").style("position","relative")
+      .style("margin-right", twoCol && ti===0 ? "20px" : "0")
+      .style("margin-bottom", twoCol ? "0" : "16px");
+
+    const mar = { t:30, r:30, b:40, l:42 };
+    const iw = panelW - mar.l - mar.r, ih = H - mar.t - mar.b;
+    const svg = wrap.append("svg").attr("viewBox",`0 0 ${panelW} ${H}`).attr("role","img")
+      .attr("aria-label", `Event study around the ${t0} ${t0===2009?"Bush to Obama":"Obama to Trump"} transition: each party's mean ${m==="ladder"?"current":"future"} ladder before and after the inauguration.`);
+    const g = svg.append("g").attr("transform",`translate(${mar.l},${mar.t})`);
+
+    // y across both panels for the metric, shared
+    const all = [];
+    ["2009","2017"].forEach(k => ["rep","dem","ind"].forEach(p => ed[k][p].forEach(v=>{ if(v!=null) all.push(v); })));
+    const lo = d3.min(all), hi = d3.max(all), pad=(hi-lo)*0.16+0.04;
+    const y = d3.scaleLinear().domain([lo-pad, hi+pad]).range([ih,0]).nice();
+    const xs = d3.scalePoint().domain([0,1,2]).range([0, iw]).padding(0.5);
+
+    // shaded sides: pre = leaving party's color, post = incoming party's color
+    const pre = t0===2009 ? "var(--band-gop)" : "var(--band-dem)";
+    const post = t0===2009 ? "var(--band-dem)" : "var(--band-gop)";
+    g.append("rect").attr("x",0).attr("y",0).attr("width",xs(1)).attr("height",ih).attr("fill",pre);
+    g.append("rect").attr("x",xs(1)).attr("y",0).attr("width",iw-xs(1)).attr("height",ih).attr("fill",post);
+    g.append("line").attr("x1",xs(1)).attr("x2",xs(1)).attr("y1",-4).attr("y2",ih)
+      .attr("stroke",INK).attr("stroke-width",1).attr("stroke-dasharray","2 3").attr("opacity",.55);
+    g.append("text").attr("x",xs(1)).attr("y",-12).attr("text-anchor","middle")
+      .attr("font-size",11).attr("font-weight",700).attr("fill",INK)
+      .text(`${t0} · ${t0===2009?"Bush → Obama":"Obama → Trump"}`);
+
+    // y ticks
+    y.ticks(5).forEach(tk=>{
+      g.append("line").attr("x1",0).attr("x2",iw).attr("y1",y(tk)).attr("y2",y(tk))
+        .attr("stroke","var(--hairline-soft)");
+      g.append("text").attr("x",-8).attr("y",y(tk)+3.5).attr("text-anchor","end")
+        .attr("font-size",10).attr("fill",FAINT).text(tk.toFixed(1));
+    });
+    // x labels
+    [0,1,2].forEach(i=> g.append("text").attr("x",xs(i)).attr("y",ih+18).attr("text-anchor","middle")
+      .attr("font-size",10.5).attr("fill",FAINT).text(xLabels[i]));
+
+    // party slopes + change labels
+    ["ind","dem","rep"].forEach(p=>{
+      const arr = data[p];
+      const seg = d3.line().defined(d=>d.v!=null).x(d=>xs(d.i)).y(d=>y(d.v));
+      const pd = arr.map((v,i)=>({v,i}));
+      g.append("path").datum(pd).attr("fill","none").attr("stroke",PARTY[p].c)
+        .attr("stroke-width",p==="ind"?2:3).attr("stroke-dasharray",PARTY[p].dash||null)
+        .attr("stroke-linecap","round").attr("d",seg);
+      pd.forEach(d=>{ if(d.v!=null) g.append("circle").attr("cx",xs(d.i)).attr("cy",y(d.v))
+        .attr("r",p==="ind"?2.6:3.6).attr("fill",PARTY[p].c)
+        .on("mousemove",ev=>showTip(`<b>${PARTY[p].name}</b>, ${xLabels[d.i]}<hr><div class="row"><span>${m==="ladder"?"Current ladder":"Future ladder"}</span><span>${fmt2(d.v)}</span></div>`,ev))
+        .on("mouseleave",hideTip); });
+      // change from t-1 to t (the bump/dip)
+      if (arr[0]!=null && arr[1]!=null){
+        const dv = arr[1]-arr[0];
+        g.append("text").attr("x",(xs(0)+xs(1))/2).attr("y",y((arr[0]+arr[1])/2) + (dv>=0?-7:14))
+          .attr("text-anchor","middle").attr("font-size",10.5).attr("font-weight",700)
+          .attr("fill",PARTY[p].c).text((dv>=0?"+":"−")+Math.abs(dv).toFixed(2));
+      }
+    });
+    // end labels, spread vertically to avoid collisions when party endpoints coincide
+    const ends = ["rep","dem","ind"].map(p=>{
+      const arr=data[p]; let li=arr.length-1; while(li>=0 && arr[li]==null) li--;
+      return li<0 ? null : { p, li, yv:y(arr[li]) };
+    }).filter(Boolean).sort((a,b)=>a.yv-b.yv);
+    const minGap = 12;
+    for (let i=1;i<ends.length;i++) if (ends[i].yv - ends[i-1].yv < minGap) ends[i].yv = ends[i-1].yv + minGap;
+    ends.forEach(e=> g.append("text").attr("x",xs(e.li)+7).attr("y",e.yv+3.5).attr("font-size",11)
+      .attr("font-weight",700).attr("fill",PARTY[e.p].c).text(e.p==="rep"?"R":e.p==="dem"?"D":"Ind"));
+  });
+}
+
+/* ---------------- controls ---------------- */
+function segWire(id, attr, apply){
+  const host = document.getElementById(id);
+  host.querySelectorAll("button").forEach(b=>{
+    b.addEventListener("click", ()=>{
+      host.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed", x===b?"true":"false"));
+      apply(b.getAttribute(attr));
+    });
+  });
+}
+segWire("ctl-main", "data-metric", v=>{
+  if (!v) return;
+  mainState.metric = v;
+  // disable "within cells" when not on the ladder (composition check is ladder-only)
+  const compHost = document.querySelector('#ctl-main [data-comp="within"]');
+  if (v !== "ladder"){ mainState.comp="raw";
+    document.querySelectorAll('#ctl-main [data-comp]').forEach(b=>b.setAttribute("aria-pressed", b.getAttribute("data-comp")==="raw"?"true":"false"));
+    compHost.disabled = true; compHost.style.opacity = .4; }
+  else { compHost.disabled = false; compHost.style.opacity = 1; }
+  drawMain();
+});
+document.querySelectorAll('#ctl-main [data-comp]').forEach(b=>{
+  b.addEventListener("click", ()=>{
+    if (b.disabled) return;
+    document.querySelectorAll('#ctl-main [data-comp]').forEach(x=>x.setAttribute("aria-pressed", x===b?"true":"false"));
+    mainState.comp = b.getAttribute("data-comp"); drawMain();
+  });
+});
+segWire("ctl-event", "data-emetric", v=>{ if(!v) return; eventState.metric=v; drawEvent(); });
+
+/* ---------------- init + resize ---------------- */
+fillStats();
+drawMain();
+drawEvent();
+let rt;
+window.addEventListener("resize", ()=>{ clearTimeout(rt); rt=setTimeout(()=>{ drawMain(); drawEvent(); }, 150); });
+</script>
+<!--SL_BOOKNAV_START-->
+<style>
+.slbn{font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;background:#0f1417;border-top:1px solid #27313a;color:#9fb0ba;padding:24px 20px 40px;margin:48px 0 0}
+.slbn-in{max-width:1080px;margin:0 auto;display:flex;align-items:stretch;gap:12px}
+.slbn a{flex:1 1 0;min-width:0;text-decoration:none;color:inherit;border:1px solid #27313a;border-radius:10px;padding:13px 15px;display:flex;flex-direction:column;gap:4px;background:#161d22;transition:border-color .15s,transform .15s}
+.slbn a:hover{border-color:#3fa9a0;transform:translateY(-2px)}
+.slbn a:focus-visible{outline:2px solid #3fa9a0;outline-offset:2px}
+.slbn a.slbn-next{text-align:right;align-items:flex-end}
+.slbn a.slbn-toc{flex:0 0 auto;min-width:120px;justify-content:center;align-items:center;text-align:center}
+.slbn .slbn-dir{font:700 10px/1 inherit;letter-spacing:.13em;text-transform:uppercase;color:#6b7c87}
+.slbn .slbn-ttl{font:700 14px/1.3 inherit;color:#eef2f4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.slbn a.slbn-disabled{opacity:.38;pointer-events:none}
+@media(max-width:640px){.slbn-in{flex-wrap:wrap}.slbn a{flex:1 1 100%}.slbn a.slbn-next{text-align:left;align-items:flex-start}.slbn a.slbn-toc{order:-1}}
+</style>
+<nav class="slbn" aria-label="Book navigation"><div class="slbn-in"><a class="slbn-prev" href="../read.html?ch=faith-where-its-normative" target="_top"><span class="slbn-dir">‹ Previous</span><span class="slbn-ttl">Faith Pays Off Where Faith Is the Norm</span></a><a class="slbn-toc" href="../index.html#book" target="_top"><span class="slbn-dir">The Scissors</span><span class="slbn-ttl">Chapter 35 / 36</span></a><a class="slbn-next" href="../read.html?ch=closing-the-scissors" target="_top"><span class="slbn-dir">Next ›</span><span class="slbn-ttl">Closing the Scissors</span></a></div></nav>
+<!--SL_BOOKNAV_END-->
+</body>
+</html>

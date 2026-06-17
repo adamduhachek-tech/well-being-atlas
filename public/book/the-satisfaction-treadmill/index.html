@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Satisfaction Treadmill — Half a Century of American Money and Contentment</title>
+<style>
+  :root{
+    --bg:#f7f5f0;
+    --bg-deep:#ece7dc;
+    --panel:#fdfcf8;
+    --ink:#1b1a16;
+    --ink-dim:#4f4a40;
+    --ink-faint:#8c8678;
+    --hair:rgba(27,26,22,.14);
+    --hair-soft:rgba(27,26,22,.07);
+    --income:#2f6f4f;
+    --income-deep:#1d4d36;
+    --income-soft:rgba(47,111,79,.13);
+    --satfin:#b5532a;
+    --satfin-deep:#8a3c1c;
+    --satfin-soft:rgba(181,83,42,.15);
+    --rec:rgba(120,110,95,.12);
+    --accent:#b5532a;
+    --rule:#b3a98f;
+    --serif:'Hoefler Text','Iowan Old Style',Georgia,'Times New Roman',serif;
+    --sans:'Avenir Next',system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+    --mono:'SFMono-Regular',ui-monospace,'Cascadia Mono',Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:var(--serif); font-size:18.5px; line-height:1.64;
+    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+  }
+  a{color:var(--income-deep); text-decoration:none; border-bottom:1px solid rgba(29,77,54,.4)}
+  a:hover,a:focus-visible{color:var(--accent); border-bottom-color:var(--accent)}
+  a:focus-visible,button:focus-visible,select:focus-visible{outline:2.5px solid var(--accent); outline-offset:2px; border-radius:3px}
+  .wrap{max-width:716px; margin:0 auto; padding:0 22px}
+  .wide{max-width:1040px; margin:0 auto; padding:0 22px}
+  header{padding:74px 0 22px}
+  .kicker{font-family:var(--sans); font-size:12px; letter-spacing:.28em; text-transform:uppercase; color:var(--accent); margin:0 0 20px; font-weight:600}
+  h1{font-size:clamp(34px,6vw,60px); line-height:1.02; margin:0 0 22px; font-weight:700; letter-spacing:-.02em}
+  .dek{font-size:clamp(18px,2.5vw,23px); font-style:italic; color:var(--ink-dim); max-width:650px; margin:0 0 26px; line-height:1.46}
+  .byline{font-family:var(--sans); font-size:13px; color:var(--ink-faint); letter-spacing:.04em}
+  .byline b{color:var(--ink-dim); font-weight:600}
+  main p{margin:0 0 1.34em}
+  main{padding-bottom:10px}
+  h2{font-size:clamp(24px,3.5vw,34px); line-height:1.13; margin:2.0em 0 .5em; letter-spacing:-.013em; font-weight:700}
+  .lead{font-size:clamp(19px,2.4vw,22px); line-height:1.5; color:var(--ink)}
+  .drop::first-letter{
+    float:left; font-size:3.55em; line-height:.8; padding:9px 11px 0 0; color:var(--accent);
+    font-weight:700; font-family:var(--serif);
+  }
+  strong{font-weight:700}
+  .inc-t{color:var(--income-deep); font-weight:700}
+  .sat-t{color:var(--satfin-deep); font-weight:700}
+  .figwrap{margin:42px auto 16px}
+  figure{margin:0; background:var(--panel); border:1px solid var(--hair); border-radius:14px; padding:24px 22px 16px; box-shadow:0 1px 0 rgba(27,26,22,.04)}
+  figure h4{font-family:var(--sans); font-size:18.5px; margin:0 0 5px; font-weight:700; color:var(--ink); letter-spacing:-.01em}
+  figure .sub{font-family:var(--sans); font-size:13.5px; color:var(--ink-dim); margin:0 0 14px; line-height:1.5}
+  figcaption{font-family:var(--sans); font-size:12.5px; color:var(--ink-faint); line-height:1.55; margin-top:12px; border-top:1px solid var(--hair-soft); padding-top:11px}
+  svg{width:100%; height:auto; display:block; overflow:visible}
+  text{font-family:var(--sans)}
+  .controls{display:flex; flex-wrap:wrap; gap:10px 16px; align-items:center; margin:2px 0 16px; font-family:var(--sans)}
+  .seg{display:inline-flex; border:1px solid var(--hair); border-radius:9px; overflow:hidden; background:var(--bg-deep)}
+  .seg button{font-family:var(--sans); font-size:13px; padding:7px 13px; border:0; background:transparent; color:var(--ink-dim); cursor:pointer; font-weight:500}
+  .seg button[aria-pressed="true"]{background:var(--ink); color:var(--panel)}
+  .seg button:hover:not([aria-pressed="true"]){background:rgba(27,26,22,.07); color:var(--ink)}
+  .ctl-label{font-size:11.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-faint); font-weight:600}
+  .tip{position:absolute; pointer-events:none; opacity:0; background:var(--ink); color:var(--panel);
+    font-family:var(--sans); font-size:12.5px; line-height:1.5; padding:10px 12px; border-radius:8px;
+    max-width:250px; z-index:30; transition:opacity .08s; box-shadow:0 6px 22px rgba(27,26,22,.32)}
+  .tip b{color:#fff; font-weight:700}
+  .tip .row{display:flex; justify-content:space-between; gap:14px; font-variant-numeric:tabular-nums}
+  .tip .muted{color:#bcb5a7}
+  .tip hr{border:0; border-top:1px solid rgba(255,255,255,.18); margin:6px 0}
+  .smcap{font-family:var(--sans); font-size:11px; letter-spacing:.04em; fill:var(--ink-faint)}
+  .axlab{font-family:var(--sans); font-size:12px; fill:var(--ink-faint)}
+  .note{font-family:var(--sans); font-size:14px; line-height:1.5; color:var(--ink-dim); background:var(--bg-deep);
+    border-left:3px solid var(--rule); border-radius:0 8px 8px 0; padding:14px 16px; margin:26px 0}
+  table.fallback{border-collapse:collapse; width:100%; font-family:var(--sans); font-size:12.5px; margin-top:8px}
+  table.fallback caption{text-align:left; color:var(--ink-faint); font-size:12px; margin-bottom:6px}
+  table.fallback th,table.fallback td{border:1px solid var(--hair-soft); padding:4px 8px; text-align:right}
+  table.fallback th:first-child,table.fallback td:first-child{text-align:left}
+  .visually-hidden{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
+  footer{font-family:var(--sans); font-size:13.5px; color:var(--ink-dim); line-height:1.62; padding:30px 0 80px}
+  footer h2{font-family:var(--sans); font-size:15px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint); margin:0 0 14px; font-weight:700}
+  footer p{margin:0 0 1em; max-width:720px}
+  footer a{color:var(--income-deep)}
+  hr.sep{border:0; border-top:1px solid var(--hair); max-width:1040px; margin:46px auto 0}
+  .pill{font-family:var(--sans); font-size:11px; letter-spacing:.08em; text-transform:uppercase; font-weight:600;
+    padding:2px 8px; border-radius:20px; display:inline-block; vertical-align:middle}
+  .pill-dom{background:var(--satfin-soft); color:var(--satfin-deep)}
+  .pill-eval{background:var(--income-soft); color:var(--income-deep)}
+  @media (prefers-reduced-motion: reduce){*{transition:none!important; animation:none!important}}
+</style>
+</head>
+<body>
+<header class="wrap">
+  <p class="kicker">Domain satisfaction · A fifty-year ledger</p>
+  <h1>The Satisfaction Treadmill</h1>
+  <p class="dek">Real family incomes rose by a third over half a century. Americans' satisfaction with their finances did not follow — and beneath the flat average, the top and the bottom pulled apart.</p>
+  <p class="byline">By the numbers · <b>General Social Survey, 1972–2024</b> · weighted (<span style="font-family:var(--mono)">wtssps</span>)</p>
+</header>
+
+<main>
+<div class="wrap">
+  <p class="lead drop">Ask Americans the same plain question for fifty years — <em>on the whole, are you satisfied, more or less satisfied, or not satisfied at all with your present financial situation?</em> — and you get one of the most stubbornly flat lines in social science. The country's real income climbed, recessions came and went, whole industries were born and died, and the share who say they are <span class="sat-t">pretty well satisfied</span> with their money stayed close to one in three. In <strong>1972</strong> it was <strong>33 percent</strong>. In <strong>2024</strong> it was <strong>23 percent</strong> — if anything, a little lower.</p>
+
+  <p>That is the puzzle the economist Richard Easterlin named in 1974, told here in the GSS's own domain-satisfaction question rather than in life-satisfaction or income data. Over the same half-century, the average American family's income in constant dollars rose by about <strong>a third</strong>. More money arrived; the feeling of having enough did not.</p>
+
+  <p>The first chart lays the two against each other. One line is what people <em>have</em>; the other is how they <em>feel</em> about it.</p>
+</div>
+
+<div class="figwrap wide">
+  <figure>
+    <h4>Incomes rose. Satisfaction ran in place.</h4>
+    <p class="sub">Real family income (indexed to 1972 = 100, right axis) against satisfaction with one's finances (left axis). Shaded bands are NBER recessions. Toggle the satisfaction measure; hollow points are post-2021 web-mode years.</p>
+    <div class="controls" role="group" aria-label="Choose satisfaction measure">
+      <span class="ctl-label">Satisfaction shown as</span>
+      <div class="seg" id="seg-metric">
+        <button data-metric="mean" aria-pressed="true">Average (1–3)</button>
+        <button data-metric="share_sat" aria-pressed="false">% pretty well satisfied</button>
+        <button data-metric="share_notsat" aria-pressed="false">% not satisfied at all</button>
+      </div>
+    </div>
+    <div id="chart-decouple" style="position:relative"></div>
+    <figcaption id="cap-decouple"></figcaption>
+  </figure>
+</div>
+
+<div class="wrap">
+  <p>The <span class="inc-t">income line</span> wanders upward — dented by every recession, but trending higher, ending its run in 2022 about a third above where it began. The <span class="sat-t">satisfaction line</span> does something different: it has no trend at all. It dips in slumps and recovers in booms, oscillating around the same level decade after decade. The clearest dips line up with the recession bands — the 1980–82 double dip, the early-1990s slowdown, and most sharply the financial crisis, when satisfaction fell to its <strong>series low in 2010</strong> before climbing back. What money tracks is the business cycle, not the long climb.</p>
+
+  <p>If anything the recent readings lean the wrong way. The <span class="sat-t">not-satisfied-at-all</span> share — the bottom box, the people in real financial distress — has drifted <em>up</em>, from about <strong>22 percent</strong> in 1972 to <strong>31 percent</strong> in 2024. Twice as much real income on average, and a larger minority saying they are not satisfied at all.</p>
+
+  <div class="note">The GSS moved to a push-to-web mode in <strong>2021–22</strong>, which can shift levels on its own; the post-2021 points are drawn hollow and should be read with that caution. But the flatness long predates the mode change — the satisfaction line had spent five decades going nowhere before 2021 ever arrived. And the income series here ends in <strong>2022</strong>, the last year with constant-dollar family income in this file.</div>
+</div>
+
+<div class="wrap">
+  <h2>The flat average hides a split</h2>
+  <p>A flat national average can be made of very different things. It can mean everyone stood still — or it can mean some rose while others fell, and the two cancelled out. For financial satisfaction it is the second.</p>
+
+  <p>Split each year's respondents into thirds by their actual constant-dollar income and track the <span class="inc-t">top third</span> and the <span class="sat-t">bottom third</span> separately. They start the 1970s about <strong>0.43</strong> of a point apart on the three-point scale. By the 2010s and early 2020s that gap had grown to about <strong>0.62</strong> — a roughly fifty-percent widening. The top third edged up over the decades; the bottom third slid down. The middle of the country didn't tread water so much as get pulled in two directions at once.</p>
+</div>
+
+<div class="figwrap wide">
+  <figure>
+    <h4>The top third pulled away; the bottom third fell back</h4>
+    <p class="sub">Weighted mean financial satisfaction (1–3) within the top and bottom thirds of constant-dollar family income, by year. Income thirds are computed within each year. The shaded wedge is the gap between them.</p>
+    <div id="chart-gap" style="position:relative"></div>
+    <figcaption id="cap-gap"></figcaption>
+  </figure>
+</div>
+
+<div class="wrap">
+  <p>The widening is not subtle and it is not new — it was visible well before the 2008 crisis and has held since. It is the same story the income-inequality statistics tell, surfacing in how people feel about their own finances: the experience of money in America grew more unequal even as the average sentiment about it stayed flat. (For how this looks across places rather than across time, see <a href="../whose-america-is-thriving/index.html">Whose America Is Thriving?</a>)</p>
+
+  <h2>Why a flat line is worth caring about</h2>
+  <p>Financial satisfaction is a <span class="pill pill-dom">domain satisfaction</span> — a judgment about one slice of life, not a global verdict on it. It would matter less if it floated free of everything else. It does not. Line up the GSS's <span class="pill pill-eval">evaluative</span> happiness question against where people sit on the satisfaction scale and the gradient is steep and clean: mean happiness climbs from <strong>1.90</strong> among those not satisfied at all to <strong>2.41</strong> among the pretty-well-satisfied, about half a point on the same compressed three-point scale that global happiness uses. The two constructs are kept separate here and never merged — but a measure that moves global happiness this much, and that has refused to rise for fifty years of growth, is worth watching.</p>
+
+  <h2>What this does, and does not, show</h2>
+  <p><strong>Adaptation, not stagnation.</strong> The flat line is not evidence that nothing improved. Real incomes did rise; what stayed flat is the <em>feeling</em>. The leading reading — the Easterlin paradox, the hedonic treadmill — is that aspirations and comparisons rise with income, so the same dollar buys less satisfaction over time. That is an interpretation the data are consistent with, not a mechanism this chart can prove.</p>
+  <p><strong>It is a three-point question.</strong> Satisfaction here is measured on a coarse 1-to-3 scale, so the levels are blunt instruments; the patterns — the flat trend, the recession dips, the widening gap — are robust to whether you read the average or the top and bottom shares, but the exact numbers depend on the cut.</p>
+  <p><strong>The contrary case exists.</strong> Not everyone accepts the paradox. Stevenson and Wolfers have argued that income and well-being are more tightly linked than Easterlin claimed once you look across countries and at the full income range. This piece is one country's domain-satisfaction series; it is a data point in that debate, not the last word.</p>
+  <p><strong>Composition shifts.</strong> The America of 2024 is older, more educated, and more diverse than that of 1972, and the income measure is family income in constant dollars, not household-size-adjusted. Those shifts move levels somewhat. The headline — growth up, satisfaction flat — survives them, but they are real.</p>
+</div>
+
+<hr class="sep">
+<div class="wide">
+<footer>
+  <h2>Notes &amp; data</h2>
+  <p><strong>Source.</strong> General Social Survey cumulative file, 1972–2024. Financial satisfaction is the GSS <span style="font-family:var(--mono)">satfin</span> item, asked every round since 1972, here direction-fixed so that 3 = <em>pretty well satisfied</em>, 2 = <em>more or less</em>, 1 = <em>not satisfied at all</em>. It rests on 71,013 interviews. Every figure is weighted by <span style="font-family:var(--mono)">wtssps</span>, the GSS post-stratification weight; GSS estimates are never reported unweighted here.</p>
+  <p><strong>Income.</strong> The income line is the weighted mean of <span style="font-family:var(--mono)">realinc</span>, family income in constant 1986 dollars, indexed to its 1972 value. It is available in this file through 2022, so the income series ends there; the satisfaction series runs to 2024. Over 1972–2022 mean constant-dollar family income rose from \$30,424 to \$40,544, a gain near 33 percent. The within-year income thirds in the second chart use <span style="font-family:var(--mono)">coninc</span>, family income in constant 2000 dollars, split into terciles within each survey year.</p>
+  <p><strong>Method.</strong> Yearly figures are weighted means and shares of <span style="font-family:var(--mono)">satfin</span>. The bands on the satisfaction line are 95% percentile intervals from 2,000 weighted bootstrap resamples within year (fixed seed). Single-year cells with effective sample size below 50 are suppressed, where effective N = (Σw)² ⁄ Σw²; income-tercile cells require an effective N of at least 50 on each side. The happiness gradient uses the GSS <span style="font-family:var(--mono)">happy</span> item, 1 = not too happy to 3 = very happy, pooled across all years. Financial satisfaction is a <strong>domain satisfaction</strong>; happiness is <strong>evaluative</strong>; income is a demographic measure. The three are tagged separately and never conflated. The <strong>2021–22 push-to-web mode change</strong> shifted levels and is flagged on every trend chart.</p>
+  <p><strong>Recessions.</strong> The shaded bands are US recessions as dated by the National Bureau of Economic Research — an external annotation, not computed from the GSS.</p>
+  <p><strong>Further reading.</strong> Richard Easterlin, <a href="https://doi.org/10.1016/B978-0-12-205050-3.50008-7">“Does economic growth improve the human lot?”</a> (1974) and his 1995 follow-up on rising aspirations; Philip Brickman &amp; Donald Campbell on the “hedonic treadmill” (1971); and Betsey Stevenson &amp; Justin Wolfers, <a href="https://www.brookings.edu/articles/economic-growth-and-subjective-well-being-reassessing-the-easterlin-paradox/">“Economic growth and subjective well-being”</a> (Brookings, 2008), for the contrary view.</p>
+  <p style="color:var(--ink-faint)">Construct labels — <span class="pill pill-dom">domain</span> satisfaction with finances · <span class="pill pill-eval">evaluative</span> global happiness. Association, not causation.</p>
+</footer>
+</div>
+</main>
+
+<div class="tip" id="tip" role="status" aria-live="polite"></div>
+
+<script type="module">
+import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+const DATA = {"meta":{"slug":"the-satisfaction-treadmill","title":"The Satisfaction Treadmill","dek":"Real family incomes rose by a third over fifty years. Americans' satisfaction with their finances did not budge \u2014 and underneath the flat average, the top and bottom pulled apart.","dataset":"GSS 1972-2024 (cumulative)","weight":"wtssps (GSS post-stratification weight; always applied \u2014 never unweighted)","constructs":{"satfin":"domain satisfaction (with one's present financial situation, 1-3)","happy":"evaluative (global happiness, 1=not too happy .. 3=very happy)","income":"demographic (constant-dollar family income)"},"mode_change":2021,"mode_note":"GSS switched to push-to-web in 2021-22; level shifts after 2021 are partly a mode artifact, flagged in-chart at every crossing","income_note":"Constant-dollar family income (realinc, 1986 dollars) is present 1972-2022 in this file; the income line stops at 2022 and does not extend to 2024.","suppression":"single-year cells with effective N<50 suppressed; tercile cells require effN>=50 each; effN=(sum w)^2/sum(w^2)","bootstrap":"satfin-mean 95% CI from 2000 weighted bootstrap resamples within year (seed 20240614)","satfin_levels":{"1":"Not satisfied at all","2":"More or less satisfied","3":"Pretty well satisfied"},"n_satfin":71013,"n_total":75699,"recession_source":"NBER US business-cycle recession dates (external annotation, not GSS data)","colors":{"income":"#2f6f4f","income_deep":"#1d4d36","satfin":"#b5532a","satfin_deep":"#8a3c1c","top":"#2f6f4f","bot":"#b5532a","rec":"rgba(120,110,95,.13)","grad":"#8a3c1c"}},"years":[1972,1973,1974,1975,1976,1977,1978,1980,1982,1983,1984,1985,1986,1987,1988,1989,1990,1991,1993,1994,1996,1998,2000,2002,2004,2006,2008,2010,2012,2014,2016,2018,2021,2022,2024],"satfin_trend":{"1972":{"mean":2.112,"lo":2.073,"hi":2.153,"share_sat":0.331,"share_notsat":0.219,"n":1608,"effn":1318.0},"1973":{"mean":2.082,"lo":2.042,"hi":2.123,"share_sat":0.314,"share_notsat":0.233,"n":1501,"effn":1257.5},"1974":{"mean":2.067,"lo":2.027,"hi":2.108,"share_sat":0.304,"share_notsat":0.237,"n":1478,"effn":1226.4},"1975":{"mean":2.053,"lo":2.011,"hi":2.096,"share_sat":0.311,"share_notsat":0.258,"n":1479,"effn":1214.9},"1976":{"mean":2.068,"lo":2.026,"hi":2.111,"share_sat":0.306,"share_notsat":0.238,"n":1492,"effn":1216.8},"1977":{"mean":2.14,"lo":2.1,"hi":2.18,"share_sat":0.347,"share_notsat":0.207,"n":1521,"effn":1228.7},"1978":{"mean":2.104,"lo":2.052,"hi":2.152,"share_sat":0.349,"share_notsat":0.244,"n":1529,"effn":956.5},"1980":{"mean":1.986,"lo":1.939,"hi":2.034,"share_sat":0.268,"share_notsat":0.283,"n":1462,"effn":969.9},"1982":{"mean":2.019,"lo":1.974,"hi":2.061,"share_sat":0.279,"share_notsat":0.26,"n":1847,"effn":1099.4},"1983":{"mean":1.994,"lo":1.949,"hi":2.04,"share_sat":0.283,"share_notsat":0.289,"n":1592,"effn":968.3},"1984":{"mean":2.035,"lo":1.988,"hi":2.081,"share_sat":0.286,"share_notsat":0.251,"n":1464,"effn":946.5},"1985":{"mean":2.024,"lo":1.975,"hi":2.07,"share_sat":0.291,"share_notsat":0.267,"n":1525,"effn":971.8},"1986":{"mean":2.057,"lo":2.014,"hi":2.098,"share_sat":0.314,"share_notsat":0.257,"n":1466,"effn":1184.1},"1987":{"mean":2.079,"lo":2.039,"hi":2.119,"share_sat":0.294,"share_notsat":0.215,"n":1811,"effn":1186.3},"1988":{"mean":2.077,"lo":2.036,"hi":2.116,"share_sat":0.306,"share_notsat":0.229,"n":1474,"effn":1188.7},"1989":{"mean":2.038,"lo":1.998,"hi":2.08,"share_sat":0.298,"share_notsat":0.26,"n":1532,"effn":1206.5},"1990":{"mean":2.027,"lo":1.982,"hi":2.073,"share_sat":0.299,"share_notsat":0.272,"n":1367,"effn":1070.1},"1991":{"mean":2.034,"lo":1.991,"hi":2.073,"share_sat":0.282,"share_notsat":0.248,"n":1506,"effn":1152.2},"1993":{"mean":1.976,"lo":1.936,"hi":2.019,"share_sat":0.262,"share_notsat":0.287,"n":1596,"effn":1249.2},"1994":{"mean":2.025,"lo":1.994,"hi":2.054,"share_sat":0.28,"share_notsat":0.255,"n":2976,"effn":2335.1},"1996":{"mean":2.007,"lo":1.977,"hi":2.037,"share_sat":0.28,"share_notsat":0.273,"n":2896,"effn":2320.4},"1998":{"mean":2.05,"lo":2.02,"hi":2.08,"share_sat":0.303,"share_notsat":0.252,"n":2824,"effn":2167.5},"2000":{"mean":2.081,"lo":2.052,"hi":2.11,"share_sat":0.31,"share_notsat":0.229,"n":2803,"effn":2205.2},"2002":{"mean":2.031,"lo":1.983,"hi":2.077,"share_sat":0.304,"share_notsat":0.273,"n":1369,"effn":988.3},"2004":{"mean":2.086,"lo":2.037,"hi":2.136,"share_sat":0.33,"share_notsat":0.244,"n":1335,"effn":973.9},"2006":{"mean":2.059,"lo":2.028,"hi":2.09,"share_sat":0.303,"share_notsat":0.244,"n":2980,"effn":2064.2},"2008":{"mean":1.987,"lo":1.948,"hi":2.027,"share_sat":0.286,"share_notsat":0.299,"n":2016,"effn":1439.7},"2010":{"mean":1.917,"lo":1.877,"hi":1.955,"share_sat":0.23,"share_notsat":0.313,"n":2038,"effn":1325.9},"2012":{"mean":1.996,"lo":1.955,"hi":2.036,"share_sat":0.272,"share_notsat":0.277,"n":1967,"effn":1273.5},"2014":{"mean":2.01,"lo":1.977,"hi":2.041,"share_sat":0.273,"share_notsat":0.264,"n":2532,"effn":1889.1},"2016":{"mean":2.019,"lo":1.987,"hi":2.051,"share_sat":0.286,"share_notsat":0.268,"n":2856,"effn":1902.1},"2018":{"mean":2.118,"lo":2.08,"hi":2.156,"share_sat":0.332,"share_notsat":0.214,"n":2338,"effn":1415.9},"2021":{"mean":2.005,"lo":1.977,"hi":2.034,"share_sat":0.27,"share_notsat":0.265,"n":4016,"effn":2629.3},"2022":{"mean":1.965,"lo":1.924,"hi":2.008,"share_sat":0.267,"share_notsat":0.302,"n":3526,"effn":1359.8},"2024":{"mean":1.917,"lo":1.882,"hi":1.95,"share_sat":0.226,"share_notsat":0.309,"n":3291,"effn":1685.2}},"income_trend":{"1972":{"realinc":30424.0,"coninc":41096.0,"n":1474,"realinc_idx":100.0},"1973":{"realinc":32911.0,"coninc":43402.0,"n":1396,"realinc_idx":108.2},"1974":{"realinc":33252.0,"coninc":43432.0,"n":1357,"realinc_idx":109.3},"1975":{"realinc":32016.0,"coninc":41810.0,"n":1407,"realinc_idx":105.2},"1976":{"realinc":30380.0,"coninc":39866.0,"n":1394,"realinc_idx":99.9},"1977":{"realinc":36759.0,"coninc":46706.0,"n":1398,"realinc_idx":120.8},"1978":{"realinc":33669.0,"coninc":43281.0,"n":1432,"realinc_idx":110.7},"1980":{"realinc":34572.0,"coninc":45507.0,"n":1358,"realinc_idx":113.6},"1982":{"realinc":29546.0,"coninc":40310.0,"n":1679,"realinc_idx":97.1},"1983":{"realinc":33257.0,"coninc":43383.0,"n":1453,"realinc_idx":109.3},"1984":{"realinc":31458.0,"coninc":41841.0,"n":1342,"realinc_idx":103.4},"1985":{"realinc":33617.0,"coninc":43857.0,"n":1419,"realinc_idx":110.5},"1986":{"realinc":31350.0,"coninc":44240.0,"n":1346,"realinc_idx":103.0},"1987":{"realinc":32042.0,"coninc":45837.0,"n":1665,"realinc_idx":105.3},"1988":{"realinc":32464.0,"coninc":45775.0,"n":1357,"realinc_idx":106.7},"1989":{"realinc":33984.0,"coninc":47591.0,"n":1380,"realinc_idx":111.7},"1990":{"realinc":36923.0,"coninc":49666.0,"n":1229,"realinc_idx":121.4},"1991":{"realinc":28687.0,"coninc":42408.0,"n":1368,"realinc_idx":94.3},"1993":{"realinc":34422.0,"coninc":47097.0,"n":1467,"realinc_idx":113.1},"1994":{"realinc":33572.0,"coninc":46492.0,"n":2636,"realinc_idx":110.3},"1996":{"realinc":35877.0,"coninc":48930.0,"n":2561,"realinc_idx":117.9},"1998":{"realinc":32940.0,"coninc":49195.0,"n":2503,"realinc_idx":108.3},"2000":{"realinc":37015.0,"coninc":52959.0,"n":2456,"realinc_idx":121.7},"2002":{"realinc":39006.0,"coninc":54776.0,"n":2463,"realinc_idx":128.2},"2004":{"realinc":39211.0,"coninc":54787.0,"n":2482,"realinc_idx":128.9},"2006":{"realinc":37075.0,"coninc":54408.0,"n":3873,"realinc_idx":121.9},"2008":{"realinc":38431.0,"coninc":55469.0,"n":1774,"realinc_idx":126.3},"2010":{"realinc":32851.0,"coninc":48601.0,"n":1805,"realinc_idx":108.0},"2012":{"realinc":39424.0,"coninc":54794.0,"n":1758,"realinc_idx":129.6},"2014":{"realinc":37129.0,"coninc":52785.0,"n":2314,"realinc_idx":122.0},"2016":{"realinc":36113.0,"coninc":52807.0,"n":2596,"realinc_idx":118.7},"2018":{"realinc":36777.0,"coninc":53711.0,"n":2152,"realinc_idx":120.9},"2021":{"realinc":36211.0,"coninc":52218.0,"n":3509,"realinc_idx":119.0},"2022":{"realinc":40544.0,"coninc":56353.0,"n":3110,"realinc_idx":133.3}},"inc_years":[1972,1973,1974,1975,1976,1977,1978,1980,1982,1983,1984,1985,1986,1987,1988,1989,1990,1991,1993,1994,1996,1998,2000,2002,2004,2006,2008,2010,2012,2014,2016,2018,2021,2022],"inc_last":2022,"gap_trend":{"1972":{"bot":1.934,"top":2.349,"gap":0.415,"n":1470},"1973":{"bot":1.927,"top":2.299,"gap":0.372,"n":1394},"1974":{"bot":1.888,"top":2.296,"gap":0.409,"n":1354},"1975":{"bot":1.809,"top":2.299,"gap":0.491,"n":1402},"1976":{"bot":1.841,"top":2.398,"gap":0.557,"n":1390},"1977":{"bot":1.832,"top":2.39,"gap":0.558,"n":1393},"1978":{"bot":1.919,"top":2.314,"gap":0.394,"n":1431},"1980":{"bot":1.821,"top":2.139,"gap":0.318,"n":1353},"1982":{"bot":1.811,"top":2.232,"gap":0.421,"n":1677},"1983":{"bot":1.751,"top":2.379,"gap":0.628,"n":1450},"1984":{"bot":1.817,"top":2.317,"gap":0.5,"n":1339},"1985":{"bot":1.788,"top":2.224,"gap":0.436,"n":1415},"1986":{"bot":1.785,"top":2.329,"gap":0.544,"n":1343},"1987":{"bot":1.874,"top":2.301,"gap":0.427,"n":1662},"1988":{"bot":1.881,"top":2.369,"gap":0.488,"n":1354},"1989":{"bot":1.765,"top":2.367,"gap":0.602,"n":1376},"1990":{"bot":1.78,"top":2.293,"gap":0.513,"n":1226},"1991":{"bot":1.832,"top":2.241,"gap":0.408,"n":1362},"1993":{"bot":1.707,"top":2.332,"gap":0.625,"n":1464},"1994":{"bot":1.788,"top":2.284,"gap":0.496,"n":2630},"1996":{"bot":1.754,"top":2.261,"gap":0.507,"n":2557},"1998":{"bot":1.735,"top":2.395,"gap":0.66,"n":2500},"2000":{"bot":1.784,"top":2.418,"gap":0.634,"n":2449},"2002":{"bot":1.741,"top":2.297,"gap":0.556,"n":1222},"2004":{"bot":1.88,"top":2.383,"gap":0.503,"n":1174},"2006":{"bot":1.745,"top":2.391,"gap":0.646,"n":2575},"2008":{"bot":1.643,"top":2.281,"gap":0.638,"n":1770},"2010":{"bot":1.66,"top":2.248,"gap":0.588,"n":1803},"2012":{"bot":1.683,"top":2.273,"gap":0.59,"n":1757},"2014":{"bot":1.732,"top":2.315,"gap":0.582,"n":2313},"2016":{"bot":1.752,"top":2.313,"gap":0.56,"n":2594},"2018":{"bot":1.859,"top":2.453,"gap":0.594,"n":2150},"2021":{"bot":1.706,"top":2.463,"gap":0.757,"n":3496},"2022":{"bot":1.64,"top":2.279,"gap":0.639,"n":3095}},"gap_years":[1972,1973,1974,1975,1976,1977,1978,1980,1982,1983,1984,1985,1986,1987,1988,1989,1990,1991,1993,1994,1996,1998,2000,2002,2004,2006,2008,2010,2012,2014,2016,2018,2021,2022],"gap_eras":[{"era":"1972-1985","bot":1.837,"top":2.272,"gap":0.434,"n":17068},{"era":"1990-2005","bot":1.773,"top":2.293,"gap":0.52,"n":16584},{"era":"2010-2022","bot":1.701,"top":2.322,"gap":0.621,"n":17208}],"happy_grad":[{"satfin":1,"mean_happy":1.898,"n":18943},{"satfin":2,"mean_happy":2.191,"n":31264},{"satfin":3,"mean_happy":2.406,"n":20403}],"recessions":[{"x0":1973.9,"x1":1975.2,"label":"1973\u201375"},{"x0":1980.0,"x1":1980.6,"label":"1980"},{"x0":1981.5,"x1":1982.9,"label":"1981\u201382"},{"x0":1990.5,"x1":1991.2,"label":"1990\u201391"},{"x0":2001.2,"x1":2001.9,"label":"2001"},{"x0":2007.9,"x1":2009.5,"label":"2008\u201309"},{"x0":2020.1,"x1":2020.4,"label":"2020"}],"headline":{"satfin_mean_first":2.112,"first_year":1972,"satfin_mean_last":1.917,"last_year":2024,"share_sat_first":0.331,"share_sat_last":0.226,"share_notsat_first":0.219,"share_notsat_last":0.309,"trough_year":2010,"trough_mean":1.917,"realinc_first":30424.0,"realinc_first_year":1972,"realinc_last":40544.0,"realinc_last_year":2022,"realinc_growth_pct":33.0,"gap_first_era":0.434,"gap_last_era":0.621,"gap_first_label":"1972-1985","gap_last_label":"2010-2022","top_first_era":2.272,"top_last_era":2.322,"bot_first_era":1.837,"bot_last_era":1.701,"happy_lo":1.898,"happy_hi":2.406}};
+
+const C = DATA.meta.colors;
+const tip = document.getElementById("tip");
+function showTip(html, ev){
+  tip.innerHTML = html; tip.style.opacity = 1;
+  const pad = 14, w = tip.offsetWidth, h = tip.offsetHeight;
+  let x = ev.clientX + pad, y = ev.clientY + pad;
+  if (x + w > window.innerWidth - 6) x = ev.clientX - w - pad;
+  if (y + h > window.innerHeight - 6) y = ev.clientY - h - pad;
+  tip.style.left = x + "px"; tip.style.top = y + "px";
+}
+function hideTip(){ tip.style.opacity = 0; }
+const MODE = DATA.meta.mode_change;
+
+/* ============================ DECOUPLE CHART ============================ */
+const METRIC = {
+  mean:        {field:"mean",  dom:[1.85,2.20], fmt:v=>v.toFixed(2),       lab:"mean satisfaction (1–3)"},
+  share_sat:   {field:"share_sat",  dom:[0.18,0.40], fmt:v=>Math.round(v*100)+"%", lab:"% pretty well satisfied"},
+  share_notsat:{field:"share_notsat", dom:[0.18,0.40], fmt:v=>Math.round(v*100)+"%", lab:"% not satisfied at all"},
+};
+const dState = { metric:"mean" };
+const DW=1000, DH=480, DM={t:26,r:62,b:54,l:54};
+const dsvg = d3.select("#chart-decouple").append("svg")
+  .attr("viewBox",`0 0 ${DW} ${DH}`).attr("width","100%")
+  .attr("role","img").attr("aria-label",
+    "Dual-axis time series: real family income, indexed to 1972, rises over fifty years while satisfaction with one's finances stays flat, dipping in recessions.");
+const dIn = dsvg.append("g").attr("transform",`translate(${DM.l},${DM.t})`);
+const diw=DW-DM.l-DM.r, dih=DH-DM.t-DM.b;
+const xD = d3.scaleLinear().domain([1971,2025]).range([0,diw]);
+const yInc = d3.scaleLinear().domain([90,140]).range([dih,0]);
+let yS = d3.scaleLinear().domain(METRIC.mean.dom).range([dih,0]);
+
+// recession bands (drawn first, behind)
+dIn.append("g").selectAll("rect.rec").data(DATA.recessions).join("rect").attr("class","rec")
+  .attr("x",d=>xD(Math.max(1971,d.x0))).attr("width",d=>xD(d.x1)-xD(Math.max(1971,d.x0)))
+  .attr("y",0).attr("height",dih).attr("fill",C.rec);
+
+// gridlines on income axis (subtle)
+dIn.append("g").selectAll("line").data(yInc.ticks(5)).join("line")
+  .attr("x1",0).attr("x2",diw).attr("y1",d=>yInc(d)).attr("y2",d=>yInc(d))
+  .attr("stroke","var(--hair-soft)");
+
+// x axis
+const xTicks=[1975,1985,1995,2005,2015,2024];
+dIn.append("g").selectAll("text.xl").data(xTicks).join("text").attr("class","axlab")
+  .attr("x",d=>xD(d)).attr("y",dih+24).attr("text-anchor","middle").text(d=>d);
+
+// right axis: income index
+dIn.append("g").selectAll("text.ir").data(yInc.ticks(5)).join("text").attr("class","axlab")
+  .attr("x",diw+10).attr("y",d=>yInc(d)+4).attr("text-anchor","start").attr("fill",C.income_deep)
+  .text(d=>d);
+dIn.append("text").attr("class","smcap").attr("fill",C.income_deep)
+  .attr("transform",`translate(${diw+44},${dih/2}) rotate(-90)`).attr("text-anchor","middle")
+  .text("real family income, 1972 = 100 →");
+
+// mode-change line
+dIn.append("line").attr("x1",xD(MODE)).attr("x2",xD(MODE)).attr("y1",0).attr("y2",dih)
+  .attr("stroke","var(--accent)").attr("stroke-width",1).attr("stroke-dasharray","3 3").attr("opacity",.5);
+dIn.append("text").attr("class","smcap").attr("x",xD(MODE)-5).attr("y",13).attr("text-anchor","end")
+  .attr("fill","var(--accent)").text("web mode ’21 ▸");
+
+// income data
+const incRows = DATA.inc_years.map(y=>({year:y, idx:DATA.income_trend[y].realinc_idx,
+  realinc:DATA.income_trend[y].realinc})).filter(d=>d.idx!=null);
+const incLine = d3.line().x(d=>xD(d.year)).y(d=>yInc(d.idx)).curve(d3.curveMonotoneX);
+dIn.append("path").datum(incRows).attr("fill","none").attr("stroke",C.income)
+  .attr("stroke-width",2.6).attr("opacity",.55).attr("d",incLine);
+dIn.selectAll("circle.inc").data(incRows).join("circle").attr("class","inc")
+  .attr("cx",d=>xD(d.year)).attr("cy",d=>yInc(d.idx)).attr("r",2.6).attr("fill",C.income).attr("opacity",.7)
+  .on("mousemove",(ev,d)=>showTip(`<b>${d.year} · income</b>`+
+    `<div class="row"><span class="muted">index (1972=100)</span><b>${d.idx}</b></div>`+
+    `<div class="row"><span class="muted">constant 1986 \$</span><b>${d.realinc.toLocaleString()}</b></div>`,ev))
+  .on("mouseleave",hideTip);
+// income end label
+const il=incRows[incRows.length-1];
+dIn.append("text").attr("class","smcap").attr("fill",C.income_deep).attr("font-weight",700)
+  .attr("x",xD(il.year)-2).attr("y",yInc(il.idx)-9).attr("text-anchor","end").text(`income +${Math.round(il.idx-100)}% by ’22`);
+
+// satfin layers (redrawn on toggle)
+const satBand = dIn.append("path");
+const satPath = dIn.append("path");
+const satPts  = dIn.append("g");
+const satLab  = dIn.append("g");
+const yAxisG  = dIn.append("g");
+const yTitleG = dIn.append("g");
+
+function satRows(){
+  return DATA.years.map(y=>({year:y, ...DATA.satfin_trend[y]})).filter(d=>d[METRIC[dState.metric].field]!=null);
+}
+function drawSat(){
+  const m = METRIC[dState.metric];
+  yS = d3.scaleLinear().domain(m.dom).range([dih,0]);
+  const rows = satRows();
+  const line = d3.line().x(d=>xD(d.year)).y(d=>yS(d[m.field])).curve(d3.curveMonotoneX);
+  const area = d3.area().x(d=>xD(d.year)).y0(d=>yS(d.lo)).y1(d=>yS(d.hi)).curve(d3.curveMonotoneX);
+  // band only meaningful for the mean (bootstrap on the mean)
+  if(dState.metric==="mean"){
+    satBand.datum(rows).attr("fill",C.satfin).attr("opacity",.14).attr("d",area);
+  } else { satBand.attr("d",null); }
+  satPath.datum(rows).attr("fill","none").attr("stroke",C.satfin_deep).attr("stroke-width",3.4).attr("d",line);
+  satPts.selectAll("circle").data(rows).join("circle")
+    .attr("cx",d=>xD(d.year)).attr("cy",d=>yS(d[m.field]))
+    .attr("r",d=>d.year>=MODE?4.4:3.4)
+    .attr("fill",d=>d.year>=MODE?"var(--panel)":C.satfin_deep)
+    .attr("stroke",C.satfin_deep).attr("stroke-width",2)
+    .attr("tabindex",0).attr("role","button")
+    .attr("aria-label",d=>`${d.year}: ${m.fmt(d[m.field])}, N ${d.n}`)
+    .on("mousemove",(ev,d)=>satTip(ev,d,m)).on("mouseleave",hideTip)
+    .on("focus",function(ev,d){const r=this.getBoundingClientRect();satTip({clientX:r.x+r.width/2,clientY:r.y},d,m);})
+    .on("blur",hideTip);
+  // left y axis
+  yAxisG.selectAll("text").data(yS.ticks(5)).join("text").attr("class","axlab")
+    .attr("x",-10).attr("y",d=>yS(d)+4).attr("text-anchor","end").attr("fill",C.satfin_deep)
+    .text(d=>m.field==="mean"?d.toFixed(1):Math.round(d*100)+"%");
+  yTitleG.selectAll("text").data([0]).join("text").attr("class","smcap").attr("fill",C.satfin_deep)
+    .attr("transform",`translate(-42,${dih/2}) rotate(-90)`).attr("text-anchor","middle").text("← "+m.lab);
+  // satfin label
+  const sl=rows[rows.length-1];
+  satLab.selectAll("text").data([sl]).join("text").attr("class","smcap").attr("fill",C.satfin_deep).attr("font-weight",700)
+    .attr("x",xD(sl.year)-4).attr("y",yS(sl[m.field])+(dState.metric==="share_notsat"?-10:20)).attr("text-anchor","end")
+    .text("satisfaction");
+  // caption
+  const h=DATA.headline;
+  document.getElementById("cap-decouple").innerHTML =
+    `Income (green, right axis) is mean <span style="font-family:var(--mono)">realinc</span> in constant 1986 dollars, indexed to 1972; it ends 2022. `+
+    `Satisfaction (orange, left axis) is the GSS <span style="font-family:var(--mono)">satfin</span> item shown as ${m.lab}. `+
+    `Hollow points are post-2021 web-mode years; recession bands are NBER-dated. N per year ${d3.min(rows,d=>d.n)}–${d3.max(rows,d=>d.n)}, weighted by wtssps.`;
+}
+function satTip(ev,d,m){
+  const flag = d.year>=MODE ? `<hr><span class="muted">post-2021 web mode</span>`:"";
+  let extra="";
+  if(m.field!=="mean") extra=`<div class="row"><span class="muted">mean (1–3)</span><b>${d.mean.toFixed(2)}</b></div>`;
+  showTip(`<b>${d.year}</b>`+
+    `<div class="row"><span class="muted">${m.lab}</span><b>${m.fmt(d[m.field])}</b></div>${extra}`+
+    `<div class="row"><span class="muted">N</span><b>${d.n.toLocaleString()}</b></div>${flag}`, ev);
+}
+drawSat();
+
+document.querySelectorAll("#seg-metric button").forEach(b=>{
+  b.addEventListener("click",()=>{
+    document.querySelectorAll("#seg-metric button").forEach(x=>x.setAttribute("aria-pressed","false"));
+    b.setAttribute("aria-pressed","true"); dState.metric=b.dataset.metric; drawSat();
+  });
+});
+
+// decouple fallback table
+(function(){
+  const wrap=d3.select("#chart-decouple").append("table").attr("class","fallback").style("display","none");
+  wrap.append("caption").text("Mean financial satisfaction and income index by year");
+  const h=wrap.append("thead").append("tr"); ["Year","Satisfaction (1–3)","Income index"].forEach(t=>h.append("th").text(t));
+  const tb=wrap.append("tbody");
+  DATA.years.forEach(y=>{const tr=tb.append("tr"); tr.append("td").text(y);
+    tr.append("td").text(DATA.satfin_trend[y].mean.toFixed(2));
+    tr.append("td").text(DATA.income_trend[y]?DATA.income_trend[y].realinc_idx:"—");});
+})();
+
+/* ============================ GAP CHART ============================ */
+const GW=1000, GH=440, GM={t:26,r:120,b:54,l:54};
+const gsvg=d3.select("#chart-gap").append("svg").attr("viewBox",`0 0 ${GW} ${GH}`).attr("width","100%")
+  .attr("role","img").attr("aria-label",
+    "Time series: mean financial satisfaction in the top and bottom thirds of income, with the gap between them widening over five decades.");
+const gIn=gsvg.append("g").attr("transform",`translate(${GM.l},${GM.t})`);
+const giw=GW-GM.l-GM.r, gih=GH-GM.t-GM.b;
+const gRows=DATA.gap_years.map(y=>({year:y, ...DATA.gap_trend[y]}));
+const xG=d3.scaleLinear().domain([1971,2023]).range([0,giw]);
+const yG=d3.scaleLinear().domain([1.55,2.5]).range([gih,0]);
+
+gIn.append("g").selectAll("rect").data(DATA.recessions.filter(d=>d.x0<2023)).join("rect")
+  .attr("x",d=>xG(Math.max(1971,d.x0))).attr("width",d=>xG(d.x1)-xG(Math.max(1971,d.x0)))
+  .attr("y",0).attr("height",gih).attr("fill",C.rec);
+gIn.append("g").selectAll("line").data(yG.ticks(5)).join("line")
+  .attr("x1",0).attr("x2",giw).attr("y1",d=>yG(d)).attr("y2",d=>yG(d)).attr("stroke","var(--hair-soft)");
+gIn.append("g").selectAll("text.yl").data(yG.ticks(5)).join("text").attr("class","axlab")
+  .attr("x",-10).attr("y",d=>yG(d)+4).attr("text-anchor","end").text(d=>d.toFixed(1));
+gIn.append("text").attr("class","smcap").attr("transform",`translate(-40,${gih/2}) rotate(-90)`)
+  .attr("text-anchor","middle").text("mean satisfaction (1–3) →");
+gIn.append("g").selectAll("text.xl").data([1975,1985,1995,2005,2015,2022]).join("text").attr("class","axlab")
+  .attr("x",d=>xG(d)).attr("y",gih+24).attr("text-anchor","middle").text(d=>d);
+
+// gap wedge
+const wedge=d3.area().x(d=>xG(d.year)).y0(d=>yG(d.bot)).y1(d=>yG(d.top)).curve(d3.curveMonotoneX);
+gIn.append("path").datum(gRows).attr("fill","var(--rule)").attr("opacity",.16).attr("d",wedge);
+
+const lineT=d3.line().x(d=>xG(d.year)).y(d=>yG(d.top)).curve(d3.curveMonotoneX);
+const lineB=d3.line().x(d=>xG(d.year)).y(d=>yG(d.bot)).curve(d3.curveMonotoneX);
+gIn.append("path").datum(gRows).attr("fill","none").attr("stroke",C.income).attr("stroke-width",3).attr("d",lineT);
+gIn.append("path").datum(gRows).attr("fill","none").attr("stroke",C.satfin).attr("stroke-width",3).attr("d",lineB);
+
+function gapPts(key,col){
+  gIn.selectAll("circle."+key).data(gRows).join("circle").attr("class",key)
+    .attr("cx",d=>xG(d.year)).attr("cy",d=>yG(d[key])).attr("r",2.8).attr("fill",col)
+    .attr("tabindex",0).attr("role","button")
+    .attr("aria-label",d=>`${d.year}: ${key==="top"?"top":"bottom"} third ${d[key].toFixed(2)}`)
+    .on("mousemove",(ev,d)=>showTip(`<b>${d.year}</b>`+
+      `<div class="row"><span class="muted">top third</span><b>${d.top.toFixed(2)}</b></div>`+
+      `<div class="row"><span class="muted">bottom third</span><b>${d.bot.toFixed(2)}</b></div>`+
+      `<div class="row"><span class="muted">gap</span><b>${d.gap.toFixed(2)}</b></div>`,ev))
+    .on("mouseleave",hideTip)
+    .on("focus",function(ev,d){const r=this.getBoundingClientRect();showTip(`<b>${d.year}</b><div class="row"><span class="muted">top</span><b>${d.top.toFixed(2)}</b></div><div class="row"><span class="muted">bottom</span><b>${d.bot.toFixed(2)}</b></div>`,{clientX:r.x,clientY:r.y});})
+    .on("blur",hideTip);
+}
+gapPts("top",C.income); gapPts("bot",C.satfin);
+
+const last=gRows[gRows.length-1];
+gIn.append("text").attr("class","smcap").attr("fill",C.income_deep).attr("font-weight",700)
+  .attr("x",xG(last.year)+8).attr("y",yG(last.top)+4).text("top third");
+gIn.append("text").attr("class","smcap").attr("fill",C.satfin_deep).attr("font-weight",700)
+  .attr("x",xG(last.year)+8).attr("y",yG(last.bot)+4).text("bottom third");
+// gap annotations at ends
+function gapTag(d,dy){
+  gIn.append("text").attr("class","smcap").attr("fill","var(--ink-dim)").attr("font-weight",700)
+    .attr("x",xG(d.year)).attr("y",yG((d.top+d.bot)/2)+dy).attr("text-anchor","middle")
+    .text("gap "+d.gap.toFixed(2));
+}
+gapTag(gRows[0],4); gapTag(last,4);
+
+document.getElementById("cap-gap").innerHTML =
+  `Each year's respondents are split into thirds by constant-dollar family income (<span style="font-family:var(--mono)">coninc</span>). `+
+  `The top–bottom gap widens from ${DATA.gap_eras[0].gap.toFixed(2)} in ${DATA.gap_eras[0].era} to ${DATA.gap_eras[2].gap.toFixed(2)} in ${DATA.gap_eras[2].era} (pooled-era figures). `+
+  `Recession bands NBER-dated; weighted by wtssps; income thirds end 2022.`;
+
+// gap fallback table
+(function(){
+  const wrap=d3.select("#chart-gap").append("table").attr("class","fallback").style("display","none");
+  wrap.append("caption").text("Mean satisfaction by income third, and the gap");
+  const h=wrap.append("thead").append("tr"); ["Year","Top third","Bottom third","Gap"].forEach(t=>h.append("th").text(t));
+  const tb=wrap.append("tbody");
+  gRows.forEach(d=>{const tr=tb.append("tr"); tr.append("td").text(d.year);
+    tr.append("td").text(d.top.toFixed(2)); tr.append("td").text(d.bot.toFixed(2)); tr.append("td").text(d.gap.toFixed(2));});
+})();
+</script>
+<!--SL_BOOKNAV_START-->
+<style>
+.slbn{font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;background:#0f1417;border-top:1px solid #27313a;color:#9fb0ba;padding:24px 20px 40px;margin:48px 0 0}
+.slbn-in{max-width:1080px;margin:0 auto;display:flex;align-items:stretch;gap:12px}
+.slbn a{flex:1 1 0;min-width:0;text-decoration:none;color:inherit;border:1px solid #27313a;border-radius:10px;padding:13px 15px;display:flex;flex-direction:column;gap:4px;background:#161d22;transition:border-color .15s,transform .15s}
+.slbn a:hover{border-color:#3fa9a0;transform:translateY(-2px)}
+.slbn a:focus-visible{outline:2px solid #3fa9a0;outline-offset:2px}
+.slbn a.slbn-next{text-align:right;align-items:flex-end}
+.slbn a.slbn-toc{flex:0 0 auto;min-width:120px;justify-content:center;align-items:center;text-align:center}
+.slbn .slbn-dir{font:700 10px/1 inherit;letter-spacing:.13em;text-transform:uppercase;color:#6b7c87}
+.slbn .slbn-ttl{font:700 14px/1.3 inherit;color:#eef2f4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.slbn a.slbn-disabled{opacity:.38;pointer-events:none}
+@media(max-width:640px){.slbn-in{flex-wrap:wrap}.slbn a{flex:1 1 100%}.slbn a.slbn-next{text-align:left;align-items:flex-start}.slbn a.slbn-toc{order:-1}}
+</style>
+<nav class="slbn" aria-label="Book navigation"><div class="slbn-in"><a class="slbn-prev" href="../read.html?ch=the-optimism-gap" target="_top"><span class="slbn-dir">‹ Previous</span><span class="slbn-ttl">The Optimism Gap</span></a><a class="slbn-toc" href="../index.html#book" target="_top"><span class="slbn-dir">The Scissors</span><span class="slbn-ttl">Chapter 24 / 36</span></a><a class="slbn-next" href="../read.html?ch=flip-counties-felt-it-first" target="_top"><span class="slbn-dir">Next ›</span><span class="slbn-ttl">The Flip Counties Felt It First</span></a></div></nav>
+<!--SL_BOOKNAV_END-->
+</body>
+</html>

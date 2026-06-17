@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Closing the Scissors</title>
+<meta name="description" content="A three-dataset horse race: when income runs against health, perceived freedom and social connection, the money does not win the way the headlines promise. The book's closing bet, settled with numbers.">
+<style>
+  :root{
+    --ground:#14181d;
+    --ground-2:#1b2026;
+    --panel:#1f262e;
+    --panel-edge:#2e3741;
+    --ink:#eef1f3;
+    --ink-dim:#aeb7c0;
+    --ink-faint:#7f8a95;
+    --hairline:#2b333c;
+    --eval:#2bb6a4;       /* evaluative blade - teal */
+    --eval-soft:#0f3b38;
+    --exp:#e8743b;        /* experiential blade - warm */
+    --exp-soft:#3a2317;
+    --gold:#f0c14b;       /* highlighted: freedom / connection */
+    --gold-soft:#3a3014;
+    --income:#8aa0b4;     /* income reference */
+    --maxw:730px;
+    --figw:1000px;
+    --sans:"Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --serif:Charter, "Bitstream Charter", "Sitka Text", Cambria, Georgia, serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--ground); color:var(--ink);
+    font:18px/1.66 var(--serif);
+    overflow-x:hidden;
+  }
+  .skip{position:absolute; left:-9999px; top:0; background:var(--gold); color:#14181d; padding:.5em 1em; z-index:40; font-family:var(--sans)}
+  .skip:focus{left:8px; top:8px}
+  a{color:var(--eval); text-decoration-color:rgba(43,182,164,.45); text-underline-offset:3px}
+  a:focus-visible, button:focus-visible{outline:2.5px solid var(--gold); outline-offset:2px}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 20px}
+  .wrap-wide{max-width:var(--figw); margin:0 auto; padding:0 20px}
+
+  header{position:relative; padding:90px 0 8px; overflow:hidden}
+  .blades{
+    position:absolute; top:0; right:0; width:46%; height:100%;
+    pointer-events:none; opacity:.9; z-index:0;
+  }
+  .kicker{font:700 12px/1.5 var(--sans); letter-spacing:.26em; text-transform:uppercase; color:var(--gold)}
+  h1{
+    font:900 clamp(42px,7.6vw,76px)/1.0 var(--sans); letter-spacing:-.028em;
+    margin:.22em 0 .3em; text-wrap:balance; position:relative; z-index:1;
+  }
+  .dek{font-size:clamp(19px,2.7vw,23px); line-height:1.48; color:var(--ink-dim); margin:0 0 22px; max-width:39em; position:relative; z-index:1}
+  .byline{
+    font:400 13px/1.7 var(--sans); color:var(--ink-faint);
+    border-top:2px solid var(--ink-dim); padding-top:12px; display:flex; gap:18px; flex-wrap:wrap;
+    position:relative; z-index:1;
+  }
+  .byline b{color:var(--ink-dim); font-weight:600}
+
+  main{position:relative; z-index:1}
+  h2{font:800 clamp(25px,3.8vw,34px)/1.16 var(--sans); letter-spacing:-.016em; margin:2.15em 0 .55em}
+  p{margin:0 0 1.15em}
+  strong{color:#fff}
+  em{color:var(--ink)}
+  .tagline{font:700 11px/1 var(--sans); letter-spacing:.16em; text-transform:uppercase; padding:4px 8px; border-radius:3px; white-space:nowrap}
+  .tag-eval{background:var(--eval-soft); color:var(--eval)}
+  .tag-exp{background:var(--exp-soft); color:var(--exp)}
+
+  .statrow{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:30px 0 8px}
+  .stat{background:var(--panel); border:1px solid var(--panel-edge); border-top:3px solid var(--income); padding:13px 14px 11px}
+  .stat.gold{border-top-color:var(--gold)}
+  .stat.eval{border-top-color:var(--eval)}
+  .stat.exp{border-top-color:var(--exp)}
+  .stat .lab{font:700 10.5px/1.4 var(--sans); letter-spacing:.11em; text-transform:uppercase; color:var(--ink-faint)}
+  .stat .val{font:800 clamp(20px,2.7vw,28px)/1.12 var(--sans); margin-top:6px; font-variant-numeric:tabular-nums; color:#fff}
+  .stat.gold .val{color:var(--gold)} .stat.eval .val{color:var(--eval)} .stat.exp .val{color:var(--exp)}
+  .stat .sub{font:400 12px/1.45 var(--sans); color:var(--ink-dim); margin-top:4px}
+  @media(max-width:680px){ .statrow{grid-template-columns:1fr 1fr} }
+  @media(max-width:420px){ .statrow{grid-template-columns:1fr} }
+
+  figure{margin:38px 0}
+  .fig{
+    background:var(--ground-2); border:1px solid var(--panel-edge);
+    padding:20px 20px 14px; position:relative;
+    box-shadow:0 30px 60px -40px rgba(0,0,0,.8);
+  }
+  .figtitle{font:800 19px/1.28 var(--sans); margin:0 0 3px; color:#fff}
+  .figsub{font:400 13.5px/1.55 var(--sans); color:var(--ink-dim); margin:0 0 12px; max-width:60em}
+  figcaption{font:400 12.5px/1.6 var(--sans); color:var(--ink-faint); margin-top:12px}
+  .chart{position:relative}
+  .chart svg{display:block; width:100%; height:auto}
+
+  .controls{display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin:6px 0 12px; font-family:var(--sans)}
+  button.mbtn{
+    font:700 12.5px/1.2 var(--sans); letter-spacing:.02em; cursor:pointer;
+    background:var(--panel); color:var(--ink-dim); border:1.5px solid var(--panel-edge);
+    border-radius:999px; padding:8px 14px; transition:all .15s;
+  }
+  button.mbtn:hover{border-color:var(--ink-dim); color:var(--ink)}
+  button.mbtn[aria-pressed="true"]{background:var(--ink); border-color:var(--ink); color:var(--ground)}
+
+  .legend{display:flex; gap:8px 16px; flex-wrap:wrap; margin:2px 0 4px; font:600 12px/1.6 var(--sans); color:var(--ink-dim)}
+  .legend span.item{display:inline-flex; align-items:center; gap:7px}
+  .legend .sw{width:13px; height:13px; border-radius:3px; flex:none}
+  .legend .swdot{width:11px; height:11px; border-radius:50%; flex:none}
+
+  .caveat{
+    display:flex; gap:11px; align-items:flex-start;
+    background:var(--gold-soft); border:1px solid #6a5621; border-left:4px solid var(--gold);
+    padding:11px 15px; margin:8px 0 16px; font:400 13px/1.56 var(--sans); color:#e8d8a8;
+  }
+  .caveat b{color:var(--gold)}
+  .caveat .ex{font:900 15px/1.2 var(--sans); color:var(--gold); flex:none}
+
+  .tip{
+    position:absolute; pointer-events:none; z-index:20; display:none;
+    background:#0c0f12; color:#eef1f3; border:1px solid #333d47; border-radius:6px; padding:9px 11px;
+    font:400 12.5px/1.5 var(--sans); max-width:260px; box-shadow:0 10px 30px rgba(0,0,0,.6);
+  }
+  .tip b{color:#fff} .tip .trg{color:#8a96a2; font-size:10.5px; letter-spacing:.07em; text-transform:uppercase}
+  .tip .num{font-variant-numeric:tabular-nums}
+
+  .gapbox{display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin:22px 0 6px}
+  .gap{background:var(--panel); border:1px solid var(--panel-edge); padding:13px 15px; border-left:3px solid #5b4a4a}
+  .gap h4{font:800 12px/1.3 var(--sans); letter-spacing:.06em; text-transform:uppercase; margin:0 0 6px; color:var(--ink)}
+  .gap p{font:400 13px/1.55 var(--sans); color:var(--ink-dim); margin:0}
+  @media(max-width:680px){ .gapbox{grid-template-columns:1fr} }
+
+  .notes{
+    margin-top:64px; border-top:2px solid var(--ink-dim); padding:26px 0 70px;
+    font:400 14px/1.7 var(--sans); color:var(--ink-dim);
+  }
+  .notes h2{font-size:19px; margin:0 0 14px; color:#fff}
+  .notes ul{padding-left:1.2em; margin:0}
+  .notes li{margin-bottom:9px}
+  .notes code{font-size:12.5px; background:var(--panel); padding:1px 5px; border-radius:3px; color:var(--ink)}
+  .smallcaps{font-variant:small-caps; letter-spacing:.04em; color:var(--ink)}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to article</a>
+<header>
+  <svg class="blades" viewBox="0 0 420 520" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+    <g fill="none" stroke-width="2.4" stroke-linecap="round">
+      <path d="M70 470 C 180 360, 300 250, 400 70" stroke="#2bb6a4" opacity="0.55"/>
+      <path d="M70 470 C 180 470, 320 430, 400 410" stroke="#e8743b" opacity="0.55"/>
+    </g>
+    <circle cx="70" cy="470" r="9" fill="none" stroke="#7f8a95" stroke-width="2.4"/>
+    <circle cx="400" cy="70" r="4.5" fill="#2bb6a4"/>
+    <circle cx="400" cy="410" r="4.5" fill="#e8743b"/>
+  </svg>
+  <div class="wrap">
+    <p class="kicker">Coda &middot; GSS &middot; Gallup World Poll &middot; World Values Survey</p>
+    <h1>Closing the<br>Scissors</h1>
+    <p class="dek">For one book the question was always the same: when you put income in a room with health, freedom and a person to count on, which one actually moves a life? Three surveys, three million-plus respondents, one horse race &mdash; and money does not win the way the headlines promise.</p>
+    <div class="byline">
+      <span><b>Datasets</b> GSS 1972&ndash;2024 &middot; Gallup World Poll 2006&ndash;2025 &middot; EVS&ndash;WVS 1981&ndash;2023</span>
+      <span><b>Method</b> within-context standardized OLS, per dataset</span>
+      <span><b>Construct</b> evaluative vs experiential, labeled throughout</span>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <div class="wrap">
+    <p>The whole book has run on one image: a pair of scissors. The upper blade is how people <em>rate</em> their lives &mdash; the considered, comparative verdict, resilient and slow to bend. The lower blade is how people <em>feel</em> their days &mdash; the worry, the enjoyment, the sense of someone there &mdash; which has thinned and, since 2020, has not come back. The gap between the blades was the story. This coda asks the practical version of it: if you wanted to lift either blade, what would you reach for first?</p>
+    <p>Three datasets answer in three different vocabularies, so the honest move is to keep them in separate rooms. In each one, every predictor is standardized within its own country and year, then run against a single well-being outcome &mdash; first alone, then against all the others at once. The number to watch is the standardized coefficient: how much the outcome shifts for a one-standard-deviation move in that predictor, holding the context fixed. The conventional wisdom going in is that income is the prime mover. It is not what the data says.</p>
+
+    <div class="statrow" role="list" aria-label="Headline coefficients">
+      <div class="stat gold" role="listitem"><div class="lab">Perceived freedom &middot; WVS</div><div class="val">+0.79</div><div class="sub">bivariate on life satisfaction; +0.48 net &mdash; 2nd only to felt finances</div></div>
+      <div class="stat gold" role="listitem"><div class="lab">Social support &middot; GWP ladder</div><div class="val">+0.37</div><div class="sub">bivariate; +0.34 net, edging out income</div></div>
+      <div class="stat" role="listitem"><div class="lab">Income net of all else &middot; WVS</div><div class="val">+0.06</div><div class="sub">from +0.48 alone &mdash; mostly other things</div></div>
+      <div class="stat exp" role="listitem"><div class="lab">Income on daily feeling &middot; GWP</div><div class="val">+0.035</div><div class="sub">about a tenth of its pull on the ladder</div></div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <h2>Two blades, named again</h2>
+    <p>This book never lets the two kinds of well-being share an axis, and the coda is no exception. <span class="tagline tag-eval">Evaluative</span>&ensp;A standing judgment of life as a whole: the GSS three-point <em>happy</em> question, Gallup's 0&ndash;10 ladder, and the World Values Survey's 1&ndash;10 life-satisfaction scale. <span class="tagline tag-exp">Experiential</span>&ensp;What yesterday actually felt like: Gallup's binary positive- and negative-affect items. The split matters here because the surveys are lopsided. Only the Gallup World Poll carries experiential items at all; the GSS and the World Values Survey have <em>no</em> daily-affect questions, so the lower blade can be measured in exactly one of the three rooms. Where it can, the contrast is the punchline.</p>
+  </div>
+
+  <div class="wrap-wide">
+    <figure>
+      <div class="fig">
+        <p class="figtitle">The horse race, one dataset at a time</p>
+        <p class="figsub">Standardized OLS coefficients on each dataset&rsquo;s evaluative well-being outcome. Filled dot = the predictor run alone (bivariate); hollow dot = the same predictor net of all the others (joint). The whisker is &plusmn;1.96 standard errors. Freedom and connection are drawn in gold against income&rsquo;s steel reference line. Switch between running each predictor alone and running them all together.</p>
+        <div class="controls" id="mode-controls" role="group" aria-label="Choose model"></div>
+        <div class="legend" aria-hidden="true">
+          <span class="item"><span class="swdot" style="background:var(--gold)"></span>Freedom / connection</span>
+          <span class="item"><span class="swdot" style="background:var(--income)"></span>Income</span>
+          <span class="item"><span class="swdot" style="background:var(--eval)"></span>Other predictor</span>
+          <span class="item"><span class="sw" style="background:transparent;border:1.5px solid var(--ink-faint);border-radius:50%"></span>net of all others</span>
+        </div>
+        <div class="caveat"><span class="ex" aria-hidden="true">!</span><span><b>Not one forest plot &mdash; three.</b> These coefficients are semi-standardized: the predictor is z-scored, but each outcome keeps its own native scale (a 3-point happiness scale, a 0&ndash;10 ladder, a 1&ndash;10 satisfaction scale). Compare bars <em>within</em> a panel, never a number in one panel against a number in another.</span></div>
+        <div class="chart" id="forest-eval"></div>
+        <figcaption>GSS weighted by <code>wtssps</code>; Gallup World by within-country <code>wgt</code>; WVS by within-country <code>weight</code>. Each predictor is z-scored within country&times;year (year alone for GSS). Health is absent from the Gallup panel and freedom from both Gallup and GSS &mdash; the surveys simply do not ask &mdash; so those rows are blank, not zero. WVS substitutes felt financial satisfaction where it has no social-support item.</figcaption>
+      </div>
+    </figure>
+  </div>
+
+  <div class="wrap">
+    <h2>Income&rsquo;s power is mostly borrowed</h2>
+    <p>Run income alone and it looks like the answer everyone expects. In the World Values Survey, a one-standard-deviation step up the subjective income ladder is worth <strong>+0.48</strong> points of life satisfaction; in the Gallup World Poll it moves the Cantril ladder <strong>+0.38</strong>. Respectable numbers. Then put income in the room with health, freedom, marriage, work and faith, and most of that pull turns out to have been on loan. In the WVS, income&rsquo;s coefficient collapses from +0.48 to <strong>+0.06</strong> once the other predictors are present &mdash; richer people are also healthier, freer and more partnered, and when you hold those constant the money has little left to do on its own. The GSS tells the same story in miniature: income&rsquo;s bivariate +0.11 on happiness falls to <strong>+0.04</strong> net of everything else.</p>
+    <p>What survives the joint model is more interesting than what doesn&rsquo;t. In the WVS, <span class="tagline tag-eval">Evaluative</span> perceived freedom and control over one&rsquo;s life is the second-strongest predictor in the whole field &mdash; <strong>+0.79</strong> alone, <strong>+0.48</strong> net &mdash; beaten only by how satisfied people feel with their household finances, which is a feeling about money, not money itself. Self-rated health holds at <strong>+0.32</strong> net. Income, the thing the public imagination reaches for first, finishes near the back of the pack.</p>
+
+    <h2>Connection ties income, then beats it</h2>
+    <p>The Gallup World Poll cannot ask about health or freedom in this extract, but it can ask the question this book cares about most: do you have someone to count on? Run alone, that single yes/no item moves the ladder <strong>+0.37</strong> &mdash; statistically a dead heat with income&rsquo;s <strong>+0.38</strong>. Put both in the joint model and the order quietly flips: social support lands at <strong>+0.34</strong> and income at <strong>+0.34</strong>, with connection a hair ahead. Two of the most reliable levers on how people rate their lives, in the largest well-being survey on Earth, are a person to lean on and a sense that the life is your own to steer. Neither is money, and one of them is free.</p>
+  </div>
+
+  <div class="wrap-wide">
+    <figure>
+      <div class="fig">
+        <p class="figtitle">The cross-blade test &mdash; Gallup World Poll only</p>
+        <p class="figsub">The same predictors, now on both blades. Left column: the 0&ndash;10 ladder <span class="tagline tag-eval">Evaluative</span>. Right columns: positive and negative daily affect <span class="tagline tag-exp">Experiential</span>, both oriented so up is good (the worry/sadness index is sign-flipped for display). Bivariate coefficients. Watch income shrink as you cross from the upper blade to the lower one.</p>
+        <div class="legend" aria-hidden="true">
+          <span class="item"><span class="swdot" style="background:var(--gold)"></span>Social support</span>
+          <span class="item"><span class="swdot" style="background:var(--income)"></span>Income</span>
+          <span class="item"><span class="swdot" style="background:var(--eval)"></span>Other predictor</span>
+        </div>
+        <div class="chart" id="forest-cross"></div>
+        <figcaption>Gallup World Poll, within-country <code>wgt</code>, 2006&ndash;2025; predictors z-scored within country&times;year. The ladder is on a 0&ndash;10 scale; the affect indices are 0&ndash;1 shares, so the columns are on different rulers &mdash; read each column on its own axis. Negative affect shown as &ldquo;absence of negative affect&rdquo; (sign-flipped) so that higher always means better.</figcaption>
+      </div>
+    </figure>
+  </div>
+
+  <div class="wrap">
+    <p>This is the cleanest single fact in the coda. Income moves the upper blade hard and the lower blade barely. On the ladder, a standard-deviation of income is worth <strong>+0.38</strong>; on freedom from daily negative feeling it is worth <strong>+0.035</strong> &mdash; roughly a tenth as much. Money buys a better <em>rating</em> of your life far more readily than it buys a better <em>day</em>. Social support, by contrast, holds its size across the divide: it is the top mover on positive affect (<strong>+0.046</strong>) and on the absence of negative affect (<strong>+0.042</strong>), and it ties income on the ladder. Connection is the rare lever that works on both blades at once. That is the whole argument of the book, recovered from a regression instead of a trend line.</p>
+
+    <h2>Where the surveys can&rsquo;t see</h2>
+    <p>Three datasets that each lack what another has is not a tidy design; it is the honest one, and pretending otherwise would undo the book&rsquo;s own discipline. The freedom result rests on the World Values Survey alone, because neither Gallup nor the GSS asks about it. Health is missing from the Gallup panel for the same reason. The GSS and WVS carry no experiential items at all, so the cross-blade test is a Gallup-only result. These are not modeling choices to be optimized away &mdash; they are gaps in what humanity has bothered to measure, and the chart leaves them blank rather than filling them with a confident zero.</p>
+
+    <div class="gapbox" role="list" aria-label="What each dataset cannot measure">
+      <div class="gap" role="listitem"><h4>Gallup World Poll</h4><p>No self-rated health item and no freedom-of-choice item in this extract. Its strength is scale (164 countries) and the only experiential affect measures in the three.</p></div>
+      <div class="gap" role="listitem"><h4>World Values Survey</h4><p>No comparable &ldquo;someone to count on&rdquo; item, so connection can&rsquo;t enter; felt financial satisfaction stands in as an income-adjacent proxy. No daily-affect items.</p></div>
+      <div class="gap" role="listitem"><h4>GSS</h4><p>No freedom/autonomy item and no experiential affect items across its whole run. Its gift is the half-century of time it covers.</p></div>
+    </div>
+
+    <h2>The predictors that won&rsquo;t sit still</h2>
+    <p>Not everything points the same way across rooms, and the disagreements are worth naming. Marriage is the clearest: in the GSS it is one of the stronger predictors of happiness (<strong>+0.15</strong> alone, <strong>+0.10</strong> net), and in the World Values Survey it reads <strong>+0.15</strong> &mdash; but in the Gallup World Poll, against the ladder, married people sit very slightly <em>lower</em> (<strong>&minus;0.02</strong>) once you standardize within country. The sign genuinely flips. Whether that reflects who marries where, what marriage means across 164 countries, or the company marriage keeps in each model, three surveys cannot adjudicate. Employment and religious attendance are similarly modest and context-bound &mdash; positive and small in most rooms, occasionally negative in the joint models. The reliable through-line is the one the book has been making all along: the levers that move a life most are health, the felt freedom to run it, and the people in it &mdash; not the size of the paycheck.</p>
+
+    <h2>What this settles, and what it doesn&rsquo;t</h2>
+    <p><strong>It is a horse race, not a causal verdict.</strong> These are weighted associations within country and year, not experiments. Freer, healthier, better-connected people may rate their lives higher for reasons the regression can&rsquo;t see, and the arrow could run the other way &mdash; a good life makes a person feel free. The coda shows which doors are worth knocking on, not that knocking guarantees an answer.</p>
+    <p><strong>The scales don&rsquo;t line up, on purpose.</strong> A coefficient on a 0&ndash;10 ladder is not a coefficient on a 3-point happiness scale; the predictors are standardized but the outcomes keep their native rulers, which is exactly why the three panels stay apart. The cross-dataset claim &mdash; that income looks far weaker for the lower blade than the upper &mdash; lives <em>inside</em> the Gallup panel, where the comparison is fair, not across the seams.</p>
+    <p>With those limits stated plainly, the book&rsquo;s closing bet comes in. For decades the public conversation about well-being has been a conversation about money. Run the contest in three of the largest surveys ever fielded, and money is rarely the winner and never the runaway. Health rivals it. Perceived freedom beats it. A person to count on ties it on the upper blade and laps it on the lower one. The scissors opened because the experiential blade fell while the evaluative blade held. What this coda adds is the repair manual: the things that would close the gap are not, mostly, the things we spend our public life chasing.</p>
+  </div>
+
+  <div class="wrap notes">
+    <h2 id="notes">Notes &amp; data</h2>
+    <ul>
+      <li><span class="smallcaps">Sources.</span> GSS 1972&ndash;2024 cumulative (<code>happy</code>, 1&ndash;3); Gallup World Poll 2006&ndash;2025 waves (<code>ladder</code> 0&ndash;10; <code>pos_affect</code>/<code>neg_affect</code>, 0&ndash;1); Integrated EVS&ndash;WVS 1981&ndash;2023 (<code>satis_your_life</code>, 1&ndash;10). Analysis code: <code>analysis/closing-the-scissors/build_data.py</code>; every number in the text is recomputed there and traced in <code>claims.json</code>.</li>
+      <li><span class="smallcaps">Method.</span> Weighted OLS within each dataset. Every predictor is z-scored within country&times;year (year alone for GSS) using weighted z-scores, so country-level mean differences are absorbed and a coefficient answers: within a given country-year, who reports higher well-being? Bivariate = predictor alone; joint = all predictors entered together (listwise). Coefficients are <em>semi-standardized</em>: predictor z-scored, outcome on its native scale &mdash; not comparable across datasets.</li>
+      <li><span class="smallcaps">Weights &amp; N.</span> GSS <code>wtssps</code> (post-stratified), N up to 70,869. Gallup World within-country <code>wgt</code>, N up to ~2.95M across 164 countries. WVS within-country <code>weight</code> (no population weight in this extract; figures are the average national experience), N up to 615,336 across 108 countries. Joint models use the listwise samples (GSS n=24,411; GWP n=2,131,087; WVS n=354,350).</li>
+      <li><span class="smallcaps">Constructs.</span> Evaluative outcomes: GSS <code>happy</code>, GWP <code>ladder</code>, WVS <code>satis_your_life</code>. Experiential outcomes: GWP <code>pos_affect</code> and <code>neg_affect</code> only &mdash; the GSS and WVS extracts carry no daily-affect items. The negative-affect coefficient is sign-flipped for display so higher always means better. The two constructs are never placed on a shared axis.</li>
+      <li><span class="smallcaps">Missing items (shown, not faked).</span> The Gallup extract lacks a self-rated health item and a freedom-of-choice item; both rows are blank in the Gallup panel. The WVS lacks a binary social-support item; felt financial satisfaction is used as an income-adjacent proxy. The GSS lacks both a freedom item and any experiential item. Marriage flips sign across datasets (GSS/WVS positive, GWP slightly negative) and is flagged in the text.</li>
+      <li><span class="smallcaps">Prior art.</span> <a href="https://worldhappiness.report/">World Happiness Report</a> (the canonical six-factor decomposition of the ladder, against which this re-runs the contest); Diener &amp; colleagues on autonomy and well-being; the Easterlin paradox and the long debate over how far income carries subjective well-being. This coda re-derives the pattern across three independent surveys and separates the two well-being constructs throughout.</li>
+    </ul>
+  </div>
+</main>
+
+<script type="module">
+import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+
+const DATA = /*DATA*/{"meta":{"slug":"closing-the-scissors","title":"Closing the Scissors (Coda)","datasets":{"GSS":{"name":"GSS 1972-2024","outcome":"happy (1-3)","construct":"evaluative","scale":"3-point happiness"},"GWP":{"name":"Gallup World Poll","outcome":"ladder (0-10)","construct":"evaluative","scale":"0-10 ladder"},"WVS":{"name":"EVS-WVS 1981-2023","outcome":"satis_your_life (1-10)","construct":"evaluative","scale":"1-10 satisfaction"}}},
+"eval":{
+ "GSS":{"label":"GSS · happy (1–3)","sub":"United States, 1972–2024","scale":"3-pt happiness","biv_n":"45,059–70,829","joint_n":24411,"rows":[
+   {key:"loginc","label":"Income (log family income)","grp":"income","biv":0.1106,"biv_se":0.0025,"joint":0.0398,"joint_se":0.0043},
+   {key:"health","label":"Self-rated health","grp":"other","biv":0.1689,"biv_se":0.0027,"joint":0.1558,"joint_se":0.004},
+   {key:"socfrend","label":"Social contact (friends)","grp":"other","biv":0.0247,"biv_se":0.003,"joint":0.0207,"joint_se":0.0039},
+   {key:"married","label":"Married","grp":"other","biv":0.1459,"biv_se":0.0023,"joint":0.1026,"joint_se":0.0041},
+   {key:"employed","label":"Employed","grp":"other","biv":0.0289,"biv_se":0.0024,"joint":-0.0224,"joint_se":0.004},
+   {key:"attend","label":"Religious attendance","grp":"other","biv":0.0837,"biv_se":0.0024,"joint":0.069,"joint_se":0.0038}
+ ]},
+ "GWP":{"label":"Gallup World Poll · ladder (0–10)","sub":"164 countries, 2006–2025","scale":"0–10 ladder","biv_n":"2.53M–2.91M","joint_n":2131087,"rows":[
+   {key:"income","label":"Income (quintile)","grp":"income","biv":0.3845,"biv_se":0.0015,"joint":0.3414,"joint_se":0.0017},
+   {key:"social","label":"Social support (count on)","grp":"social","biv":0.3699,"biv_se":0.0014,"joint":0.3448,"joint_se":0.0017},
+   {key:"married","label":"Married","grp":"other","biv":-0.021,"biv_se":0.0014,"joint":-0.0044,"joint_se":0.0017},
+   {key:"employed","label":"Employed","grp":"other","biv":0.0767,"biv_se":0.0015,"joint":0.0316,"joint_se":0.0017},
+   {key:"relig","label":"Religion important","grp":"other","biv":-0.0115,"biv_se":0.0015,"joint":0.0033,"joint_se":0.0017}
+ ]},
+ "WVS":{"label":"World Values Survey · satisfaction (1–10)","sub":"108 countries, 1981–2023","scale":"1–10 satisfaction","biv_n":"401k–609k","joint_n":354350,"rows":[
+   {key:"freedom","label":"Perceived freedom & control","grp":"freedom","biv":0.7906,"biv_se":0.0029,"joint":0.4763,"joint_se":0.0036},
+   {key:"finsat","label":"Financial satisfaction","grp":"other","biv":1.0828,"biv_se":0.0031,"joint":0.8638,"joint_se":0.0038},
+   {key:"health","label":"Self-rated health","grp":"other","biv":0.6233,"biv_se":0.003,"joint":0.3172,"joint_se":0.0036},
+   {key:"income","label":"Income (decile)","grp":"income","biv":0.4827,"biv_se":0.0037,"joint":0.0648,"joint_se":0.0037},
+   {key:"married","label":"Married","grp":"other","biv":0.1539,"biv_se":0.003,"joint":0.1005,"joint_se":0.0035},
+   {key:"employed","label":"Employed","grp":"other","biv":0.0998,"biv_se":0.0031,"joint":-0.0552,"joint_se":0.0035},
+   {key:"attend","label":"Religious attendance","grp":"other","biv":0.0898,"biv_se":0.0031,"joint":0.0337,"joint_se":0.0035}
+ ]}
+},
+"cross":{
+ "ladder":{"label":"Life evaluation","col_sub":"0–10 ladder","construct":"evaluative","rows":[
+   {key:"income","label":"Income (quintile)","grp":"income","beta":0.3845,"se":0.0015},
+   {key:"social","label":"Social support","grp":"social","beta":0.3699,"se":0.0014},
+   {key:"employed","label":"Employed","grp":"other","beta":0.0767,"se":0.0015},
+   {key:"relig","label":"Religion important","grp":"other","beta":-0.0115,"se":0.0015},
+   {key:"married","label":"Married","grp":"other","beta":-0.021,"se":0.0014}
+ ]},
+ "pos":{"label":"Positive affect","col_sub":"0–1 share · yesterday","construct":"experiential","rows":[
+   {key:"income","label":"Income (quintile)","grp":"income","beta":0.0302,"se":0.0002},
+   {key:"social","label":"Social support","grp":"social","beta":0.0458,"se":0.0002},
+   {key:"employed","label":"Employed","grp":"other","beta":0.0082,"se":0.0002},
+   {key:"relig","label":"Religion important","grp":"other","beta":0.0089,"se":0.0002},
+   {key:"married","label":"Married","grp":"other","beta":-0.0083,"se":0.0002}
+ ]},
+ "neg":{"label":"Absence of negative affect","col_sub":"0–1 share · sign-flipped","construct":"experiential","rows":[
+   {key:"income","label":"Income (quintile)","grp":"income","beta":0.0351,"se":0.0002},
+   {key:"social","label":"Social support","grp":"social","beta":0.0416,"se":0.0002},
+   {key:"employed","label":"Employed","grp":"other","beta":0.0043,"se":0.0002},
+   {key:"relig","label":"Religion important","grp":"other","beta":-0.0065,"se":0.0002},
+   {key:"married","label":"Married","grp":"other","beta":-0.0075,"se":0.0002}
+ ]}
+}}/*/DATA*/;
+
+const COL = {
+  income:"#8aa0b4",
+  freedom:"#f0c14b",
+  social:"#f0c14b",
+  other:"#2bb6a4"
+};
+const GOLD="#f0c14b", EVAL="#2bb6a4", EXP="#e8743b", INK_FAINT="#7f8a95", HAIR="#2b333c", INKDIM="#aeb7c0";
+
+/* ---------- shared helpers ---------- */
+function makeTip(container){
+  const tip = document.createElement("div");
+  tip.className = "tip";
+  container.appendChild(tip);
+  return tip;
+}
+function showTip(tip, container, x, y, html){
+  tip.innerHTML = html;
+  tip.style.display = "block";
+  const cw = container.clientWidth, tw = tip.offsetWidth;
+  let lx = x + 14;
+  if (lx + tw > cw - 4) lx = x - tw - 14;
+  tip.style.left = Math.max(2, lx) + "px";
+  tip.style.top = Math.max(0, y - 10) + "px";
+}
+function bfmt(v){ return (v>=0?"+":"−")+Math.abs(v).toFixed(Math.abs(v)<0.1?3:2); }
+
+/* ============================================================
+   FIGURE 1 — three per-dataset evaluative forest panels
+   ============================================================ */
+const fEvalBox = document.getElementById("forest-eval");
+const fEvalTip = makeTip(fEvalBox);
+let evalMode = "biv"; // biv | joint
+
+const ctrl = d3.select("#mode-controls");
+[["biv","Each predictor alone"],["joint","All predictors together"]].forEach(([k,lab])=>{
+  ctrl.append("button").attr("class","mbtn").attr("aria-pressed", k===evalMode)
+    .text(lab)
+    .on("click", function(){
+      if (evalMode===k) return;
+      evalMode = k;
+      ctrl.selectAll("button").attr("aria-pressed","false");
+      d3.select(this).attr("aria-pressed","true");
+      drawEvalForest();
+    });
+});
+
+function drawEvalForest(){
+  fEvalBox.replaceChildren();
+  fEvalBox.appendChild(fEvalTip);
+  const W = Math.max(330, fEvalBox.clientWidth);
+  const narrow = W < 720;
+  const order = ["GSS","GWP","WVS"];
+
+  // shared per-panel layout; stacked vertically when narrow, side-by-side otherwise
+  const panelGap = 26;
+  const labelW = narrow ? 150 : 168;
+  const cols = narrow ? 1 : 3;
+  const panelW = narrow ? W : (W - panelGap*(cols-1)) / cols;
+
+  // domain: include 0 and all betas + whisker
+  let allv = [];
+  order.forEach(ds => DATA.eval[ds].rows.forEach(r=>{
+    const b = evalMode==="biv"?r.biv:r.joint, se = evalMode==="biv"?r.biv_se:r.joint_se;
+    allv.push(b - 1.96*se, b + 1.96*se, 0);
+  }));
+  const xmin = Math.min(0, d3.min(allv)), xmax = Math.max(0, d3.max(allv));
+  const pad = (xmax-xmin)*0.06;
+
+  const rowH = 30, headH = 58, footH = 16;
+  const maxRows = d3.max(order, ds=>DATA.eval[ds].rows.length);
+  const panelH = headH + maxRows*rowH + footH;
+  const totalH = narrow ? order.length*(panelH+panelGap) : panelH;
+
+  const svg = d3.select(fEvalBox).append("svg")
+    .attr("viewBox",`0 0 ${W} ${totalH}`).attr("width","100%")
+    .attr("role","img")
+    .attr("aria-label",`Three forest-plot panels, one per dataset, of standardized coefficients on evaluative well-being (${evalMode==="biv"?"each predictor run alone":"all predictors run jointly"}). In the World Values Survey, perceived freedom is +${DATA.eval.WVS.rows[0][evalMode==="biv"?"biv":"joint"].toFixed(2)} and income only +${DATA.eval.WVS.rows.find(r=>r.key==="income")[evalMode==="biv"?"biv":"joint"].toFixed(2)}; in the Gallup World Poll social support ${evalMode==="biv"?"ties":"edges out"} income on the ladder.`);
+
+  order.forEach((ds, di)=>{
+    const P = DATA.eval[ds];
+    const px = narrow ? 0 : di*(panelW+panelGap);
+    const py = narrow ? di*(panelH+panelGap) : 0;
+    const g = svg.append("g").attr("transform",`translate(${px},${py})`);
+
+    const plotL = labelW, plotR = panelW - 12;
+    const x = d3.scaleLinear().domain([xmin-pad, xmax+pad]).range([plotL, plotR]);
+
+    // panel header
+    g.append("text").attr("x",0).attr("y",16)
+      .attr("font-family","var(--sans)").attr("font-size",13.5).attr("font-weight",800).attr("fill","#eef1f3")
+      .text(P.label);
+    g.append("text").attr("x",0).attr("y",32)
+      .attr("font-family","var(--sans)").attr("font-size",10.5).attr("fill",INK_FAINT)
+      .text(P.sub);
+    g.append("rect").attr("x",0).attr("y",40).attr("width",58).attr("height",15).attr("rx",2.5)
+      .attr("fill","#0f3b38");
+    g.append("text").attr("x",29).attr("y",50.5).attr("text-anchor","middle")
+      .attr("font-family","var(--sans)").attr("font-size",9).attr("font-weight",700).attr("letter-spacing","0.08em").attr("fill",EVAL)
+      .text("EVALUATIVE");
+    g.append("text").attr("x",64).attr("y",50.5)
+      .attr("font-family","var(--sans)").attr("font-size",9.5).attr("fill",INK_FAINT)
+      .text(P.scale);
+
+    const top = headH;
+    const bottom = headH + P.rows.length*rowH;
+
+    // zero line
+    g.append("line").attr("x1",x(0)).attr("x2",x(0)).attr("y1",top-4).attr("y2",bottom+2)
+      .attr("stroke","#4a5560").attr("stroke-width",1.4);
+    // x ticks
+    const ticks = x.ticks(narrow?5:4);
+    ticks.forEach(tk=>{
+      if (Math.abs(tk) < 1e-9) return;
+      g.append("line").attr("x1",x(tk)).attr("x2",x(tk)).attr("y1",top-4).attr("y2",bottom+2)
+        .attr("stroke",HAIR).attr("stroke-width",1);
+      g.append("text").attr("x",x(tk)).attr("y",bottom+15).attr("text-anchor","middle")
+        .attr("font-family","var(--sans)").attr("font-size",9.5).attr("fill",INK_FAINT)
+        .text((tk>0?"+":"")+tk);
+    });
+
+    // rows
+    P.rows.forEach((r,i)=>{
+      const cy = top + i*rowH + rowH/2;
+      const b = evalMode==="biv"?r.biv:r.joint;
+      const se = evalMode==="biv"?r.biv_se:r.joint_se;
+      const lo = b-1.96*se, hi = b+1.96*se;
+      const col = COL[r.grp];
+      const isHL = r.grp==="freedom" || r.grp==="social" || r.grp==="income";
+
+      // label
+      g.append("text").attr("x",plotL-10).attr("y",cy+3.5).attr("text-anchor","end")
+        .attr("font-family","var(--sans)").attr("font-size",11)
+        .attr("font-weight", isHL?700:500)
+        .attr("fill", r.grp==="income" ? "#cdd6df" : (isHL? col : "#cdd6df"))
+        .text(r.label);
+
+      // whisker
+      g.append("line").attr("x1",x(lo)).attr("x2",x(hi)).attr("y1",cy).attr("y2",cy)
+        .attr("stroke",col).attr("stroke-width", isHL?2.4:1.6).attr("opacity",isHL?0.95:0.7).attr("stroke-linecap","round");
+      // dot — filled for biv, hollow for joint
+      const dot = g.append("circle").attr("cx",x(b)).attr("cy",cy).attr("r", isHL?5.4:4.4)
+        .attr("tabindex",0);
+      if (evalMode==="joint"){
+        dot.attr("fill","var(--ground-2)").attr("stroke",col).attr("stroke-width", isHL?2.6:2);
+      } else {
+        dot.attr("fill",col).attr("stroke","#0c0f12").attr("stroke-width",0.6);
+      }
+      // value label
+      g.append("text").attr("x", x(b) + (b>=0? (isHL?9:8) : -(isHL?9:8)))
+        .attr("y",cy-7).attr("text-anchor", b>=0?"start":"end")
+        .attr("font-family","var(--sans)").attr("font-size", isHL?11:9.5)
+        .attr("font-weight", isHL?800:600)
+        .attr("fill", isHL? col : INKDIM)
+        .text(bfmt(b));
+
+      const hit = g.append("rect").attr("x",plotL).attr("y",cy-rowH/2).attr("width",plotR-plotL).attr("height",rowH)
+        .attr("fill","transparent").attr("tabindex",0);
+      const tipHTML = `<b>${r.label}</b> <span class="trg">${P.label.split(" · ")[0]}</span><br>
+        <span class="num">${evalMode==="biv"?"alone":"net of all others"}: <b>${bfmt(b)}</b> &plusmn; ${(1.96*se).toFixed(3)}</span><br>
+        <span class="num" style="color:#8a96a2">alone ${bfmt(r.biv)} · net ${bfmt(r.joint)} · per 1 SD on ${P.scale}</span>`;
+      [dot.node(), hit.node()].forEach(n=>{
+        n.addEventListener("pointermove", ev=>{ const [mx,my]=d3.pointer(ev,fEvalBox); showTip(fEvalTip,fEvalBox,mx,my,tipHTML); });
+        n.addEventListener("pointerleave", ()=>{ fEvalTip.style.display="none"; });
+        n.addEventListener("focus", ev=>{ const r2=n.getBoundingClientRect(), p=fEvalBox.getBoundingClientRect(); showTip(fEvalTip,fEvalBox,r2.left-p.left+r2.width/2,r2.top-p.top,tipHTML); });
+        n.addEventListener("blur", ()=>{ fEvalTip.style.display="none"; });
+      });
+    });
+
+    // missing-item notes per panel
+    const missing = {
+      GSS:"No freedom item · no experiential items",
+      GWP:"No health item · no freedom item",
+      WVS:"No social-support item (finances used)"
+    };
+    g.append("text").attr("x",plotL-10).attr("y",bottom + 15).attr("text-anchor","end")
+      .attr("font-family","var(--sans)").attr("font-size",9).attr("font-style","italic").attr("fill","#6a7682")
+      .text(missing[ds]);
+  });
+}
+
+/* ============================================================
+   FIGURE 2 — Gallup cross-blade: 3 columns (ladder / pos / neg)
+   ============================================================ */
+const fCrossBox = document.getElementById("forest-cross");
+const fCrossTip = makeTip(fCrossBox);
+
+function drawCross(){
+  fCrossBox.replaceChildren();
+  fCrossBox.appendChild(fCrossTip);
+  const W = Math.max(330, fCrossBox.clientWidth);
+  const narrow = W < 720;
+  const cols = ["ladder","pos","neg"];
+
+  const labelW = narrow ? 132 : 150;
+  const colGap = 22;
+  const colsN = narrow ? 1 : 3;
+  const colW = narrow ? W : (W - colGap*(colsN-1)) / colsN;
+
+  const rows = DATA.cross.ladder.rows; // same predictor set/order in all columns
+  const rowH = 34, headH = 60, footH = 18;
+  const colH = headH + rows.length*rowH + footH;
+  const totalH = narrow ? cols.length*(colH+colGap) : colH;
+
+  const svg = d3.select(fCrossBox).append("svg")
+    .attr("viewBox",`0 0 ${W} ${totalH}`).attr("width","100%")
+    .attr("role","img")
+    .attr("aria-label",`Three columns of standardized Gallup World Poll coefficients: income moves the 0 to 10 ladder by +${DATA.cross.ladder.rows[0].beta.toFixed(2)} but daily affect by only about +${DATA.cross.pos.rows[0].beta.toFixed(3)}, while social support stays strong across all three columns.`);
+
+  cols.forEach((ck, ci)=>{
+    const C = DATA.cross[ck];
+    const cx0 = narrow ? 0 : ci*(colW+colGap);
+    const cy0 = narrow ? ci*(colH+colGap) : 0;
+    const g = svg.append("g").attr("transform",`translate(${cx0},${cy0})`);
+    const isExp = C.construct==="experiential";
+    const conCol = isExp ? EXP : EVAL;
+    const conSoft = isExp ? "#3a2317" : "#0f3b38";
+
+    // each column gets its OWN x scale (different rulers)
+    let av=[0];
+    C.rows.forEach(r=>{ av.push(r.beta-1.96*r.se, r.beta+1.96*r.se); });
+    const xmin=Math.min(0,d3.min(av)), xmax=Math.max(0,d3.max(av));
+    const pad=(xmax-xmin)*0.08;
+    const plotL = labelW, plotR = colW-10;
+    const x = d3.scaleLinear().domain([xmin-pad,xmax+pad]).range([plotL,plotR]);
+
+    // header
+    g.append("text").attr("x",0).attr("y",16)
+      .attr("font-family","var(--sans)").attr("font-size",13.5).attr("font-weight",800).attr("fill","#eef1f3")
+      .text(C.label);
+    g.append("rect").attr("x",0).attr("y",26).attr("width",isExp?78:60).attr("height",15).attr("rx",2.5).attr("fill",conSoft);
+    g.append("text").attr("x",(isExp?78:60)/2).attr("y",36.5).attr("text-anchor","middle")
+      .attr("font-family","var(--sans)").attr("font-size",9).attr("font-weight",700).attr("letter-spacing","0.07em").attr("fill",conCol)
+      .text(isExp?"EXPERIENTIAL":"EVALUATIVE");
+    g.append("text").attr("x",(isExp?84:66)).attr("y",36.5)
+      .attr("font-family","var(--sans)").attr("font-size",9.5).attr("fill",INK_FAINT)
+      .text(C.col_sub);
+
+    const top = headH, bottom = headH + C.rows.length*rowH;
+    g.append("line").attr("x1",x(0)).attr("x2",x(0)).attr("y1",top-4).attr("y2",bottom+2)
+      .attr("stroke","#4a5560").attr("stroke-width",1.4);
+    x.ticks(narrow?5:3).forEach(tk=>{
+      if (Math.abs(tk)<1e-9) return;
+      g.append("line").attr("x1",x(tk)).attr("x2",x(tk)).attr("y1",top-4).attr("y2",bottom+2)
+        .attr("stroke",HAIR).attr("stroke-width",1);
+      g.append("text").attr("x",x(tk)).attr("y",bottom+15).attr("text-anchor","middle")
+        .attr("font-family","var(--sans)").attr("font-size",9).attr("fill",INK_FAINT)
+        .text((tk>0?"+":"")+ (Math.abs(tk)<0.1?tk.toFixed(2):tk));
+    });
+
+    C.rows.forEach((r,i)=>{
+      const cy = top + i*rowH + rowH/2;
+      const col = COL[r.grp];
+      const isHL = r.grp==="income" || r.grp==="social";
+      const lo=r.beta-1.96*r.se, hi=r.beta+1.96*r.se;
+
+      // only show labels in the first column (or every column when narrow/stacked)
+      if (ci===0 || narrow){
+        g.append("text").attr("x",plotL-10).attr("y",cy+3.5).attr("text-anchor","end")
+          .attr("font-family","var(--sans)").attr("font-size",11).attr("font-weight",isHL?700:500)
+          .attr("fill", isHL && r.grp==="social" ? GOLD : "#cdd6df")
+          .text(r.label);
+      }
+
+      g.append("line").attr("x1",x(lo)).attr("x2",x(hi)).attr("y1",cy).attr("y2",cy)
+        .attr("stroke",col).attr("stroke-width",isHL?2.4:1.6).attr("opacity",isHL?0.95:0.7).attr("stroke-linecap","round");
+      const dot = g.append("circle").attr("cx",x(r.beta)).attr("cy",cy).attr("r",isHL?5.4:4.2)
+        .attr("fill",col).attr("stroke","#0c0f12").attr("stroke-width",0.6).attr("tabindex",0);
+      g.append("text").attr("x",x(r.beta)+(r.beta>=0?(isHL?9:7):-(isHL?9:7))).attr("y",cy-7)
+        .attr("text-anchor",r.beta>=0?"start":"end")
+        .attr("font-family","var(--sans)").attr("font-size",isHL?11:9.5).attr("font-weight",isHL?800:600)
+        .attr("fill",isHL?col:INKDIM)
+        .text(bfmt(r.beta));
+
+      const tipHTML = `<b>${r.label}</b> <span class="trg">${C.label}</span><br>
+        <span class="num"><b>${bfmt(r.beta)}</b> &plusmn; ${(1.96*r.se).toFixed(3)} · per 1 SD</span><br>
+        <span class="num" style="color:#8a96a2">${C.col_sub} · ${C.construct}</span>`;
+      const hit = g.append("rect").attr("x",plotL).attr("y",cy-rowH/2).attr("width",plotR-plotL).attr("height",rowH)
+        .attr("fill","transparent").attr("tabindex",0);
+      [dot.node(),hit.node()].forEach(n=>{
+        n.addEventListener("pointermove", ev=>{ const [mx,my]=d3.pointer(ev,fCrossBox); showTip(fCrossTip,fCrossBox,mx,my,tipHTML); });
+        n.addEventListener("pointerleave", ()=>{ fCrossTip.style.display="none"; });
+        n.addEventListener("focus", ev=>{ const r2=n.getBoundingClientRect(), p=fCrossBox.getBoundingClientRect(); showTip(fCrossTip,fCrossBox,r2.left-p.left+r2.width/2,r2.top-p.top,tipHTML); });
+        n.addEventListener("blur", ()=>{ fCrossTip.style.display="none"; });
+      });
+    });
+  });
+}
+
+/* ---------- boot + resize ---------- */
+function drawAll(){ drawEvalForest(); drawCross(); }
+drawAll();
+let rT=null, lastW=window.innerWidth;
+window.addEventListener("resize", ()=>{
+  if (window.innerWidth===lastW) return;
+  lastW=window.innerWidth;
+  clearTimeout(rT); rT=setTimeout(drawAll,180);
+});
+</script>
+<!--SL_BOOKNAV_START-->
+<style>
+.slbn{font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;background:#0f1417;border-top:1px solid #27313a;color:#9fb0ba;padding:24px 20px 40px;margin:48px 0 0}
+.slbn-in{max-width:1080px;margin:0 auto;display:flex;align-items:stretch;gap:12px}
+.slbn a{flex:1 1 0;min-width:0;text-decoration:none;color:inherit;border:1px solid #27313a;border-radius:10px;padding:13px 15px;display:flex;flex-direction:column;gap:4px;background:#161d22;transition:border-color .15s,transform .15s}
+.slbn a:hover{border-color:#3fa9a0;transform:translateY(-2px)}
+.slbn a:focus-visible{outline:2px solid #3fa9a0;outline-offset:2px}
+.slbn a.slbn-next{text-align:right;align-items:flex-end}
+.slbn a.slbn-toc{flex:0 0 auto;min-width:120px;justify-content:center;align-items:center;text-align:center}
+.slbn .slbn-dir{font:700 10px/1 inherit;letter-spacing:.13em;text-transform:uppercase;color:#6b7c87}
+.slbn .slbn-ttl{font:700 14px/1.3 inherit;color:#eef2f4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.slbn a.slbn-disabled{opacity:.38;pointer-events:none}
+@media(max-width:640px){.slbn-in{flex-wrap:wrap}.slbn a{flex:1 1 100%}.slbn a.slbn-next{text-align:left;align-items:flex-start}.slbn a.slbn-toc{order:-1}}
+</style>
+<nav class="slbn" aria-label="Book navigation"><div class="slbn-in"><a class="slbn-prev" href="../read.html?ch=whose-america-is-thriving" target="_top"><span class="slbn-dir">‹ Previous</span><span class="slbn-ttl">Whose America Is Thriving? Whoever Just Won</span></a><a class="slbn-toc" href="../index.html#book" target="_top"><span class="slbn-dir">The Scissors</span><span class="slbn-ttl">Chapter 36 / 36</span></a><a class="slbn-next" href="../read.html?ch=community-and-the-isolated" target="_top"><span class="slbn-dir">Next ›</span><span class="slbn-ttl">Does Community Substitute for Connection?</span></a></div></nav>
+<!--SL_BOOKNAV_END-->
+</body>
+</html>

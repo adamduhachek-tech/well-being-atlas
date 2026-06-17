@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The U-Curve Inverts</title>
+<meta name="description" content="Gallup World Poll: in the rich world the young have fallen below the old on the life-satisfaction ladder. The classic midlife U-curve has flattened and tipped over.">
+<style>
+  :root{
+    --paper:#f4f1ea;
+    --panel:#fffefb;
+    --panel-edge:#e0dccf;
+    --ink:#1c1b18;
+    --ink-dim:#56524a;
+    --ink-faint:#8b867a;
+    --hairline:#e7e2d4;
+    --young:#c2410c;     /* the young - warm orange/rust */
+    --young-soft:#f6ddcb;
+    --old:#1d4e6b;       /* the old - deep slate blue */
+    --old-soft:#cfe0ea;
+    --early:#9a9484;     /* early period - muted */
+    --accent:#0f766e;
+    --maxw:730px;
+    --figw:1000px;
+    --sans:"Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --serif:Charter, "Bitstream Charter", "Sitka Text", Cambria, Georgia, serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font:18px/1.66 var(--serif);
+    overflow-x:hidden;
+  }
+  .skip{position:absolute; left:-9999px; top:0; background:var(--ink); color:var(--paper); padding:.5em 1em; z-index:40; font-family:var(--sans)}
+  .skip:focus{left:8px; top:8px}
+  a{color:var(--accent); text-decoration-color:rgba(15,118,110,.4); text-underline-offset:3px}
+  a:focus-visible, button:focus-visible{outline:2.5px solid var(--young); outline-offset:2px}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 20px}
+  .wrap-wide{max-width:var(--figw); margin:0 auto; padding:0 20px}
+
+  header{position:relative; padding:80px 0 8px; overflow:hidden}
+  .ghost{
+    position:absolute; top:-30px; left:50%; transform:translateX(-50%);
+    font:900 clamp(150px,30vw,360px)/0.9 var(--sans); letter-spacing:-.06em;
+    color:transparent; -webkit-text-stroke:1.4px rgba(28,27,24,.09);
+    user-select:none; pointer-events:none; white-space:nowrap;
+  }
+  .kicker{font:700 12px/1.5 var(--sans); letter-spacing:.24em; text-transform:uppercase; color:var(--young)}
+  h1{
+    font:900 clamp(40px,7.4vw,74px)/1.0 var(--sans); letter-spacing:-.03em;
+    margin:.22em 0 .3em; text-wrap:balance;
+  }
+  .dek{font-size:clamp(19px,2.7vw,23px); line-height:1.48; color:var(--ink-dim); margin:0 0 22px; max-width:38em}
+  .byline{
+    font:400 13px/1.7 var(--sans); color:var(--ink-faint);
+    border-top:2px solid var(--ink); padding-top:12px; display:flex; gap:18px; flex-wrap:wrap;
+  }
+  .byline b{color:var(--ink-dim); font-weight:600}
+
+  main{position:relative; z-index:1}
+  h2{font:800 clamp(25px,3.8vw,33px)/1.16 var(--sans); letter-spacing:-.015em; margin:2.1em 0 .55em}
+  p{margin:0 0 1.15em}
+  strong{color:#000}
+  .tagline{font:700 11px/1 var(--sans); letter-spacing:.16em; text-transform:uppercase; padding:4px 8px; border-radius:3px; white-space:nowrap}
+  .tag-eval{background:var(--old-soft); color:var(--old)}
+
+  .statrow{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:30px 0 8px}
+  .stat{background:var(--panel); border:1px solid var(--panel-edge); border-top:3px solid var(--ink-faint); padding:13px 14px 11px}
+  .stat.young{border-top-color:var(--young)}
+  .stat.old{border-top-color:var(--old)}
+  .stat .lab{font:700 10.5px/1.4 var(--sans); letter-spacing:.11em; text-transform:uppercase; color:var(--ink-faint)}
+  .stat .val{font:800 clamp(19px,2.6vw,27px)/1.15 var(--sans); margin-top:6px; font-variant-numeric:tabular-nums}
+  .stat.young .val{color:var(--young)} .stat.old .val{color:var(--old)}
+  .stat .sub{font:400 12px/1.45 var(--sans); color:var(--ink-dim); margin-top:4px}
+  @media(max-width:680px){ .statrow{grid-template-columns:1fr 1fr} }
+  @media(max-width:420px){ .statrow{grid-template-columns:1fr} }
+
+  figure{margin:38px 0}
+  .fig{
+    background:var(--panel); border:1px solid var(--panel-edge);
+    padding:20px 20px 14px; position:relative;
+    box-shadow:0 24px 50px -36px rgba(50,40,18,.42);
+  }
+  .figtitle{font:800 18px/1.3 var(--sans); margin:0 0 3px}
+  .figsub{font:400 13.5px/1.55 var(--sans); color:var(--ink-dim); margin:0 0 10px; max-width:56em}
+  figcaption{font:400 12.5px/1.6 var(--sans); color:var(--ink-faint); margin-top:10px}
+  .chart{position:relative}
+  .chart svg{display:block; width:100%; height:auto}
+
+  .controls{display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin:8px 0 8px; font-family:var(--sans)}
+  button.mbtn{
+    font:700 12.5px/1.2 var(--sans); letter-spacing:.02em; cursor:pointer;
+    background:var(--paper); color:var(--ink-dim); border:1.5px solid var(--panel-edge);
+    border-radius:999px; padding:8px 14px; transition:all .15s;
+  }
+  button.mbtn:hover{border-color:var(--ink-dim)}
+  button.mbtn[aria-pressed="true"]{background:var(--ink); border-color:var(--ink); color:var(--paper)}
+
+  .legend{display:flex; gap:6px 16px; flex-wrap:wrap; margin:4px 0 8px; font:600 12.5px/1.6 var(--sans); color:var(--ink-dim)}
+  .legend .item{display:inline-flex; align-items:center; gap:7px}
+  .legend .sw{width:22px; height:0; border-top-width:3px; border-top-style:solid; flex:none}
+  .legend .sw.dash{border-top-style:dashed}
+  .legend .dot{width:11px; height:11px; border-radius:50%; flex:none}
+
+  .modecall{
+    display:flex; gap:10px; align-items:flex-start;
+    background:#f6efde; border:1px solid #e3cf9c; border-left:4px solid #c08a1f;
+    padding:10px 14px; margin:6px 0 14px; font:400 13px/1.55 var(--sans); color:#544420;
+  }
+  .modecall b{color:#3c3013}
+  .modecall .ex{font:900 15px/1.2 var(--sans); color:#c08a1f; flex:none}
+
+  .readout{
+    font:400 13px/1.6 var(--sans); color:var(--ink-dim);
+    border-top:1px dashed var(--hairline); padding-top:8px; margin-top:6px; min-height:2.6em;
+  }
+  .readout b{color:var(--ink); font-variant-numeric:tabular-nums}
+
+  .tip{
+    position:absolute; pointer-events:none; z-index:20; display:none;
+    background:#23211b; color:#f3efe3; border-radius:6px; padding:9px 11px;
+    font:400 12.5px/1.5 var(--sans); max-width:250px; box-shadow:0 8px 24px rgba(0,0,0,.35);
+  }
+  .tip b{color:#fff} .tip .trg{color:#cdc4b2; font-size:11px; letter-spacing:.07em; text-transform:uppercase}
+  .tip .num{font-variant-numeric:tabular-nums}
+
+  .pull{
+    border-left:3px solid var(--young); padding:2px 0 2px 18px; margin:26px 0;
+    font:500 21px/1.4 var(--serif); color:var(--ink);
+  }
+
+  .notes{
+    margin-top:64px; border-top:2px solid var(--ink); padding:26px 0 70px;
+    font:400 14px/1.7 var(--sans); color:var(--ink-dim);
+  }
+  .notes h2{font-size:19px; margin:0 0 14px}
+  .notes ul{padding-left:1.2em; margin:0}
+  .notes li{margin-bottom:9px}
+  .smallcaps{font-variant:small-caps; letter-spacing:.04em}
+  code{font:13px/1.4 ui-monospace, "Cascadia Code", Consolas, monospace; background:#ece7da; padding:1px 5px; border-radius:3px}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to article</a>
+<header>
+  <div class="ghost" aria-hidden="true">U &rarr; &#8745;</div>
+  <div class="wrap">
+    <p class="kicker">Gallup World Poll &middot; high-income countries &middot; 2010&ndash;2025</p>
+    <h1>The U-Curve Inverts</h1>
+    <p class="dek">For decades, well-being traced a gentle smile across the lifespan: high in youth, sagging in midlife, rising again with age. In the rich world that curve has flattened &mdash; and tipped over. The young have lost their long-standing lead over the old, and now sit level with them.</p>
+    <div class="byline">
+      <span><b>Data</b> Gallup World Poll, Cantril ladder; GSS echo for the US</span>
+      <span><b>Periods</b> 2010&ndash;2014 vs 2021&ndash;2025</span>
+      <span><b>Method</b> within-country weighted, population-weighted across countries</span>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <div class="wrap">
+    <p>There is a famous shape in the science of happiness. Ask people across the world to rate their lives from 0 to 10 &mdash; the worst possible life to the best &mdash; and the average has long bent like a smile: highest among the young, lowest somewhere in the middle of life, climbing back up among the old. The midlife dip became one of the most reliable findings in social science, replicated across dozens of countries. <span class="tagline tag-eval">Evaluative</span>&ensp;This is the <em>evaluative</em> kind of well-being &mdash; a considered judgment of one&rsquo;s whole life, not a snapshot of yesterday&rsquo;s mood. Everything in this piece is that one ruler.</p>
+
+    <p>In the high-income world, the smile has stopped smiling. Pool every wealthy country surveyed by Gallup, weight each by population, and the young (ages 15&ndash;29) have dropped from a ladder average of <strong>6.98</strong> in 2010&ndash;2014 to <strong>6.64</strong> in 2021&ndash;2025 &mdash; a fall of <strong>0.34</strong> points. Over the same stretch the old (60+) <em>rose</em>, from 6.51 to <strong>6.70</strong>, a gain of <strong>0.18</strong>. The young used to sit well above the old; now they sit just below. The young-minus-old gap swung from <strong>+0.46</strong> to <strong>&minus;0.06</strong> &mdash; an inversion of more than half a ladder point.</p>
+
+    <div class="statrow" role="list" aria-label="Headline numbers">
+      <div class="stat young" role="listitem"><div class="lab">The young (15&ndash;29) &middot; rich world</div><div class="val">6.98 &rarr; 6.64</div><div class="sub">&minus;0.34 ladder points</div></div>
+      <div class="stat old" role="listitem"><div class="lab">The old (60+) &middot; rich world</div><div class="val">6.51 &rarr; 6.70</div><div class="sub">+0.18 ladder points</div></div>
+      <div class="stat" role="listitem"><div class="lab">Young minus old &middot; the gap</div><div class="val">+0.46 &rarr; &minus;0.06</div><div class="sub">a &minus;0.52 inversion</div></div>
+      <div class="stat" role="listitem"><div class="lab">World, ages 60+</div><div class="val">+0.24</div><div class="sub">vs the young, essentially flat</div></div>
+    </div>
+
+    <p>That single sign change &mdash; a positive gap going negative &mdash; is the story. The line that always ran from young-and-content down to midlife and back up is being pulled by both ends: the youthful peak collapsing inward, the elderly tail lifting up. To see it whole, look at the age profile itself, then watch it move.</p>
+  </div>
+
+  <div class="wrap-wide">
+    <figure>
+      <div class="fig">
+        <p class="figtitle">The smile flattens, then tips over</p>
+        <p class="figsub">Average life-evaluation ladder by five-year age band, high-income countries, population-weighted. The faint line is the early period (2010&ndash;2014); the bold line is recent (2021&ndash;2025). In the early profile the youngest tower over everyone; in the recent profile the curve has flattened &mdash; the youthful peak has fallen to sit level with the oldest band.</p>
+        <div class="legend" aria-hidden="true">
+          <span class="item"><span class="sw dash" style="border-top-color:var(--early)"></span>Early &middot; 2010&ndash;2014</span>
+          <span class="item"><span class="sw" style="border-top-color:var(--young)"></span>Recent &middot; 2021&ndash;2025</span>
+          <span class="item"><span class="dot" style="background:var(--old)"></span>Crossover</span>
+        </div>
+        <div class="chart" id="profile-chart"></div>
+        <div class="readout" id="profile-readout">Hover or focus a point for the band&rsquo;s average in each period.</div>
+        <figcaption>Each point is the population-weighted mean ladder for that age band, pooling all surveyed high-income countries in the period. Bands with country counts below the suppression floor are not shown. Evaluative measure (Cantril ladder, 0&ndash;10).</figcaption>
+      </div>
+    </figure>
+  </div>
+
+  <div class="wrap">
+    <p>The fine-grained profile makes the reversal vivid. In 2010&ndash;2014 the rich world&rsquo;s 15&ndash;19-year-olds averaged <strong>7.33</strong> on the ladder, the highest of any age; by 2021&ndash;2025 that band had fallen to <strong>6.80</strong>. At the other end, the oldest band climbed: those 70 and over went from 6.52 to <strong>6.80</strong>, rising from the middle of the pack to sit level with the youngest. The once-commanding youth peak has collapsed: the two ends of the curve, once a ladder point apart, are now essentially tied. The classic U has not just deepened or shifted &mdash; it has flattened, with its high youthful arm pulled down to meet the rising old.</p>
+
+    <p class="pull">The young end fell. The old end rose. Where the curve once peaked, it now bottoms out.</p>
+
+    <h2>It did not happen everywhere the same way</h2>
+    <p>Zoom out from the rich world to the entire planet and the pattern changes character. Globally, life evaluation rose at almost every age &mdash; but unevenly, and that unevenness is itself the point. The world&rsquo;s young (15&ndash;29) were essentially flat, slipping <strong>0.01</strong> points; the world&rsquo;s old (60+) rose the most, gaining <strong>0.24</strong>. In between, the gains grew with age: 30&ndash;44 up 0.04, 45&ndash;59 up 0.12. So the age gap widened on every continent &mdash; but by opposite mechanisms. In poorer countries a rising tide lifted the old fastest while leaving the young behind. In the rich world the tide went out from under the young.</p>
+  </div>
+
+  <div class="wrap-wide">
+    <figure>
+      <div class="fig">
+        <p class="figtitle">Two worlds, one direction</p>
+        <p class="figsub">Change in average ladder from 2010&ndash;2014 to 2021&ndash;2025, by age band. Left, all high-income countries; right, the whole world. Bars above the line are gains, below are losses. In both, age and fortune now run together &mdash; but the rich-world young are the only group that fell hard.</p>
+        <div class="chart" id="change-chart"></div>
+        <div class="readout" id="change-readout">Hover or focus a bar for the early and recent values.</div>
+        <figcaption>Population-weighted change in ladder points per age band. The dashed band marks &plusmn;0.2 points, below which cross-period and cross-country ladder differences are treated as soft. Evaluative measure throughout.</figcaption>
+      </div>
+    </figure>
+  </div>
+
+  <div class="wrap">
+    <h2>The crossover, year by year</h2>
+    <p>The gap did not lurch to zero in a single bad survey. Tracked wave by wave across the high-income world, the young (15&ndash;29) and the old (60+) ladder lines start the 2010s a comfortable distance apart, with the young on top. Through the late 2010s the young line drifts down and the old line drifts up; around 2022 they touch and trade places. The two lines have not pulled back apart since &mdash; the post-2020 era is one of persistence, not rebound.</p>
+  </div>
+
+  <div class="wrap-wide">
+    <figure>
+      <div class="fig">
+        <p class="figtitle">The lines that crossed</p>
+        <p class="figsub">Average ladder for the rich-world young (15&ndash;29) and old (60+), each Gallup wave. The young begin the decade clearly above the old; the lines converge through the late 2010s and cross in the early 2020s. Shaded between them is the gap that flipped sign.</p>
+        <div class="legend" aria-hidden="true">
+          <span class="item"><span class="sw" style="border-top-color:var(--young)"></span>Young &middot; 15&ndash;29</span>
+          <span class="item"><span class="sw" style="border-top-color:var(--old)"></span>Old &middot; 60+</span>
+        </div>
+        <div class="chart" id="ts-chart"></div>
+        <div class="readout" id="ts-readout">Hover or focus a wave for both age groups.</div>
+        <figcaption>Wave-level population-weighted means; country coverage varies modestly by wave (counts in tooltip). The early-2020s crossover is robust to that variation. Evaluative measure (Cantril ladder).</figcaption>
+      </div>
+    </figure>
+  </div>
+
+  <div class="wrap">
+    <h2>A reversal, country by country</h2>
+    <p>The aggregate hides a near-universal local pattern. In country after wealthy country the young-minus-old gap shrank, and in many it crossed below zero. The <strong>United States</strong> is the starkest case: in 2010&ndash;2014 its young (15&ndash;29) and old were nearly level, a gap of &minus;0.07; by 2021&ndash;2025 the young trailed the old by <strong>0.76</strong> ladder points. <strong>Canada</strong> moved almost identically, from &minus;0.02 to &minus;0.89. Even places where the young still lead &mdash; Italy, Greece, Portugal, Poland &mdash; saw their youth advantage shrink by half or more. The collapse of the young&rsquo;s edge is the common thread; in the largest rich economies it has become an outright deficit.</p>
+  </div>
+
+  <div class="wrap-wide">
+    <figure>
+      <div class="fig">
+        <p class="figtitle">Where the young lead, and where they fell behind</p>
+        <p class="figsub">Each row is a high-income country&rsquo;s young-minus-old ladder gap: the open dot is 2010&ndash;2014, the filled dot is 2021&ndash;2025. Dots to the right of zero mean the young rate their lives higher than the old; to the left, the old lead. Almost every arrow points left &mdash; toward the old.</p>
+        <div class="legend" aria-hidden="true">
+          <span class="item"><span class="dot" style="background:#fffefb;border:2px solid var(--ink-dim)"></span>2010&ndash;2014</span>
+          <span class="item"><span class="dot" style="background:var(--ink)"></span>2021&ndash;2025</span>
+          <span class="item"><span class="sw" style="border-top-color:var(--young);border-top-width:3px"></span>young still lead</span>
+          <span class="item"><span class="sw" style="border-top-color:var(--old);border-top-width:3px"></span>old now lead</span>
+        </div>
+        <div class="chart" id="country-chart"></div>
+        <div class="readout" id="country-readout">Hover or focus a row for the country&rsquo;s gap in both periods.</div>
+        <figcaption>Gap = young (15&ndash;29) minus old (60+) ladder mean, within-country weighted, ranked by recent gap. Countries whose old-age band fell below the suppression floor in a period are omitted. Evaluative measure.</figcaption>
+      </div>
+    </figure>
+  </div>
+
+  <div class="wrap">
+    <h2>A second instrument agrees</h2>
+    <p>Could this be a quirk of one survey&rsquo;s ladder question? The United States offers a check. The General Social Survey has asked Americans the same plain question &mdash; taken all together, how happy would you say you are? &mdash; since 1972, on a three-point scale where higher is happier. <span class="tagline tag-eval">Evaluative</span>&ensp;It is a different instrument, a different mode, a different scale, but the same kind of evaluative judgment. And it tells the same story. Among Americans 18&ndash;29, mean happiness fell from <strong>2.19</strong> in 2010&ndash;2014 to <strong>1.90</strong> in 2021&ndash;2024 &mdash; a drop of <strong>0.29</strong>, much steeper than the 60+ decline of 0.15. The young-minus-old happiness gap moved from essentially zero (&minus;0.001) to <strong>&minus;0.14</strong>: the young, once even with their elders, fell behind.</p>
+
+    <div class="modecall"><span class="ex" aria-hidden="true">!</span><span><b>One caution, met head-on:</b> the GSS switched to a push-to-web mode in 2021&ndash;2022, which can shift answer levels on its own. So the GSS drop alone would be suggestive, not conclusive. But Gallup&rsquo;s US ladder &mdash; collected the same way throughout &mdash; shows the young falling on the same trajectory: 15&ndash;29-year-olds went from 7.69 in 2007 to a trough of 6.14 in 2022, recovering only partway to 6.75 by 2025. Two surveys, two methods, one direction.</span></div>
+
+    <h2>What this does and doesn&rsquo;t show</h2>
+    <p><strong>It is a real reversal, and it supersedes the old picture.</strong> The midlife U was always an evaluative finding, and so is its inversion. Earlier work in this series mapped the U-curve across countries as a fixed fact of the lifespan; this is the correction. The shape was never permanent &mdash; it was a feature of a particular cohort of young people, and that cohort&rsquo;s successors are not enjoying the same head start.</p>
+    <p><strong>Two weightings, one answer.</strong> The headline figures population-weight countries, so the large rich economies count for more. Weighting every country equally instead, the same inversion appears in muted form &mdash; the young still slip and the old still rise &mdash; so the finding is not an artifact of any single big country dominating the average.</p>
+    <p><strong>Small differences are soft.</strong> Cross-period and cross-country ladder gaps under about 0.2 points should not be pressed; response styles and translation differ. The recent rich-world young-minus-old gap of &minus;0.06 is itself inside that soft zone &mdash; the news is not that the old have decisively overtaken the young, but that a once-dependable half-point youth advantage has vanished. The 0.34-point fall among the young, and the 0.52-point swing in the gap, are well outside it.</p>
+    <p><strong>This is description, not diagnosis.</strong> The data show <em>that</em> the young rate their lives lower, not <em>why</em>. The usual suspects &mdash; smartphones, housing costs, labor markets, the pandemic&rsquo;s social toll, a thinning of in-person life &mdash; are not adjudicated here. What the ladder measures, it measures cleanly: the generation that used to be happiest is no longer, and the curve that defined a lifetime of well-being has turned upside down.</p>
+  </div>
+
+  <div class="wrap notes">
+    <h2 id="notes">Notes &amp; data</h2>
+    <ul>
+      <li><span class="smallcaps">Sources.</span> Gallup World Poll, 2005&ndash;2025 (Cantril ladder, current life evaluation, 0&ndash;10); General Social Survey, 1972&ndash;2024 (<code>happy</code>, 3-point, recoded so higher = happier) for the US echo. Analysis code: <code>analysis/the-u-curve-inverts/build_data.py</code>; every figure in the text is recomputed there and traced in <code>claims.json</code>.</li>
+      <li><span class="smallcaps">Periods &amp; geography.</span> Early = 2010&ndash;2014, recent = 2021&ndash;2025. &ldquo;Rich world&rdquo; = countries labeled High income in the World Bank income grouping (about 50 countries early, 49 recent). &ldquo;World&rdquo; pools all income groups with population data.</li>
+      <li><span class="smallcaps">Weights.</span> Within each country, estimates use Gallup&rsquo;s within-country weight (<code>wgt</code>). Cross-country aggregates weight country means by population (<code>ctry_pop_millions</code>, a static ~2018 vintage); countries missing the population figure are excluded from population-weighted aggregates only. An equal-country robustness check shows the same inversion. GSS uses <code>wtssps</code> (post-stratified, full 1972&ndash;2024 coverage).</li>
+      <li><span class="smallcaps">Construct.</span> Evaluative throughout &mdash; the Cantril ladder and GSS <code>happy</code> are both considered judgments of life as a whole. No experiential (daily-emotion) items appear here, and none are mixed onto these axes.</li>
+      <li><span class="smallcaps">Suppression &amp; samples.</span> Gallup country&times;age&times;period cells with fewer than 100 ladder responses are suppressed; GSS cells with Kish effective N below 50 are suppressed (none triggered). Rich-world period totals run to tens of thousands of interviews per age band; world bands to the hundreds of thousands.</li>
+      <li><span class="smallcaps">Known limits.</span> The GSS 2021&ndash;2022 push-to-web mode change can shift levels and is flagged in the text; the mode-stable Gallup US ladder agrees, so the direction is robust. Cross-period and cross-country ladder gaps under 0.2 points are not definitive. This article supersedes the earlier across-countries U-curve treatment.</li>
+      <li><span class="smallcaps">Prior art.</span> <a href="https://www.pnas.org/doi/10.1073/pnas.1003744107">Stone, Schwartz, Broderick &amp; Deaton 2010</a> (the U-shape of well-being over the life course); <a href="https://www.nber.org/papers/w30330">Blanchflower&rsquo;s</a> work on the midlife low; and recent <a href="https://worldhappiness.report/">World Happiness Report</a> findings on falling youth well-being in North America and Western Europe, which this fixed-period, population-weighted re-computation traces as a full inversion of the curve.</li>
+    </ul>
+  </div>
+</main>
+
+<script type="module">
+import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+
+const DATA = /*DATA*/{"meta":{"title":"The U-Curve Inverts","slug":"the-u-curve-inverts","dataset_gwp":"Gallup World Poll 2005-2025","dataset_gss":"GSS 1972-2024","construct":"evaluative","measure_gwp":"Cantril ladder (0-10, current life evaluation)","measure_gss":"happy (1=not-too-happy, 2=pretty-happy, 3=very-happy; higher=better)","weight_gwp":"wgt (within-country) × ctry_pop_millions (population-weighted cross-country)","weight_gwp_equal_country":"wgt (within-country); countries weighted equally in cross-country aggregate","weight_gss":"wtssps (post-stratified, full 1972-2024 coverage)","early_period":"2010-2014","recent_period":"2021-2025","income_group_filter":"High income (World Bank ctry_income_group label)","age_bands":[{"label":"15-29","lo":15,"hi":29},{"label":"30-44","lo":30,"hi":44},{"label":"45-59","lo":45,"hi":59},{"label":"60+","lo":60,"hi":98}],"age_bands_gss":[{"label":"18-29","lo":18,"hi":29},{"label":"30-44","lo":30,"hi":44},{"label":"45-59","lo":45,"hi":59},{"label":"60+","lo":60,"hi":89}],"age_fine_bands":[{"label":"15-19","lo":15,"hi":19},{"label":"20-24","lo":20,"hi":24},{"label":"25-29","lo":25,"hi":29},{"label":"30-34","lo":30,"hi":34},{"label":"35-39","lo":35,"hi":39},{"label":"40-44","lo":40,"hi":44},{"label":"45-49","lo":45,"hi":49},{"label":"50-54","lo":50,"hi":54},{"label":"55-59","lo":55,"hi":59},{"label":"60-64","lo":60,"hi":64},{"label":"65-69","lo":65,"hi":69},{"label":"70+","lo":70,"hi":98}],"min_n_country_gwp":100,"min_n_gss_eff":50,"n_rich_early_countries":50,"n_rich_recent_countries":49,"n_world_early_countries":159,"n_world_recent_countries":146},"rich_world_popw":[{"period":"early","age_band":"15-29","ladder_mean":6.9761},{"period":"early","age_band":"30-44","ladder_mean":6.6547},{"period":"early","age_band":"45-59","ladder_mean":6.4862},{"period":"early","age_band":"60+","ladder_mean":6.5137},{"period":"recent","age_band":"15-29","ladder_mean":6.6368},{"period":"recent","age_band":"30-44","ladder_mean":6.5523},{"period":"recent","age_band":"45-59","ladder_mean":6.5545},{"period":"recent","age_band":"60+","ladder_mean":6.6982}],"world_popw":[{"period":"early","age_band":"15-29","ladder_mean":5.5385},{"period":"early","age_band":"30-44","ladder_mean":5.227},{"period":"early","age_band":"45-59","ladder_mean":5.1287},{"period":"early","age_band":"60+","ladder_mean":5.0973},{"period":"recent","age_band":"15-29","ladder_mean":5.5243},{"period":"recent","age_band":"30-44","ladder_mean":5.2654},{"period":"recent","age_band":"45-59","ladder_mean":5.2441},{"period":"recent","age_band":"60+","ladder_mean":5.3396}],"rich_fine_popw":[{"period":"early","age_band":"15-19","ladder_mean":7.3307},{"period":"early","age_band":"20-24","ladder_mean":6.886},{"period":"early","age_band":"25-29","ladder_mean":6.648},{"period":"early","age_band":"30-34","ladder_mean":6.6786},{"period":"early","age_band":"35-39","ladder_mean":6.6984},{"period":"early","age_band":"40-44","ladder_mean":6.5992},{"period":"early","age_band":"45-49","ladder_mean":6.4897},{"period":"early","age_band":"50-54","ladder_mean":6.4741},{"period":"early","age_band":"55-59","ladder_mean":6.4742},{"period":"early","age_band":"60-64","ladder_mean":6.474},{"period":"early","age_band":"65-69","ladder_mean":6.5802},{"period":"early","age_band":"70+","ladder_mean":6.5215},{"period":"recent","age_band":"15-19","ladder_mean":6.8032},{"period":"recent","age_band":"20-24","ladder_mean":6.6112},{"period":"recent","age_band":"25-29","ladder_mean":6.5347},{"period":"recent","age_band":"30-34","ladder_mean":6.5506},{"period":"recent","age_band":"35-39","ladder_mean":6.5852},{"period":"recent","age_band":"40-44","ladder_mean":6.528},{"period":"recent","age_band":"45-49","ladder_mean":6.5985},{"period":"recent","age_band":"50-54","ladder_mean":6.4897},{"period":"recent","age_band":"55-59","ladder_mean":6.5857},{"period":"recent","age_band":"60-64","ladder_mean":6.5485},{"period":"recent","age_band":"65-69","ladder_mean":6.6768},{"period":"recent","age_band":"70+","ladder_mean":6.8011}],"rich_ts":[{"wave":2006,"young":6.9828,"old":6.7021},{"wave":2007,"young":7.0808,"old":6.7756},{"wave":2008,"young":7.0591,"old":6.5761},{"wave":2009,"young":6.8591,"old":6.574},{"wave":2010,"young":7.0495,"old":6.6102},{"wave":2011,"young":7.0656,"old":6.6282},{"wave":2012,"young":6.9487,"old":6.4619},{"wave":2013,"young":7.0594,"old":6.5064},{"wave":2014,"young":6.8634,"old":6.524},{"wave":2015,"young":6.7822,"old":6.4719},{"wave":2016,"young":6.6485,"old":6.5218},{"wave":2017,"young":6.7127,"old":6.5186},{"wave":2018,"young":6.6954,"old":6.558},{"wave":2019,"young":6.7067,"old":6.5831},{"wave":2020,"young":6.761,"old":6.7697},{"wave":2021,"young":6.6503,"old":6.7754},{"wave":2022,"young":6.4696,"old":6.6095},{"wave":2023,"young":6.5735,"old":6.5921},{"wave":2024,"young":6.7732,"old":6.7626},{"wave":2025,"young":6.7084,"old":6.7636}],"country_profiles":[{"iso3":"USA","name":"United States","early":-0.0712,"recent":-0.7608},{"iso3":"JPN","name":"Japan","early":0.7102,"recent":0.1836},{"iso3":"DEU","name":"Germany","early":0.7398,"recent":0.0422},{"iso3":"GBR","name":"United Kingdom","early":-0.0608,"recent":-0.1309},{"iso3":"FRA","name":"France","early":0.5449,"recent":0.0248},{"iso3":"ITA","name":"Italy","early":1.1328,"recent":0.5503},{"iso3":"KOR","name":"South Korea","early":1.1609,"recent":0.9396},{"iso3":"ESP","name":"Spain","early":0.8307,"recent":-0.1402},{"iso3":"ARG","name":"Argentina","early":0.7549,"recent":0.8076},{"iso3":"POL","name":"Poland","early":1.3852,"recent":0.4934},{"iso3":"CAN","name":"Canada","early":-0.0233,"recent":-0.8946},{"iso3":"AUS","name":"Australia","early":-0.1568,"recent":-0.4205},{"iso3":"CHL","name":"Chile","early":1.0881,"recent":0.8956},{"iso3":"NLD","name":"Netherlands","early":0.1569,"recent":-0.1382},{"iso3":"BEL","name":"Belgium","early":0.5268,"recent":-0.112},{"iso3":"GRC","name":"Greece","early":1.6748,"recent":0.9392},{"iso3":"CZE","name":"Czech Republic","early":1.4579,"recent":0.4786},{"iso3":"PRT","name":"Portugal","early":1.7437,"recent":0.9296},{"iso3":"SWE","name":"Sweden","early":-0.1458,"recent":-0.5325},{"iso3":"HUN","name":"Hungary","early":1.2283,"recent":1.0618},{"iso3":"AUT","name":"Austria","early":0.5588,"recent":0.0989},{"iso3":"CHE","name":"Switzerland","early":0.3032,"recent":-0.1848},{"iso3":"ISR","name":"Israel","early":0.8841,"recent":0.9106},{"iso3":"HKG","name":"Hong Kong","early":0.7657,"recent":0.2614},{"iso3":"DNK","name":"Denmark","early":-0.1196,"recent":-0.5259},{"iso3":"SGP","name":"Singapore","early":0.417,"recent":-0.1603},{"iso3":"FIN","name":"Finland","early":0.4306,"recent":-0.546},{"iso3":"SVK","name":"Slovakia","early":1.1424,"recent":1.0747},{"iso3":"NOR","name":"Norway","early":-0.0817,"recent":-0.5872},{"iso3":"IRL","name":"Ireland","early":0.1333,"recent":0.0926},{"iso3":"NZL","name":"New Zealand","early":-0.2334,"recent":-0.6647},{"iso3":"HRV","name":"Croatia","early":1.4951,"recent":1.9082},{"iso3":"KWT","name":"Kuwait","early":0.0462,"recent":0.204},{"iso3":"PAN","name":"Panama","early":0.5827,"recent":1.2771},{"iso3":"URY","name":"Uruguay","early":0.5801,"recent":0.2677},{"iso3":"LTU","name":"Lithuania","early":1.1274,"recent":1.4341},{"iso3":"SVN","name":"Slovenia","early":1.7723,"recent":0.7853},{"iso3":"LVA","name":"Latvia","early":1.2346,"recent":0.8133},{"iso3":"BHR","name":"Bahrain","early":0.6731,"recent":0.312},{"iso3":"EST","name":"Estonia","early":1.2517,"recent":0.4407},{"iso3":"CYP","name":"Cyprus","early":0.7398,"recent":0.5692},{"iso3":"LUX","name":"Luxembourg","early":0.4369,"recent":-0.0717},{"iso3":"MLT","name":"Malta","early":1.01,"recent":0.0674},{"iso3":"ISL","name":"Iceland","early":0.2392,"recent":-0.0319}],"gss":{"young_early":2.1925,"young_recent":1.8998,"old_early":2.1935,"old_recent":2.0411,"gap_early":-0.001,"gap_recent":-0.1413},"us_gwp":{"young_2007":7.69,"young_2022":6.14,"young_2025":6.75},"key_numbers":{"rich_world":{"young_15_29":{"early":6.9761,"recent":6.6368,"change":-0.3393},"old_60plus":{"early":6.5137,"recent":6.6982,"change":0.1845},"young_minus_old_gap":{"early":0.4624,"recent":-0.0614,"gap_change":-0.5238}},"world_overall":{"young_15_29":{"change":-0.0142},"old_60plus":{"change":0.2423},"all_band_changes":{"15-29":-0.0142,"30-44":0.0384,"45-59":0.1154,"60+":0.2423}}}}/*/DATA*/;
+
+const YOUNG = "#c2410c", OLD = "#1d4e6b", EARLY = "#b3ad9d", ACCENT = "#0f766e";
+const FINE_ORDER = DATA.meta.age_fine_bands.map(b => b.label);
+const BAND_ORDER = DATA.meta.age_bands.map(b => b.label);
+
+/* shared helpers */
+function makeTip(container){
+  const tip = document.createElement("div");
+  tip.className = "tip";
+  container.appendChild(tip);
+  return tip;
+}
+function showTip(tip, container, x, y, html){
+  tip.innerHTML = html;
+  tip.style.display = "block";
+  const cw = container.clientWidth, tw = tip.offsetWidth;
+  let lx = x + 14;
+  if (lx + tw > cw - 4) lx = x - tw - 14;
+  tip.style.left = Math.max(2, lx) + "px";
+  tip.style.top = Math.max(0, y - 14) + "px";
+}
+function hideTip(tip){ tip.style.display = "none"; }
+const fmt2 = v => v.toFixed(2);
+const signed = (v, d=2) => (v >= 0 ? "+" : "−") + Math.abs(v).toFixed(d);
+
+/* ---------- Fig 1: fine age profile, early vs recent ---------- */
+const profBox = document.getElementById("profile-chart");
+const profTip = makeTip(profBox);
+const profReadout = d3.select("#profile-readout");
+
+function drawProfile(){
+  const W = Math.max(330, profBox.clientWidth);
+  const narrow = W < 560;
+  const mg = {top:26, right:narrow?16:30, bottom:64, left:46};
+  const H = narrow ? Math.round(W*0.9) : Math.min(440, Math.round(W*0.5));
+
+  const early = DATA.rich_fine_popw.filter(d=>d.period==="early");
+  const recent = DATA.rich_fine_popw.filter(d=>d.period==="recent");
+  const byBandEarly = new Map(early.map(d=>[d.age_band, d.ladder_mean]));
+  const byBandRecent = new Map(recent.map(d=>[d.age_band, d.ladder_mean]));
+
+  const x = d3.scalePoint().domain(FINE_ORDER).range([mg.left, W-mg.right]).padding(0.5);
+  const allv = DATA.rich_fine_popw.map(d=>d.ladder_mean);
+  const y = d3.scaleLinear().domain([d3.min(allv)-0.12, d3.max(allv)+0.12]).range([H-mg.bottom, mg.top]);
+
+  d3.select(profBox).select("svg").remove();
+  const svg = d3.select(profBox).append("svg")
+    .attr("viewBox",`0 0 ${W} ${H}`).attr("width","100%")
+    .attr("role","img")
+    .attr("aria-label","Line chart: rich-world average life-evaluation ladder by five-year age band. The early-period line (2010 to 2014) peaks at the youngest ages; the recent-period line (2021 to 2025) peaks at the oldest ages, having tipped over.");
+
+  // gridlines
+  const yticks = y.ticks(5);
+  svg.append("g").selectAll("line").data(yticks).join("line")
+    .attr("x1",mg.left).attr("x2",W-mg.right).attr("y1",d=>y(d)).attr("y2",d=>y(d))
+    .attr("stroke","#ece7da").attr("stroke-width",1);
+  svg.append("g").selectAll("text").data(yticks).join("text")
+    .attr("x",mg.left-8).attr("y",d=>y(d)+3.5).attr("text-anchor","end")
+    .attr("font-family","var(--sans)").attr("font-size",10.5).attr("fill","#8b867a").text(d=>d.toFixed(1));
+
+  // x labels
+  svg.append("g").selectAll("text").data(FINE_ORDER).join("text")
+    .attr("x",d=>x(d)).attr("y",H-mg.bottom+16).attr("text-anchor","middle")
+    .attr("font-family","var(--sans)").attr("font-size",narrow?8:9.5).attr("fill","#8b867a")
+    .attr("transform", narrow ? d=>`rotate(-40 ${x(d)} ${H-mg.bottom+16})` : null)
+    .text(d=>d);
+  svg.append("text").attr("x",(mg.left+W-mg.right)/2).attr("y",H-6).attr("text-anchor","middle")
+    .attr("font-family","var(--sans)").attr("font-size",11).attr("font-weight",700).attr("fill","#56524a")
+    .text("Age band →");
+  svg.append("text").attr("transform",`rotate(-90)`).attr("x",-(mg.top+(H-mg.bottom))/2).attr("y",13)
+    .attr("text-anchor","middle").attr("font-family","var(--sans)").attr("font-size",10.5).attr("font-weight",700).attr("fill","#56524a")
+    .text("Ladder (0–10) · evaluative");
+
+  const line = d3.line().x(d=>x(d.age_band)).y(d=>y(d.ladder_mean));
+
+  // early (faint dashed)
+  svg.append("path").datum(early).attr("fill","none").attr("stroke",EARLY)
+    .attr("stroke-width",2).attr("stroke-dasharray","5 4").attr("d",line);
+  svg.append("g").selectAll("circle").data(early).join("circle")
+    .attr("cx",d=>x(d.age_band)).attr("cy",d=>y(d.ladder_mean)).attr("r",3)
+    .attr("fill","#fffefb").attr("stroke",EARLY).attr("stroke-width",1.6);
+
+  // recent (bold gradient young->old)
+  const recGrad = svg.append("defs").append("linearGradient").attr("id","recgrad")
+    .attr("x1","0").attr("x2","1").attr("y1","0").attr("y2","0");
+  recGrad.append("stop").attr("offset","0%").attr("stop-color",YOUNG);
+  recGrad.append("stop").attr("offset","100%").attr("stop-color",OLD);
+  svg.append("path").datum(recent).attr("fill","none").attr("stroke","url(#recgrad)")
+    .attr("stroke-width",3.4).attr("stroke-linejoin","round").attr("d",line);
+
+  // level marker: the recent young (15-19) and old (70+) ends now sit at essentially the same height
+  const recYoungest = byBandRecent.get("15-19");
+  const recOldest = byBandRecent.get("70+");
+  svg.append("line").attr("x1",x("15-19")).attr("x2",x("70+"))
+    .attr("y1",y(recYoungest)).attr("y2",y(recYoungest))
+    .attr("stroke",OLD).attr("stroke-width",1).attr("stroke-dasharray","2 3").attr("opacity",0.6);
+  svg.append("circle").attr("cx",x("70+")).attr("cy",y(recOldest)).attr("r",6)
+    .attr("fill","none").attr("stroke",OLD).attr("stroke-width",2);
+  svg.append("text").attr("x",x("70+")).attr("y",y(recOldest)-12).attr("text-anchor","end")
+    .attr("font-family","var(--sans)").attr("font-size",11).attr("font-weight",800).attr("fill",OLD)
+    .text("old end now level with young");
+  svg.append("text").attr("x",x("15-19")).attr("y",y(byBandRecent.get("15-19"))+20).attr("text-anchor","start")
+    .attr("font-family","var(--sans)").attr("font-size",11).attr("font-weight",800).attr("fill",YOUNG)
+    .text("youngest fell");
+
+  // recent dots + hit targets
+  svg.append("g").selectAll("g.pt").data(recent).join("g").attr("class","pt")
+    .each(function(d){
+      const g = d3.select(this);
+      g.append("circle").attr("cx",x(d.age_band)).attr("cy",y(d.ladder_mean)).attr("r",4)
+        .attr("fill", d3.interpolateRgb(YOUNG,OLD)(FINE_ORDER.indexOf(d.age_band)/(FINE_ORDER.length-1)));
+      g.append("circle").attr("cx",x(d.age_band)).attr("cy",y(d.ladder_mean)).attr("r",12)
+        .attr("fill","transparent").attr("tabindex",0).attr("role","img")
+        .attr("aria-label",`${d.age_band}: early ${fmt2(byBandEarly.get(d.age_band)||0)}, recent ${fmt2(d.ladder_mean)}`)
+        .on("mouseenter focus", function(ev){
+          const e = byBandEarly.get(d.age_band), r = d.ladder_mean;
+          showTip(profTip, profBox, x(d.age_band), y(r),
+            `<b>Ages ${d.age_band}</b><br><span class="num">Early 2010–14: ${fmt2(e)}</span><br><span class="num">Recent 2021–25: ${fmt2(r)}</span><br><span class="num" style="color:#cdc4b2">change ${signed(r-e)}</span>`);
+          profReadout.html(`<b>Ages ${d.age_band}</b>: the ladder went from <b>${fmt2(e)}</b> (early) to <b>${fmt2(r)}</b> (recent), a change of <b>${signed(r-e)}</b>.`);
+        })
+        .on("mouseleave blur", ()=>{ hideTip(profTip); });
+    });
+}
+
+/* ---------- Fig 2: change-by-age small multiples (rich vs world) ---------- */
+const changeBox = document.getElementById("change-chart");
+const changeTip = makeTip(changeBox);
+const changeReadout = d3.select("#change-readout");
+
+function drawChange(){
+  const W = Math.max(330, changeBox.clientWidth);
+  const stacked = W < 620;
+  const panelW = stacked ? W : (W-24)/2;
+  const H = (stacked ? 230 : 270);
+  const totalH = stacked ? H*2 + 24 : H;
+
+  d3.select(changeBox).select("svg").remove();
+  const svg = d3.select(changeBox).append("svg")
+    .attr("viewBox",`0 0 ${W} ${totalH}`).attr("width","100%")
+    .attr("role","img")
+    .attr("aria-label","Two bar panels of the change in average ladder by age band from the early to recent period. Left, high-income countries, where the young fall and the old rise. Right, the whole world, where every age rises but the old rise most.");
+
+  const rich = BAND_ORDER.map(b => {
+    const e = DATA.rich_world_popw.find(d=>d.period==="early"&&d.age_band===b).ladder_mean;
+    const r = DATA.rich_world_popw.find(d=>d.period==="recent"&&d.age_band===b).ladder_mean;
+    return {band:b, e, r, ch:r-e};
+  });
+  const world = BAND_ORDER.map(b => {
+    const e = DATA.world_popw.find(d=>d.period==="early"&&d.age_band===b).ladder_mean;
+    const r = DATA.world_popw.find(d=>d.period==="recent"&&d.age_band===b).ladder_mean;
+    return {band:b, e, r, ch:r-e};
+  });
+
+  const maxAbs = Math.max(d3.max(rich.concat(world), d=>Math.abs(d.ch)), 0.26);
+  const yMax = maxAbs * 1.18; // headroom so value labels clear the axis-label row
+
+  function panel(data, ox, oy, title, sub){
+    const mg = {top:34, right:14, bottom:44, left:14};
+    const x = d3.scaleBand().domain(BAND_ORDER).range([mg.left, panelW-mg.right]).padding(0.34);
+    const y = d3.scaleLinear().domain([-yMax, yMax]).range([H-mg.bottom, mg.top]);
+    const g = svg.append("g").attr("transform",`translate(${ox},${oy})`);
+
+    g.append("text").attr("x",mg.left).attr("y",16).attr("font-family","var(--sans)")
+      .attr("font-size",13).attr("font-weight",800).attr("fill","#1c1b18").text(title);
+    g.append("text").attr("x",mg.left).attr("y",30).attr("font-family","var(--sans)")
+      .attr("font-size",11).attr("fill","#8b867a").text(sub);
+
+    // +/- 0.2 soft band
+    g.append("rect").attr("x",mg.left).attr("width",panelW-mg.right-mg.left)
+      .attr("y",y(0.2)).attr("height",Math.max(0,y(-0.2)-y(0.2)))
+      .attr("fill","#ece7da").attr("opacity",0.55);
+    g.append("line").attr("x1",mg.left).attr("x2",panelW-mg.right).attr("y1",y(0)).attr("y2",y(0))
+      .attr("stroke","#56524a").attr("stroke-width",1.4);
+
+    g.selectAll("rect.bar").data(data).join("rect").attr("class","bar")
+      .attr("x",d=>x(d.band)).attr("width",x.bandwidth())
+      .attr("y",d=>Math.min(y(0),y(d.ch))).attr("height",d=>Math.abs(y(d.ch)-y(0)))
+      .attr("fill",d=> d.band==="15-29" ? YOUNG : d.band==="60+" ? OLD : "#9aa6ac")
+      .attr("tabindex",0).attr("role","img")
+      .attr("aria-label",`${title}, ${d=>d.band}`)
+      .on("mouseenter focus", function(ev,d){
+        showTip(changeTip, changeBox, ox + x(d.band)+x.bandwidth()/2, oy + Math.min(y(0),y(d.ch)),
+          `<b>${title}</b> · ages ${d.band}<br><span class="num">Early: ${fmt2(d.e)} → Recent: ${fmt2(d.r)}</span><br><span class="num" style="color:#cdc4b2">change ${signed(d.ch)} pts</span>`);
+        changeReadout.html(`<b>${title}</b>, ages <b>${d.band}</b>: ladder ${fmt2(d.e)} → ${fmt2(d.r)}, a change of <b>${signed(d.ch)}</b> points.`);
+      })
+      .on("mouseleave blur", ()=> hideTip(changeTip));
+
+    // value labels — keep negative-bar labels clamped above the axis-label row
+    const labelFloor = (H-mg.bottom) - 4; // never let a label drop onto the band-label row
+    g.selectAll("text.v").data(data).join("text").attr("class","v")
+      .attr("x",d=>x(d.band)+x.bandwidth()/2)
+      .attr("y",d=> d.ch>=0 ? y(d.ch)-4 : Math.min(y(d.ch)+13, labelFloor))
+      .attr("text-anchor","middle").attr("font-family","var(--sans)").attr("font-size",10.5).attr("font-weight",700)
+      .attr("fill",d=> d.band==="15-29" ? YOUNG : d.band==="60+" ? OLD : "#56524a")
+      .text(d=>signed(d.ch));
+
+    // band labels
+    g.selectAll("text.b").data(data).join("text").attr("class","b")
+      .attr("x",d=>x(d.band)+x.bandwidth()/2).attr("y",H-mg.bottom+22).attr("text-anchor","middle")
+      .attr("font-family","var(--sans)").attr("font-size",9.5).attr("fill","#8b867a").text(d=>d.band);
+  }
+
+  if (stacked){
+    panel(rich, 0, 0, "High-income world", "the young fall, the old rise");
+    panel(world, 0, H+24, "The whole world", "all rise — the old most");
+  } else {
+    panel(rich, 0, 0, "High-income world", "the young fall, the old rise");
+    panel(world, panelW+24, 0, "The whole world", "all rise — the old most");
+  }
+}
+
+/* ---------- Fig 3: time series crossover ---------- */
+const tsBox = document.getElementById("ts-chart");
+const tsTip = makeTip(tsBox);
+const tsReadout = d3.select("#ts-readout");
+
+function drawTS(){
+  const W = Math.max(330, tsBox.clientWidth);
+  const narrow = W < 560;
+  const mg = {top:24, right:narrow?14:64, bottom:40, left:42};
+  const H = narrow ? Math.round(W*0.78) : Math.min(420, Math.round(W*0.46));
+  const ts = DATA.rich_ts;
+
+  const x = d3.scaleLinear().domain(d3.extent(ts,d=>d.wave)).range([mg.left, W-mg.right]);
+  const allv = ts.flatMap(d=>[d.young,d.old]);
+  const y = d3.scaleLinear().domain([d3.min(allv)-0.08, d3.max(allv)+0.08]).range([H-mg.bottom, mg.top]);
+
+  d3.select(tsBox).select("svg").remove();
+  const svg = d3.select(tsBox).append("svg")
+    .attr("viewBox",`0 0 ${W} ${H}`).attr("width","100%")
+    .attr("role","img")
+    .attr("aria-label","Line chart over survey waves of the rich-world ladder for the young, ages 15 to 29, and the old, ages 60 plus. The young line, starting above the old, declines while the old line rises, and the two cross in the early 2020s.");
+
+  // grid
+  const yticks = y.ticks(5);
+  svg.append("g").selectAll("line").data(yticks).join("line")
+    .attr("x1",mg.left).attr("x2",W-mg.right).attr("y1",d=>y(d)).attr("y2",d=>y(d))
+    .attr("stroke","#ece7da").attr("stroke-width",1);
+  svg.append("g").selectAll("text").data(yticks).join("text")
+    .attr("x",mg.left-8).attr("y",d=>y(d)+3.5).attr("text-anchor","end")
+    .attr("font-family","var(--sans)").attr("font-size",10.5).attr("fill","#8b867a").text(d=>d.toFixed(1));
+  const xticks = narrow ? [2006,2012,2018,2025] : d3.range(2006,2026,3);
+  svg.append("g").selectAll("text").data(xticks).join("text")
+    .attr("x",d=>x(d)).attr("y",H-mg.bottom+16).attr("text-anchor","middle")
+    .attr("font-family","var(--sans)").attr("font-size",10.5).attr("fill","#8b867a").text(d=>d);
+  svg.append("text").attr("transform",`rotate(-90)`).attr("x",-(mg.top+(H-mg.bottom))/2).attr("y",13)
+    .attr("text-anchor","middle").attr("font-family","var(--sans)").attr("font-size",10.5).attr("font-weight",700).attr("fill","#56524a")
+    .text("Ladder (0–10) · evaluative");
+
+  // gap area between lines
+  const area = d3.area().x(d=>x(d.wave)).y0(d=>y(d.young)).y1(d=>y(d.old));
+  svg.append("path").datum(ts).attr("d",area).attr("fill",OLD).attr("opacity",0.08);
+
+  const lineY = d3.line().x(d=>x(d.wave)).y(d=>y(d.young));
+  const lineO = d3.line().x(d=>x(d.wave)).y(d=>y(d.old));
+  svg.append("path").datum(ts).attr("fill","none").attr("stroke",OLD).attr("stroke-width",2.6).attr("d",lineO);
+  svg.append("path").datum(ts).attr("fill","none").attr("stroke",YOUNG).attr("stroke-width",2.6).attr("d",lineY);
+
+  // end labels
+  const last = ts[ts.length-1];
+  if (!narrow){
+    svg.append("text").attr("x",x(last.wave)+8).attr("y",y(last.young)+4).attr("font-family","var(--sans)")
+      .attr("font-size",11).attr("font-weight",800).attr("fill",YOUNG).text("Young");
+    svg.append("text").attr("x",x(last.wave)+8).attr("y",y(last.old)+4).attr("font-family","var(--sans)")
+      .attr("font-size",11).attr("font-weight",800).attr("fill",OLD).text("Old");
+  } else {
+    svg.append("text").attr("x",mg.left+2).attr("y",y(ts[0].young)-8).attr("font-family","var(--sans)")
+      .attr("font-size",11).attr("font-weight",800).attr("fill",YOUNG).text("Young 15–29");
+    svg.append("text").attr("x",mg.left+2).attr("y",y(ts[0].old)+16).attr("font-family","var(--sans)")
+      .attr("font-size",11).attr("font-weight",800).attr("fill",OLD).text("Old 60+");
+  }
+
+  // crossover annotation near 2022
+  const cross = ts.find(d=>d.wave===2022);
+  svg.append("line").attr("x1",x(cross.wave)).attr("x2",x(cross.wave))
+    .attr("y1",mg.top).attr("y2",H-mg.bottom).attr("stroke","#c08a1f").attr("stroke-width",1).attr("stroke-dasharray","3 3").attr("opacity",0.7);
+  svg.append("text").attr("x",x(cross.wave)).attr("y",mg.top-4).attr("text-anchor","middle")
+    .attr("font-family","var(--sans)").attr("font-size",10.5).attr("font-weight",700).attr("fill","#c08a1f").text("lines cross");
+
+  // dots + hits
+  ["young","old"].forEach(k=>{
+    svg.append("g").selectAll("circle").data(ts).join("circle")
+      .attr("cx",d=>x(d.wave)).attr("cy",d=>y(d[k])).attr("r",2.8).attr("fill",k==="young"?YOUNG:OLD);
+  });
+  svg.append("g").selectAll("rect").data(ts).join("rect")
+    .attr("x",d=>x(d.wave)-6).attr("y",mg.top).attr("width",12).attr("height",H-mg.bottom-mg.top)
+    .attr("fill","transparent").attr("tabindex",0).attr("role","img")
+    .attr("aria-label",d=>`${d.wave}: young ${fmt2(d.young)}, old ${fmt2(d.old)}`)
+    .on("mouseenter focus", function(ev,d){
+      showTip(tsTip, tsBox, x(d.wave), y(Math.max(d.young,d.old)),
+        `<b>${d.wave}</b><br><span class="num" style="color:#f0a070">Young 15–29: ${fmt2(d.young)}</span><br><span class="num" style="color:#8fc0dd">Old 60+: ${fmt2(d.old)}</span><br><span class="num" style="color:#cdc4b2">gap ${signed(d.young-d.old)}</span>`);
+      tsReadout.html(`<b>${d.wave}</b>: young <b>${fmt2(d.young)}</b>, old <b>${fmt2(d.old)}</b> — young-minus-old gap <b>${signed(d.young-d.old)}</b>.`);
+    })
+    .on("mouseleave blur", ()=> hideTip(tsTip));
+}
+
+/* ---------- Fig 4: country dumbbells (gap early -> recent) ---------- */
+const ctyBox = document.getElementById("country-chart");
+const ctyTip = makeTip(ctyBox);
+const ctyReadout = d3.select("#country-readout");
+
+function drawCountry(){
+  const W = Math.max(330, ctyBox.clientWidth);
+  const narrow = W < 560;
+  const rows = DATA.country_profiles.filter(c=>c.early!=null && c.recent!=null)
+    .slice().sort((a,b)=> b.recent - a.recent);
+  const mg = {top:46, right:narrow?16:30, bottom:24, left:narrow?96:128};
+  const rowH = 13;
+  const H = mg.top + rows.length*rowH + mg.bottom;
+
+  const allv = rows.flatMap(c=>[c.early,c.recent]);
+  const x = d3.scaleLinear().domain(d3.extent(allv)).nice().range([mg.left, W-mg.right]);
+
+  d3.select(ctyBox).select("svg").remove();
+  const svg = d3.select(ctyBox).append("svg")
+    .attr("viewBox",`0 0 ${W} ${H}`).attr("width","100%")
+    .attr("role","img")
+    .attr("aria-label",`Dumbbell chart of ${rows.length} high-income countries showing the young-minus-old ladder gap in 2010 to 2014 (open dot) versus 2021 to 2025 (filled dot), ranked by the recent gap. Most arrows point left, toward the old leading.`);
+
+  // zero line
+  svg.append("line").attr("x1",x(0)).attr("x2",x(0)).attr("y1",mg.top-8).attr("y2",H-mg.bottom)
+    .attr("stroke","#56524a").attr("stroke-width",1.4);
+  svg.append("text").attr("x",x(0)).attr("y",mg.top-26).attr("text-anchor","middle")
+    .attr("font-family","var(--sans)").attr("font-size",10.5).attr("font-weight",700).attr("fill","#56524a").text("equal");
+  // direction labels
+  svg.append("text").attr("x",W-mg.right).attr("y",mg.top-26).attr("text-anchor","end")
+    .attr("font-family","var(--sans)").attr("font-size",11).attr("font-weight",800).attr("fill",YOUNG).text("young rate higher →");
+  svg.append("text").attr("x",mg.left).attr("y",mg.top-26).attr("text-anchor","start")
+    .attr("font-family","var(--sans)").attr("font-size",11).attr("font-weight",800).attr("fill",OLD).text("← old rate higher");
+
+  // x axis ticks
+  const xticks = x.ticks(narrow?5:7);
+  svg.append("g").selectAll("text").data(xticks).join("text")
+    .attr("x",d=>x(d)).attr("y",mg.top-10).attr("text-anchor","middle")
+    .attr("font-family","var(--sans)").attr("font-size",10).attr("fill","#8b867a").text(d=>d.toFixed(1));
+  svg.append("g").selectAll("line").data(xticks).join("line")
+    .attr("x1",d=>x(d)).attr("x2",d=>x(d)).attr("y1",mg.top-6).attr("y2",H-mg.bottom)
+    .attr("stroke","#ece7da").attr("stroke-width",1).attr("opacity",d=>d===0?0:1);
+
+  const g = svg.append("g");
+  rows.forEach((c,i)=>{
+    const yy = mg.top + i*rowH + rowH/2;
+    const lead = c.recent >= 0 ? YOUNG : OLD;
+    const row = g.append("g").attr("tabindex",0).attr("role","img")
+      .attr("aria-label",`${c.name}: gap ${signed(c.early)} early to ${signed(c.recent)} recent`);
+    row.append("text").attr("x",mg.left-8).attr("y",yy+3).attr("text-anchor","end")
+      .attr("font-family","var(--sans)").attr("font-size",narrow?8.5:9.5).attr("fill","#56524a").text(c.name);
+    row.append("line").attr("x1",x(c.early)).attr("x2",x(c.recent)).attr("y1",yy).attr("y2",yy)
+      .attr("stroke",lead).attr("stroke-width",1.7).attr("stroke-linecap","round").attr("opacity",0.55);
+    row.append("circle").attr("cx",x(c.early)).attr("cy",yy).attr("r",2.8)
+      .attr("fill","#fffefb").attr("stroke","#8b867a").attr("stroke-width",1.5);
+    row.append("circle").attr("cx",x(c.recent)).attr("cy",yy).attr("r",3.4).attr("fill",lead);
+    row.append("rect").attr("x",mg.left).attr("y",yy-rowH/2).attr("width",W-mg.left-mg.right).attr("height",rowH)
+      .attr("fill","transparent")
+      .on("mouseenter focus", function(){
+        showTip(ctyTip, ctyBox, x(Math.max(c.early,c.recent)), yy,
+          `<b>${c.name}</b><br><span class="num">Gap early 2010–14: ${signed(c.early)}</span><br><span class="num">Gap recent 2021–25: ${signed(c.recent)}</span><br><span class="num" style="color:#cdc4b2">${c.recent<c.early?"narrowed toward the old":"widened toward the young"}</span>`);
+        ctyReadout.html(`<b>${c.name}</b>: young-minus-old gap moved from <b>${signed(c.early)}</b> to <b>${signed(c.recent)}</b>.`);
+      })
+      .on("mouseleave blur", ()=> hideTip(ctyTip));
+  });
+}
+
+/* ---------- render + resize ---------- */
+function renderAll(){ drawProfile(); drawChange(); drawTS(); drawCountry(); }
+renderAll();
+let rt;
+window.addEventListener("resize", ()=>{ clearTimeout(rt); rt = setTimeout(renderAll, 180); });
+</script>
+<!--SL_BOOKNAV_START-->
+<style>
+.slbn{font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;background:#0f1417;border-top:1px solid #27313a;color:#9fb0ba;padding:24px 20px 40px;margin:48px 0 0}
+.slbn-in{max-width:1080px;margin:0 auto;display:flex;align-items:stretch;gap:12px}
+.slbn a{flex:1 1 0;min-width:0;text-decoration:none;color:inherit;border:1px solid #27313a;border-radius:10px;padding:13px 15px;display:flex;flex-direction:column;gap:4px;background:#161d22;transition:border-color .15s,transform .15s}
+.slbn a:hover{border-color:#3fa9a0;transform:translateY(-2px)}
+.slbn a:focus-visible{outline:2px solid #3fa9a0;outline-offset:2px}
+.slbn a.slbn-next{text-align:right;align-items:flex-end}
+.slbn a.slbn-toc{flex:0 0 auto;min-width:120px;justify-content:center;align-items:center;text-align:center}
+.slbn .slbn-dir{font:700 10px/1 inherit;letter-spacing:.13em;text-transform:uppercase;color:#6b7c87}
+.slbn .slbn-ttl{font:700 14px/1.3 inherit;color:#eef2f4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.slbn a.slbn-disabled{opacity:.38;pointer-events:none}
+@media(max-width:640px){.slbn-in{flex-wrap:wrap}.slbn a{flex:1 1 100%}.slbn a.slbn-next{text-align:left;align-items:flex-start}.slbn a.slbn-toc{order:-1}}
+</style>
+<nav class="slbn" aria-label="Book navigation"><div class="slbn-in"><a class="slbn-prev" href="../read.html?ch=young-and-less-happy" target="_top"><span class="slbn-dir">‹ Previous</span><span class="slbn-ttl">Young and Less Happy</span></a><a class="slbn-toc" href="../index.html#book" target="_top"><span class="slbn-dir">The Scissors</span><span class="slbn-ttl">Chapter 13 / 36</span></a><a class="slbn-next" href="../read.html?ch=global-ageing-and-happiness" target="_top"><span class="slbn-dir">Next ›</span><span class="slbn-ttl">The Two Clocks of Growing Old</span></a></div></nav>
+<!--SL_BOOKNAV_END-->
+</body>
+</html>

@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Keeping Up With the County</title>
+<meta name="description" content="Same paycheck, richer neighbors: across 2.1 million Gallup interviews, living among wealthier people lowers life evaluation for the middle and barely touches the rich — while the poor are unbothered or slightly lifted. Who feels the comparison, and who feels the amenities.">
+<style>
+  :root{
+    --bg:#10151c;
+    --panel:#161d27;
+    --panel-2:#1c2531;
+    --paper:#f3f5f7;
+    --ink:#0c1116;
+    --ink-soft:#3a4654;
+    --mut:#6b7989;
+    --faint:#93a1b1;
+    --line:#d7dee6;
+    --line-dk:#2a3645;
+    --low:#2f9e8f;      /* teal - poor: amenity */
+    --mid:#d4683a;      /* burnt orange - middle: comparison penalty */
+    --high:#5b6bb5;     /* indigo - rich: flat */
+    --accent:#d4683a;
+    --gold:#b88a2a;
+    --sans:"Inter","Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+    --mono:"SFMono-Regular",ui-monospace,"Cascadia Mono","Consolas",monospace;
+    --serif:"Iowan Old Style","Palatino Linotype",Georgia,"Times New Roman",serif;
+    --maxw:720px;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:var(--serif);font-size:19px;line-height:1.62;
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  }
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 22px}
+  .wide{max-width:1000px;margin:0 auto;padding:0 22px}
+  a{color:#1f6f63;text-decoration:underline;text-decoration-color:rgba(31,111,99,.38);text-underline-offset:2px}
+  a:hover{text-decoration-color:#1f6f63}
+  a:focus-visible,[tabindex]:focus-visible,button:focus-visible{outline:3px solid var(--gold);outline-offset:2px;border-radius:3px}
+
+  /* hero */
+  header.hero{
+    background:
+      radial-gradient(120% 90% at 78% -10%, rgba(212,104,58,.18), transparent 60%),
+      radial-gradient(90% 80% at 8% 0%, rgba(47,158,143,.13), transparent 55%),
+      linear-gradient(180deg,var(--bg),#0c1117);
+    color:var(--paper);padding:4.4rem 0 3rem;border-bottom:1px solid var(--line-dk);
+  }
+  .hero .wrap{max-width:880px}
+  .kicker{
+    font-family:var(--sans);font-size:.72rem;font-weight:600;letter-spacing:.24em;
+    text-transform:uppercase;color:#e7a877;margin:0 0 1.5rem;display:flex;gap:.7rem;flex-wrap:wrap;align-items:center;
+  }
+  .kicker .dot{width:5px;height:5px;border-radius:50%;background:#e7a877;opacity:.7}
+  .kicker .reg{color:var(--faint);font-weight:400;letter-spacing:.12em}
+  h1{
+    font-family:var(--sans);font-weight:800;letter-spacing:-.03em;color:#fff;
+    font-size:clamp(2.3rem,7vw,4.1rem);line-height:1.02;margin:0 0 1.3rem;max-width:15ch;
+  }
+  h1 .em{color:#f0915f;font-style:normal}
+  .dek{
+    font-family:var(--serif);font-size:clamp(1.08rem,2.4vw,1.34rem);line-height:1.5;
+    color:#c4cfdb;max-width:54ch;margin:0 0 2rem;
+  }
+  .byline{
+    font-family:var(--sans);font-size:.76rem;color:var(--faint);
+    display:flex;flex-wrap:wrap;gap:.35rem .7rem;align-items:center;
+  }
+  .byline b{color:#cdd7e1;font-weight:600}
+  .byline .sep{color:var(--line-dk)}
+  .chips{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin:2.6rem 0 0}
+  .chip{
+    background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.09);
+    border-left:3px solid var(--mid);border-radius:7px;padding:.85rem .9rem .8rem;
+  }
+  .chip.low{border-left-color:var(--low)} .chip.high{border-left-color:var(--high)} .chip.g{border-left-color:var(--gold)}
+  .chip .num{
+    font-family:var(--sans);font-weight:800;font-size:clamp(1.15rem,2.5vw,1.5rem);
+    letter-spacing:-.02em;color:#fff;display:block;font-variant-numeric:tabular-nums;
+  }
+  .chip .lbl{font-family:var(--sans);font-size:.685rem;line-height:1.4;color:var(--faint);display:block;margin-top:.35rem}
+  @media (max-width:640px){.chips{grid-template-columns:repeat(2,1fr)}}
+
+  main{padding:2.8rem 0 1rem}
+  h2{
+    font-family:var(--sans);font-weight:750;font-size:clamp(1.4rem,3.3vw,1.92rem);
+    line-height:1.14;letter-spacing:-.018em;margin:3.2rem 0 1rem;color:var(--ink);
+  }
+  h2 .no{
+    font-family:var(--mono);font-weight:600;font-size:.6em;color:var(--accent);
+    margin-right:.6rem;vertical-align:.12em;letter-spacing:0;
+  }
+  h3{font-family:var(--sans);font-weight:700;font-size:1.04rem;margin:2rem 0 .5rem;letter-spacing:-.01em}
+  p{margin:0 0 1.2rem}
+  .lead{font-size:1.16rem;line-height:1.56}
+  .lead::first-letter{
+    initial-letter:3;-webkit-initial-letter:3;font-weight:800;color:var(--accent);
+    font-family:var(--sans);margin-right:.09em;
+  }
+  strong{font-weight:700;color:#000}
+  em.term{font-style:italic;color:var(--ink-soft)}
+  .pull{
+    font-family:var(--sans);font-weight:650;font-size:clamp(1.15rem,2.7vw,1.5rem);
+    line-height:1.3;letter-spacing:-.015em;color:var(--ink);
+    border-left:4px solid var(--accent);padding:.2rem 0 .2rem 1.1rem;margin:2.2rem 0;
+  }
+  .pull b{color:var(--mid)}
+
+  /* constructs / definition box */
+  .defbox{
+    background:var(--panel);color:#dde4ec;border-radius:11px;padding:1.2rem 1.3rem;
+    margin:1.8rem 0 2.2rem;font-family:var(--sans);font-size:.9rem;line-height:1.55;
+    display:grid;grid-template-columns:1fr 1fr;gap:1.1rem;
+  }
+  .defbox h4{margin:0 0 .35rem;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:#e7a877;font-weight:600}
+  .defbox .q{color:#fff;font-style:italic;font-family:var(--serif);font-size:1rem}
+  .defbox .sc{color:var(--faint);font-size:.78rem;margin-top:.3rem}
+  @media (max-width:560px){.defbox{grid-template-columns:1fr}}
+
+  /* figures */
+  figure{margin:2.4rem auto 2.6rem;padding:0}
+  .figcard{
+    background:#fff;border:1px solid var(--line);border-radius:13px;
+    padding:1.4rem 1.4rem 1.1rem;box-shadow:0 1px 2px rgba(12,17,22,.05),0 8px 24px -16px rgba(12,17,22,.2);
+  }
+  .figtitle{font-family:var(--sans);font-weight:750;font-size:1.06rem;letter-spacing:-.01em;margin:0 0 .2rem;color:var(--ink)}
+  .figsub{font-family:var(--sans);font-size:.82rem;color:var(--mut);margin:0 0 1rem;line-height:1.5}
+  figcaption{font-family:var(--sans);font-size:.78rem;color:var(--mut);line-height:1.5;margin-top:.9rem;border-top:1px solid var(--line);padding-top:.7rem}
+  figcaption b{color:var(--ink-soft)}
+
+  .controls{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin:0 0 1rem}
+  .seg{display:inline-flex;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:3px;gap:2px}
+  .seg button{
+    font-family:var(--sans);font-size:.78rem;font-weight:600;border:0;background:transparent;
+    color:var(--mut);padding:.4rem .8rem;border-radius:6px;cursor:pointer;letter-spacing:.01em;
+  }
+  .seg button[aria-pressed="true"]{background:var(--ink);color:#fff}
+  .ctl-label{font-family:var(--sans);font-size:.74rem;color:var(--mut);font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+
+  .legend{display:flex;flex-wrap:wrap;gap:.4rem 1.1rem;font-family:var(--sans);font-size:.8rem;color:var(--ink-soft);margin:.2rem 0 .2rem}
+  .legend .it{display:inline-flex;align-items:center;gap:.42rem}
+  .legend .sw{width:22px;height:3px;border-radius:2px;display:inline-block}
+  .legend .dotk{width:9px;height:9px;border-radius:50%;display:inline-block}
+
+  svg{display:block;width:100%;height:auto;overflow:visible}
+  .tip{
+    position:fixed;pointer-events:none;z-index:50;opacity:0;transition:opacity .1s;
+    background:var(--ink);color:#eef2f6;font-family:var(--sans);font-size:.78rem;line-height:1.45;
+    padding:.55rem .7rem;border-radius:8px;max-width:230px;box-shadow:0 8px 26px rgba(0,0,0,.35);
+  }
+  .tip b{color:#fff} .tip .k{color:#9fb0c1}
+  .tip .swatch{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px;vertical-align:0}
+
+  /* methods / notes */
+  .note{
+    background:var(--panel);color:#cdd6df;border-radius:12px;padding:1.5rem 1.6rem;margin:2.6rem 0 1rem;
+    font-family:var(--sans);font-size:.85rem;line-height:1.62;
+  }
+  .note h2{color:#fff;margin:0 0 .8rem;font-size:1.2rem}
+  .note p{margin:0 0 .8rem;color:#bcc6d1}
+  .note a{color:#7fd3c4;text-decoration-color:rgba(127,211,196,.4)}
+  .note a:hover{text-decoration-color:#7fd3c4}
+  .note .refs{margin:1rem 0 0;padding:1rem 0 0;border-top:1px solid var(--line-dk);font-size:.8rem}
+  .note .refs li{margin:0 0 .55rem;color:#aab6c2;list-style:none;padding-left:1.1rem;text-indent:-1.1rem}
+  .note ul{margin:0;padding:0}
+  .hl{color:var(--mid);font-weight:600} .hl-low{color:var(--low);font-weight:600} .hl-high{color:var(--high);font-weight:600}
+
+  table.fallback{border-collapse:collapse;width:100%;font-family:var(--sans);font-size:.74rem;margin-top:.8rem}
+  table.fallback caption{text-align:left;color:var(--mut);font-size:.74rem;margin-bottom:.4rem}
+  table.fallback th,table.fallback td{border:1px solid var(--line);padding:3px 6px;text-align:right}
+  table.fallback th:first-child,table.fallback td:first-child{text-align:left}
+  .visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  details.fb{margin-top:.7rem}
+  details.fb summary{font-family:var(--sans);font-size:.76rem;color:var(--mut);cursor:pointer}
+
+  footer.foot{border-top:1px solid var(--line);margin-top:2.5rem;padding:2rem 0 3rem;font-family:var(--sans);font-size:.76rem;color:var(--mut)}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <p class="kicker"><span>Reference Income &amp; Well-Being</span><span class="dot"></span><span class="reg">Gallup US Daily &middot; 2008&ndash;2017 &middot; unweighted</span></p>
+    <h1>Keeping Up <span class="em">With the County</span></h1>
+    <p class="dek">Take two Americans on the same paycheck and drop one in a richer county. The reference-group hypothesis says the richer neighbors should drag her life evaluation down. Across 2.1&nbsp;million interviews, they do &mdash; but only for some people.</p>
+    <p class="byline"><b>An analysis of the Cantril ladder</b><span class="sep">&middot;</span><span>own income held fixed</span><span class="sep">&middot;</span><span>county affluence as the reference group</span></p>
+    <div class="chips">
+      <div class="chip mid"><span class="num" data-fill="mid-rise">&minus;0.13</span><span class="lbl">Middle earners' ladder, poorest to richest county decile</span></div>
+      <div class="chip low"><span class="num" data-fill="low-rise">+0.06</span><span class="lbl">Low earners' ladder over the same span &mdash; it rises</span></div>
+      <div class="chip high"><span class="num" data-fill="high-rise">&minus;0.01</span><span class="lbl">High earners' ladder &mdash; essentially flat</span></div>
+      <div class="chip g"><span class="num" data-fill="ncty">3,135</span><span class="lbl">Counties, joined on a static income profile</span></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <p class="lead">Money raises how Americans rate their lives &mdash; that much is old news. The subtler question, the one Erzo Luttmer pressed in 2005, is whether <em class="term">other people's</em> money lowers it. If you judge your life partly by comparison, then being surrounded by wealthier neighbors should sting, even when your own bank balance hasn't moved. Luttmer found exactly that: holding a household's own earnings fixed, higher average earnings in its local area predicted <em class="term">lower</em> reported well-being. Neighbors, in his phrase, can be negatives.</p>
+
+    <p>This piece runs that test inside the United States, on a single evaluative question asked of millions of people: the Cantril ladder, where 0 is the worst possible life and 10 the best. The reference group is the county &mdash; specifically its median household income, a fixed profile of the place attached to every respondent who lives there. The trick is to hold each person's <strong>own</strong> income constant and ask what the surrounding affluence adds or subtracts.</p>
+
+    <p>The honest answer is that there is no single answer. The comparison penalty is real, but it lands almost entirely on the <strong class="hl">middle</strong>. The rich barely register it. And the poor, if anything, do slightly better among wealthier neighbors &mdash; the amenities and opportunity of a richer place outrunning any sting of comparison. One income, three different stories.</p>
+
+    <div class="defbox" aria-hidden="false">
+      <div>
+        <h4>The outcome</h4>
+        <div class="q">&ldquo;On which step of the ladder would you say you personally feel you stand at this time?&rdquo;</div>
+        <div class="sc">Cantril ladder, 0&ndash;10. Evaluative well-being &mdash; a judgment of life, not a mood. Pooled across 2008&ndash;2017.</div>
+      </div>
+      <div>
+        <h4>The reference group</h4>
+        <div class="q">County median household income</div>
+        <div class="sc">A static ~2018 county profile (ACS), joined to each interview by county of residence. A place attribute &mdash; never a measure of change over time.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ FIG 1: the diverging slopes ============ -->
+  <div class="wide">
+  <figure>
+    <div class="figcard">
+      <p class="figtitle">Same income, different neighbors</p>
+      <p class="figsub">Mean Cantril ladder by county affluence, with each person's own income held inside one of three bands. Counties are sorted into ten equal groups; each point is the average of tens of thousands of interviews.</p>
+      <div class="controls">
+        <span class="ctl-label">Reference group</span>
+        <div class="seg" role="group" aria-label="Choose the county moderator">
+          <button id="mod-income" aria-pressed="true">County income</button>
+          <button id="mod-gini" aria-pressed="false">County inequality</button>
+        </div>
+      </div>
+      <div class="legend" id="leg1"></div>
+      <div id="fig1" role="img" aria-label="Three lines of mean ladder against county-income decile: the low-income line tilts gently up, the middle-income line tilts down, the high-income line is nearly flat."></div>
+      <figcaption id="cap1"></figcaption>
+      <details class="fb"><summary>Show the underlying table</summary><div id="tab1"></div></details>
+    </div>
+  </figure>
+  </div>
+
+  <div class="wrap">
+    <p>Read the lines from left to right and the disagreement is the whole story. The <strong class="hl-low">low-income</strong> line drifts gently upward: poorer Americans report a slightly higher ladder in richer counties, a rise of about six hundredths of a point from the poorest tenth of counties to the richest. The <strong class="hl">middle-income</strong> line does the opposite, sliding down by about thirteen hundredths &mdash; small in absolute terms, but the steepest and most orderly of the three. The <strong class="hl-high">high-income</strong> line barely moves at all.</p>
+
+    <p>These are modest gradients. Thirteen hundredths of a ladder point is not a life upended; it is a faint, consistent tilt visible only because there are two million people standing on the line. The point is not the size of any one gap but the <em class="term">sign</em>: two of the three lines lean the way Luttmer predicted, and one leans the other way. The averages by tercile tell the same story more coarsely &mdash; middle earners fall from 7.14 in the poorest third of counties to 7.07 in the richest, while low earners rise from 6.35 to 6.40.</p>
+
+    <p class="pull">Hold the paycheck still and the question becomes: do the neighbors lift you or shrink you? For the <b>middle</b>, they shrink you. For the poor, they lift.</p>
+
+    <h2><span class="no">02</span>The comparison effect, net of everything</h2>
+    <p>A raw average can hide a confound. Richer counties have older residents, more college graduates, different racial composition, and they skew metropolitan &mdash; any of which could move the ladder on its own. So the real test is a regression that holds those constant and asks what is left for county affluence to explain. The model predicts the ladder from county median income (logged, then standardized) alongside a finer six-bracket measure of the person's own income, plus age, education, race, sex, and an urban-rural code. Run once for everyone, then separately inside each income band.</p>
+
+    <p>Overall, the coefficient is negative and easily significant: each additional standard deviation of log county income &mdash; roughly the distance from a $43,000-median county to a $71,000-median one &mdash; is associated with about <strong>seven thousandths of a ladder point lower</strong>, holding own income and demographics fixed. That is the comparison effect, surviving the controls. But the average buries the split.</p>
+  </div>
+
+  <!-- ============ FIG 2: the controlled coefficient by stratum ============ -->
+  <div class="wide">
+  <figure>
+    <div class="figcard">
+      <p class="figtitle">Who feels the neighbors</p>
+      <p class="figsub">Controlled association between county affluence and the ladder, by own-income band. Each estimate is the change in ladder per +1 SD of log county median income, holding own income (six brackets), age, education, race, sex and urbanicity fixed. Bars are 95% confidence intervals.</p>
+      <div id="fig2" role="img" aria-label="A dot-and-interval chart: the middle-income coefficient sits well below zero, the low-income coefficient just above zero, the high-income coefficient at zero."></div>
+      <figcaption id="cap2"></figcaption>
+    </div>
+  </figure>
+  </div>
+
+  <div class="wrap">
+    <p>Now the divergence is sharp. For <strong class="hl">middle earners</strong> the coefficient is about <strong>&minus;0.027</strong>, with a tight interval far from zero &mdash; the clearest comparison penalty in the data, and consistent with the downward slope in the first chart. For <strong class="hl-high">high earners</strong> it is essentially <strong>zero</strong> (&minus;0.000, not distinguishable from no effect). And for <strong class="hl-low">low earners</strong> the controlled estimate is a faint <strong>positive</strong> +0.003 &mdash; not significant on its own, but pointing the opposite way and matching their upward raw slope.</p>
+
+    <p>This is the reference-group hypothesis with a boundary drawn through it. The penalty is not universal; it is a property of where you sit in the distribution. The middle is the group most exposed to the comparison &mdash; high enough to feel the gap with wealthier neighbors, not high enough to be those neighbors. The rich are already at the top of the local ladder and shrug. The poor are far enough below everyone that one richer street over registers more as amenities &mdash; better services, jobs, schools &mdash; than as a wound.</p>
+
+    <h2><span class="no">03</span>Does inequality matter on its own?</h2>
+    <p>County <em class="term">average</em> income is one thing; how unequally that income is spread is another. Alesina, Di Tella and MacCulloch found that inequality itself depresses happiness &mdash; more so in Europe than America, and uneven across the income ladder. Adding the county Gini coefficient to the model, alongside mean income, lets each one compete.</p>
+
+    <p>Inequality carries an independent, negative association overall &mdash; about <strong>four thousandths</strong> of a ladder point per standard deviation, net of county mean income. But it splits by income just as the mean did, and arguably more starkly. For middle earners more local inequality reads negative (&minus;0.025); for low earners it flips firmly <strong class="hl-low">positive</strong> (+0.016), the strongest sign-reversal in the analysis. Toggle the first chart to <em class="term">county inequality</em> and the low-income line climbs visibly with the Gini, while the middle line goes flat. The poor, it seems, are not made worse off by living somewhere unequal; they may be living where the opportunity &mdash; and the higher-income jobs &mdash; actually are.</p>
+
+    <h2><span class="no">04</span>What this does, and doesn't, show</h2>
+    <p>Several cautions hold the finding in place. First and largest: county median income is entangled with the <strong>cost of living</strong>. Expensive places have high median incomes almost by definition, and a dollar buys less there; some of the middle's comparison penalty could be a budget squeeze wearing a sociologist's costume. The data here cannot separate the two, so every number is an <em class="term">association</em>, not a causal effect.</p>
+
+    <p>Second, people <strong>sort</strong>. Richer households move to richer counties, so within any own-income band the residents of expensive places differ from those of cheap ones in ways no survey fully captures. Holding own income fixed narrows that gap but does not close it. Third, the county profile is a <strong>static snapshot</strong> &mdash; a single ~2018 vintage joined to interviews stretching back to 2008 &mdash; so it describes a place's character, never its trajectory; nothing here is a change over time. The county assignment itself comes from an approximate ZIP-to-county mapping. And the Gallup sample carries no survey weight, so every figure is <strong>unweighted</strong> and describes patterns in the sample rather than calibrated national levels.</p>
+
+    <p>Finally, the effects are <strong>small</strong>. A tenth of a ladder point will not show up in any one person's life. What the two million interviews buy is confidence in the <em class="term">direction</em> and in <em class="term">who</em> bends which way &mdash; a middle that quietly measures itself against its neighbors, a top that doesn't bother, and a bottom for whom a richer county is, on balance, a better place to be.</p>
+  </div>
+
+  <div class="wrap">
+    <div class="note">
+      <h2>Notes &amp; data</h2>
+      <p><b style="color:#fff">Source.</b> Gallup US Daily tracking poll, 2008&ndash;2017 (cleaned extract), one row per interview, repeated cross-section. The outcome is the Cantril <strong>ladder</strong> (item WP16, 0&ndash;10), an <em>evaluative</em> well-being measure pooled across all years &mdash; about 2.58&nbsp;million ladder answers, of which roughly 2.07&nbsp;million also carry own income and a county-income value. The controlled model uses 2,019,756 interviews with complete controls.</p>
+      <p><b style="color:#fff">Weighting.</b> This extract contains <strong>no survey weight</strong>. All statistics are <strong>unweighted</strong> sample estimates and are labeled as such; unweighted Gallup levels need not match published weighted figures.</p>
+      <p><b style="color:#fff">Own income.</b> Three Gallup income variables, all individual-level: a three-band split (Low / Mid / High) for the protagonist lines, and a six-bracket measure (under $23K through $90K+) as the finer own-income control inside the model. The twelve-bracket official item mixes early-year monthly amounts with later annual ones, so it is not a clean ordinal axis and is not used.</p>
+      <p><b style="color:#fff">County context.</b> County median household income and the county Gini are a <strong>static ~2018 join</strong> (ACS, via the JEC Social Capital Project county file), attached to every interview year by county FIPS &mdash; place attributes, not time series. ZIP-to-county mapping is approximate for some multi-county ZIPs. County median income correlates with local cost of living, a confound that cannot be removed here. Construct: <strong>evaluative</strong>.</p>
+      <p><b style="color:#fff">Method.</b> Descriptive panels are unweighted mean ladder by own-income band across deciles of the county moderator (deciles cut over interviews, ~207,000 each). The controlled estimate is an ordinary least-squares regression of the ladder on standardized log county median income (and, in the second specification, standardized county Gini), with own income (six brackets), age group, education, race, sex and the USDA rural-urban code as controls, fit overall and within each own-income band. Estimates are associations, not causal effects.</p>
+      <ul class="refs">
+        <li>Luttmer, E. F. P. (2005). Neighbors as Negatives: Relative Earnings and Well-Being. <em><a href="https://doi.org/10.1162/003355305774268255">Quarterly Journal of Economics</a></em>, vol.&nbsp;120.</li>
+        <li>Clark, A. E., Frijters, P., &amp; Shields, M. A. (2008). Relative Income, Happiness, and Utility: An Explanation for the Easterlin Paradox and Other Puzzles. <em><a href="https://doi.org/10.1257/jel.46.1.95">Journal of Economic Literature</a></em>, vol.&nbsp;46.</li>
+        <li>Ferrer-i-Carbonell, A. (2005). Income and well-being: an empirical analysis of the comparison income effect. <em><a href="https://doi.org/10.1016/j.jpubeco.2004.06.003">Journal of Public Economics</a></em>, vol.&nbsp;89.</li>
+        <li>Alesina, A., Di Tella, R., &amp; MacCulloch, R. (2004). Inequality and happiness: are Europeans and Americans different? <em><a href="https://doi.org/10.1016/j.jpubeco.2003.07.006">Journal of Public Economics</a></em>, vol.&nbsp;88.</li>
+        <li>Easterlin, R. A. (1974). Does Economic Growth Improve the Human Lot? In <em><a href="https://doi.org/10.1016/B978-0-12-205050-3.50008-7">Nations and Households in Economic Growth</a></em>.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <footer class="foot">Gallup US Daily 2008&ndash;2017 &middot; unweighted &middot; evaluative construct (Cantril ladder) &middot; county context is a static ~2018 attribute &middot; associations, not causal effects.</footer>
+  </div>
+</main>
+
+<script type="module">
+/*DATA-START*/const DATA = {"meta":{"slug":"keeping-up-with-the-county","dataset":"Gallup US Daily 2008-2017 (cleaned extract)","years":[2008,2017],"weight":"unweighted","construct":"evaluative (ladder)","n_ladder":2575022,"n_used":2073896,"n_model":2019756,"n_counties":3135,"inc3":["Low Income","Mid Income","High Income"],"inc3_short":{"Low Income":"Low","Mid Income":"Mid","High Income":"High"},"inc6_order":["< 23K","$24,000 to $35,999","$36,000 to $47,999","$48,000 to $59,999","$60,000 to $89,999","$90,000+"],"logc_sd":0.2528,"logc_sd_dollars_lo":42947.0,"logc_sd_dollars_hi":71200.0,"logc_median_dollars":55298.0,"strat_overall":{"High Income":{"m":7.568,"n":518996},"Low Income":{"m":6.382,"n":708289},"Mid Income":{"m":7.101,"n":848884}},"moderators":{"income":"County median household income","gini":"County Gini (income inequality)"}},"tercile":{"Low Income":{"m":[6.353,6.404,6.401],"n":[299257,236209,171602]},"Mid Income":{"m":[7.14,7.096,7.068],"n":[277035,288812,282350]},"High Income":{"m":[7.575,7.579,7.557],"n":[115007,166278,237346]}},"grad_income":{"edges":{"lo":[18972.0,41173.0,45216.0,48445.0,51136.0,54357.0,57449.0,60989.0,67989.0,78800.0],"hi":[41173.0,45216.0,48445.0,51136.0,54357.0,57449.0,60989.0,67989.0,78800.0,125672.0],"av":[36855.0,43270.0,46538.0,49914.0,52679.0,55787.0,58833.0,64164.0,73474.0,90209.0],"n":[207390,207390,207390,207390,207390,207390,207389,207389,207389,207389]},"lines":{"Low Income":{"m":[6.361,6.342,6.357,6.362,6.41,6.427,6.383,6.386,6.422,6.425],"n":[101528,89566,81656,77639,72323,67808,66177,58714,50335,41322],"slope":0.0082,"rise":0.064},"Mid Income":{"m":[7.156,7.122,7.146,7.106,7.131,7.082,7.07,7.097,7.068,7.029],"n":[77287,83316,87043,87397,88621,86938,84804,89837,85608,77346],"slope":-0.0116,"rise":-0.127},"High Income":{"m":[7.551,7.568,7.596,7.579,7.601,7.575,7.568,7.576,7.559,7.537],"n":[28575,34508,38691,42354,46446,52644,56408,58838,71446,88721],"slope":-0.0021,"rise":-0.014}}},"grad_gini":{"edges":{"lo":[0.321,0.414,0.428,0.439,0.448,0.457,0.465,0.471,0.484,0.502],"hi":[0.414,0.428,0.439,0.448,0.457,0.465,0.471,0.484,0.502,0.627],"av":[0.401,0.422,0.434,0.444,0.453,0.461,0.468,0.478,0.492,0.52],"n":[207391,207390,207390,207390,207390,207390,207390,207390,207390,207390]},"lines":{"Low Income":{"m":[6.354,6.328,6.345,6.335,6.31,6.398,6.407,6.394,6.477,6.467],"n":[63645,69970,70516,74286,73617,73503,63494,71942,74076,72021],"slope":0.0158,"rise":0.113},"Mid Income":{"m":[7.079,7.108,7.117,7.102,7.09,7.137,7.083,7.111,7.116,7.064],"n":[92370,89721,88345,86085,85730,84390,82974,83301,79988,75295],"slope":-0.0007,"rise":-0.015},"High Income":{"m":[7.533,7.555,7.58,7.57,7.549,7.586,7.569,7.592,7.588,7.559],"n":[51376,47699,48529,47019,48043,49497,60922,52147,53326,60074],"slope":0.0034,"rise":0.026}}},"fine_grid":{"< 23K":{"m":[6.194,6.169,6.175,6.188,6.243,6.268,6.237,6.214,6.264,6.294],"n":[67731,56549,49842,46650,42906,40200,40099,33708,28916,23608],"rise":0.1},"$24,000 to $35,999":{"m":[6.697,6.637,6.642,6.623,6.654,6.658,6.606,6.618,6.635,6.599],"n":[33797,33017,31814,30989,29417,27608,26078,25006,21419,17714],"rise":-0.098},"$36,000 to $47,999":{"m":[6.946,6.907,6.914,6.894,6.893,6.851,6.854,6.866,6.849,6.819],"n":[26050,26678,26880,26258,25926,24600,23355,23722,21354,17461],"rise":-0.127},"$48,000 to $59,999":{"m":[7.159,7.124,7.132,7.064,7.105,7.057,7.029,7.045,7.017,6.968],"n":[21131,22630,23307,23458,23744,23011,21983,23273,21449,19193],"rise":-0.19},"$60,000 to $89,999":{"m":[7.334,7.29,7.324,7.281,7.306,7.24,7.22,7.253,7.201,7.149],"n":[30106,34008,36856,37681,38951,39327,39466,42842,42805,40692],"rise":-0.186},"$90,000+":{"m":[7.551,7.568,7.596,7.579,7.601,7.575,7.568,7.576,7.559,7.537],"n":[28575,34508,38691,42354,46446,52644,56408,58838,71446,88721],"rise":-0.013}},"model":{"overall":{"n":2019756,"cty":-0.0075,"cty_se":0.0016,"cty_lo":-0.0107,"cty_hi":-0.0044,"cty_p":2.9409659421941474e-06,"cty2":-0.0093,"cty2_lo":-0.0127,"cty2_hi":-0.0059,"gini":-0.0042,"gini_se":0.0014,"gini_lo":-0.007,"gini_hi":-0.0013,"gini_p":0.003930838323669811},"by_stratum":{"Low Income":{"n":684903,"cty":0.0028,"cty_se":0.0035,"cty_lo":-0.004,"cty_hi":0.0095,"cty_p":0.4237728919130366,"cty2":0.0094,"cty2_lo":0.0022,"cty2_hi":0.0167,"gini":0.0155,"gini_se":0.0031,"gini_lo":0.0094,"gini_hi":0.0216,"gini_p":5.868641472330777e-07},"Mid Income":{"n":827544,"cty":-0.0269,"cty_se":0.0023,"cty_lo":-0.0315,"cty_hi":-0.0223,"cty_p":1.4135743123622273e-30,"cty2":-0.0379,"cty2_lo":-0.0428,"cty2_hi":-0.0329,"gini":-0.025,"gini_se":0.0021,"gini_lo":-0.0292,"gini_hi":-0.0209,"gini_p":2.9517560598979775e-32},"High Income":{"n":507309,"cty":-0.0003,"cty_se":0.0024,"cty_lo":-0.005,"cty_hi":0.0045,"cty_p":0.9034010880630213,"cty2":-0.0023,"cty2_lo":-0.0074,"cty2_hi":0.0027,"gini":-0.0052,"gini_se":0.0022,"gini_lo":-0.0095,"gini_hi":-0.0009,"gini_p":0.01739855218316887}}}};/*DATA-END*/
+import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+
+const M = DATA.meta;
+const INK="#0c1116", SOFT="#3a4654", MUT="#6b7989", FAINT="#93a1b1", LINE="#d7dee6";
+const COL = {"Low Income":"#2f9e8f","Mid Income":"#d4683a","High Income":"#5b6bb5"};
+const ORDER = ["Low Income","Mid Income","High Income"];
+const SHORT = M.inc3_short;
+const fmt2 = d3.format(".2f"), fmtSign = d3.format("+.2f"), fmtSign3 = d3.format("+.3f");
+const fmtN = d3.format(","), fmt$ = d3.format("$,.0f");
+
+/* fill hero chips + dek numbers that come from DATA */
+function fillSpans(){
+  const li = DATA.grad_income.lines;
+  const set = (k,v)=>{const el=document.querySelector(`[data-fill="${k}"]`); if(el) el.textContent=v;};
+  set("mid-rise", fmtSign(li["Mid Income"].rise));
+  set("low-rise", fmtSign(li["Low Income"].rise));
+  set("high-rise", fmtSign(li["High Income"].rise));
+  set("ncty", fmtN(M.n_counties));
+}
+fillSpans();
+
+const tip = d3.select("body").append("div").attr("class","tip").attr("aria-hidden","true");
+function showTip(html, ev){
+  tip.html(html).style("opacity",1);
+  const bw = document.documentElement.clientWidth;
+  const tw = 230;
+  let x = ev.clientX + 15; if(x + tw > bw - 8) x = ev.clientX - tw - 15;
+  tip.style("left", x + "px").style("top", (ev.clientY - 10) + "px");
+}
+function hideTip(){ tip.style("opacity",0); }
+
+function widthOf(sel, min, max){
+  const n = document.querySelector(sel);
+  const w = n ? n.getBoundingClientRect().width : max;
+  return Math.max(min, Math.min(max, w || max));
+}
+
+/* ===================== FIG 1: diverging slopes ===================== */
+let MOD = "income"; // or "gini"
+
+function legend1(){
+  const host = d3.select("#leg1"); host.selectAll("*").remove();
+  ORDER.forEach(k=>{
+    const it = host.append("span").attr("class","it");
+    it.append("span").attr("class","sw").style("background",COL[k]);
+    it.append("span").text(`${SHORT[k]} own income`);
+  });
+}
+
+function tableFor(g, host, label){
+  const sel = d3.select(host); sel.selectAll("*").remove();
+  const t = sel.append("table").attr("class","fallback");
+  t.append("caption").text(`Mean ladder by own income and ${label} decile (1 = lowest, 10 = highest)`);
+  const head = t.append("thead").append("tr");
+  head.append("th").text("Decile");
+  ORDER.forEach(k=>head.append("th").text(SHORT[k]));
+  const tb = t.append("tbody");
+  for(let i=0;i<10;i++){
+    const tr = tb.append("tr");
+    tr.append("th").text(i+1);
+    ORDER.forEach(k=>tr.append("td").text(fmt2(g.lines[k].m[i])));
+  }
+}
+
+function drawFig1(){
+  const g = MOD==="income" ? DATA.grad_income : DATA.grad_gini;
+  const label = MOD==="income" ? "county median income" : "county inequality (Gini)";
+  const W = widthOf("#fig1", 320, 940), H = Math.max(300, Math.min(440, W*0.52));
+  const m = {t:18, r:118, b:54, l:48};
+  const host = d3.select("#fig1"); host.selectAll("*").remove();
+  const svg = host.append("svg").attr("viewBox",`0 0 ${W} ${H}`)
+    .attr("preserveAspectRatio","xMidYMid meet");
+
+  const x = d3.scaleLinear().domain([1,10]).range([m.l, W-m.r]);
+  // shared y across both moderators so the toggle is honest
+  const allv = [];
+  ["income","gini"].forEach(mm=>{
+    const gg = mm==="income"?DATA.grad_income:DATA.grad_gini;
+    ORDER.forEach(k=> gg.lines[k].m.forEach(v=>allv.push(v)));
+  });
+  const ylo = Math.floor(d3.min(allv)*20)/20 - 0.05, yhi = Math.ceil(d3.max(allv)*20)/20 + 0.05;
+  const y = d3.scaleLinear().domain([ylo, yhi]).range([H-m.b, m.t]);
+
+  // gridlines
+  const yticks = y.ticks(6);
+  svg.append("g").selectAll("line").data(yticks).join("line")
+    .attr("x1",m.l).attr("x2",W-m.r).attr("y1",d=>y(d)).attr("y2",d=>y(d))
+    .attr("stroke",LINE).attr("stroke-width",1).attr("stroke-dasharray",d=>d===Math.round(d)?null:"2,3").attr("opacity",.7);
+  svg.append("g").selectAll("text.yl").data(yticks).join("text").attr("class","yl")
+    .attr("x",m.l-9).attr("y",d=>y(d)+4).attr("text-anchor","end")
+    .attr("font-family","var(--mono)").attr("font-size",11).attr("fill",MUT).text(d=>fmt2(d));
+
+  // x axis ticks 1..10
+  svg.append("line").attr("x1",m.l).attr("x2",W-m.r).attr("y1",H-m.b).attr("y2",H-m.b).attr("stroke",SOFT).attr("stroke-width",1.2);
+  d3.range(1,11).forEach(d=>{
+    svg.append("text").attr("x",x(d)).attr("y",H-m.b+18).attr("text-anchor","middle")
+      .attr("font-family","var(--mono)").attr("font-size",10.5).attr("fill",MUT).text(d);
+  });
+  const lhs = MOD==="income" ? "Poorer counties" : "More equal counties";
+  const rhs = MOD==="income" ? "Richer counties" : "More unequal counties";
+  svg.append("text").attr("x",(m.l+(W-m.r))/2).attr("y",H-m.b+40).attr("text-anchor","middle")
+    .attr("font-family","var(--sans)").attr("font-size",12).attr("fill",SOFT)
+    .text(`${lhs}  ←   ${label} decile   →  ${rhs}`);
+  svg.append("text").attr("transform",`translate(${14},${(m.t+H-m.b)/2}) rotate(-90)`)
+    .attr("text-anchor","middle").attr("font-family","var(--sans)").attr("font-size",12).attr("fill",SOFT)
+    .text("Mean Cantril ladder (0–10)");
+
+  const line = d3.line().x((d,i)=>x(i+1)).y(d=>y(d)).curve(d3.curveMonotoneX);
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  ORDER.forEach(k=>{
+    const ld = g.lines[k];
+    const grp = svg.append("g");
+    const path = grp.append("path").attr("d",line(ld.m)).attr("fill","none")
+      .attr("stroke",COL[k]).attr("stroke-width",2.6).attr("stroke-linejoin","round").attr("stroke-linecap","round");
+    if(!reduce){
+      const L = path.node().getTotalLength();
+      path.attr("stroke-dasharray",`${L} ${L}`).attr("stroke-dashoffset",L)
+        .transition().duration(750).ease(d3.easeCubicOut).attr("stroke-dashoffset",0);
+    }
+    grp.selectAll("circle").data(ld.m).join("circle")
+      .attr("cx",(d,i)=>x(i+1)).attr("cy",d=>y(d)).attr("r",3.4)
+      .attr("fill","#fff").attr("stroke",COL[k]).attr("stroke-width",2);
+    // end label with slope
+    const yend = y(ld.m[9]);
+    const lab = grp.append("g").attr("transform",`translate(${W-m.r+10},${yend})`);
+    lab.append("text").attr("x",0).attr("y",-2).attr("font-family","var(--sans)")
+      .attr("font-size",12.5).attr("font-weight",700).attr("fill",COL[k]).text(SHORT[k]);
+    lab.append("text").attr("x",0).attr("y",13).attr("font-family","var(--mono)")
+      .attr("font-size",10.5).attr("fill",MUT).text(`${fmtSign(ld.rise)} pts`);
+  });
+
+  // hover layer: nearest decile column
+  const hov = svg.append("g");
+  for(let i=0;i<10;i++){
+    const cx = x(i+1);
+    const bw = (x(2)-x(1));
+    hov.append("rect").attr("x",cx-bw/2).attr("y",m.t).attr("width",bw).attr("height",H-m.b-m.t)
+      .attr("fill","transparent").style("cursor","crosshair")
+      .on("mousemove",(ev)=>{
+        const edges = g.edges;
+        const rng = MOD==="income" ? `${fmt$(edges.lo[i])}–${fmt$(edges.hi[i])}` : `Gini ${edges.lo[i]}–${edges.hi[i]}`;
+        let rows = ORDER.map(k=>`<div><span class="swatch" style="background:${COL[k]}"></span>${SHORT[k]}: <b>${fmt2(g.lines[k].m[i])}</b> <span class="k">n=${fmtN(g.lines[k].n[i])}</span></div>`).join("");
+        showTip(`<div class="k">Decile ${i+1} · ${rng}</div>${rows}`, ev);
+      })
+      .on("mouseleave",hideTip);
+  }
+  tableFor(g, "#tab1", label);
+
+  // caption
+  const li=DATA.grad_income.lines, gi=DATA.grad_gini.lines;
+  const capEl = d3.select("#cap1");
+  if(MOD==="income"){
+    capEl.html(`Across county-income deciles the lines disagree: <b>Mid ${fmtSign(li["Mid Income"].rise)}</b>, <b>Low ${fmtSign(li["Low Income"].rise)}</b>, <b>High ${fmtSign(li["High Income"].rise)}</b> ladder points end to end. The shared vertical scale is held across both views; the gaps are small by design. Unweighted; ${fmtN(M.n_used)} interviews.`);
+  } else {
+    capEl.html(`Against county inequality the pattern shifts: the <b>Low</b> line climbs (${fmtSign(gi["Low Income"].rise)}) while <b>Mid</b> goes flat (${fmtSign(gi["Mid Income"].rise)}). Same vertical scale as the income view. Unweighted; ${fmtN(M.n_used)} interviews.`);
+  }
+}
+
+function setMod(mod){
+  MOD = mod;
+  document.getElementById("mod-income").setAttribute("aria-pressed", mod==="income");
+  document.getElementById("mod-gini").setAttribute("aria-pressed", mod==="gini");
+  drawFig1();
+}
+document.getElementById("mod-income").addEventListener("click",()=>setMod("income"));
+document.getElementById("mod-gini").addEventListener("click",()=>setMod("gini"));
+
+/* ===================== FIG 2: controlled coefficient by stratum ===================== */
+function drawFig2(){
+  const W = widthOf("#fig2", 320, 940), H = 280;
+  const m = {t:30, r:30, b:48, l:140};
+  const host = d3.select("#fig2"); host.selectAll("*").remove();
+  const svg = host.append("svg").attr("viewBox",`0 0 ${W} ${H}`).attr("preserveAspectRatio","xMidYMid meet");
+
+  const rows = ORDER.map(k=>({k, ...DATA.model.by_stratum[k]}));
+  rows.push({k:"__all", label:"All earners", cty:DATA.model.overall.cty, cty_lo:DATA.model.overall.cty_lo, cty_hi:DATA.model.overall.cty_hi, n:DATA.model.overall.n});
+  const lab = {"Low Income":"Low income","Mid Income":"Mid income","High Income":"High income","__all":"All earners"};
+
+  const xmax = d3.max(rows,d=>Math.max(Math.abs(d.cty_lo),Math.abs(d.cty_hi)))*1.18;
+  const x = d3.scaleLinear().domain([-xmax,xmax]).range([m.l, W-m.r]);
+  const yb = d3.scaleBand().domain(rows.map(d=>d.k)).range([m.t,H-m.b]).padding(.45);
+
+  // zero line + grid
+  const axfmt = d3.format("+.2f");
+  x.ticks(5).forEach(t=>{
+    const tt = Math.abs(t) < 1e-9 ? 0 : t;
+    svg.append("line").attr("x1",x(tt)).attr("x2",x(tt)).attr("y1",m.t-6).attr("y2",H-m.b)
+      .attr("stroke", tt===0?SOFT:LINE).attr("stroke-width", tt===0?1.4:1);
+    svg.append("text").attr("x",x(tt)).attr("y",H-m.b+16).attr("text-anchor","middle")
+      .attr("font-family","var(--mono)").attr("font-size",10).attr("fill",MUT)
+      .text(tt===0 ? "0" : axfmt(tt));
+  });
+  svg.append("text").attr("x",x(0)).attr("y",m.t-14).attr("text-anchor","middle")
+    .attr("font-family","var(--sans)").attr("font-size",11).attr("fill",MUT).text("no association");
+  svg.append("text").attr("x",(m.l+(W-m.r))/2).attr("y",H-m.b+36).attr("text-anchor","middle")
+    .attr("font-family","var(--sans)").attr("font-size",11.5).attr("fill",SOFT)
+    .text("Ladder points per +1 SD of log county median income (own income & demographics held fixed)");
+
+  rows.forEach(d=>{
+    const cy = yb(d.k)+yb.bandwidth()/2;
+    const c = d.k==="__all" ? "#0c1116" : COL[d.k];
+    svg.append("text").attr("x",m.l-12).attr("y",cy+4).attr("text-anchor","end")
+      .attr("font-family","var(--sans)").attr("font-size",13).attr("font-weight",d.k==="__all"?700:600)
+      .attr("fill", d.k==="__all"?INK:c).text(lab[d.k]);
+    // interval
+    svg.append("line").attr("x1",x(d.cty_lo)).attr("x2",x(d.cty_hi)).attr("y1",cy).attr("y2",cy)
+      .attr("stroke",c).attr("stroke-width",3).attr("opacity",.45).attr("stroke-linecap","round");
+    ["cty_lo","cty_hi"].forEach(e=>svg.append("line").attr("x1",x(d[e])).attr("x2",x(d[e]))
+      .attr("y1",cy-5).attr("y2",cy+5).attr("stroke",c).attr("stroke-width",2).attr("opacity",.6));
+    const dot = svg.append("circle").attr("cx",x(d.cty)).attr("cy",cy).attr("r",d.k==="__all"?6:5.5)
+      .attr("fill",c).attr("stroke","#fff").attr("stroke-width",1.6).style("cursor","pointer");
+    dot.on("mousemove",ev=>showTip(`<b>${lab[d.k]}</b><br><span class="k">county-income coef</span> <b>${fmtSign3(d.cty)}</b><br><span class="k">95% CI</span> ${fmtSign3(d.cty_lo)} to ${fmtSign3(d.cty_hi)}<br><span class="k">n=${fmtN(d.n)}</span>`,ev))
+       .on("mouseleave",hideTip);
+    svg.append("text").attr("x",x(d.cty)).attr("y",cy-11).attr("text-anchor","middle")
+      .attr("font-family","var(--mono)").attr("font-size",11).attr("font-weight",700).attr("fill",c).text(fmtSign3(d.cty));
+  });
+
+  d3.select("#cap2").html(`The middle carries the penalty (<b>${fmtSign3(DATA.model.by_stratum["Mid Income"].cty)}</b>); high earners sit at zero (<b>${fmtSign3(DATA.model.by_stratum["High Income"].cty)}</b>); low earners lean faintly positive (<b>${fmtSign3(DATA.model.by_stratum["Low Income"].cty)}</b>, not significant). Overall <b>${fmtSign3(DATA.model.overall.cty)}</b>. Unweighted OLS; ${fmtN(DATA.model.overall.n)} interviews.`);
+}
+
+legend1();
+drawFig1();
+drawFig2();
+let rt;
+window.addEventListener("resize",()=>{clearTimeout(rt);rt=setTimeout(()=>{drawFig1();drawFig2();},180);});
+</script>
+<!--SL_BOOKNAV_START-->
+<style>
+.slbn{font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;background:#0f1417;border-top:1px solid #27313a;color:#9fb0ba;padding:24px 20px 40px;margin:48px 0 0}
+.slbn-in{max-width:1080px;margin:0 auto;display:flex;align-items:stretch;gap:12px}
+.slbn a{flex:1 1 0;min-width:0;text-decoration:none;color:inherit;border:1px solid #27313a;border-radius:10px;padding:13px 15px;display:flex;flex-direction:column;gap:4px;background:#161d22;transition:border-color .15s,transform .15s}
+.slbn a:hover{border-color:#3fa9a0;transform:translateY(-2px)}
+.slbn a:focus-visible{outline:2px solid #3fa9a0;outline-offset:2px}
+.slbn a.slbn-next{text-align:right;align-items:flex-end}
+.slbn a.slbn-toc{flex:0 0 auto;min-width:120px;justify-content:center;align-items:center;text-align:center}
+.slbn .slbn-dir{font:700 10px/1 inherit;letter-spacing:.13em;text-transform:uppercase;color:#6b7c87}
+.slbn .slbn-ttl{font:700 14px/1.3 inherit;color:#eef2f4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.slbn a.slbn-disabled{opacity:.38;pointer-events:none}
+@media(max-width:640px){.slbn-in{flex-wrap:wrap}.slbn a{flex:1 1 100%}.slbn a.slbn-next{text-align:left;align-items:flex-start}.slbn a.slbn-toc{order:-1}}
+</style>
+<nav class="slbn" aria-label="Book navigation"><div class="slbn-in"><a class="slbn-prev" href="../read.html?ch=feeling-behind" target="_top"><span class="slbn-dir">‹ Previous</span><span class="slbn-ttl">Feeling Behind</span></a><a class="slbn-toc" href="../index.html#book" target="_top"><span class="slbn-dir">The Scissors</span><span class="slbn-ttl">Chapter 27 / 36</span></a><a class="slbn-next" href="../read.html?ch=geography-of-american-thriving" target="_top"><span class="slbn-dir">Next ›</span><span class="slbn-ttl">The Geography of American Thriving</span></a></div></nav>
+<!--SL_BOOKNAV_END-->
+</body>
+</html>

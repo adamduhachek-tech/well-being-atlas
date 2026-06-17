@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Plateau Is in the Tail, Not the Mean</title>
+<meta name="description" content="Re-staging the $75,000 happiness debate on 1.8 million Gallup interviews: the income plateau is real only for the unhappiest tail of the well-being distribution. The mean hid it.">
+<style>
+  :root{
+    --bg:#16120b;
+    --bg-soft:#1d1810;
+    --card:#221c12;
+    --card-edge:#3b3220;
+    --ink:#f1e9d7;
+    --soft:#cabfa3;
+    --faint:#988b6e;
+    --rule:#3b3220;
+    --gold:#ffd978;
+    --q10:#c05f17;
+    --q25:#d6822a;
+    --q50:#e9a544;
+    --q75:#f4c468;
+    --q90:#ffe49a;
+    --mean:#efe6d2;
+    --serif:"Palatino Linotype","Book Antiqua",Palatino,"Iowan Old Style",Georgia,serif;
+    --sans:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+    --maxw:740px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:var(--serif);font-size:18.5px;line-height:1.66;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--gold)}
+  a:focus-visible,button:focus-visible,[tabindex]:focus-visible{
+    outline:3px solid var(--gold);outline-offset:2px;border-radius:2px;
+  }
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+  .wide{max-width:1060px;margin:0 auto;padding:0 20px}
+
+  /* ---------------- hero ---------------- */
+  header.hero{
+    padding:4rem 0 2.6rem;
+    background:
+      radial-gradient(1100px 480px at 50% -160px, rgba(255,217,120,.13), rgba(255,217,120,0) 70%),
+      linear-gradient(180deg,#1b150c 0%, var(--bg) 85%);
+    border-bottom:1px solid var(--rule);
+  }
+  .kicker{
+    font-family:var(--sans);font-size:.74rem;letter-spacing:.24em;
+    text-transform:uppercase;color:var(--faint);margin:0 0 1.2rem;
+  }
+  .kicker b{color:var(--gold);font-weight:600}
+  h1{
+    font-size:clamp(2.1rem,5.8vw,3.55rem);line-height:1.05;margin:0 0 1.1rem;
+    font-weight:700;letter-spacing:-.012em;max-width:18ch;
+  }
+  h1 em{font-style:italic;color:var(--gold)}
+  .dek{
+    font-size:clamp(1.06rem,2.6vw,1.28rem);line-height:1.55;color:var(--soft);
+    max-width:54ch;margin:0 0 1.5rem;
+  }
+  .byline{
+    font-family:var(--sans);font-size:.8rem;color:var(--faint);
+    display:flex;flex-wrap:wrap;gap:.3rem .55rem;align-items:center;
+  }
+  .byline .dot{color:var(--rule)}
+  .stats{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:2.2rem 0 0;
+  }
+  .stat{
+    background:linear-gradient(180deg,rgba(255,217,120,.05),rgba(255,217,120,0) 60%),var(--card);
+    border:1px solid var(--card-edge);border-radius:12px;padding:.95rem 1rem;
+  }
+  .stat .num{
+    font-family:var(--sans);font-weight:700;font-size:clamp(1.25rem,2.7vw,1.7rem);
+    letter-spacing:-.02em;display:block;
+  }
+  .stat .lbl{
+    font-family:var(--sans);font-size:.72rem;line-height:1.4;color:var(--soft);
+    display:block;margin-top:.3rem;
+  }
+  .stat.tail .num{color:var(--q50)}
+  .stat.ceiling .num{color:var(--mean)}
+  .stat.low .num{color:var(--q10)}
+  .stat.high .num{color:var(--q90)}
+  @media (max-width:700px){.stats{grid-template-columns:repeat(2,1fr)}}
+
+  /* ---------------- prose ---------------- */
+  main{padding:2.6rem 0 1rem}
+  h2{
+    font-size:clamp(1.4rem,3.4vw,1.8rem);line-height:1.18;margin:2.8rem 0 1rem;
+    letter-spacing:-.01em;
+  }
+  h2 .no{color:var(--gold);font-family:var(--sans);font-size:.8em;font-weight:600;margin-right:.55rem}
+  p{margin:0 0 1.2rem}
+  .drop::first-letter{
+    float:left;font-size:3.5em;line-height:.84;padding:.05em .1em 0 0;
+    font-weight:700;color:var(--gold);
+  }
+  strong{font-weight:700;color:#fff8e8}
+
+  .constructs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:1.7rem 0 2rem}
+  .construct{
+    background:var(--card);border:1px solid var(--card-edge);border-radius:12px;
+    padding:1rem 1.15rem;font-size:.9rem;line-height:1.55;color:var(--soft);
+  }
+  .construct h3{
+    font-family:var(--sans);font-size:.72rem;letter-spacing:.18em;
+    text-transform:uppercase;margin:0 0 .5rem;color:var(--gold);
+  }
+  .construct .q{font-style:italic;color:var(--ink)}
+  @media (max-width:580px){.constructs{grid-template-columns:1fr}}
+
+  .badge{
+    display:inline-block;font-family:var(--sans);font-size:.66rem;font-weight:700;
+    letter-spacing:.14em;text-transform:uppercase;border-radius:999px;
+    padding:.18rem .6rem;border:1px solid var(--card-edge);color:var(--gold);
+    background:rgba(255,217,120,.07);vertical-align:middle;
+  }
+
+  /* ---------------- scrolly ---------------- */
+  #scrolly{
+    position:relative;max-width:1100px;margin:1.5rem auto 0;padding:0 16px;
+    display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:28px;
+  }
+  .graphic{
+    position:sticky;top:max(10px,calc(50vh - 380px));align-self:start;
+    padding:.4rem 0 .8rem;z-index:0;
+  }
+  .fig-title{font-family:var(--sans);font-weight:700;font-size:1.04rem;margin:0 0 .15rem}
+  .fig-sub{font-family:var(--sans);font-size:.78rem;color:var(--soft);margin:0 0 .55rem;line-height:1.45}
+  .toggles{
+    display:flex;flex-wrap:wrap;gap:6px;margin:.25rem 0 .55rem;
+    font-family:var(--sans);
+  }
+  .toggles .tl{
+    font-size:.7rem;color:var(--faint);align-self:center;margin-right:.15rem;
+    letter-spacing:.12em;text-transform:uppercase;
+  }
+  .toggles button{
+    border:1px solid var(--card-edge);background:var(--card);color:var(--soft);
+    font-family:var(--sans);font-size:.74rem;font-weight:600;border-radius:999px;
+    padding:.3rem .75rem;cursor:pointer;transition:background .15s,color .15s;
+  }
+  .toggles button:hover{color:var(--ink)}
+  .toggles button[aria-pressed="true"]{
+    background:var(--gold);color:#221a08;border-color:var(--gold);
+  }
+  #fan-wrap svg{display:block;width:100%;height:auto}
+  .readout{
+    min-height:66px;margin-top:.5rem;padding:.6rem .8rem;
+    border:1px dashed var(--card-edge);border-radius:10px;
+    font-family:var(--sans);font-size:.8rem;line-height:1.55;color:var(--soft);
+    background:rgba(34,28,18,.6);
+  }
+  .readout b{color:var(--ink)}
+  .readout .rq{color:var(--gold)}
+  .steps{position:relative;z-index:2;padding:6vh 0 4vh}
+  .step{
+    background:rgba(27,22,13,.93);border:1px solid var(--card-edge);
+    border-left:4px solid var(--gold);
+    border-radius:12px;padding:1.05rem 1.2rem;margin:0 0 72vh;
+    font-size:.98rem;line-height:1.6;color:var(--soft);
+    opacity:.5;transition:opacity .3s, border-color .3s;
+    backdrop-filter:blur(2px);
+  }
+  .step:last-child{margin-bottom:30vh}
+  .step.active{opacity:1}
+  .step h3{
+    font-family:var(--sans);font-size:.74rem;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--gold);margin:0 0 .5rem;
+  }
+  .step p{margin:0}
+  .step b{color:var(--ink)}
+  @media (max-width:880px){
+    #scrolly{grid-template-columns:1fr;gap:0}
+    .graphic{
+      top:0;background:linear-gradient(180deg,var(--bg) 88%,rgba(22,18,11,0));
+      padding-top:.5rem;
+    }
+    .readout{min-height:84px}
+    .steps{max-width:480px;margin:0 auto;padding-top:4vh}
+    .step{margin-bottom:78vh}
+  }
+
+  /* ---------------- figures ---------------- */
+  figure{margin:2.4rem auto;max-width:1060px;padding:0 20px}
+  figure svg{display:block;width:100%;height:auto}
+  figcaption{
+    font-family:var(--sans);font-size:.74rem;color:var(--faint);
+    margin-top:.55rem;line-height:1.5;max-width:74ch;
+  }
+  .fig-head{margin-bottom:.5rem}
+
+  /* ---------------- honesty + notes ---------------- */
+  .honest{
+    border:1px solid var(--card-edge);border-radius:14px;background:var(--bg-soft);
+    padding:1.4rem 1.5rem .6rem;margin:2.4rem 0;
+  }
+  .honest h2{margin-top:.2rem;font-size:1.25rem}
+  .honest ul{margin:0 0 .9rem;padding-left:1.2rem}
+  .honest li{margin:0 0 .8rem;font-size:.95rem;color:var(--soft)}
+  .honest li b{color:var(--ink)}
+  footer.notes{
+    border-top:1px solid var(--rule);margin-top:3rem;padding:2rem 0 3.5rem;
+    background:var(--bg-soft);
+  }
+  footer.notes h2{font-size:1.1rem;margin-top:0}
+  footer.notes p, footer.notes li{
+    font-family:var(--sans);font-size:.8rem;line-height:1.65;color:var(--soft);
+  }
+  footer.notes ul{padding-left:1.1rem;margin:.4rem 0 1rem}
+  footer.notes li{margin-bottom:.45rem}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="kicker">Money &amp; well-being · Gallup US Daily · <b>1.8 million interviews</b> · unweighted</p>
+    <h1>The plateau is in the <em>tail</em>, not the mean</h1>
+    <p class="dek">For more than a decade, social science fought over whether money stops buying happiness around $75,000. Re-run the question on 1.8&nbsp;million Gallup interviews — the same survey the fight began on — and the answer is that everyone was staring at the wrong line.</p>
+    <div class="byline">
+      <span>Gallup US Daily Poll, 2009–2017</span><span class="dot">·</span>
+      <span>life ratings: evaluative · daily feelings: experiential</span><span class="dot">·</span>
+      <span>all estimates unweighted</span>
+    </div>
+    <div class="stats" role="group" aria-label="Headline statistics">
+      <div class="stat tail"><span class="num">+3.39</span><span class="lbl">climb of the <b>10th percentile</b> of life ratings (0–10), poorest to richest income bracket</span></div>
+      <div class="stat ceiling"><span class="num">−0.11</span><span class="lbl">move of the <b>90th percentile</b> across the same span — it starts at the ceiling</span></div>
+      <div class="stat low"><span class="num">−1.7 pts</span><span class="lbl">drop in the share rating life <b>4 or below</b> over the final doubling of income</span></div>
+      <div class="stat high"><span class="num">+11.6 pts</span><span class="lbl">rise in the share rating life <b>8 or above</b> over that same final doubling</span></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="wrap">
+    <p class="drop">In 2010, Daniel Kahneman and Angus Deaton published the most quoted number in the economics of happiness. Working from roughly 450,000 responses to Gallup's daily tracking poll — the same survey behind every figure on this page — they reported that day-to-day emotional well-being stopped improving once household income reached about <strong>$75,000</strong>, even though people's overall ratings of their lives kept climbing. The finding escaped the journals instantly. It became a salary negotiation talking point, a sermon, a personal-finance commandment.</p>
+    <p>Then it broke. In 2021, Matthew Killingsworth measured experienced well-being with smartphone check-ins — 1,725,994 reports in the moment — and found no plateau at all: well-being kept rising past $75,000, in a straight line against the logarithm of income. Two careful studies, same question, opposite answers. So Kahneman and Killingsworth did something rare: they teamed up, with Barbara Mellers refereeing, and re-analyzed Killingsworth's data together. Their 2023 resolution is the punchline of this article. <strong>Both sides were right — about different people.</strong> Among the <em>unhappiest</em> fraction of the population, money genuinely stops helping at higher incomes, with the flattening setting in somewhere around $100,000. For everyone else there is no plateau, and for the happiest there may even be an acceleration.</p>
+    <p>The moral is not about money; it is about averages. A mean curve is one line summarizing millions of different lives, and a plateau confined to a minority simply vanishes inside it. The original $75,000 paper and its refutation were both, in the end, arguments about a mean. So here is the same question, re-staged on the original battlefield — 1,808,814 Gallup interviews from 2009 through 2017 that carry both a life rating and an income bracket — showing the <strong>whole distribution</strong> of well-being at every income level, not its average.</p>
+    <div class="constructs">
+      <div class="construct">
+        <h3>Evaluative — the ladder</h3>
+        <span class="q">“On which step of the ladder would you say you stand at this time?”</span>
+        0 is the worst possible life, 10 the best. A judgment of your life as a whole. This is the measure in the fan chart below.
+      </div>
+      <div class="construct">
+        <h3>Experiential — yesterday</h3>
+        <span class="q">“Did you experience enjoyment / stress / worry during a lot of the day yesterday?”</span>
+        Yes or no. Feelings, not verdicts. Kahneman &amp; Deaton's plateau claim was about <em>these</em> — they return at the end.
+      </div>
+    </div>
+  </section>
+
+  <section id="scrolly" aria-label="Scroll-driven chart: from the average to the quantile fan">
+    <div class="graphic">
+      <p class="fig-title">One income axis, the whole well-being distribution <span class="badge">evaluative</span></p>
+      <p class="fig-sub">Cantril ladder (0–10) by household income bracket, log scale · percentile curves from grouped-data interpolation · Gallup US Daily 2009–2017, unweighted · n = 1,808,814</p>
+      <div class="toggles" id="grp-toggles" role="group" aria-label="Subgroup overlay controls">
+        <span class="tl">Overlay</span>
+        <button type="button" data-grp="" aria-pressed="true">All adults</button>
+        <button type="button" data-grp="edu:High school" aria-pressed="false">High school</button>
+        <button type="button" data-grp="edu:Some college" aria-pressed="false">Some college</button>
+        <button type="button" data-grp="edu:College+" aria-pressed="false">College+</button>
+        <button type="button" data-grp="age:18-34" aria-pressed="false">Ages 18–34</button>
+        <button type="button" data-grp="age:35-54" aria-pressed="false">35–54</button>
+        <button type="button" data-grp="age:55+" aria-pressed="false">55+</button>
+      </div>
+      <div id="fan-wrap"></div>
+      <div class="readout" id="readout" aria-live="polite"></div>
+    </div>
+    <div class="steps">
+      <div class="step" data-stage="0">
+        <h3>1 · The line everyone fights about</h3>
+        <p>The <b>average</b> ladder rating climbs from <b>6.06</b> in the poorest bracket to 7.3 around $60–90k and <b>7.67</b> at the top — close to a straight line against log income, with no plateau in sight. Sixteen years of argument have been waged over the shape of this one line.</p>
+      </div>
+      <div class="step" data-stage="1">
+        <h3>2 · Split it open</h3>
+        <p>Same data, five percentile curves. Below $6,000, the middle 80 percent of ratings runs from <b>2.3 to 9.6</b> — nearly the entire scale. In the top bracket it runs 5.7 to 9.5. The fan doesn't ride upward with income so much as it <b>closes from below</b>: what money tracks is the depth of the unhappy tail.</p>
+      </div>
+      <div class="step" data-stage="2">
+        <h3>3 · The bottom of the fan bends</h3>
+        <p>The 10th percentile climbs from 2.31 to <b>5.06</b> by the $60–90k bracket — 81 percent of its total rise — then gains just <b>+0.64</b> over the final doubling of income. This bending bottom edge is the plateau the 2023 adversarial collaboration conceded: real, but confined to the least happy.</p>
+      </div>
+      <div class="step" data-stage="3">
+        <h3>4 · The top is pinned to the ceiling</h3>
+        <p>The 90th percentile sits between <b>9.3 and 9.6 in every bracket</b> — highest, oddly, among the poorest. An 11-rung ladder leaves the already-delighted no room to report gains, so percentiles go mute at the top. To hear what happens there, count people past fixed thresholds instead — next chart.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <h2><span class="no">↓</span>Chunky scale, honest shares</h2>
+    <p>Percentiles of an 11-step scale are awkward creatures — they jump in lumps, and our smooth curves above lean on an interpolation convention (stated in the notes). The sturdier framing is to count people past a fixed rung. Two shares tell the whole story. The share rating their life <strong>4 or below</strong> — the unhappy tail — collapses from 24.6% in the poorest bracket to 5.0% by $60–90k, and then nearly stops: only 3.3% in the top bracket. Per doubling of income, that's a fall of 5.9 points across the middle of the range but just <strong>1.7 points over the final doubling</strong>. The floor is in sight, and more money barely moves it.</p>
+    <p>The share rating their life <strong>8 or above</strong> does the opposite. It rises from 33.7% to 49.9% by $60–90k — and then <em>keeps</em> rising, 54.6% between $90,000 and $120,000 and 61.5% at the top: <strong>+11.6 points over the final doubling</strong>, faster than the +7.3 points per doubling it managed across the middle incomes. No satiation, no slowdown — if anything, the opposite. One distribution, two regimes: the unhappy minority's income curve flattens right where Kahneman and Deaton said happiness stops; the thriving majority's curve never does, exactly as Stevenson and Wolfers, and later Killingsworth, insisted.</p>
+  </section>
+
+  <figure id="fig-thresh">
+    <div class="fig-head">
+      <p class="fig-title">Two thresholds, two regimes <span class="badge">evaluative</span></p>
+      <p class="fig-sub">Share of respondents rating their life 4 or below vs 8 or above, by household income bracket · Gallup US Daily 2009–2017, unweighted</p>
+    </div>
+    <div id="thresh-wrap"></div>
+    <figcaption>Binomial standard errors are at most 0.21 percentage points per bracket — narrower than the plotted lines — so no uncertainty band is drawn. Income is the bracketed household total; the log axis uses assigned bracket midpoints.</figcaption>
+  </figure>
+
+  <section class="wrap">
+    <h2><span class="no">↓</span>Not a composition story</h2>
+    <p>A skeptic should ask whether the rising top is just composition — richer brackets hold more college graduates and more 55-year-olds, groups that rate life differently. So cut the sample into nine age-by-education cells and re-run the top end of the curve inside each one. The answer survives everywhere: from the $60–90k bracket to the top bracket, the share rating life 8 or above rises in <strong>all nine cells</strong>, by +3.1 points (high-school educated, 55 and over) up to +15.4 points (college graduates, 35–54). The unhappy share, meanwhile, moves by at most 2.6 points in any cell. The split between a flattening bottom and a climbing top is not an artifact of who sits in which bracket.</p>
+  </section>
+
+  <figure id="fig-cells">
+    <div class="fig-head">
+      <p class="fig-title">The top keeps rising inside every age × education cell <span class="badge">evaluative</span></p>
+      <p class="fig-sub">Change from the $60–90k bracket to the $120,000-and-over bracket, in percentage points · cells with fewer than 2,500 respondents per bracket would be suppressed; none were</p>
+    </div>
+    <div id="cells-wrap"></div>
+    <figcaption>Within-cell change in the share rating life 8 or above (gold) and the fall in the share rating 4 or below (copper), Gallup US Daily 2009–2017, unweighted.</figcaption>
+  </figure>
+
+  <section class="wrap">
+    <h2><span class="no">↓</span>The claim that started it was about feelings — and it still holds</h2>
+    <p>Kahneman and Deaton's satiation point was never about ladder ratings; it was about <em>emotions yesterday</em>. This file carries those too, and inside a single survey regime — 2009 through 2012, about 1.1&nbsp;million interviews with an income bracket — the original result re-appears almost exactly as advertised. The share who experienced <strong>enjoyment</strong> a lot of the day yesterday climbs from 75% in the poorest bracket to 89% by $60–90k, then creeps up barely a point across the entire top half of the income range. <strong>Worry</strong> falls from 47% to 26.3% by $60–90k and then refuses to fall further — flat to the top bracket. <strong>Sadness</strong> bottoms out around 11%. And <strong>stress</strong> is the strange one: it falls only to about 35% in the $36–48k bracket, then curls back <em>up</em> to 37.8% among the highest earners.</p>
+    <p>Set side by side, the two constructs split cleanly. Daily feelings satiate near the famous threshold, on schedule. Life evaluation — once you look past its mean to its distribution — satiates only for the unhappy tail, while the share of lives rated 8 or above keeps compounding with every doubling of income. The 2010 paper, its 2021 refutation, and the 2023 truce all live comfortably inside one dataset, each describing a different slice of it.</p>
+  </section>
+
+  <figure id="fig-affect">
+    <div class="fig-head">
+      <p class="fig-title">Feelings yesterday: satiation on schedule <span class="badge">experiential</span></p>
+      <p class="fig-sub">Share experiencing each feeling “during a lot of the day yesterday,” by household income bracket · Gallup US Daily <b>2009–2012 only</b> (single survey regime), unweighted</p>
+    </div>
+    <div id="affect-wrap"></div>
+    <figcaption>The affect items changed sampling design in 2013; every number here lives entirely within the 2009–2012 regime and is never pooled or compared across that boundary. Enjoyment, happiness, stress, worry and sadness are binary yes/no items — experiential measures, kept strictly apart from the evaluative ladder above.</figcaption>
+  </figure>
+
+  <section class="wrap">
+    <div class="honest">
+      <h2>What this does — and doesn't — show</h2>
+      <ul>
+        <li><b>Unweighted.</b> This extract of the Gallup Daily file carries no survey weight, so every figure is an unweighted sample estimate. The patterns and contrasts are the claim; the levels may not match Gallup's published, weighted numbers.</li>
+        <li><b>Association, not cause.</b> These are cross-sections. People who rate their lives higher may earn more because of health, partnership, or temperament; nothing here says a raise will move anyone up the ladder. The finding is about the <em>shape</em> of the income gradient, not its mechanism.</li>
+        <li><b>Income is coarse.</b> Brackets, household-level, not adjusted for household size, with an open-ended top. The log axis relies on assigned midpoints, including $150,000 for the top bracket — an assumption, stated, not data.</li>
+        <li><b>Rulers bend before lives do.</b> The 90th percentile's flatness is partly the scale's ceiling, which is exactly why the threshold shares carry the argument. The plateau in the unhappy tail has a floor-effect flavor of its own — at 3.3% there is little left to compress. And measured per <em>doubling</em> rather than per bracket, the 10th percentile's bend is modest (0.75 then 0.64 rungs per doubling): part of the famous disagreement was always about rulers — dollars versus doublings, means versus tails.</li>
+        <li><b>The poorest bracket is strange.</b> Reported incomes under $6,000 are noisy (the two official sub-brackets there were non-monotone and merged for display), and the bracket is polarized: 25% rate their lives 4 or below, yet 11% rate a perfect 10 — a wider spread than anywhere else on the income axis.</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer class="notes">
+    <div class="wrap">
+      <h2>Notes &amp; data</h2>
+      <p><strong>Source.</strong> Gallup US Daily Poll (“Motherlode” extract), repeated cross-section. Ladder analyses pool 2009–2017: <strong>1,808,814 interviews</strong> with both a Cantril ladder rating (0–10, evaluative) and an income bracket. 2008 is excluded from ladder series because of a documented level discontinuity in that year. All estimates are <strong>unweighted</strong> — no survey weight exists in this extract.</p>
+      <p><strong>Affect window.</strong> The “yesterday” items (enjoyment, happiness, stress, worry, sadness — binary, experiential) changed sampling design at 2013; all affect statistics here use <strong>2009–2012 only</strong> (about 1.1&nbsp;million interviews with income) and are never pooled or trended across that boundary. Evaluative and experiential measures are labeled and never conflated.</p>
+      <p><strong>Income axis.</strong> Official Gallup bracket variable, whose harmonized labels are identical in every year 2008–2017, preferred over the 6-bracket collapse because it splits the top into $90,000–119,999 and $120,000-and-over — where the plateau question lives. The two brackets under $6,000 (about 1 in 70 respondents) were merged after showing non-monotone well-being typical of misreported near-zero incomes. Log axis midpoints are assigned; the open top bracket is set to $150,000 (1.25× its lower bound).</p>
+      <p><strong>Method.</strong> Percentile curves use grouped-data interpolation (a rating of k is treated as spread over k−½ to k+½, the cumulative distribution inverted, results clamped to 0–10); raw integer percentiles and the threshold shares P(rating ≤ 4) and P(rating ≥ 8) are computed alongside as the honest discrete framing. Any displayed cell under 2,500 respondents would be suppressed; none of the cells shown required it. Binomial standard errors on shares peak at 0.21 points, thinner than the plotted lines, so no bands are drawn. Every number on this page is computed by <code>analysis/plateau-in-the-tail/build_data.py</code> and registered in <code>claims.json</code>.</p>
+      <p><strong>Literature.</strong></p>
+      <ul>
+        <li>Kahneman, D. &amp; Deaton, A. (2010). High income improves evaluation of life but not emotional well-being. <a href="https://www.pnas.org/doi/10.1073/pnas.1011492107">PNAS 107(38)</a>.</li>
+        <li>Stevenson, B. &amp; Wolfers, J. (2013). Subjective well-being and income: is there any evidence of satiation? <a href="https://www.aeaweb.org/articles?id=10.1257/aer.103.3.598">AER Papers &amp; Proceedings 103(3)</a>.</li>
+        <li>Killingsworth, M. A. (2021). Experienced well-being rises with income, even above $75,000 per year. <a href="https://www.pnas.org/doi/10.1073/pnas.2016976118">PNAS 118(4)</a>.</li>
+        <li>Killingsworth, M. A., Kahneman, D. &amp; Mellers, B. (2023). Income and emotional well-being: a conflict resolved. <a href="https://www.pnas.org/doi/10.1073/pnas.2208661120">PNAS 120(10)</a>.</li>
+      </ul>
+    </div>
+  </footer>
+</main>
+
+<script type="module">
+import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+
+const DATA = {"meta":{"slug":"plateau-in-the-tail","title":"The Plateau Is in the Tail, Not the Mean","dataset":"Gallup US Daily ('Motherlode' extract)","weight":"unweighted - this extract has no survey weight; all values are unweighted sample estimates","ladder_years":"2009-2017 pooled (2008 excluded: documented level discontinuity)","affect_years":"2009-2012 only (entirely within the pre-2013 affect sampling regime)","income_axis":"income_official, 10 harmonized brackets identical in every year; bottom two (under $6,000; ~1.4% of sample, non-monotone) merged -> 9 brackets","constructs":{"ladder":"evaluative (Cantril ladder 0-10, current life)","affect":"experiential (felt it 'a lot of the day yesterday', binary)"},"quantile_method":"grouped-data interpolation: ladder value k uniform on [k-0.5,k+0.5), CDF inverted, clamped to [0,10]; raw integer quantiles and threshold shares reported alongside","midpoint_note":"log axis uses assigned bracket midpoints; open top bracket set to $150,000 (1.25x its $120,000 lower bound)","suppression":"cells with n < 2500 suppressed (none of the displayed marginal cells triggered)","n_ladder_sample":1808814,"n_ladder_millions":1.8,"n_affect_sample":1118169,"n_affect_millions":1.1,"max_binomial_se_pp":0.21,"doublings_low":4.64,"doublings_high":1.0,"doublings_midseg":2.06},"brackets":[{"key":"<6K","label":"under $6,000","short":"<$6k","mid":3000,"n":49531,"mean":6.06,"q":{"p10":2.31,"p25":4.53,"p50":6.33,"p75":8.04,"p90":9.6},"qraw":{"p10":2,"p25":5,"p50":6,"p75":8,"p90":10},"le4":0.2455,"ge8":0.3368,"se_le4":0.00193,"se_ge8":0.00212,"hist":[0.0381,0.0285,0.0412,0.0633,0.0745,0.1724,0.0993,0.146,0.16,0.0658,0.1109]},{"key":"6-12K","label":"$6,000–11,999","short":"$6–12k","mid":9000,"n":92380,"mean":6.128,"q":{"p10":2.74,"p25":4.63,"p50":6.18,"p75":8.04,"p90":9.63},"qraw":{"p10":3,"p25":5,"p50":6,"p75":8,"p90":10},"le4":0.2236,"ge8":0.3332,"se_le4":0.00137,"se_ge8":0.00155,"hist":[0.0285,0.0228,0.0342,0.0621,0.0761,0.205,0.1052,0.133,0.1552,0.0624,0.1156]},{"key":"12-24K","label":"$12,000–23,999","short":"$12–24k","mid":18000,"n":232890,"mean":6.385,"q":{"p10":3.52,"p25":4.89,"p50":6.56,"p75":8.03,"p90":9.43},"qraw":{"p10":4,"p25":5,"p50":7,"p75":8,"p90":9},"le4":0.1717,"ge8":0.3497,"se_le4":0.00078,"se_ge8":0.00099,"hist":[0.014,0.0132,0.0236,0.0475,0.0734,0.2001,0.1179,0.1607,0.1863,0.0683,0.0951]},{"key":"24-36K","label":"$24,000–35,999","short":"$24–36k","mid":30000,"n":241563,"mean":6.703,"q":{"p10":4.16,"p25":5.26,"p50":6.92,"p75":8.11,"p90":9.32},"qraw":{"p10":4,"p25":5,"p50":7,"p75":8,"p90":9},"le4":0.1198,"ge8":0.3864,"se_le4":0.00066,"se_ge8":0.00099,"hist":[0.0062,0.0068,0.0139,0.0339,0.059,0.1705,0.1267,0.1966,0.2222,0.0779,0.0863]},{"key":"36-48K","label":"$36,000–47,999","short":"$36–48k","mid":42000,"n":210066,"mean":6.937,"q":{"p10":4.58,"p25":5.67,"p50":7.16,"p75":8.19,"p90":9.31},"qraw":{"p10":5,"p25":6,"p50":7,"p75":8,"p90":9},"le4":0.0882,"ge8":0.4244,"se_le4":0.00062,"se_ge8":0.00108,"hist":[0.0042,0.0044,0.0093,0.0239,0.0464,0.1403,0.1251,0.222,0.2519,0.0898,0.0827]},{"key":"48-60K","label":"$48,000–59,999","short":"$48–60k","mid":54000,"n":194997,"mean":7.118,"q":{"p10":4.78,"p25":6.05,"p50":7.33,"p75":8.26,"p90":9.34},"qraw":{"p10":5,"p25":6,"p50":7,"p75":8,"p90":9},"le4":0.0678,"ge8":0.4602,"se_le4":0.00057,"se_ge8":0.00113,"hist":[0.0029,0.0034,0.0068,0.018,0.0366,0.117,0.1192,0.2359,0.2761,0.1001,0.084]},{"key":"60-90K","label":"$60,000–89,999","short":"$60–90k","mid":75000,"n":333955,"mean":7.298,"q":{"p10":5.06,"p25":6.51,"p50":7.5,"p75":8.31,"p90":9.32},"qraw":{"p10":5,"p25":7,"p50":7,"p75":8,"p90":9},"le4":0.0496,"ge8":0.499,"se_le4":0.00038,"se_ge8":0.00087,"hist":[0.0018,0.0022,0.0048,0.013,0.0278,0.0897,0.1093,0.2524,0.3063,0.113,0.0796]},{"key":"90-120K","label":"$90,000–119,999","short":"$90–120k","mid":105000,"n":158376,"mean":7.473,"q":{"p10":5.45,"p25":6.71,"p50":7.64,"p75":8.38,"p90":9.35},"qraw":{"p10":5,"p25":7,"p50":8,"p75":8,"p90":9},"le4":0.0365,"ge8":0.5459,"se_le4":0.00047,"se_ge8":0.00125,"hist":[0.0017,0.0019,0.0038,0.0096,0.0195,0.0666,0.093,0.258,0.335,0.13,0.081]},{"key":"120K+","label":"$120,000 and over","short":"$120k+","mid":150000,"n":295056,"mean":7.671,"q":{"p10":5.7,"p25":6.9,"p50":7.83,"p75":8.57,"p90":9.49},"qraw":{"p10":6,"p25":7,"p50":8,"p75":9,"p90":9},"le4":0.0325,"ge8":0.6148,"se_le4":0.00033,"se_ge8":0.0009,"hist":[0.0015,0.0021,0.0037,0.0085,0.0168,0.053,0.0727,0.2271,0.3526,0.1635,0.0987]}],"slopes":{"p10":{"v_bottom":2.31,"v_mid":5.06,"v_top":5.7,"gain_low":2.75,"gain_high":0.64,"per_doubling_low":0.592,"per_doubling_high":0.64},"p25":{"v_bottom":4.53,"v_mid":6.51,"v_top":6.9,"gain_low":1.98,"gain_high":0.39,"per_doubling_low":0.426,"per_doubling_high":0.39},"p50":{"v_bottom":6.33,"v_mid":7.5,"v_top":7.83,"gain_low":1.17,"gain_high":0.33,"per_doubling_low":0.252,"per_doubling_high":0.33},"p75":{"v_bottom":8.04,"v_mid":8.31,"v_top":8.57,"gain_low":0.27,"gain_high":0.26,"per_doubling_low":0.058,"per_doubling_high":0.26},"p90":{"v_bottom":9.6,"v_mid":9.32,"v_top":9.49,"gain_low":-0.28,"gain_high":0.17,"per_doubling_low":-0.06,"per_doubling_high":0.17},"mean":{"v_bottom":6.06,"v_mid":7.298,"v_top":7.671,"gain_low":1.24,"gain_high":0.37,"per_doubling_low":0.267,"per_doubling_high":0.373}},"perdbl":{"p10_midseg":0.75,"p10_top":0.64,"le4_midseg_pp":5.9,"le4_top_pp":1.7,"ge8_midseg_pp":7.3,"ge8_top_pp":11.6},"totals":{"p10_total":3.39,"p90_total":-0.11,"p10_share_below":0.81},"affect":[{"key":"enjoyment","label":"Enjoyment","negative":false,"vals":[{"bk":"<6K","n":30476,"share":0.75},{"bk":"6-12K","n":62812,"share":0.7324},{"bk":"12-24K","n":154527,"share":0.7975},{"bk":"24-36K","n":154777,"share":0.8427},{"bk":"36-48K","n":137638,"share":0.8658},{"bk":"48-60K","n":122928,"share":0.8749},{"bk":"60-90K","n":203950,"share":0.8868},{"bk":"90-120K","n":87764,"share":0.8912},{"bk":"120K+","n":163297,"share":0.8956}]},{"key":"happiness_yest","label":"Happiness","negative":false,"vals":[{"bk":"<6K","n":30456,"share":0.783},{"bk":"6-12K","n":62712,"share":0.7748},{"bk":"12-24K","n":154424,"share":0.8326},{"bk":"24-36K","n":154689,"share":0.8734},{"bk":"36-48K","n":137565,"share":0.896},{"bk":"48-60K","n":122934,"share":0.9056},{"bk":"60-90K","n":203892,"share":0.9158},{"bk":"90-120K","n":87771,"share":0.9206},{"bk":"120K+","n":163268,"share":0.9217}]},{"key":"stress","label":"Stress","negative":true,"vals":[{"bk":"<6K","n":30528,"share":0.5148},{"bk":"6-12K","n":62971,"share":0.4723},{"bk":"12-24K","n":154828,"share":0.401},{"bk":"24-36K","n":154928,"share":0.3685},{"bk":"36-48K","n":137728,"share":0.3545},{"bk":"48-60K","n":123024,"share":0.3551},{"bk":"60-90K","n":203999,"share":0.3593},{"bk":"90-120K","n":87801,"share":0.3709},{"bk":"120K+","n":163359,"share":0.3783}]},{"key":"worry","label":"Worry","negative":true,"vals":[{"bk":"<6K","n":30550,"share":0.4743},{"bk":"6-12K","n":63012,"share":0.4581},{"bk":"12-24K","n":154856,"share":0.3774},{"bk":"24-36K","n":154918,"share":0.3183},{"bk":"36-48K","n":137753,"share":0.2886},{"bk":"48-60K","n":123042,"share":0.2748},{"bk":"60-90K","n":204035,"share":0.2628},{"bk":"90-120K","n":87805,"share":0.26},{"bk":"120K+","n":163372,"share":0.2605}]},{"key":"sadness","label":"Sadness","negative":true,"vals":[{"bk":"<6K","n":30535,"share":0.3266},{"bk":"6-12K","n":62982,"share":0.3451},{"bk":"12-24K","n":154803,"share":0.2561},{"bk":"24-36K","n":154922,"share":0.1906},{"bk":"36-48K","n":137771,"share":0.1581},{"bk":"48-60K","n":123063,"share":0.1388},{"bk":"60-90K","n":204048,"share":0.1216},{"bk":"90-120K","n":87820,"share":0.1088},{"bk":"120K+","n":163396,"share":0.1098}]}],"subgroups":{"edu":[{"key":"High school","rows":[{"bk":"<6K","n":22606,"p10":1.95,"p50":6.12,"p90":9.81,"le4":0.2517,"ge8":0.3501},{"bk":"6-12K","n":52520,"p10":2.76,"p50":6.29,"p90":9.79,"le4":0.2087,"ge8":0.3615},{"bk":"12-24K","n":110424,"p10":3.56,"p50":6.6,"p90":9.64,"le4":0.1613,"ge8":0.373},{"bk":"24-36K","n":86011,"p10":4.12,"p50":6.9,"p90":9.58,"le4":0.1214,"ge8":0.399},{"bk":"36-48K","n":55327,"p10":4.52,"p50":7.12,"p90":9.58,"le4":0.0965,"ge8":0.427},{"bk":"48-60K","n":40769,"p10":4.64,"p50":7.28,"p90":9.61,"le4":0.0791,"ge8":0.4549},{"bk":"60-90K","n":48605,"p10":4.78,"p50":7.38,"p90":9.58,"le4":0.0653,"ge8":0.4741},{"bk":"90-120K","n":17211,"p10":4.94,"p50":7.51,"p90":9.59,"le4":0.0548,"ge8":0.5039},{"bk":"120K+","n":27735,"p10":4.86,"p50":7.63,"p90":9.78,"le4":0.0629,"ge8":0.5376}]},{"key":"Some college","rows":[{"bk":"<6K","n":15443,"p10":2.37,"p50":6.21,"p90":9.19,"le4":0.2575,"ge8":0.3025},{"bk":"6-12K","n":28076,"p10":2.71,"p50":5.93,"p90":9.08,"le4":0.2482,"ge8":0.2837},{"bk":"12-24K","n":80765,"p10":3.43,"p50":6.39,"p90":9.13,"le4":0.1876,"ge8":0.3158},{"bk":"24-36K","n":90743,"p10":4.04,"p50":6.81,"p90":9.18,"le4":0.13,"ge8":0.3613},{"bk":"36-48K","n":78230,"p10":4.52,"p50":7.04,"p90":9.22,"le4":0.0974,"ge8":0.3986},{"bk":"48-60K","n":68548,"p10":4.66,"p50":7.18,"p90":9.28,"le4":0.079,"ge8":0.4232},{"bk":"60-90K","n":104669,"p10":4.88,"p50":7.35,"p90":9.3,"le4":0.0598,"ge8":0.4613},{"bk":"90-120K","n":40627,"p10":5.11,"p50":7.49,"p90":9.36,"le4":0.0476,"ge8":0.4982},{"bk":"120K+","n":58545,"p10":5.2,"p50":7.66,"p90":9.56,"le4":0.0462,"ge8":0.5522}]},{"key":"College+","rows":[{"bk":"<6K","n":10971,"p10":2.85,"p50":6.7,"p90":9.22,"le4":0.2161,"ge8":0.354},{"bk":"6-12K","n":10567,"p10":2.75,"p50":6.31,"p90":9.25,"le4":0.2337,"ge8":0.3164},{"bk":"12-24K","n":39867,"p10":3.6,"p50":6.74,"p90":9.12,"le4":0.1678,"ge8":0.3509},{"bk":"24-36K","n":63626,"p10":4.45,"p50":7.08,"p90":9.15,"le4":0.103,"ge8":0.4041},{"bk":"36-48K","n":75635,"p10":4.75,"p50":7.29,"p90":9.19,"le4":0.0722,"ge8":0.4485},{"bk":"48-60K","n":85040,"p10":5.02,"p50":7.47,"p90":9.26,"le4":0.0532,"ge8":0.4925},{"bk":"60-90K","n":179928,"p10":5.36,"p50":7.58,"p90":9.27,"le4":0.0392,"ge8":0.5277},{"bk":"90-120K","n":100262,"p10":5.71,"p50":7.7,"p90":9.32,"le4":0.0287,"ge8":0.5725},{"bk":"120K+","n":208211,"p10":6.05,"p50":7.88,"p90":9.45,"le4":0.0245,"ge8":0.6427}]}],"age":[{"key":"18-34","rows":[{"bk":"<6K","n":17074,"p10":3.45,"p50":6.83,"p90":9.47,"le4":0.1655,"ge8":0.3671},{"bk":"6-12K","n":20289,"p10":3.62,"p50":6.68,"p90":9.49,"le4":0.162,"ge8":0.3421},{"bk":"12-24K","n":49891,"p10":4.02,"p50":6.73,"p90":9.24,"le4":0.1333,"ge8":0.3327},{"bk":"24-36K","n":51398,"p10":4.5,"p50":6.89,"p90":9.13,"le4":0.0997,"ge8":0.3474},{"bk":"36-48K","n":41976,"p10":4.73,"p50":7.05,"p90":9.08,"le4":0.0726,"ge8":0.3738},{"bk":"48-60K","n":37740,"p10":4.93,"p50":7.19,"p90":9.16,"le4":0.0569,"ge8":0.4102},{"bk":"60-90K","n":63000,"p10":5.23,"p50":7.31,"p90":9.16,"le4":0.0433,"ge8":0.442},{"bk":"90-120K","n":28136,"p10":5.55,"p50":7.45,"p90":9.2,"le4":0.0332,"ge8":0.4839},{"bk":"120K+","n":45362,"p10":5.62,"p50":7.61,"p90":9.39,"le4":0.036,"ge8":0.5356}]},{"key":"35-54","rows":[{"bk":"<6K","n":16227,"p10":1.56,"p50":5.33,"p90":9.38,"le4":0.3387,"ge8":0.2517},{"bk":"6-12K","n":25131,"p10":2.24,"p50":5.46,"p90":9.41,"le4":0.2898,"ge8":0.2648},{"bk":"12-24K","n":55715,"p10":2.92,"p50":5.92,"p90":8.97,"le4":0.2367,"ge8":0.2674},{"bk":"24-36K","n":59803,"p10":3.71,"p50":6.5,"p90":8.83,"le4":0.163,"ge8":0.297},{"bk":"36-48K","n":56435,"p10":4.2,"p50":6.79,"p90":8.85,"le4":0.1185,"ge8":0.3298},{"bk":"48-60K","n":58882,"p10":4.6,"p50":7.02,"p90":8.95,"le4":0.0858,"ge8":0.3765},{"bk":"60-90K","n":115677,"p10":4.92,"p50":7.25,"p90":9.03,"le4":0.0574,"ge8":0.4294},{"bk":"90-120K","n":64061,"p10":5.35,"p50":7.47,"p90":9.13,"le4":0.0383,"ge8":0.4917},{"bk":"120K+","n":130356,"p10":5.77,"p50":7.74,"p90":9.34,"le4":0.0297,"ge8":0.5876}]},{"key":"55+","rows":[{"bk":"<6K","n":15730,"p10":2.27,"p50":6.53,"p90":9.79,"le4":0.2354,"ge8":0.3903},{"bk":"6-12K","n":46379,"p10":2.71,"p50":6.27,"p90":9.75,"le4":0.2145,"ge8":0.3656},{"bk":"12-24K","n":125952,"p10":3.6,"p50":6.73,"p90":9.57,"le4":0.1582,"ge8":0.3921},{"bk":"24-36K","n":128989,"p10":4.35,"p50":7.17,"p90":9.49,"le4":0.1078,"ge8":0.4424},{"bk":"36-48K","n":110466,"p10":4.66,"p50":7.45,"p90":9.48,"le4":0.0787,"ge8":0.4913},{"bk":"48-60K","n":97071,"p10":4.85,"p50":7.6,"p90":9.53,"le4":0.0609,"ge8":0.5295},{"bk":"60-90K","n":153535,"p10":5.13,"p50":7.72,"p90":9.49,"le4":0.0461,"ge8":0.5745},{"bk":"90-120K","n":65268,"p10":5.52,"p50":7.86,"p90":9.54,"le4":0.0359,"ge8":0.6254},{"bk":"120K+","n":117504,"p10":5.66,"p50":7.99,"p90":9.71,"le4":0.0341,"ge8":0.6751}]}]},"cells":[{"edu":"High school","age":"18-34","n_mid":10501,"n_top":6983,"le4_mid":0.0699,"le4_top":0.0669,"ge8_mid":0.4206,"ge8_top":0.4916,"d_le4":0.003,"d_ge8":0.071},{"edu":"High school","age":"35-54","n_mid":16693,"n_top":9357,"le4_mid":0.0712,"le4_top":0.0578,"ge8_mid":0.417,"ge8_top":0.525,"d_le4":0.0133,"d_ge8":0.108},{"edu":"High school","age":"55+","n_mid":21248,"n_top":11251,"le4_mid":0.0582,"le4_top":0.0643,"ge8_mid":0.545,"ge8_top":0.5758,"d_le4":-0.0061,"d_ge8":0.0307},{"edu":"Some college","age":"18-34","n_mid":19621,"n_top":11237,"le4_mid":0.0531,"le4_top":0.0458,"ge8_mid":0.4081,"ge8_top":0.486,"d_le4":0.0073,"d_ge8":0.0778},{"edu":"Some college","age":"35-54","n_mid":37363,"n_top":23551,"le4_mid":0.0696,"le4_top":0.0437,"ge8_mid":0.3931,"ge8_top":0.523,"d_le4":0.0259,"d_ge8":0.1299},{"edu":"Some college","age":"55+","n_mid":47202,"n_top":23421,"le4_mid":0.0547,"le4_top":0.0485,"ge8_mid":0.5371,"ge8_top":0.6125,"d_le4":0.0062,"d_ge8":0.0754},{"edu":"College+","age":"18-34","n_mid":32790,"n_top":27065,"le4_mid":0.0288,"le4_top":0.0238,"ge8_mid":0.469,"ge8_top":0.5674,"d_le4":0.0049,"d_ge8":0.0984},{"edu":"College+","age":"35-54","n_mid":61423,"n_top":97291,"le4_mid":0.046,"le4_top":0.0235,"ge8_mid":0.455,"ge8_top":0.6093,"d_le4":0.0225,"d_ge8":0.1543},{"edu":"College+","age":"55+","n_mid":84630,"n_top":82520,"le4_mid":0.0381,"le4_top":0.0258,"ge8_mid":0.603,"ge8_top":0.7066,"d_le4":0.0123,"d_ge8":0.1037}]};
+
+const B = DATA.brackets;
+const QK = ["p10","p25","p50","p75","p90"];
+const QCOL = {p10:"#c05f17", p25:"#d6822a", p50:"#e9a544", p75:"#f4c468", p90:"#ffe49a"};
+const QNAME = {p10:"10th", p25:"25th", p50:"median", p75:"75th", p90:"90th"};
+const MEANCOL = "#efe6d2";
+const RM = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const DUR = RM ? 0 : 750;
+const fm1 = d3.format(".1f"), fm2 = d3.format(".2f"), fmN = d3.format(",");
+
+function baseSVG(hostSel, w, h, label){
+  const host = d3.select(hostSel);
+  host.selectAll("*").remove();
+  return host.append("svg")
+    .attr("viewBox", `0 0 ${w} ${h}`)
+    .attr("role", "img")
+    .attr("aria-label", label);
+}
+function xLog(w, m){
+  return d3.scaleLog().domain([2600, 172000]).range([m.l, w - m.r]);
+}
+function xTicks(svg, x, y0, mobile){
+  const g = svg.append("g").attr("font-family", "var(--sans)").attr("font-size", 11).attr("fill", "#988b6e");
+  B.forEach((b, i) => {
+    if (mobile && i % 2 === 1) return;
+    g.append("text").attr("x", x(b.mid)).attr("y", y0 + 18).attr("text-anchor", "middle").text(b.short);
+    g.append("line").attr("x1", x(b.mid)).attr("x2", x(b.mid)).attr("y1", y0).attr("y2", y0 + 5)
+      .attr("stroke", "#3b3220").attr("stroke-width", 1);
+  });
+  g.append("text").attr("x", x(B[4].mid)).attr("y", y0 + 34).attr("text-anchor", "middle")
+    .attr("fill", "#6e6450").text("annual household income (bracket midpoints, log scale)");
+}
+
+/* ============================== FAN (scrolly centerpiece) ============================== */
+const FAN = {stage: 1, group: null, pinned: null};
+
+function drawFan(){
+  const hostNode = document.getElementById("fan-wrap");
+  const w = Math.max(330, Math.min(980, hostNode.clientWidth || 700));
+  const mobile = w < 600;
+  const h = mobile ? 470 : 560;
+  const m = {l: 30, r: mobile ? 86 : 118, t: 18, b: 44};
+  const svg = baseSVG("#fan-wrap", w, h,
+    "Quantile fan chart of Cantril ladder ratings by income bracket. The 10th, 25th, 50th, 75th and 90th percentile curves fan out from the mean: the bottom percentiles climb steeply with income and flatten at high incomes, while the 90th percentile stays between 9.3 and 9.6 in every bracket.");
+  const x = xLog(w, m);
+  const y = d3.scaleLinear().domain([0, 10]).range([h - m.b, m.t]);
+
+  // y grid + axis
+  const grid = svg.append("g");
+  for (let k = 0; k <= 10; k += 2){
+    grid.append("line").attr("x1", m.l).attr("x2", w - m.r).attr("y1", y(k)).attr("y2", y(k))
+      .attr("stroke", k === 0 || k === 10 ? "#4a3f28" : "#2a2316")
+      .attr("stroke-dasharray", k === 10 ? "3 4" : null).attr("stroke-width", 1);
+    grid.append("text").attr("x", m.l - 7).attr("y", y(k) + 4).attr("text-anchor", "end")
+      .attr("font-family", "var(--sans)").attr("font-size", 11).attr("fill", "#988b6e").text(k);
+  }
+  svg.append("text").attr("x", m.l - 22).attr("y", y(10) - 8)
+    .attr("font-family", "var(--sans)").attr("font-size", 10.5).attr("fill", "#6e6450")
+    .text("ladder rating, 0 = worst possible life, 10 = best");
+  xTicks(svg, x, h - m.b, mobile);
+
+  const line = q => d3.line().x(b => x(b.mid)).y(b => y(q(b))).curve(d3.curveMonotoneX);
+  const meanD = line(b => b.mean)(B);
+  const qD = {}; QK.forEach(k => qD[k] = line(b => b.q[k])(B));
+  const bandGen = (lo, hi) => d3.area().x(b => x(b.mid)).y0(b => y(b.q[lo])).y1(b => y(b.q[hi])).curve(d3.curveMonotoneX);
+  const bandFlat = d3.area().x(b => x(b.mid)).y0(b => y(b.mean)).y1(b => y(b.mean)).curve(d3.curveMonotoneX);
+
+  const bandsG = svg.append("g");
+  const PAIRS = [["p10","p25",.13],["p25","p50",.2],["p50","p75",.2],["p75","p90",.13]];
+  FAN.bands = PAIRS.map(([lo, hi, op]) =>
+    bandsG.append("path").attr("d", bandGen(lo, hi)(B)).attr("fill", "#f4c468")
+      .attr("opacity", op).datum({d: bandGen(lo, hi)(B), flat: bandFlat(B), op}));
+
+  FAN.qPaths = {};
+  QK.forEach(k => {
+    FAN.qPaths[k] = svg.append("path").attr("d", qD[k]).attr("fill", "none")
+      .attr("stroke", QCOL[k]).attr("stroke-width", k === "p50" ? 2.6 : 2.1)
+      .attr("stroke-linecap", "round").datum({d: qD[k]});
+  });
+  FAN.meanPath = svg.append("path").attr("d", meanD).attr("fill", "none")
+    .attr("stroke", MEANCOL).attr("stroke-width", 1.7).attr("stroke-dasharray", "6 5");
+
+  // right-edge labels
+  const last = B[B.length - 1];
+  FAN.endLabels = svg.append("g").attr("font-family", "var(--sans)").attr("font-size", mobile ? 10.5 : 12);
+  const place = [];
+  QK.forEach(k => place.push({k, y: y(last.q[k]), col: QCOL[k], txt: `${QNAME[k]} ${fm1(last.q[k])}`}));
+  place.push({k: "mean", y: y(last.mean) + 1, col: MEANCOL, txt: `mean ${fm2(last.mean)}`, dash: true});
+  place.sort((a, b) => a.y - b.y);
+  for (let i = 1; i < place.length; i++)
+    if (place[i].y - place[i-1].y < 14) place[i].y = place[i-1].y + 14;
+  place.forEach(p => {
+    FAN.endLabels.append("text").attr("x", x(last.mid) + 9).attr("y", p.y + 4)
+      .attr("fill", p.col).attr("font-weight", p.k === "mean" ? 400 : 600)
+      .attr("font-style", p.k === "mean" ? "italic" : null).text(p.txt);
+  });
+  FAN.meanEndLabel = svg.append("text").attr("x", x(last.mid) + 9).attr("y", y(last.mean) + 4)
+    .attr("font-family", "var(--sans)").attr("font-size", mobile ? 11 : 12.5).attr("fill", MEANCOL)
+    .attr("font-weight", 700).text("the average").attr("opacity", 0);
+
+  // stage-2 annotation: $75k guide + p10 gains
+  const a75 = svg.append("g").attr("opacity", 0);
+  a75.append("line").attr("x1", x(75000)).attr("x2", x(75000)).attr("y1", y(0)).attr("y2", y(9.0))
+    .attr("stroke", "#988b6e").attr("stroke-dasharray", "2 4").attr("stroke-width", 1.2);
+  a75.append("text").attr("x", x(75000)).attr("y", y(9.0) - 16)
+    .attr("text-anchor", "middle").attr("font-family", "var(--sans)").attr("font-size", 11)
+    .attr("fill", "#cabfa3").text("Kahneman & Deaton's");
+  a75.append("text").attr("x", x(75000)).attr("y", y(9.0) - 4)
+    .attr("text-anchor", "middle").attr("font-family", "var(--sans)").attr("font-size", 11.5)
+    .attr("fill", "#cabfa3").attr("font-weight", 700).text("$75,000");
+  a75.append("text").attr("x", x(16000)).attr("y", y(3.1))
+    .attr("font-family", "var(--sans)").attr("font-size", 12).attr("fill", "#ffce72").attr("font-weight", 700)
+    .text("+2.75 rungs to here →");
+  a75.append("text").attr("x", x(94000)).attr("y", y(4.62))
+    .attr("font-family", "var(--sans)").attr("font-size", 12).attr("fill", "#cabfa3").attr("font-weight", 700)
+    .text("+0.64 after");
+  FAN.a75 = a75;
+
+  // stage-3 annotation: ceiling
+  const ceil = svg.append("g").attr("opacity", 0);
+  ceil.append("rect").attr("x", m.l).attr("width", w - m.r - m.l)
+    .attr("y", y(10)).attr("height", y(9.3) - y(10))
+    .attr("fill", "#ffe49a").attr("opacity", .07);
+  ceil.append("text").attr("x", m.l + 8).attr("y", y(9.62) - 8)
+    .attr("font-family", "var(--sans)").attr("font-size", 11.5).attr("fill", "#ffe49a")
+    .text("the happiest tenth already lives at 9.3–9.6 — the scale runs out of room");
+  FAN.ceil = ceil;
+
+  // hover/focus: bracket hit zones + distribution strip
+  FAN.strip = svg.append("g");
+  const bounds = B.map((b, i) => {
+    const x0 = i === 0 ? m.l : (x(B[i-1].mid) + x(b.mid)) / 2;
+    const x1 = i === B.length - 1 ? w - m.r : (x(b.mid) + x(B[i+1].mid)) / 2;
+    return [x0, x1];
+  });
+  const hitG = svg.append("g");
+  B.forEach((b, i) => {
+    hitG.append("rect")
+      .attr("x", bounds[i][0]).attr("width", bounds[i][1] - bounds[i][0])
+      .attr("y", m.t).attr("height", h - m.b - m.t)
+      .attr("fill", "transparent").attr("tabindex", 0)
+      .attr("aria-label", `Income ${b.label}: ${fmN(b.n)} interviews. Median ${fm1(b.q.p50)}, 10th percentile ${fm1(b.q.p10)}, 90th percentile ${fm1(b.q.p90)}. ${fm1(b.le4*100)} percent rate life 4 or below; ${fm1(b.ge8*100)} percent rate 8 or above.`)
+      .style("cursor", "crosshair")
+      .on("mouseenter focus", () => showBracket(i, x, y))
+      .on("mouseleave blur", () => hideBracket());
+  });
+
+  applyFanStyles(true);
+  if (FAN.group) drawOverlay(svg, x, y, mobile);
+  FAN.ctx = {svg, x, y, mobile};
+  setReadout(null);
+}
+
+function showBracket(i, x, y){
+  FAN.pinned = i;
+  const b = B[i];
+  const g = FAN.strip;
+  g.selectAll("*").remove();
+  g.raise();
+  const maxShare = d3.max(b.hist);
+  const wScale = d3.scaleLinear().domain([0, maxShare]).range([0, 46]);
+  const bandH = Math.abs(y(0) - y(1)) * .66;
+  g.append("line").attr("x1", x(b.mid)).attr("x2", x(b.mid)).attr("y1", y(0) + 6).attr("y2", y(10))
+    .attr("stroke", "#f1e9d7").attr("stroke-width", 1).attr("opacity", .5);
+  b.hist.forEach((s, k) => {
+    g.append("rect")
+      .attr("x", x(b.mid) - wScale(s) / 2).attr("width", Math.max(1, wScale(s)))
+      .attr("y", y(k) - bandH / 2).attr("height", bandH)
+      .attr("fill", "#f1e9d7").attr("opacity", .85).attr("rx", 1.5);
+  });
+  QK.forEach(k => {
+    g.append("circle").attr("cx", x(b.mid)).attr("cy", y(b.q[k])).attr("r", 3.4)
+      .attr("fill", QCOL[k]).attr("stroke", "#16120b").attr("stroke-width", 1.2);
+  });
+  setReadout(b);
+}
+function hideBracket(){
+  FAN.pinned = null;
+  FAN.strip.selectAll("*").remove();
+  setReadout(null);
+}
+function setReadout(b){
+  const el = document.getElementById("readout");
+  if (!b){
+    el.innerHTML = "<b>Hover or tab across the chart</b> to read the full ladder distribution at any income — the white bars show how all ratings 0–10 pile up within that bracket.";
+    return;
+  }
+  el.innerHTML = `<b>${b.label}</b> · ${fmN(b.n)} interviews &nbsp;→&nbsp; ` +
+    `<span class="rq">10th pctile ${fm1(b.q.p10)}</span> · median ${fm1(b.q.p50)} · ` +
+    `<span class="rq">90th pctile ${fm1(b.q.p90)}</span><br>` +
+    `rates life 4 or below: <b>${fm1(b.le4*100)}%</b> · rates 8 or above: <b>${fm1(b.ge8*100)}%</b> · mean ${fm2(b.mean)}`;
+}
+
+function applyFanStyles(instant){
+  const s = FAN.stage, grp = FAN.group;
+  const t = name => instant || DUR === 0
+    ? FAN[name] : null;
+  const tr = sel => (instant || DUR === 0) ? sel : sel.transition().duration(DUR).ease(d3.easeCubicInOut);
+
+  const qOp = {}, qW = {};
+  QK.forEach(k => { qOp[k] = 1; qW[k] = k === "p50" ? 2.6 : 2.1; });
+  let bandMul = 1, meanOp = .55, meanW = 1.7, meanDash = "6 5", meanLab = 0, endOp = 1, a75 = 0, ceilOp = 0, morphMean = false;
+
+  if (s === 0){
+    QK.forEach(k => qOp[k] = 0);
+    bandMul = 0; meanOp = 1; meanW = 3.4; meanDash = null; meanLab = 1; endOp = 0; morphMean = true;
+  } else if (s === 2){
+    QK.forEach(k => qOp[k] = k === "p10" ? 1 : .3);
+    qW.p10 = 3.5; bandMul = .45; a75 = 1;
+  } else if (s === 3){
+    QK.forEach(k => qOp[k] = (k === "p90" || k === "p75") ? 1 : .3);
+    qW.p90 = 3.3; qW.p75 = 2.8; bandMul = .45; ceilOp = 1;
+  }
+  if (grp){
+    QK.forEach(k => qOp[k] = Math.min(qOp[k], .3));
+    bandMul = Math.min(bandMul, .35);
+  }
+
+  QK.forEach(k => {
+    const p = FAN.qPaths[k];
+    tr(p).attr("opacity", qOp[k]).attr("stroke-width", qW[k])
+      .attr("d", morphMean ? FAN.meanPath.attr("d") : p.datum().d);
+  });
+  FAN.bands.forEach(p => {
+    tr(p).attr("opacity", p.datum().op * bandMul)
+      .attr("d", morphMean ? p.datum().flat : p.datum().d);
+  });
+  tr(FAN.meanPath).attr("opacity", meanOp).attr("stroke-width", meanW)
+    .attr("stroke-dasharray", meanDash);
+  tr(FAN.endLabels).attr("opacity", endOp);
+  tr(FAN.meanEndLabel).attr("opacity", meanLab);
+  tr(FAN.a75).attr("opacity", a75);
+  tr(FAN.ceil).attr("opacity", ceilOp);
+  if (FAN.overlayG) tr(FAN.overlayG).attr("opacity", grp ? 1 : 0);
+}
+
+function setStage(s){
+  if (s === FAN.stage) return;
+  FAN.stage = s;
+  applyFanStyles(false);
+}
+
+function drawOverlay(svg, x, y, mobile){
+  if (FAN.overlayG) FAN.overlayG.remove();
+  if (!FAN.group) { FAN.overlayG = null; return; }
+  const [kind, key] = FAN.group.split(":");
+  const grp = DATA.subgroups[kind].find(g => g.key === key);
+  if (!grp) return;
+  const rows = grp.rows.map(r => ({...r, mid: B.find(b => b.key === r.bk).mid}));
+  const g = svg.append("g").attr("opacity", 0);
+  const mk = (acc, col, name) => {
+    const ln = d3.line().x(r => x(r.mid)).y(r => y(acc(r))).curve(d3.curveMonotoneX);
+    g.append("path").attr("d", ln(rows)).attr("fill", "none")
+      .attr("stroke", col).attr("stroke-width", 2.4).attr("stroke-dasharray", "7 4")
+      .attr("stroke-linecap", "round");
+    const lastR = rows[rows.length - 1];
+    g.append("text").attr("x", x(lastR.mid) + 9).attr("y", y(acc(lastR)) + 4)
+      .attr("font-family", "var(--sans)").attr("font-size", mobile ? 10 : 11.5)
+      .attr("fill", col).attr("font-weight", 700).text(name);
+  };
+  mk(r => r.p90, QCOL.p90, `90th · ${key}`);
+  mk(r => r.p50, QCOL.p50, `median · ${key}`);
+  mk(r => r.p10, QCOL.p10, `10th · ${key}`);
+  FAN.overlayG = g;
+  g.transition().duration(DUR).attr("opacity", 1);
+}
+
+/* toggles */
+document.querySelectorAll("#grp-toggles button").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll("#grp-toggles button").forEach(b => b.setAttribute("aria-pressed", "false"));
+    btn.setAttribute("aria-pressed", "true");
+    FAN.group = btn.dataset.grp || null;
+    drawOverlay(FAN.ctx.svg, FAN.ctx.x, FAN.ctx.y, FAN.ctx.mobile);
+    applyFanStyles(false);
+  });
+});
+
+/* scroll-driven stages, armed only after real user interaction so the headless
+   render (and anyone with scripting oddities) always sees the complete fan */
+let armed = false;
+["scroll", "wheel", "touchstart", "keydown", "pointerdown"].forEach(evt =>
+  window.addEventListener(evt, () => { armed = true; }, {once: true, passive: true}));
+const steps = Array.from(document.querySelectorAll(".step"));
+const io = new IntersectionObserver(entries => {
+  entries.forEach(en => {
+    if (!en.isIntersecting) return;
+    steps.forEach(s => s.classList.toggle("active", s === en.target));
+    if (armed) setStage(+en.target.dataset.stage);
+  });
+}, {rootMargin: "-42% 0px -48% 0px", threshold: 0});
+steps.forEach(s => io.observe(s));
+steps[0].classList.add("active");
+
+/* ============================== THRESHOLD CHART ============================== */
+function drawThresh(){
+  const hostNode = document.getElementById("thresh-wrap");
+  const w = Math.max(330, Math.min(1020, hostNode.clientWidth || 700));
+  const mobile = w < 600;
+  const h = mobile ? 380 : 420;
+  const m = {l: 40, r: mobile ? 70 : 96, t: 24, b: 46};
+  const svg = baseSVG("#thresh-wrap", w, h,
+    "Line chart of two threshold shares by income bracket. The share rating life 4 or below falls from 24.6 percent in the poorest bracket to 5 percent by the 60 to 90 thousand dollar bracket, then flattens at about 3 percent. The share rating 8 or above climbs from about 34 percent to 61.5 percent and keeps rising through the top bracket.");
+  const x = xLog(w, m);
+  const y = d3.scaleLinear().domain([0, .68]).range([h - m.b, m.t]);
+  for (let v = 0; v <= .6; v += .2){
+    svg.append("line").attr("x1", m.l).attr("x2", w - m.r).attr("y1", y(v)).attr("y2", y(v))
+      .attr("stroke", "#2a2316");
+    svg.append("text").attr("x", m.l - 7).attr("y", y(v) + 4).attr("text-anchor", "end")
+      .attr("font-family", "var(--sans)").attr("font-size", 11).attr("fill", "#988b6e")
+      .text(Math.round(v * 100) + "%");
+  }
+  xTicks(svg, x, h - m.b, mobile);
+  svg.append("line").attr("x1", x(75000)).attr("x2", x(75000)).attr("y1", y(0)).attr("y2", y(.66))
+    .attr("stroke", "#988b6e").attr("stroke-dasharray", "2 4").attr("stroke-width", 1.1);
+  svg.append("text").attr("x", x(75000)).attr("y", y(.66) - 6).attr("text-anchor", "middle")
+    .attr("font-family", "var(--sans)").attr("font-size", 11).attr("fill", "#cabfa3")
+    .text("≈ $75,000");
+
+  const mkLine = (acc, col, lab, labShift) => {
+    const ln = d3.line().x(b => x(b.mid)).y(b => y(acc(b))).curve(d3.curveMonotoneX);
+    svg.append("path").attr("d", ln(B)).attr("fill", "none").attr("stroke", col)
+      .attr("stroke-width", 3).attr("stroke-linecap", "round");
+    B.forEach(b => svg.append("circle").attr("cx", x(b.mid)).attr("cy", y(acc(b))).attr("r", 3.6)
+      .attr("fill", col).attr("stroke", "#16120b").attr("stroke-width", 1.4));
+    const lb = B[B.length - 1];
+    svg.append("text").attr("x", x(lb.mid) + 10).attr("y", y(acc(lb)) + labShift)
+      .attr("font-family", "var(--sans)").attr("font-size", mobile ? 10.5 : 12).attr("fill", col)
+      .attr("font-weight", 700)
+      .selectAll("tspan").data(lab).join("tspan")
+      .attr("x", x(lb.mid) + 10).attr("dy", (d, i) => i ? 13 : 0).text(d => d);
+  };
+  mkLine(b => b.ge8, "#ffe085", ["rates life", "8 or above"], -2);
+  mkLine(b => b.le4, "#c05f17", ["rates life", "4 or below"], 2);
+
+  const anno = svg.append("g").attr("font-family", "var(--sans)").attr("font-size", mobile ? 10.5 : 12);
+  anno.append("text").attr("x", x(B[0].mid) + 4).attr("y", y(B[0].le4) - 12)
+    .attr("fill", "#e8a35f").attr("font-weight", 700).text("24.6%");
+  anno.append("text").attr("x", x(75000) + 6).attr("y", y(.072))
+    .attr("fill", "#e8a35f").text("5.0% → 3.3%: nearly done falling");
+  anno.append("text").attr("x", x(B[0].mid) + 4).attr("y", y(B[0].ge8) - 12)
+    .attr("fill", "#ffe085").attr("font-weight", 700).text("33.7%");
+  anno.append("text").attr("x", x(56000)).attr("y", y(.575)).attr("text-anchor", "middle")
+    .attr("fill", "#ffe085").text("+11.6 pts over the final doubling →");
+}
+
+/* ============================== CELLS GRID ============================== */
+function drawCells(){
+  const hostNode = document.getElementById("cells-wrap");
+  const w = Math.max(330, Math.min(1020, hostNode.clientWidth || 700));
+  const oneCol = w < 540;
+  const cols = oneCol ? 1 : 3;
+  const EDUS = ["High school", "Some college", "College+"];
+  const AGES = ["18-34", "35-54", "55+"];
+  const AGElab = {"18-34": "ages 18–34", "35-54": "ages 35–54", "55+": "ages 55+"};
+  const cellH = 64, headH = 30, rowGap = 10;
+  const nRows = oneCol ? 9 : 3;
+  const h = headH + nRows * (cellH + rowGap) + 18;
+  const svg = baseSVG("#cells-wrap", w, h,
+    "Small-multiple grid of nine age by education cells. In every cell, the share rating life 8 or above rises from the 60 to 90 thousand bracket to the 120 thousand plus bracket, by 3.1 to 15.4 percentage points, while the share rating 4 or below changes by at most 2.6 points.");
+  const labW = oneCol ? 0 : 78;
+  const panelW = (w - labW) / cols;
+  const xv = d3.scaleLinear().domain([-2.5, 16.5]).range([12, panelW - 60]);
+
+  const cellsOrdered = [];
+  if (oneCol){
+    EDUS.forEach(e => AGES.forEach(a => cellsOrdered.push([e, a])));
+  } else {
+    AGES.forEach(a => EDUS.forEach(e => cellsOrdered.push([e, a])));
+  }
+
+  if (!oneCol){
+    EDUS.forEach((e, ci) => {
+      svg.append("text").attr("x", labW + ci * panelW + xv(0)).attr("y", 16)
+        .attr("font-family", "var(--sans)").attr("font-size", 12).attr("fill", "#f1e9d7")
+        .attr("font-weight", 700).text(e);
+    });
+    AGES.forEach((a, ri) => {
+      svg.append("text").attr("x", 0).attr("y", headH + ri * (cellH + rowGap) + 30)
+        .attr("font-family", "var(--sans)").attr("font-size", 11.5).attr("fill", "#cabfa3")
+        .text(AGElab[a]);
+    });
+  }
+
+  cellsOrdered.forEach(([e, a], idx) => {
+    const c = DATA.cells.find(d => d.edu === e && d.age === a);
+    if (!c) return;
+    const col = oneCol ? 0 : idx % 3;
+    const row = oneCol ? idx : Math.floor(idx / 3);
+    const gx = labW + col * panelW, gy = headH + row * (cellH + rowGap);
+    const g = svg.append("g").attr("transform", `translate(${gx},${gy})`);
+    if (oneCol){
+      g.append("text").attr("x", xv(0)).attr("y", 8).attr("font-family", "var(--sans)")
+        .attr("font-size", 11.5).attr("fill", "#f1e9d7").attr("font-weight", 700)
+        .text(`${e} · ${AGElab[a]}`);
+    }
+    const y8 = oneCol ? 20 : 14, y4 = y8 + 20;
+    const zero = xv(0);
+    g.append("line").attr("x1", zero).attr("x2", zero).attr("y1", y8 - 8).attr("y2", y4 + 14)
+      .attr("stroke", "#4a3f28");
+    const bar = (yy, v, col2) => {
+      const x1 = xv(Math.max(0, v)), x0 = xv(Math.min(0, v));
+      g.append("rect").attr("x", x0).attr("y", yy).attr("width", Math.max(1.5, x1 - x0))
+        .attr("height", 12).attr("rx", 2).attr("fill", col2);
+      g.append("text").attr("x", x1 + 5).attr("y", yy + 10)
+        .attr("font-family", "var(--sans)").attr("font-size", 10.5).attr("fill", col2)
+        .attr("font-weight", 700).text((v >= 0 ? "+" : "−") + fm1(Math.abs(v)));
+    };
+    bar(y8, c.d_ge8 * 100, "#ffe085");
+    bar(y4, c.d_le4 * 100, "#c05f17");
+    g.append("text").attr("x", xv(0) - 4).attr("y", y8 + 10).attr("text-anchor", "end")
+      .attr("font-family", "var(--sans)").attr("font-size", 9.5).attr("fill", "#988b6e").text("≥8 up");
+    g.append("text").attr("x", xv(0) - 4).attr("y", y4 + 10).attr("text-anchor", "end")
+      .attr("font-family", "var(--sans)").attr("font-size", 9.5).attr("fill", "#988b6e").text("≤4 down");
+  });
+}
+
+/* ============================== AFFECT SMALL MULTIPLES ============================== */
+function drawAffect(){
+  const hostNode = document.getElementById("affect-wrap");
+  const w = Math.max(330, Math.min(1020, hostNode.clientWidth || 700));
+  const cols = w < 470 ? 2 : (w < 780 ? 3 : 5);
+  const rows = Math.ceil(DATA.affect.length / cols);
+  const panelW = w / cols, panelH = 200;
+  const h = rows * panelH + 8;
+  const svg = baseSVG("#affect-wrap", w, h,
+    "Small multiples of five daily feelings by income bracket, 2009 to 2012. Enjoyment and happiness rise with income and flatten near 60 to 90 thousand dollars. Worry falls from 47 to 26 percent then flattens. Stress falls to about 35 percent then rises again to 38 percent at the top. Sadness falls to about 11 percent then flattens.");
+  const NOTES = {
+    enjoyment: "flat past $60–90k",
+    happiness_yest: "satiates on schedule",
+    stress: "curls back up",
+    worry: "the K&D plateau, live",
+    sadness: "floors out ≈ 11%"
+  };
+  DATA.affect.forEach((it, idx) => {
+    const col = idx % cols, row = Math.floor(idx / cols);
+    const m = {l: 34, r: 14, t: 40, b: 26};
+    const g = svg.append("g").attr("transform", `translate(${col * panelW},${row * panelH})`);
+    const x = d3.scaleLog().domain([2600, 172000]).range([m.l, panelW - m.r]);
+    const y = d3.scaleLinear().domain([0, 1]).range([panelH - m.b, m.t]);
+    const colr = it.negative ? "#cf7f35" : "#ffe085";
+    g.append("text").attr("x", m.l).attr("y", 16).attr("font-family", "var(--sans)")
+      .attr("font-size", 12.5).attr("fill", "#f1e9d7").attr("font-weight", 700).text(it.label);
+    g.append("text").attr("x", m.l).attr("y", 30).attr("font-family", "var(--sans)")
+      .attr("font-size", 10).attr("fill", "#988b6e").text(NOTES[it.key]);
+    [0, .5, 1].forEach(v => {
+      g.append("line").attr("x1", m.l).attr("x2", panelW - m.r).attr("y1", y(v)).attr("y2", y(v))
+        .attr("stroke", "#2a2316");
+      g.append("text").attr("x", m.l - 4).attr("y", y(v) + 3.5).attr("text-anchor", "end")
+        .attr("font-family", "var(--sans)").attr("font-size", 9.5).attr("fill", "#6e6450")
+        .text(Math.round(v * 100));
+    });
+    const pts = it.vals.map(v => ({mid: B.find(b => b.key === v.bk).mid, s: v.share}));
+    const ln = d3.line().x(p => x(p.mid)).y(p => y(p.s)).curve(d3.curveMonotoneX);
+    g.append("line").attr("x1", x(75000)).attr("x2", x(75000)).attr("y1", y(0)).attr("y2", y(1))
+      .attr("stroke", "#3b3220").attr("stroke-dasharray", "2 4");
+    g.append("path").attr("d", ln(pts)).attr("fill", "none").attr("stroke", colr)
+      .attr("stroke-width", 2.6).attr("stroke-linecap", "round");
+    pts.forEach(p => g.append("circle").attr("cx", x(p.mid)).attr("cy", y(p.s)).attr("r", 2.6)
+      .attr("fill", colr).attr("stroke", "#16120b").attr("stroke-width", 1));
+    const f = pts[0], l = pts[pts.length - 1];
+    g.append("text").attr("x", x(f.mid)).attr("y", y(f.s) + (it.negative ? -8 : 16))
+      .attr("font-family", "var(--sans)").attr("font-size", 10).attr("fill", colr)
+      .attr("font-weight", 700).text(Math.round(f.s * 100) + "%");
+    g.append("text").attr("x", x(l.mid)).attr("y", y(l.s) + (it.negative ? -8 : 16))
+      .attr("text-anchor", "end").attr("font-family", "var(--sans)").attr("font-size", 10)
+      .attr("fill", colr).attr("font-weight", 700).text(Math.round(l.s * 100) + "%");
+    g.append("text").attr("x", m.l).attr("y", panelH - 8).attr("font-family", "var(--sans)")
+      .attr("font-size", 9).attr("fill", "#6e6450").text("<$6k → $120k+, log");
+  });
+}
+
+/* ============================== boot + resize ============================== */
+function drawAll(){
+  drawFan();
+  drawThresh();
+  drawCells();
+  drawAffect();
+}
+drawAll();
+let rT = null;
+window.addEventListener("resize", () => {
+  clearTimeout(rT);
+  rT = setTimeout(drawAll, 180);
+});
+</script>
+<!--SL_BOOKNAV_START-->
+<style>
+.slbn{font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;background:#0f1417;border-top:1px solid #27313a;color:#9fb0ba;padding:24px 20px 40px;margin:48px 0 0}
+.slbn-in{max-width:1080px;margin:0 auto;display:flex;align-items:stretch;gap:12px}
+.slbn a{flex:1 1 0;min-width:0;text-decoration:none;color:inherit;border:1px solid #27313a;border-radius:10px;padding:13px 15px;display:flex;flex-direction:column;gap:4px;background:#161d22;transition:border-color .15s,transform .15s}
+.slbn a:hover{border-color:#3fa9a0;transform:translateY(-2px)}
+.slbn a:focus-visible{outline:2px solid #3fa9a0;outline-offset:2px}
+.slbn a.slbn-next{text-align:right;align-items:flex-end}
+.slbn a.slbn-toc{flex:0 0 auto;min-width:120px;justify-content:center;align-items:center;text-align:center}
+.slbn .slbn-dir{font:700 10px/1 inherit;letter-spacing:.13em;text-transform:uppercase;color:#6b7c87}
+.slbn .slbn-ttl{font:700 14px/1.3 inherit;color:#eef2f4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.slbn a.slbn-disabled{opacity:.38;pointer-events:none}
+@media(max-width:640px){.slbn-in{flex-wrap:wrap}.slbn a{flex:1 1 100%}.slbn a.slbn-next{text-align:left;align-items:flex-start}.slbn a.slbn-toc{order:-1}}
+</style>
+<nav class="slbn" aria-label="Book navigation"><div class="slbn-in"><a class="slbn-prev" href="../read.html?ch=the-scissors" target="_top"><span class="slbn-dir">‹ Previous</span><span class="slbn-ttl">The Scissors</span></a><a class="slbn-toc" href="../index.html#book" target="_top"><span class="slbn-dir">The Scissors</span><span class="slbn-ttl">Chapter 2 / 36</span></a><a class="slbn-next" href="../read.html?ch=money-buys-calm-not-joy" target="_top"><span class="slbn-dir">Next ›</span><span class="slbn-ttl">Money Buys Calm, Not Joy</span></a></div></nav>
+<!--SL_BOOKNAV_END-->
+</body>
+</html>

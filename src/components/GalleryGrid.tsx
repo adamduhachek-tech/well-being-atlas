@@ -83,9 +83,14 @@ export function GalleryGrid({
         <hr className="masthead-rule" />
         <nav className="masthead-kicker" aria-label="Site">
           <span>The Well-Being Atlas</span>
-          <Link href="/about" className="nav-link">
-            About
-          </Link>
+          <span style={{ display: "flex", gap: "18px", alignItems: "center" }}>
+            <a href="/book/index.html" className="nav-link">
+              The Book
+            </a>
+            <Link href="/about" className="nav-link">
+              About
+            </Link>
+          </span>
         </nav>
         <h1>{renderTitle(intro.title)}</h1>
         <p className="masthead-desc">{intro.description}</p>

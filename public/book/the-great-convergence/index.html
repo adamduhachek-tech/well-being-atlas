@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Great Convergence — Forty Years of the World's Life Satisfaction Growing Alike</title>
+<style>
+  :root{
+    --bg:#f7f5ef;
+    --bg-deep:#ece7da;
+    --panel:#fdfbf6;
+    --ink:#1c1a15;
+    --ink-dim:#4f4a3f;
+    --ink-faint:#8d8676;
+    --hair:rgba(28,26,21,.14);
+    --hair-soft:rgba(28,26,21,.07);
+    --rise:#2f7a52;
+    --rise-deep:#1c5236;
+    --fall:#b5462f;
+    --fall-deep:#83301e;
+    --west:#3f6fa5;
+    --latam:#d98a3a;
+    --accent:#b5462f;
+    --rule:#b3a98c;
+    --serif:'Hoefler Text','Iowan Old Style',Georgia,'Times New Roman',serif;
+    --sans:'Avenir Next',system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+    --mono:'SFMono-Regular',ui-monospace,'Cascadia Mono',Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--serif); font-size:18.5px; line-height:1.64; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility}
+  a{color:var(--west); text-decoration:none; border-bottom:1px solid rgba(63,111,165,.4)}
+  a:hover,a:focus-visible{color:var(--accent); border-bottom-color:var(--accent)}
+  a:focus-visible,button:focus-visible{outline:2.5px solid var(--accent); outline-offset:2px; border-radius:3px}
+  .wrap{max-width:716px; margin:0 auto; padding:0 22px}
+  .wide{max-width:1040px; margin:0 auto; padding:0 22px}
+  header{padding:74px 0 22px}
+  .kicker{font-family:var(--sans); font-size:12px; letter-spacing:.28em; text-transform:uppercase; color:var(--accent); margin:0 0 20px; font-weight:600}
+  h1{font-size:clamp(34px,6vw,60px); line-height:1.02; margin:0 0 22px; font-weight:700; letter-spacing:-.02em}
+  .dek{font-size:clamp(18px,2.5vw,23px); font-style:italic; color:var(--ink-dim); max-width:670px; margin:0 0 26px; line-height:1.46}
+  .byline{font-family:var(--sans); font-size:13px; color:var(--ink-faint); letter-spacing:.04em}
+  .byline b{color:var(--ink-dim); font-weight:600}
+  main p{margin:0 0 1.34em}
+  h2{font-size:clamp(24px,3.5vw,34px); line-height:1.13; margin:2.0em 0 .5em; letter-spacing:-.013em; font-weight:700}
+  .lead{font-size:clamp(19px,2.4vw,22px); line-height:1.5; color:var(--ink)}
+  .drop::first-letter{float:left; font-size:3.55em; line-height:.8; padding:9px 11px 0 0; color:var(--accent); font-weight:700; font-family:var(--serif)}
+  strong{font-weight:700}
+  .rise-t{color:var(--rise-deep); font-weight:700}
+  .fall-t{color:var(--fall-deep); font-weight:700}
+  .figwrap{margin:42px auto 16px}
+  figure{margin:0; background:var(--panel); border:1px solid var(--hair); border-radius:14px; padding:24px 22px 16px; box-shadow:0 1px 0 rgba(28,26,21,.04)}
+  figure h4{font-family:var(--sans); font-size:18.5px; margin:0 0 5px; font-weight:700; color:var(--ink); letter-spacing:-.01em}
+  figure .sub{font-family:var(--sans); font-size:13.5px; color:var(--ink-dim); margin:0 0 14px; line-height:1.5}
+  figcaption{font-family:var(--sans); font-size:12.5px; color:var(--ink-faint); line-height:1.55; margin-top:12px; border-top:1px solid var(--hair-soft); padding-top:11px}
+  svg{width:100%; height:auto; display:block; overflow:visible}
+  text{font-family:var(--sans)}
+  .legend{display:flex; flex-wrap:wrap; gap:7px 16px; font-family:var(--sans); font-size:12.5px; color:var(--ink-dim); margin:0 0 10px}
+  .legend span.li{display:inline-flex; align-items:center; gap:7px}
+  .line-swatch{width:20px; height:0; border-top-width:3px; border-top-style:solid; display:inline-block}
+  .tip{position:absolute; pointer-events:none; opacity:0; background:var(--ink); color:#fff; font-family:var(--sans); font-size:12.5px; line-height:1.5; padding:10px 12px; border-radius:8px; max-width:250px; z-index:30; transition:opacity .08s; box-shadow:0 6px 22px rgba(28,26,21,.32)}
+  .tip b{color:#fff; font-weight:700}
+  .tip .row{display:flex; justify-content:space-between; gap:14px; font-variant-numeric:tabular-nums}
+  .tip .muted{color:#bdb6a7}
+  .smcap{font-family:var(--sans); font-size:11px; letter-spacing:.04em; fill:var(--ink-faint)}
+  .axlab{font-family:var(--sans); font-size:12px; fill:var(--ink-faint)}
+  .note{font-family:var(--sans); font-size:14px; line-height:1.5; color:var(--ink-dim); background:var(--bg-deep); border-left:3px solid var(--rule); border-radius:0 8px 8px 0; padding:14px 16px; margin:26px 0}
+  table.fallback{border-collapse:collapse; width:100%; font-family:var(--sans); font-size:12.5px; margin-top:8px}
+  table.fallback caption{text-align:left; color:var(--ink-faint); font-size:12px; margin-bottom:6px}
+  table.fallback th,table.fallback td{border:1px solid var(--hair-soft); padding:4px 8px; text-align:right}
+  table.fallback th:first-child,table.fallback td:first-child{text-align:left}
+  footer{font-family:var(--sans); font-size:13.5px; color:var(--ink-dim); line-height:1.62; padding:30px 0 80px}
+  footer h2{font-family:var(--sans); font-size:15px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint); margin:0 0 14px; font-weight:700}
+  footer p{margin:0 0 1em; max-width:720px}
+  footer a{color:var(--west)}
+  hr.sep{border:0; border-top:1px solid var(--hair); max-width:1040px; margin:46px auto 0}
+  .pill{font-family:var(--sans); font-size:11px; letter-spacing:.08em; text-transform:uppercase; font-weight:600; padding:2px 8px; border-radius:20px; display:inline-block; vertical-align:middle}
+  .pill-eval{background:rgba(63,111,165,.14); color:var(--west)}
+  @media (prefers-reduced-motion: reduce){*{transition:none!important; animation:none!important}}
+</style>
+</head>
+<body>
+<header class="wrap">
+  <p class="kicker">Values Surveys · 1981–2022</p>
+  <h1>The Great Convergence</h1>
+  <p class="dek">Over four decades the world's nations grew more alike in how satisfied their people are with life. The countries that started lowest — the post-communist world after the Soviet collapse — climbed the most, while a few of the wealthiest quietly slipped.</p>
+  <p class="byline">By the numbers · <b>Integrated EVS–WVS, 1981–2022</b> · weighted (<span style="font-family:var(--mono)">S017</span>)</p>
+</header>
+
+<main>
+<div class="wrap">
+  <p class="lead drop">For forty years the Values Surveys have asked people in dozens of countries the same question — all things considered, how satisfied are you with your life as a whole, from 1 to 10? Follow the countries surveyed both in the early waves and again at the end, and a clear motion emerges. The national averages, once spread far apart, have drifted together. The world has not become uniformly happy, but it has become more <em>alike</em>.</p>
+
+  <p>The engine of that convergence is the post-communist world. When the Soviet system collapsed, life satisfaction across the Orthodox-culture countries fell to a trough near <strong>4.5</strong> in the mid-1990s — one of the largest well-being shocks ever measured. Then it recovered, climbing to the mid-<strong>6</strong>s by the late 2010s. Meanwhile the wealthy West, starting high, barely moved or edged down.</p>
+</div>
+
+<div class="figwrap wide">
+  <figure>
+    <h4>Forty years of national trajectories — and the post-communist V</h4>
+    <p class="sub">Each faint line is one country's mean life satisfaction over time (countries surveyed both early and in the latest wave). Bold lines are group averages. Hover any line for the country.</p>
+    <div class="legend">
+      <span class="li"><span class="line-swatch" style="border-color:var(--fall)"></span> Post-communist (Orthodox culture)</span>
+      <span class="li"><span class="line-swatch" style="border-color:var(--west)"></span> Western high-income</span>
+      <span class="li"><span class="line-swatch" style="border-color:var(--latam)"></span> Latin America</span>
+    </div>
+    <div id="chart-traj" style="position:relative"></div>
+    <figcaption id="cap-traj"></figcaption>
+  </figure>
+</div>
+
+<div class="wrap">
+  <p>The single steepest climbs all belong to the transition states. <span class="rise-t">Albania</span> rose about <strong>2.4</strong> points; <span class="rise-t">Ukraine</span>, <span class="rise-t">Armenia</span>, <span class="rise-t">Bosnia</span> and <span class="rise-t">Belarus</span> each gained more than <strong>2</strong>. These are not rounding artifacts — they are among the largest sustained movements in the entire well-being record, the slow healing of societies that had bottomed out in the 1990s.</p>
+
+  <p>The declines are quieter but real. <span class="fall-t">Nigeria</span> fell about <strong>1.0</strong> point, and the wealthy Anglosphere drifted down from its perch — <span class="fall-t">Canada</span> by roughly <strong>0.9</strong>, the United States and Australia by smaller amounts. None of this is collapse; it is the top of the distribution settling while the bottom rushes up to meet it.</p>
+
+  <h2>Convergence, made precise</h2>
+  <p>Put every country's starting point on one axis and how much it changed on the other, and the shape of convergence is unmistakable: a steep downhill line. The lower a country began, the more it gained.</p>
+</div>
+
+<div class="figwrap wide">
+  <figure>
+    <h4>The lower you started, the more you rose</h4>
+    <p class="sub">Each dot is a country: its early life satisfaction (horizontal) against its change to the latest wave (vertical). The downward slope is convergence; points above the gray line gained, below it lost.</p>
+    <div id="chart-conv" style="position:relative"></div>
+    <figcaption id="cap-conv"></figcaption>
+  </figure>
+</div>
+
+<div class="wrap">
+  <p>The relationship is strong — a correlation of about <strong>−0.86</strong>, with each starting point worth roughly <strong>0.67</strong> of a point of subsequent change in the opposite direction. The spread itself shrank accordingly: the standard deviation of national life satisfaction fell from <strong>1.09</strong> to <strong>0.56</strong> across these countries, a <strong>49 percent</strong> narrowing. Four decades ago, knowing a country's life satisfaction told you a lot about it; today it tells you much less.</p>
+
+  <div class="note">A mirror worth naming: as nations converged on one another, inequality of well-being <em>within</em> many of them widened over the same era — the story told in <a href="../happiness-moved-inside-borders/index.html">Happiness Moved Inside Borders</a>. The gaps between countries closed while the gaps inside them opened.</div>
+
+  <h2>What this does, and does not, show</h2>
+  <p><strong>A fixed cast.</strong> Convergence is measured on the <strong>56</strong> countries observed both early and late, so newer entrants don't distort the trend. That also means it describes this set of long-tracked nations, not literally every country on earth.</p>
+  <p><strong>Nations, not people.</strong> Each country counts once, so this is the average <em>national</em> experience converging — not a population-weighted world average. A billion-person country and a small one move the picture equally.</p>
+  <p><strong>Irregular spacing, turbulent years.</strong> The surveys arrive every several years, not annually, and the transition trajectories pass through wars, hyperinflation and state collapse. The lines are drawn at the true fieldwork year, but they connect snapshots, not a continuous record.</p>
+  <p><strong>Evaluative only.</strong> This is life satisfaction — a reflective judgment. The Values Surveys carry no daily-mood items, so nothing here speaks to how people's days actually <em>felt</em>; the construct stays evaluative throughout.</p>
+</div>
+
+<hr class="sep">
+<div class="wide">
+<footer>
+  <h2>Notes &amp; data</h2>
+  <p><strong>Source.</strong> Integrated European Values Study &amp; World Values Survey, waves 1–7, fieldwork 1981–2022. Life satisfaction is the “all things considered, how satisfied are you with your life as a whole these days” item, 1–10. Every figure is weighted by the survey weight <span style="font-family:var(--mono)">S017</span> within country; estimates are never reported unweighted.</p>
+  <p><strong>Construct.</strong> Life satisfaction is <strong>evaluative</strong> well-being. The surveys carry no experiential “yesterday” affect items, so no claim is made about momentary feeling.</p>
+  <p><strong>Method.</strong> Trajectories and convergence use the <strong>56</strong> countries with usable data both in the early period (waves 1–3) and in wave 7. A country's “early” value is its weighted mean life satisfaction pooled over waves 1–3; its “late” value is wave 7. Country-wave cells with effective N below 50 are suppressed (effective N = (Σw)² ⁄ Σw²). The catch-up line regresses each country's change on its early level (slope ≈ −0.67, r ≈ −0.86); the cross-country standard deviation falls from 1.09 to 0.56 between the two periods. Group-average lines (post-communist Orthodox-culture, Western high-income, Latin America) weight each member country equally per wave and are shown where at least three countries are present. Every country counts once — figures are not population-weighted.</p>
+  <p><strong>Further reading.</strong> Ronald Inglehart, Roberto Foa, Christopher Peterson &amp; Christian Welzel, <a href="https://doi.org/10.1111/j.1745-6924.2008.00078.x">“Development, freedom, and rising happiness”</a> (2008); the <a href="https://worldhappiness.report/">World Happiness Report</a> on post-communist recovery and Western slippage; and the literature on the transition-economy well-being shock of the 1990s.</p>
+  <p style="color:var(--ink-faint)">Construct label — <span class="pill pill-eval">evaluative</span> life satisfaction. Association, not causation. Country-level, not population-weighted.</p>
+</footer>
+</div>
+</main>
+
+<div class="tip" id="tip" role="status" aria-live="polite"></div>
+
+<script type="module">
+import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+const DATA = {"meta":{"slug":"the-great-convergence","title":"The Great Convergence","dek":"Since 1981 the world's nations have grown more alike in life satisfaction: the post-communist countries that started lowest climbed the most, while a few wealthy nations quietly slipped \u2014 the gaps between countries narrowed even as gaps inside them grew.","dataset":"Integrated EVS-WVS (Values Surveys), 1981-2022","weight":"S017 within-country survey weight (`weight`); each country counts equally in cross-country figures","constructs":{"satis_your_life":"evaluative (life satisfaction, 0-10)"},"panel_note":"Trends use a FIXED set of countries observed both in waves 1-3 and in wave 7; cross-country means weight each country equally and are an average national experience, not a population-weighted world figure.","suppression":"country-wave cells with effective N<50 suppressed; effN=(sum w)^2/sum(w^2)","n_fixed":56,"colors":{"accent":"#b5462f","rise":"#2f7a52","fall":"#b5462f","grid":"rgba(25,24,21,.08)","orth":"#b5462f","west":"#3f6fa5","latam":"#d98a3a","region":{"Europe & Central Asia":"#4a6fa5","Latin America & Caribbean":"#d98a3a","Sub-Saharan Africa":"#cf5b4e","East Asia & Pacific":"#5aa06f","Middle East & North Africa":"#9c6fb0","South Asia":"#c9a13b","North America":"#3f87a6"}}},"traj":{"Albania":{"points":[{"wave":3,"year":1998,"life":4.765,"n":993},{"wave":4,"year":2002,"life":5.165,"n":998},{"wave":5,"year":2008,"life":6.295,"n":1507},{"wave":7,"year":2018,"life":7.193,"n":1435}],"region":"Europe & Central Asia","culture":"Muslim","income_group":"Upper middle income"},"Argentina":{"points":[{"wave":1,"year":1984,"life":6.791,"n":974},{"wave":2,"year":1991,"life":7.253,"n":992},{"wave":3,"year":1995,"life":6.924,"n":1076},{"wave":4,"year":1999,"life":7.325,"n":1268},{"wave":5,"year":2006,"life":7.788,"n":995},{"wave":6,"year":2013,"life":7.488,"n":1020},{"wave":7,"year":2017,"life":7.69,"n":1003}],"region":"Latin America & Caribbean","culture":"Roman Catholic","income_group":"High income"},"Armenia":{"points":[{"wave":3,"year":1997,"life":4.318,"n":1989},{"wave":5,"year":2008,"life":5.703,"n":1482},{"wave":6,"year":2011,"life":5.241,"n":1096},{"wave":7,"year":2018,"life":6.524,"n":2707}],"region":"Europe & Central Asia","culture":"Orthodox","income_group":"Upper middle income"},"Australia":{"points":[{"wave":1,"year":1981,"life":7.88,"n":1226},{"wave":3,"year":1995,"life":7.551,"n":2039},{"wave":5,"year":2005,"life":7.279,"n":1410},{"wave":6,"year":2012,"life":7.203,"n":1462},{"wave":7,"year":2018,"life":7.279,"n":1797}],"region":"East Asia & Pacific","culture":"Protestant","income_group":"High income"},"Azerbaijan":{"points":[{"wave":3,"year":1997,"life":5.393,"n":1963},{"wave":6,"year":2011,"life":6.663,"n":1002},{"wave":7,"year":2018,"life":6.362,"n":1764}],"region":"Europe & Central Asia","culture":"Muslim","income_group":"Upper middle income"},"Bangladesh":{"points":[{"wave":3,"year":1996,"life":6.406,"n":1497},{"wave":4,"year":2002,"life":5.778,"n":1479},{"wave":7,"year":2018,"life":7.604,"n":1200}],"region":"South Asia","culture":"Muslim","income_group":"Lower middle income"},"Belarus":{"points":[{"wave":2,"year":1990,"life":5.518,"n":1005},{"wave":3,"year":1996,"life":4.348,"n":2072},{"wave":4,"year":2000,"life":4.815,"n":966},{"wave":5,"year":2008,"life":6.07,"n":1478},{"wave":6,"year":2011,"life":5.778,"n":1531},{"wave":7,"year":2018,"life":6.851,"n":1536}],"region":"Europe & Central Asia","culture":"Orthodox","income_group":"Upper middle income"},"Bosnia Herzegovina":{"points":[{"wave":3,"year":1998,"life":5.458,"n":1199},{"wave":4,"year":2001,"life":5.769,"n":1198},{"wave":5,"year":2008,"life":7.092,"n":1496},{"wave":7,"year":2019,"life":7.722,"n":1723}],"region":"Europe & Central Asia","culture":null,"income_group":"Upper middle income"},"Brazil":{"points":[{"wave":2,"year":1991,"life":7.389,"n":1770},{"wave":3,"year":1997,"life":7.155,"n":1139},{"wave":5,"year":2006,"life":7.653,"n":1495},{"wave":6,"year":2014,"life":7.841,"n":1483},{"wave":7,"year":2018,"life":7.543,"n":1754}],"region":"Latin America & Caribbean","culture":"Roman Catholic","income_group":"Upper middle income"},"Bulgaria":{"points":[{"wave":2,"year":1991,"life":5.035,"n":1012},{"wave":3,"year":1997,"life":4.66,"n":1057},{"wave":4,"year":1999,"life":5.339,"n":982},{"wave":5,"year":2008,"life":5.589,"n":2434},{"wave":7,"year":2017,"life":6.204,"n":1539}],"region":"Europe & Central Asia","culture":"Orthodox","income_group":"Upper middle income"},"Canada":{"points":[{"wave":1,"year":1982,"life":7.84,"n":1249},{"wave":2,"year":1990,"life":7.885,"n":1728},{"wave":4,"year":2000,"life":7.801,"n":1929},{"wave":5,"year":2006,"life":7.76,"n":2157},{"wave":7,"year":2020,"life":6.966,"n":4018}],"region":"North America","culture":"Roman Catholic","income_group":"High income"},"Chile":{"points":[{"wave":2,"year":1990,"life":7.554,"n":1496},{"wave":3,"year":1996,"life":6.908,"n":997},{"wave":4,"year":2000,"life":7.122,"n":1193},{"wave":5,"year":2006,"life":7.159,"n":992},{"wave":6,"year":2012,"life":7.269,"n":988},{"wave":7,"year":2018,"life":7.014,"n":991}],"region":"Latin America & Caribbean","culture":"Roman Catholic","income_group":"High income"},"China":{"points":[{"wave":2,"year":1990,"life":7.292,"n":996},{"wave":3,"year":1995,"life":6.833,"n":1495},{"wave":4,"year":2001,"life":6.53,"n":991},{"wave":5,"year":2007,"life":6.762,"n":1937},{"wave":6,"year":2013,"life":6.85,"n":2252},{"wave":7,"year":2018,"life":7.365,"n":3024}],"region":"East Asia & Pacific","culture":"Eastern","income_group":"Upper middle income"},"Colombia":{"points":[{"wave":3,"year":1997,"life":8.306,"n":6004},{"wave":5,"year":2005,"life":8.308,"n":3018},{"wave":6,"year":2012,"life":8.388,"n":1512},{"wave":7,"year":2018,"life":8.188,"n":1520}],"region":"Latin America & Caribbean","culture":"Roman Catholic","income_group":"Upper middle income"},"Croatia":{"points":[{"wave":3,"year":1996,"life":6.183,"n":1192},{"wave":4,"year":1999,"life":6.462,"n":997},{"wave":5,"year":2008,"life":7.037,"n":1514},{"wave":7,"year":2017,"life":7.456,"n":1483}],"region":"Europe & Central Asia","culture":"Roman Catholic","income_group":"High income"},"Czechia":{"points":[{"wave":2,"year":1991,"life":6.691,"n":3025},{"wave":3,"year":1998,"life":6.395,"n":1140},{"wave":4,"year":1999,"life":7.057,"n":1900},{"wave":5,"year":2008,"life":7.213,"n":1807},{"wave":7,"year":2017,"life":7.309,"n":2995}],"region":"Europe & Central Asia","culture":"Roman Catholic","income_group":"High income"},"Estonia":{"points":[{"wave":2,"year":1990,"life":5.997,"n":996},{"wave":3,"year":1996,"life":4.997,"n":1020},{"wave":4,"year":1999,"life":5.899,"n":991},{"wave":5,"year":2008,"life":6.685,"n":1512},{"wave":6,"year":2011,"life":6.251,"n":1527},{"wave":7,"year":2018,"life":7.23,"n":1300}],"region":"Europe & Central Asia","culture":"Protestant","income_group":"High income"},"Finland":{"points":[{"wave":1,"year":1981,"life":7.906,"n":998},{"wave":2,"year":1990,"life":7.681,"n":577},{"wave":3,"year":1996,"life":7.778,"n":983},{"wave":4,"year":2000,"life":7.87,"n":1033},{"wave":5,"year":2009,"life":7.776,"n":2140},{"wave":7,"year":2017,"life":7.898,"n":1193}],"region":"Europe & Central Asia","culture":"Protestant","income_group":"High income"},"France":{"points":[{"wave":1,"year":1981,"life":6.662,"n":1192},{"wave":2,"year":1990,"life":6.783,"n":993},{"wave":4,"year":1999,"life":6.93,"n":1605},{"wave":5,"year":2008,"life":7.013,"n":2500},{"wave":7,"year":2018,"life":7.264,"n":1867}],"region":"Europe & Central Asia","culture":"Roman Catholic","income_group":"High income"},"Georgia":{"points":[{"wave":3,"year":1996,"life":4.681,"n":1997},{"wave":5,"year":2008,"life":5.221,"n":2967},{"wave":6,"year":2014,"life":5.447,"n":1200},{"wave":7,"year":2018,"life":6.712,"n":2185}],"region":"Europe & Central Asia","culture":"Orthodox","income_group":"Lower middle income"},"Germany":{"points":[{"wave":1,"year":1981,"life":7.248,"n":1287},{"wave":2,"year":1990,"life":7.11,"n":3413},{"wave":3,"year":1997,"life":6.932,"n":2023},{"wave":4,"year":1999,"life":7.608,"n":2022},{"wave":5,"year":2008,"life":7.112,"n":4121},{"wave":6,"year":2013,"life":7.359,"n":2043},{"wave":7,"year":2017,"life":7.677,"n":3682}],"region":"Europe & Central Asia","culture":"Protestant","income_group":"High income"},"Hungary":{"points":[{"wave":1,"year":1982,"life":6.928,"n":1443},{"wave":2,"year":1991,"life":6.027,"n":991},{"wave":3,"year":1998,"life":5.861,"n":647},{"wave":4,"year":1999,"life":5.692,"n":995},{"wave":5,"year":2008,"life":6.137,"n":2513},{"wave":7,"year":2018,"life":7.148,"n":1507}],"region":"Europe & Central Asia","culture":"Roman Catholic","income_group":"High income"},"India":{"points":[{"wave":2,"year":1990,"life":6.7,"n":2461},{"wave":3,"year":1995,"life":6.531,"n":1925},{"wave":4,"year":2001,"life":5.142,"n":1980},{"wave":5,"year":2006,"life":5.796,"n":1953},{"wave":6,"year":2012,"life":6.517,"n":4054},{"wave":7,"year":2023,"life":7.201,"n":1688}],"region":"South Asia","culture":"Eastern","income_group":"Lower middle income"},"Italy":{"points":[{"wave":1,"year":1981,"life":6.62,"n":1330},{"wave":2,"year":1990,"life":7.311,"n":2003},{"wave":4,"year":1999,"life":7.171,"n":1982},{"wave":5,"year":2009,"life":7.041,"n":2508},{"wave":7,"year":2018,"life":7.278,"n":2276}],"region":"Europe & Central Asia","culture":"Roman Catholic","income_group":"High income"},"Japan":{"points":[{"wave":1,"year":1981,"life":6.594,"n":1141},{"wave":2,"year":1990,"life":6.526,"n":971},{"wave":3,"year":1995,"life":6.608,"n":1029},{"wave":4,"year":2000,"life":6.484,"n":1316},{"wave":5,"year":2005,"life":6.991,"n":1080},{"wave":6,"year":2010,"life":6.912,"n":2381},{"wave":7,"year":2019,"life":6.759,"n":1330}],"region":"East Asia & Pacific","culture":"Eastern","income_group":"High income"},"Latvia":{"points":[{"wave":2,"year":1990,"life":5.703,"n":853},{"wave":3,"year":1996,"life":4.898,"n":1190},{"wave":4,"year":1999,"life":5.268,"n":1010},{"wave":5,"year":2008,"life":6.361,"n":1498},{"wave":7,"year":2021,"life":6.915,"n":1331}],"region":"Europe & Central Asia","culture":"Protestant","income_group":"High income"},"Lithuania":{"points":[{"wave":2,"year":1990,"life":6.013,"n":991},{"wave":3,"year":1997,"life":4.987,"n":996},{"wave":4,"year":1999,"life":5.089,"n":1000},{"wave":5,"year":2008,"life":6.448,"n":1468},{"wave":7,"year":2018,"life":6.754,"n":1415}],"region":"Europe & Central Asia","culture":"Roman Catholic","income_group":"High income"},"Mexico":{"points":[{"wave":1,"year":1981,"life":7.971,"n":1835},{"wave":2,"year":1990,"life":7.411,"n":1514},{"wave":3,"year":1996,"life":7.687,"n":1490},{"wave":4,"year":2000,"life":8.133,"n":1506},{"wave":5,"year":2005,"life":8.227,"n":1512},{"wave":6,"year":2012,"life":8.512,"n":2000},{"wave":7,"year":2018,"life":8.151,"n":1740}],"region":"Latin America & Caribbean","culture":"Roman Catholic","income_group":"Upper middle income"},"Montenegro":{"points":[{"wave":3,"year":1996,"life":6.21,"n":233},{"wave":4,"year":2001,"life":5.639,"n":1023},{"wave":5,"year":2008,"life":7.427,"n":1497},{"wave":7,"year":2019,"life":7.539,"n":1001}],"region":"Europe & Central Asia","culture":null,"income_group":"Upper middle income"},"Netherlands":{"points":[{"wave":1,"year":1981,"life":7.701,"n":1194},{"wave":2,"year":1990,"life":7.758,"n":1017},{"wave":4,"year":1999,"life":7.877,"n":1003},{"wave":5,"year":2008,"life":7.909,"n":2602},{"wave":6,"year":2012,"life":7.493,"n":1882},{"wave":7,"year":2017,"life":7.615,"n":4459}],"region":"Europe & Central Asia","culture":"Protestant","income_group":"High income"},"New Zealand":{"points":[{"wave":3,"year":1998,"life":7.701,"n":1172},{"wave":5,"year":2004,"life":7.892,"n":927},{"wave":6,"year":2011,"life":7.649,"n":829},{"wave":7,"year":2020,"life":7.545,"n":1025}],"region":"East Asia & Pacific","culture":"Protestant","income_group":"High income"},"Nigeria":{"points":[{"wave":2,"year":1990,"life":6.586,"n":997},{"wave":3,"year":1995,"life":6.601,"n":1989},{"wave":4,"year":2000,"life":6.874,"n":2022},{"wave":6,"year":2012,"life":6.252,"n":1759},{"wave":7,"year":2018,"life":5.582,"n":1236}],"region":"Sub-Saharan Africa","culture":"Muslim","income_group":"Lower middle income"},"North Macedonia":{"points":[{"wave":3,"year":1998,"life":5.702,"n":979},{"wave":4,"year":2001,"life":5.123,"n":1052},{"wave":5,"year":2008,"life":6.852,"n":1445},{"wave":7,"year":2019,"life":7.287,"n":1099}],"region":"Europe & Central Asia","culture":"Orthodox","income_group":"Upper middle income"},"Northern Ireland":{"points":[{"wave":1,"year":1981,"life":7.685,"n":312},{"wave":2,"year":1990,"life":7.885,"n":304},{"wave":4,"year":1999,"life":8.069,"n":991},{"wave":5,"year":2008,"life":7.844,"n":499},{"wave":7,"year":2022,"life":7.538,"n":446}],"region":"Europe & Central Asia","culture":"Protestant","income_group":"High income"},"Norway":{"points":[{"wave":1,"year":1982,"life":7.889,"n":1047},{"wave":2,"year":1990,"life":7.683,"n":1238},{"wave":3,"year":1996,"life":7.658,"n":1120},{"wave":5,"year":2008,"life":8.032,"n":2112},{"wave":7,"year":2018,"life":8.007,"n":1121}],"region":"Europe & Central Asia","culture":"Protestant","income_group":"High income"},"Pakistan":{"points":[{"wave":4,"year":2001,"life":4.853,"n":1693},{"wave":6,"year":2012,"life":7.541,"n":1200},{"wave":7,"year":2018,"life":7.669,"n":1984}],"region":"South Asia","culture":"Muslim","income_group":"Lower middle income"},"Peru":{"points":[{"wave":3,"year":1996,"life":6.362,"n":1191},{"wave":4,"year":2001,"life":6.44,"n":1490},{"wave":5,"year":2006,"life":7.039,"n":1490},{"wave":6,"year":2012,"life":7.138,"n":1206},{"wave":7,"year":2018,"life":7.645,"n":1396}],"region":"Latin America & Caribbean","culture":"Roman Catholic","income_group":"Upper middle income"},"Philippines":{"points":[{"wave":3,"year":1996,"life":6.84,"n":1199},{"wave":4,"year":2001,"life":6.67,"n":1200},{"wave":6,"year":2012,"life":7.326,"n":1200},{"wave":7,"year":2019,"life":7.4,"n":1200}],"region":"East Asia & Pacific","culture":"Roman Catholic","income_group":"Lower middle income"},"Poland":{"points":[{"wave":2,"year":1990,"life":6.584,"n":1897},{"wave":3,"year":1997,"life":6.421,"n":1142},{"wave":4,"year":1999,"life":6.374,"n":1085},{"wave":5,"year":2008,"life":7.134,"n":2482},{"wave":6,"year":2012,"life":7.087,"n":965},{"wave":7,"year":2017,"life":7.562,"n":1345}],"region":"Europe & Central Asia","culture":"Roman Catholic","income_group":"High income"},"Puerto Rico":{"points":[{"wave":3,"year":1995,"life":8.099,"n":1158},{"wave":4,"year":2001,"life":8.494,"n":717},{"wave":7,"year":2018,"life":8.405,"n":1122}],"region":"Latin America & Caribbean","culture":null,"income_group":"High income"},"Romania":{"points":[{"wave":2,"year":1993,"life":5.879,"n":1095},{"wave":3,"year":1998,"life":4.86,"n":1234},{"wave":4,"year":1999,"life":5.23,"n":1119},{"wave":5,"year":2005,"life":6.236,"n":3127},{"wave":6,"year":2012,"life":6.688,"n":1490},{"wave":7,"year":2018,"life":7.344,"n":2851}],"region":"Europe & Central Asia","culture":null,"income_group":"Upper middle income"},"Russia":{"points":[{"wave":2,"year":1990,"life":5.375,"n":1910},{"wave":3,"year":1995,"life":4.453,"n":2017},{"wave":4,"year":1999,"life":4.737,"n":2480},{"wave":5,"year":2006,"life":6.275,"n":3504},{"wave":6,"year":2011,"life":6.173,"n":2465},{"wave":7,"year":2017,"life":6.474,"n":3599}],"region":"Europe & Central Asia","culture":"Orthodox","income_group":"Upper middle income"},"Serbia":{"points":[{"wave":3,"year":1996,"life":5.561,"n":1265},{"wave":4,"year":2001,"life":5.622,"n":1191},{"wave":5,"year":2008,"life":6.476,"n":2670},{"wave":7,"year":2018,"life":6.702,"n":2520}],"region":"Europe & Central Asia","culture":null,"income_group":"Upper middle income"},"Slovakia":{"points":[{"wave":2,"year":1991,"life":6.616,"n":1585},{"wave":3,"year":1998,"life":6.067,"n":1093},{"wave":4,"year":1999,"life":6.027,"n":1318},{"wave":5,"year":2008,"life":7.272,"n":1480},{"wave":7,"year":2017,"life":7.09,"n":2628}],"region":"Europe & Central Asia","culture":"Roman Catholic","income_group":"High income"},"Slovenia":{"points":[{"wave":2,"year":1992,"life":6.293,"n":1023},{"wave":3,"year":1995,"life":6.463,"n":1000},{"wave":4,"year":1999,"life":7.233,"n":1004},{"wave":5,"year":2008,"life":7.415,"n":2397},{"wave":6,"year":2011,"life":7.352,"n":1061},{"wave":7,"year":2017,"life":7.672,"n":1074}],"region":"Europe & Central Asia","culture":"Roman Catholic","income_group":"High income"},"South Korea":{"points":[{"wave":1,"year":1982,"life":5.335,"n":941},{"wave":2,"year":1990,"life":6.686,"n":1226},{"wave":4,"year":2001,"life":6.214,"n":1173},{"wave":5,"year":2005,"life":6.353,"n":1197},{"wave":6,"year":2010,"life":6.506,"n":1189},{"wave":7,"year":2018,"life":6.727,"n":1245}],"region":"East Asia & Pacific","culture":"Eastern","income_group":"High income"},"Spain":{"points":[{"wave":1,"year":1981,"life":6.601,"n":2303},{"wave":2,"year":1990,"life":7.138,"n":4123},{"wave":3,"year":1995,"life":6.61,"n":1203},{"wave":4,"year":2000,"life":7.042,"n":2379},{"wave":5,"year":2008,"life":7.319,"n":2686},{"wave":6,"year":2011,"life":6.793,"n":1168},{"wave":7,"year":2017,"life":7.492,"n":1209}],"region":"Europe & Central Asia","culture":"Roman Catholic","income_group":"High income"},"Sweden":{"points":[{"wave":1,"year":1982,"life":8.011,"n":947},{"wave":2,"year":1990,"life":7.972,"n":1045},{"wave":3,"year":1996,"life":7.773,"n":1007},{"wave":4,"year":1999,"life":7.653,"n":1012},{"wave":5,"year":2009,"life":7.679,"n":2165},{"wave":6,"year":2011,"life":7.549,"n":1204},{"wave":7,"year":2017,"life":7.643,"n":1194}],"region":"Europe & Central Asia","culture":"Protestant","income_group":"High income"},"Switzerland":{"points":[{"wave":2,"year":1989,"life":8.388,"n":1400},{"wave":3,"year":1996,"life":8.145,"n":1204},{"wave":5,"year":2008,"life":8.008,"n":2500},{"wave":7,"year":2017,"life":8.018,"n":3167}],"region":"Europe & Central Asia","culture":"Protestant","income_group":"High income"},"Taiwan ROC":{"points":[{"wave":3,"year":1995,"life":6.56,"n":778},{"wave":5,"year":2006,"life":6.584,"n":1227},{"wave":6,"year":2012,"life":6.896,"n":1216},{"wave":7,"year":2019,"life":7.028,"n":1223}],"region":null,"culture":null,"income_group":null},"Turkey":{"points":[{"wave":2,"year":1990,"life":6.405,"n":1027},{"wave":3,"year":1996,"life":6.201,"n":1900},{"wave":4,"year":2001,"life":5.623,"n":4604},{"wave":5,"year":2009,"life":6.853,"n":3724},{"wave":6,"year":2011,"life":7.245,"n":1601},{"wave":7,"year":2018,"life":6.518,"n":2405}],"region":"Europe & Central Asia","culture":"Muslim","income_group":"Upper middle income"},"Ukraine":{"points":[{"wave":3,"year":1996,"life":3.953,"n":2669},{"wave":4,"year":1999,"life":4.56,"n":1157},{"wave":5,"year":2008,"life":5.914,"n":2490},{"wave":6,"year":2011,"life":5.901,"n":1500},{"wave":7,"year":2020,"life":6.147,"n":2849}],"region":"Europe & Central Asia","culture":"Orthodox","income_group":"Lower middle income"},"United Kingdom":{"points":[{"wave":1,"year":1981,"life":7.663,"n":1156},{"wave":2,"year":1990,"life":7.472,"n":1475},{"wave":3,"year":1998,"life":7.593,"n":1092},{"wave":4,"year":1999,"life":7.397,"n":990},{"wave":5,"year":2009,"life":7.535,"n":2596},{"wave":7,"year":2022,"life":7.49,"n":4381}],"region":"Europe & Central Asia","culture":"Protestant","income_group":"High income"},"United States":{"points":[{"wave":1,"year":1982,"life":7.669,"n":2316},{"wave":2,"year":1990,"life":7.757,"n":1834},{"wave":3,"year":1995,"life":7.672,"n":1534},{"wave":4,"year":1999,"life":7.654,"n":1200},{"wave":5,"year":2006,"life":7.322,"n":1241},{"wave":6,"year":2011,"life":7.371,"n":2216},{"wave":7,"year":2017,"life":7.271,"n":2583}],"region":"North America","culture":"Protestant","income_group":"High income"},"Uruguay":{"points":[{"wave":3,"year":1996,"life":7.064,"n":996},{"wave":5,"year":2006,"life":7.458,"n":993},{"wave":6,"year":2011,"life":7.6,"n":991},{"wave":7,"year":2022,"life":8.198,"n":999}],"region":"Latin America & Caribbean","culture":"Roman Catholic","income_group":"High income"},"Venezuela":{"points":[{"wave":3,"year":1996,"life":6.723,"n":1187},{"wave":4,"year":2000,"life":7.518,"n":1198},{"wave":7,"year":2021,"life":7.017,"n":1190}],"region":"Latin America & Caribbean","culture":"Roman Catholic","income_group":"Upper middle income"}},"conv":[{"country":"Albania","early":4.765,"late":7.193,"chg":2.427,"region":"Europe & Central Asia","culture":"Muslim"},{"country":"Argentina","early":6.989,"late":7.69,"chg":0.701,"region":"Latin America & Caribbean","culture":"Roman Catholic"},{"country":"Armenia","early":4.318,"late":6.524,"chg":2.206,"region":"Europe & Central Asia","culture":"Orthodox"},{"country":"Australia","early":7.675,"late":7.279,"chg":-0.396,"region":"East Asia & Pacific","culture":"Protestant"},{"country":"Azerbaijan","early":5.393,"late":6.362,"chg":0.969,"region":"Europe & Central Asia","culture":"Muslim"},{"country":"Bangladesh","early":6.406,"late":7.604,"chg":1.198,"region":"South Asia","culture":"Muslim"},{"country":"Belarus","early":4.731,"late":6.851,"chg":2.121,"region":"Europe & Central Asia","culture":"Orthodox"},{"country":"Bosnia Herzegovina","early":5.458,"late":7.722,"chg":2.264,"region":"Europe & Central Asia","culture":null},{"country":"Brazil","early":7.297,"late":7.543,"chg":0.246,"region":"Latin America & Caribbean","culture":"Roman Catholic"},{"country":"Bulgaria","early":4.843,"late":6.204,"chg":1.361,"region":"Europe & Central Asia","culture":"Orthodox"},{"country":"Canada","early":7.866,"late":6.966,"chg":-0.899,"region":"North America","culture":"Roman Catholic"},{"country":"Chile","early":7.296,"late":7.014,"chg":-0.281,"region":"Latin America & Caribbean","culture":"Roman Catholic"},{"country":"China","early":7.017,"late":7.365,"chg":0.348,"region":"East Asia & Pacific","culture":"Eastern"},{"country":"Colombia","early":8.306,"late":8.188,"chg":-0.118,"region":"Latin America & Caribbean","culture":"Roman Catholic"},{"country":"Croatia","early":6.183,"late":7.456,"chg":1.273,"region":"Europe & Central Asia","culture":"Roman Catholic"},{"country":"Czechia","early":6.61,"late":7.309,"chg":0.699,"region":"Europe & Central Asia","culture":"Roman Catholic"},{"country":"Estonia","early":5.491,"late":7.23,"chg":1.739,"region":"Europe & Central Asia","culture":"Protestant"},{"country":"Finland","early":7.806,"late":7.898,"chg":0.092,"region":"Europe & Central Asia","culture":"Protestant"},{"country":"France","early":6.717,"late":7.264,"chg":0.547,"region":"Europe & Central Asia","culture":"Roman Catholic"},{"country":"Georgia","early":4.681,"late":6.712,"chg":2.031,"region":"Europe & Central Asia","culture":"Orthodox"},{"country":"Germany","early":7.083,"late":7.677,"chg":0.594,"region":"Europe & Central Asia","culture":"Protestant"},{"country":"Hungary","early":6.414,"late":7.148,"chg":0.734,"region":"Europe & Central Asia","culture":"Roman Catholic"},{"country":"India","early":6.626,"late":7.201,"chg":0.576,"region":"South Asia","culture":"Eastern"},{"country":"Italy","early":7.035,"late":7.278,"chg":0.242,"region":"Europe & Central Asia","culture":"Roman Catholic"},{"country":"Japan","early":6.578,"late":6.759,"chg":0.182,"region":"East Asia & Pacific","culture":"Eastern"},{"country":"Latvia","early":5.234,"late":6.915,"chg":1.681,"region":"Europe & Central Asia","culture":"Protestant"},{"country":"Lithuania","early":5.499,"late":6.754,"chg":1.255,"region":"Europe & Central Asia","culture":"Roman Catholic"},{"country":"Mexico","early":7.708,"late":8.151,"chg":0.442,"region":"Latin America & Caribbean","culture":"Roman Catholic"},{"country":"Montenegro","early":6.21,"late":7.539,"chg":1.328,"region":"Europe & Central Asia","culture":null},{"country":"Netherlands","early":7.727,"late":7.615,"chg":-0.113,"region":"Europe & Central Asia","culture":"Protestant"},{"country":"New Zealand","early":7.701,"late":7.545,"chg":-0.156,"region":"East Asia & Pacific","culture":"Protestant"},{"country":"Nigeria","early":6.596,"late":5.582,"chg":-1.013,"region":"Sub-Saharan Africa","culture":"Muslim"},{"country":"North Macedonia","early":5.702,"late":7.287,"chg":1.586,"region":"Europe & Central Asia","culture":"Orthodox"},{"country":"Northern Ireland","early":7.784,"late":7.538,"chg":-0.246,"region":"Europe & Central Asia","culture":"Protestant"},{"country":"Norway","early":7.738,"late":8.007,"chg":0.269,"region":"Europe & Central Asia","culture":"Protestant"},{"country":"Peru","early":6.362,"late":7.645,"chg":1.283,"region":"Latin America & Caribbean","culture":"Roman Catholic"},{"country":"Philippines","early":6.84,"late":7.4,"chg":0.56,"region":"East Asia & Pacific","culture":"Roman Catholic"},{"country":"Poland","early":6.523,"late":7.562,"chg":1.039,"region":"Europe & Central Asia","culture":"Roman Catholic"},{"country":"Puerto Rico","early":8.099,"late":8.405,"chg":0.305,"region":"Latin America & Caribbean","culture":null},{"country":"Romania","early":5.339,"late":7.344,"chg":2.005,"region":"Europe & Central Asia","culture":null},{"country":"Russia","early":4.901,"late":6.474,"chg":1.572,"region":"Europe & Central Asia","culture":"Orthodox"},{"country":"Serbia","early":5.561,"late":6.702,"chg":1.14,"region":"Europe & Central Asia","culture":null},{"country":"Slovakia","early":6.392,"late":7.09,"chg":0.698,"region":"Europe & Central Asia","culture":"Roman Catholic"},{"country":"Slovenia","early":6.377,"late":7.672,"chg":1.295,"region":"Europe & Central Asia","culture":"Roman Catholic"},{"country":"South Korea","early":6.099,"late":6.727,"chg":0.628,"region":"East Asia & Pacific","culture":"Eastern"},{"country":"Spain","early":6.892,"late":7.492,"chg":0.6,"region":"Europe & Central Asia","culture":"Roman Catholic"},{"country":"Sweden","early":7.917,"late":7.643,"chg":-0.275,"region":"Europe & Central Asia","culture":"Protestant"},{"country":"Switzerland","early":8.275,"late":8.018,"chg":-0.257,"region":"Europe & Central Asia","culture":"Protestant"},{"country":"Taiwan ROC","early":6.56,"late":7.028,"chg":0.467,"region":null,"culture":null},{"country":"Turkey","early":6.273,"late":6.518,"chg":0.245,"region":"Europe & Central Asia","culture":"Muslim"},{"country":"Ukraine","early":3.953,"late":6.147,"chg":2.194,"region":"Europe & Central Asia","culture":"Orthodox"},{"country":"United Kingdom","early":7.567,"late":7.49,"chg":-0.077,"region":"Europe & Central Asia","culture":"Protestant"},{"country":"United States","early":7.698,"late":7.271,"chg":-0.427,"region":"North America","culture":"Protestant"},{"country":"Uruguay","early":7.064,"late":8.198,"chg":1.133,"region":"Latin America & Caribbean","culture":"Roman Catholic"},{"country":"Venezuela","early":6.723,"late":7.017,"chg":0.294,"region":"Latin America & Caribbean","culture":"Roman Catholic"}],"catchup":{"slope":-0.666,"intercept":5.081,"r":-0.864,"sd_early":1.092,"sd_late":0.56,"sd_drop_pct":49.0,"n":55,"x0":3.953,"x1":8.306},"risers":[{"country":"Albania","early":4.765,"late":7.193,"chg":2.427},{"country":"Bosnia Herzegovina","early":5.458,"late":7.722,"chg":2.264},{"country":"Armenia","early":4.318,"late":6.524,"chg":2.206},{"country":"Ukraine","early":3.953,"late":6.147,"chg":2.194},{"country":"Belarus","early":4.731,"late":6.851,"chg":2.121},{"country":"Georgia","early":4.681,"late":6.712,"chg":2.031}],"fallers":[{"country":"Nigeria","early":6.596,"late":5.582,"chg":-1.013},{"country":"Canada","early":7.866,"late":6.966,"chg":-0.899},{"country":"United States","early":7.698,"late":7.271,"chg":-0.427},{"country":"Australia","early":7.675,"late":7.279,"chg":-0.396},{"country":"Chile","early":7.296,"late":7.014,"chg":-0.281},{"country":"Sweden","early":7.917,"late":7.643,"chg":-0.275}],"groups":[{"label":"Post-communist (Orthodox culture)","points":[{"wave":2,"year":1990,"life":5.309,"n_ctry":3},{"wave":3,"year":1996,"life":4.48,"n_ctry":8},{"wave":4,"year":1999,"life":5.117,"n_ctry":7},{"wave":5,"year":2008,"life":6.204,"n_ctry":10},{"wave":6,"year":2011,"life":5.95,"n_ctry":6},{"wave":7,"year":2018,"life":6.587,"n_ctry":9}]},{"label":"Western high-income","points":[{"wave":1,"year":1981,"life":7.417,"n_ctry":13},{"wave":2,"year":1990,"life":7.083,"n_ctry":21},{"wave":3,"year":1996,"life":6.614,"n_ctry":17},{"wave":4,"year":1999,"life":6.909,"n_ctry":20},{"wave":5,"year":2008,"life":7.269,"n_ctry":23},{"wave":6,"year":2011,"life":7.157,"n_ctry":8},{"wave":7,"year":2018,"life":7.427,"n_ctry":23}]},{"label":"Latin America","points":[{"wave":2,"year":1990,"life":7.402,"n_ctry":4},{"wave":3,"year":1996,"life":7.259,"n_ctry":11},{"wave":4,"year":2000,"life":7.505,"n_ctry":6},{"wave":5,"year":2006,"life":7.654,"n_ctry":9},{"wave":6,"year":2012,"life":7.521,"n_ctry":10},{"wave":7,"year":2018,"life":7.735,"n_ctry":13}]}],"headline":{"n_fixed":56,"n_conv":55,"sd_early":1.092,"sd_late":0.56,"sd_drop_pct":49.0,"catchup_slope":-0.666,"catchup_r":-0.864,"top_riser":"Albania","top_riser_chg":2.427,"top_riser_early":4.765,"top_riser_late":7.193,"top_faller":"Nigeria","top_faller_chg":-1.013,"orth_trough":4.48,"orth_last":6.587}};
+const C = DATA.meta.colors;
+const tip = document.getElementById("tip");
+function showTip(html, ev){
+  tip.innerHTML = html; tip.style.opacity = 1;
+  const pad=14, w=tip.offsetWidth, h=tip.offsetHeight;
+  let x=ev.clientX+pad, y=ev.clientY+pad;
+  if(x+w>window.innerWidth-6) x=ev.clientX-w-pad;
+  if(y+h>window.innerHeight-6) y=ev.clientY-h-pad;
+  tip.style.left=x+"px"; tip.style.top=y+"px";
+}
+function hideTip(){ tip.style.opacity=0; }
+
+/* ===== TRAJECTORIES ===== */
+(function(){
+  const W=1000,H=540,M={t:20,r:150,b:50,l:50};
+  const svg=d3.select("#chart-traj").append("svg").attr("viewBox",`0 0 ${W} ${H}`).attr("width","100%")
+    .attr("role","img").attr("aria-label","Line trajectories of national life satisfaction 1981–2022, with post-communist countries rising from a mid-1990s trough.");
+  const g=svg.append("g").attr("transform",`translate(${M.l},${M.t})`);
+  const iw=W-M.l-M.r, ih=H-M.t-M.b;
+  const x=d3.scaleLinear().domain([1980,2023]).range([0,iw]);
+  const y=d3.scaleLinear().domain([3.4,8.7]).range([ih,0]);
+  g.append("g").selectAll("line").data(y.ticks(6)).join("line").attr("x1",0).attr("x2",iw).attr("y1",d=>y(d)).attr("y2",d=>y(d)).attr("stroke","var(--hair-soft)");
+  g.append("g").selectAll("text.yl").data(y.ticks(6)).join("text").attr("class","axlab").attr("x",-10).attr("y",d=>y(d)+4).attr("text-anchor","end").text(d=>d.toFixed(0));
+  g.append("text").attr("class","smcap").attr("transform",`translate(-36,${ih/2}) rotate(-90)`).attr("text-anchor","middle").text("mean life satisfaction (0–10) →");
+  g.append("g").selectAll("text.xl").data([1981,1990,2000,2010,2020]).join("text").attr("class","axlab").attr("x",d=>x(d)).attr("y",ih+22).attr("text-anchor","middle").text(d=>d);
+  const line=d3.line().x(d=>x(d.year)).y(d=>y(d.life)).curve(d3.curveMonotoneX);
+  // faint individual lines, tinted by change sign
+  const chg={}; DATA.conv.forEach(c=>chg[c.country]=c.chg);
+  Object.entries(DATA.traj).forEach(([ctry,o])=>{
+    const col = chg[ctry]>0.6 ? C.rise : (chg[ctry]<-0.1 ? C.fall : "#b8b09c");
+    g.append("path").datum(o.points).attr("fill","none").attr("stroke",col).attr("stroke-width",1.2).attr("opacity",.32)
+      .attr("d",line).style("cursor","pointer")
+      .on("mousemove",function(ev){d3.select(this).attr("opacity",.9).attr("stroke-width",2.4);
+        const p=o.points; showTip(`<b>${ctry}</b>`+
+          `<div class="row"><span class="muted">${p[0].year}</span><b>${p[0].life.toFixed(2)}</b></div>`+
+          `<div class="row"><span class="muted">${p[p.length-1].year}</span><b>${p[p.length-1].life.toFixed(2)}</b></div>`+
+          `<div class="row"><span class="muted">change</span><b>${(chg[ctry]>=0?"+":"")+chg[ctry].toFixed(2)}</b></div>`,ev);})
+      .on("mouseleave",function(){d3.select(this).attr("opacity",.32).attr("stroke-width",1.2); hideTip();});
+  });
+  // bold group lines
+  const gcol=[C.orth,C.west,C.latam];
+  DATA.groups.forEach((grp,i)=>{
+    g.append("path").datum(grp.points).attr("fill","none").attr("stroke",gcol[i]).attr("stroke-width",4).attr("d",line)
+      .attr("stroke-linejoin","round");
+    g.selectAll(null).data(grp.points).join("circle").attr("cx",d=>x(d.year)).attr("cy",d=>y(d.life)).attr("r",3.4).attr("fill",gcol[i]);
+    const lp=grp.points[grp.points.length-1];
+    g.append("text").attr("class","smcap").attr("fill",gcol[i]).attr("font-weight",700)
+      .attr("x",x(lp.year)+8).attr("y",y(lp.life)+4+(i===1?-4:i===2?12:0)).text(grp.label.split(" (")[0]);
+  });
+  // trough annotation
+  const orth=DATA.groups[0].points, tr=orth.reduce((a,b)=>b.life<a.life?b:a,orth[0]);
+  g.append("text").attr("class","smcap").attr("fill",C.fall).attr("x",x(tr.year)).attr("y",y(tr.life)+24).attr("text-anchor","middle").attr("font-weight",700).text("transition trough");
+  document.getElementById("cap-traj").innerHTML=`Faint lines: ${Object.keys(DATA.traj).length} countries tracked across waves, green where they rose and red where they fell. Bold lines: group averages (each member country weighted equally). The post-communist line falls to ${DATA.headline.orth_trough.toFixed(1)} in the mid-1990s and recovers to ${DATA.headline.orth_last.toFixed(1)}. Weighted by S017.`;
+})();
+
+/* ===== CONVERGENCE SCATTER ===== */
+(function(){
+  const cv=DATA.conv, k=DATA.catchup;
+  const named=new Set([...DATA.risers.slice(0,5).map(r=>r.country),...DATA.fallers.slice(0,4).map(r=>r.country)]);
+  const W=1000,H=520,M={t:22,r:30,b:54,l:60};
+  const svg=d3.select("#chart-conv").append("svg").attr("viewBox",`0 0 ${W} ${H}`).attr("width","100%")
+    .attr("role","img").attr("aria-label","Scatter of each country's starting life satisfaction against its change; strong downward slope shows convergence.");
+  const g=svg.append("g").attr("transform",`translate(${M.l},${M.t})`);
+  const iw=W-M.l-M.r, ih=H-M.t-M.b;
+  const x=d3.scaleLinear().domain([3.5,8.2]).range([0,iw]);
+  const y=d3.scaleLinear().domain([-1.6,2.8]).range([ih,0]);
+  g.append("g").selectAll("line.v").data(x.ticks(6)).join("line").attr("x1",d=>x(d)).attr("x2",d=>x(d)).attr("y1",0).attr("y2",ih).attr("stroke","var(--hair-soft)");
+  g.append("g").selectAll("text.xt").data(x.ticks(6)).join("text").attr("class","axlab").attr("x",d=>x(d)).attr("y",ih+22).attr("text-anchor","middle").text(d=>d.toFixed(0));
+  g.append("g").selectAll("text.yt").data(y.ticks(6)).join("text").attr("class","axlab").attr("x",-10).attr("y",d=>y(d)+4).attr("text-anchor","end").text(d=>(d>0?"+":"")+d.toFixed(0));
+  g.append("text").attr("class","smcap").attr("x",iw/2).attr("y",ih+42).attr("text-anchor","middle").text("life satisfaction in the early period (waves 1–3) →");
+  g.append("text").attr("class","smcap").attr("transform",`translate(-42,${ih/2}) rotate(-90)`).attr("text-anchor","middle").text("change to the latest wave →");
+  // zero line
+  g.append("line").attr("x1",0).attr("x2",iw).attr("y1",y(0)).attr("y2",y(0)).attr("stroke","var(--ink-faint)").attr("stroke-width",1).attr("opacity",.5);
+  // fit line
+  const xa=k.x0-0.1, xb=k.x1+0.1;
+  g.append("line").attr("x1",x(xa)).attr("y1",y(k.intercept+k.slope*xa)).attr("x2",x(xb)).attr("y2",y(k.intercept+k.slope*xb))
+    .attr("stroke",C.accent).attr("stroke-width",2).attr("stroke-dasharray","6 4").attr("opacity",.7);
+  g.selectAll("circle").data(cv).join("circle").attr("cx",d=>x(d.early)).attr("cy",d=>y(d.chg)).attr("r",d=>named.has(d.country)?6:4.4)
+    .attr("fill",d=>d.chg>=0?C.rise:C.fall).attr("opacity",.8).attr("stroke",d=>named.has(d.country)?"var(--ink)":"none").attr("stroke-width",1.2)
+    .attr("tabindex",0).attr("role","button").attr("aria-label",d=>`${d.country}: started ${d.early.toFixed(1)}, changed ${d.chg.toFixed(1)}`)
+    .on("mousemove",(ev,d)=>showTip(`<b>${d.country}</b>`+
+      `<div class="row"><span class="muted">early</span><b>${d.early.toFixed(2)}</b></div>`+
+      `<div class="row"><span class="muted">latest</span><b>${d.late.toFixed(2)}</b></div>`+
+      `<div class="row"><span class="muted">change</span><b>${(d.chg>=0?"+":"")+d.chg.toFixed(2)}</b></div>`,ev))
+    .on("mouseleave",hideTip)
+    .on("focus",function(ev,d){const r=this.getBoundingClientRect();showTip(`<b>${d.country}</b><div class="row"><span class="muted">change</span><b>${(d.chg>=0?"+":"")+d.chg.toFixed(2)}</b></div>`,{clientX:r.x+r.width/2,clientY:r.y});})
+    .on("blur",hideTip);
+  g.selectAll("text.lbl").data(cv.filter(d=>named.has(d.country))).join("text").attr("class","smcap")
+    .attr("x",d=>x(d.early)+8).attr("y",d=>y(d.chg)+(d.chg>=0?-7:14)).attr("fill","var(--ink-dim)").attr("font-weight",700).text(d=>d.country);
+  g.append("text").attr("class","smcap").attr("x",iw-4).attr("y",14).attr("text-anchor","end").attr("fill","var(--ink-dim)").attr("font-weight",700).text(`r = ${k.r.toFixed(2)} · ${k.n} countries`);
+  document.getElementById("cap-conv").innerHTML=`Downward slope = convergence: low starters (post-communist, green, top-left) gained most; high starters (right) gained little or fell. Catch-up slope ${k.slope.toFixed(2)}, r ${k.r.toFixed(2)}. Cross-country spread fell from ${k.sd_early.toFixed(2)} to ${k.sd_late.toFixed(2)} (−${k.sd_drop_pct.toFixed(0)}%).`;
+  const t=d3.select("#chart-conv").append("table").attr("class","fallback").style("display","none");
+  t.append("caption").text("Country life satisfaction: early, latest, and change"); const hr=t.append("thead").append("tr");
+  ["Country","Early","Latest","Change"].forEach(s=>hr.append("th").text(s)); const tb=t.append("tbody");
+  cv.slice().sort((a,b)=>b.chg-a.chg).forEach(d=>{const r=tb.append("tr"); r.append("td").text(d.country); r.append("td").text(d.early.toFixed(2)); r.append("td").text(d.late.toFixed(2)); r.append("td").text((d.chg>=0?"+":"")+d.chg.toFixed(2));});
+})();
+</script>
+<!--SL_BOOKNAV_START-->
+<style>
+.slbn{font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;background:#0f1417;border-top:1px solid #27313a;color:#9fb0ba;padding:24px 20px 40px;margin:48px 0 0}
+.slbn-in{max-width:1080px;margin:0 auto;display:flex;align-items:stretch;gap:12px}
+.slbn a{flex:1 1 0;min-width:0;text-decoration:none;color:inherit;border:1px solid #27313a;border-radius:10px;padding:13px 15px;display:flex;flex-direction:column;gap:4px;background:#161d22;transition:border-color .15s,transform .15s}
+.slbn a:hover{border-color:#3fa9a0;transform:translateY(-2px)}
+.slbn a:focus-visible{outline:2px solid #3fa9a0;outline-offset:2px}
+.slbn a.slbn-next{text-align:right;align-items:flex-end}
+.slbn a.slbn-toc{flex:0 0 auto;min-width:120px;justify-content:center;align-items:center;text-align:center}
+.slbn .slbn-dir{font:700 10px/1 inherit;letter-spacing:.13em;text-transform:uppercase;color:#6b7c87}
+.slbn .slbn-ttl{font:700 14px/1.3 inherit;color:#eef2f4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.slbn a.slbn-disabled{opacity:.38;pointer-events:none}
+@media(max-width:640px){.slbn-in{flex-wrap:wrap}.slbn a{flex:1 1 100%}.slbn a.slbn-next{text-align:left;align-items:flex-start}.slbn a.slbn-toc{order:-1}}
+</style>
+<nav class="slbn" aria-label="Book navigation"><div class="slbn-in"><a class="slbn-prev" href="../read.html?ch=income-life-vs-mood" target="_top"><span class="slbn-dir">‹ Previous</span><span class="slbn-ttl">Money Moves Your Life Rating More Than Your Mood</span></a><a class="slbn-toc" href="../index.html#book" target="_top"><span class="slbn-dir">The Scissors</span><span class="slbn-ttl">Chapter 5 / 36</span></a><a class="slbn-next" href="../read.html?ch=the-changing-recipe" target="_top"><span class="slbn-dir">Next ›</span><span class="slbn-ttl">The Changing Recipe of a Good Life</span></a></div></nav>
+<!--SL_BOOKNAV_END-->
+</body>
+</html>

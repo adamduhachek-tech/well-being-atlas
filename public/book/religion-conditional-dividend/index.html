@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Religion's Conditional Dividend</title>
+<meta name="description" content="Across 143 countries, people who call religion important rate their lives higher and feel better day to day — but mainly where life is hard. As nations grow richer and safer, the religious advantage bends toward zero, and in the wealthiest places it disappears.">
+<style>
+  :root{
+    --bg:#10131a;
+    --bg2:#161b24;
+    --panel:#1b2230;
+    --panel2:#202a3a;
+    --ink:#eef2f8;
+    --soft:#aeb8c8;
+    --faint:#7d8aa0;
+    --rule:#2b3547;
+    --rule2:#384659;
+    --accent:#f2b134;
+    --accent2:#ffd27a;
+    --zero:#f4f6fb;
+    --pos:#36c2a4;
+    --neg:#e07a9b;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+    --sans:"Inter","Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+    --mono:"SFMono-Regular",ui-monospace,"Cascadia Mono",Consolas,monospace;
+    --maxw:720px;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:var(--serif);font-size:18.5px;line-height:1.7;
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  }
+  a{color:var(--accent2);text-decoration-color:rgba(255,210,122,.4);text-underline-offset:2px}
+  a:hover{text-decoration-color:var(--accent2)}
+  a:focus-visible,[tabindex]:focus-visible,button:focus-visible{
+    outline:3px solid var(--accent);outline-offset:2px;border-radius:3px;
+  }
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 22px}
+  .wide{max-width:1080px;margin:0 auto;padding:0 22px}
+
+  /* hero */
+  header.hero{
+    border-bottom:1px solid var(--rule);
+    background:
+      radial-gradient(120% 80% at 82% -10%, rgba(242,177,52,.12), transparent 60%),
+      linear-gradient(180deg, var(--bg2), var(--bg));
+    padding:4.4rem 0 2.8rem;
+  }
+  .kicker{
+    font-family:var(--sans);font-size:.72rem;font-weight:600;letter-spacing:.24em;
+    text-transform:uppercase;color:var(--accent);margin:0 0 1.5rem;
+  }
+  .kicker span{color:var(--faint);font-weight:500}
+  h1{
+    font-size:clamp(2.3rem,6.4vw,4rem);line-height:1.03;margin:0 0 1.2rem;
+    font-weight:600;letter-spacing:-.02em;max-width:15ch;
+  }
+  h1 em{font-style:italic;color:var(--accent2)}
+  .dek{
+    font-family:var(--sans);font-size:clamp(1.04rem,2.4vw,1.28rem);line-height:1.55;color:var(--soft);
+    max-width:54ch;margin:0 0 1.7rem;font-weight:400;
+  }
+  .byline{
+    font-family:var(--sans);font-size:.76rem;color:var(--faint);
+    display:flex;flex-wrap:wrap;gap:.3rem .6rem;align-items:center;
+  }
+  .byline .sep{color:var(--rule2)}
+  .chips{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:2.5rem 0 0}
+  .chip{
+    background:var(--panel);border:1px solid var(--rule);border-top:3px solid var(--accent);
+    border-radius:9px;padding:.95rem 1rem .9rem;
+  }
+  .chip .num{
+    font-family:var(--sans);font-weight:600;font-size:clamp(1.25rem,2.7vw,1.7rem);
+    letter-spacing:-.02em;color:var(--accent2);display:block;font-variant-numeric:tabular-nums;
+  }
+  .chip .lbl{font-family:var(--sans);font-size:.7rem;line-height:1.45;color:var(--soft);display:block;margin-top:.34rem}
+  .chip.teal{border-top-color:var(--pos)} .chip.teal .num{color:var(--pos)}
+  .chip.rose{border-top-color:var(--neg)} .chip.rose .num{color:var(--neg)}
+  @media (max-width:680px){.chips{grid-template-columns:repeat(2,1fr)}}
+
+  /* prose */
+  main{padding:2.8rem 0 1rem}
+  h2{
+    font-family:var(--sans);font-weight:600;
+    font-size:clamp(1.4rem,3.3vw,1.78rem);line-height:1.18;margin:3.2rem 0 1rem;letter-spacing:-.014em;
+  }
+  h2 .no{
+    font-family:var(--mono);font-weight:600;font-size:.62em;color:var(--accent);
+    border:1.5px solid var(--rule2);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;
+    width:1.9em;height:1.9em;margin-right:.55rem;vertical-align:.12em;
+  }
+  p{margin:0 0 1.3rem}
+  .drop::first-letter{
+    float:left;font-size:3.5em;line-height:.82;padding:.05em .12em 0 0;font-weight:600;
+    color:var(--accent2);font-family:var(--serif);
+  }
+  strong{color:#fff;font-weight:600}
+  em.term{font-style:normal;color:var(--accent2)}
+  .lead{font-size:1.16em;color:var(--ink)}
+
+  .constructs{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:2rem 0 2.2rem}
+  .construct{
+    background:var(--panel);border:1px solid var(--rule);border-radius:11px;
+    padding:1.05rem 1.2rem;font-size:.86rem;line-height:1.6;color:var(--soft);font-family:var(--sans);
+  }
+  .construct h3{
+    font-family:var(--sans);font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;
+    margin:0 0 .55rem;color:var(--pos);font-weight:600;
+  }
+  .construct.eval h3{color:var(--accent)}
+  .construct .q{font-style:italic;color:var(--ink);font-family:var(--serif);font-size:1.02rem}
+  .construct .scale{font-size:.76rem;margin-top:.5rem;color:var(--faint)}
+  @media (max-width:560px){.constructs{grid-template-columns:1fr}}
+
+  /* figure */
+  figure{margin:2.4rem auto 2.6rem;padding:0}
+  .figcard{
+    background:var(--bg2);border:1px solid var(--rule);border-radius:13px;
+    padding:1.35rem 1.35rem 1.1rem;
+  }
+  .figtitle{
+    font-family:var(--sans);font-weight:600;font-size:1.04rem;letter-spacing:-.01em;
+    margin:0 0 .2rem;color:var(--ink);
+  }
+  .figsub{font-family:var(--sans);font-size:.8rem;color:var(--soft);margin:0 0 1rem;line-height:1.5}
+  figcaption{font-family:var(--sans);font-size:.78rem;color:var(--faint);line-height:1.55;margin-top:1rem}
+
+  .controls{display:flex;flex-wrap:wrap;gap:1.2rem 1.6rem;align-items:flex-end;margin:0 0 1rem}
+  .ctlgrp{display:flex;flex-direction:column;gap:.4rem}
+  .ctllab{font-family:var(--sans);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);font-weight:600}
+  .seg{display:inline-flex;background:var(--panel);border:1px solid var(--rule2);border-radius:8px;padding:3px;gap:2px}
+  .seg button{
+    font-family:var(--sans);font-size:.8rem;font-weight:500;color:var(--soft);
+    background:transparent;border:0;border-radius:6px;padding:.42rem .7rem;cursor:pointer;
+    letter-spacing:.01em;transition:background .12s,color .12s;
+  }
+  .seg button:hover{color:var(--ink)}
+  .seg button[aria-pressed="true"]{background:var(--accent);color:#1a1505;font-weight:600}
+
+  .legend{display:flex;flex-wrap:wrap;gap:.45rem .8rem;font-family:var(--sans);font-size:.72rem;color:var(--soft);margin:.4rem 0 0}
+  .legend .lk{display:inline-flex;align-items:center;gap:.34rem;cursor:default}
+  .legend .sw{width:11px;height:11px;border-radius:50%;flex:none}
+
+  .chartbox{position:relative;width:100%}
+  svg.chart{width:100%;height:auto;display:block;overflow:visible;touch-action:pan-y}
+  .axis text{font-family:var(--sans);font-size:11px;fill:var(--faint)}
+  .axis line,.axis path{stroke:var(--rule);shape-rendering:crispEdges}
+  .axtitle{font-family:var(--sans);font-size:12px;fill:var(--soft);font-weight:500}
+  .zeroline{stroke:var(--zero);stroke-width:1.6}
+  .zerolab{font-family:var(--sans);font-size:11px;fill:var(--zero);font-weight:600}
+  .gridln{stroke:var(--rule);stroke-opacity:.5;stroke-dasharray:2 4}
+  .dot{stroke:var(--bg2);stroke-width:.8;cursor:pointer;transition:opacity .15s}
+  .dot:hover{stroke:#fff;stroke-width:1.4}
+  .fitline{fill:none;stroke:var(--accent2);stroke-width:2.6;stroke-linecap:round}
+  .fitband{fill:var(--accent);fill-opacity:.1}
+  .anno{font-family:var(--sans);font-size:11px;fill:var(--soft)}
+  .anno.dark{fill:var(--ink);font-weight:600}
+  .lead-line{stroke:var(--faint);stroke-width:1;stroke-dasharray:2 3}
+
+  .tip{
+    position:absolute;pointer-events:none;z-index:10;opacity:0;transition:opacity .1s;
+    background:var(--panel2);border:1px solid var(--rule2);border-radius:9px;
+    padding:.6rem .75rem;font-family:var(--sans);font-size:.76rem;color:var(--ink);
+    box-shadow:0 8px 26px rgba(0,0,0,.45);max-width:230px;line-height:1.45;
+  }
+  .tip .tname{font-weight:600;font-size:.86rem;margin-bottom:.25rem;display:block}
+  .tip .trow{display:flex;justify-content:space-between;gap:1rem;color:var(--soft)}
+  .tip .trow b{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+  .tip .treg{color:var(--faint);font-size:.7rem;margin-top:.3rem;display:block}
+
+  .statband{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:1rem 0 0}
+  .stat{background:var(--panel);border:1px solid var(--rule);border-radius:9px;padding:.7rem .85rem}
+  .stat .sv{font-family:var(--sans);font-weight:600;font-size:1.04rem;color:var(--accent2);font-variant-numeric:tabular-nums;display:block}
+  .stat .sl{font-family:var(--sans);font-size:.67rem;color:var(--faint);line-height:1.4;display:block;margin-top:.25rem}
+  @media (max-width:560px){.statband{grid-template-columns:1fr}}
+
+  .pull{
+    border-left:3px solid var(--accent);padding:.4rem 0 .4rem 1.2rem;margin:2rem 0;
+    font-size:1.22em;line-height:1.45;color:var(--ink);font-style:italic;
+  }
+  .extremes{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:1.8rem 0 2rem}
+  .ex{background:var(--panel);border:1px solid var(--rule);border-radius:11px;padding:1.05rem 1.15rem}
+  .ex h4{font-family:var(--sans);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;margin:0 0 .6rem;font-weight:600}
+  .ex.hi h4{color:var(--pos)} .ex.lo h4{color:var(--neg)}
+  .ex ul{margin:0;padding:0;list-style:none;font-family:var(--sans);font-size:.85rem}
+  .ex li{display:flex;justify-content:space-between;gap:.8rem;padding:.28rem 0;border-bottom:1px solid var(--rule);color:var(--soft)}
+  .ex li:last-child{border-bottom:0}
+  .ex li b{color:var(--ink);font-weight:500}
+  .ex li .g{font-variant-numeric:tabular-nums;font-weight:600}
+  .ex.hi li .g{color:var(--pos)} .ex.lo li .g{color:var(--neg)}
+  @media (max-width:560px){.extremes{grid-template-columns:1fr}}
+
+  .notes{font-family:var(--sans);font-size:.82rem;line-height:1.62;color:var(--faint);
+    border-top:1px solid var(--rule);margin-top:3rem;padding:1.8rem 0 3.5rem}
+  .notes h2{font-size:1.04rem;color:var(--soft);margin:0 0 1rem}
+  .notes p{margin:0 0 1rem;max-width:64ch}
+  .notes a{color:var(--accent2)}
+  .notes b{color:var(--soft)}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="kicker">Gallup World Poll &nbsp;<span>&middot;&nbsp; 143 countries &middot; 2009&ndash;2019</span></p>
+    <h1>Religion's <em>conditional</em> dividend</h1>
+    <p class="dek">People who say religion matters tend to rate their lives higher and feel better day to day &mdash; but mostly where life is hard. As countries grow richer and safer, that advantage bends toward zero.</p>
+    <p class="byline">A cross-country reading of well-being <span class="sep">&middot;</span> evaluative &amp; experiential measures, kept separate <span class="sep">&middot;</span> association, not cause</p>
+    <div class="chips">
+      <div class="chip"><span class="num" id="chip-n">143</span><span class="lbl">countries with an estimable religious / non-religious gap</span></div>
+      <div class="chip teal"><span class="num" id="chip-poor">+0.06</span><span class="lbl">average ladder gap where HDI is below 0.65</span></div>
+      <div class="chip rose"><span class="num" id="chip-rich">&minus;0.09</span><span class="lbl">average ladder gap where HDI is at least 0.80</span></div>
+      <div class="chip"><span class="num" id="chip-zero">0.67</span><span class="lbl">HDI level where the fitted ladder gap reaches zero</span></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <p class="drop lead">A devout farmer in Mali and a devout retiree in Portugal answer the same Gallup question &mdash; <em class="term">is religion an important part of your daily life?</em> &mdash; and both say yes. But the company their faith keeps could hardly be more different. In Mali, the people who say yes rate their lives almost half a ladder rung above their secular neighbours. In Portugal, they sit lower. The religious dividend is real in one place and inverted in the other, and the thing that separates them is not theology. It is the difficulty of the life around them.</p>
+
+    <p>This is the pattern the psychologist Ed Diener and colleagues named the <a href="https://psycnet.apa.org/doi/10.1037/a0024402">religion paradox</a> in 2011: religiosity tracks well-being far more strongly in hard, insecure societies than in comfortable ones. Pool eleven recent years of the Gallup World Poll, measure the gap between the religious and the non-religious inside each of <strong>143 countries</strong>, and then ask whether that gap depends on national conditions. It does &mdash; but only loosely, and not in the same way for every kind of happiness.</p>
+
+    <div class="constructs">
+      <div class="construct eval">
+        <h3>Evaluative</h3>
+        <p class="q">&ldquo;On which step of the ladder do you stand?&rdquo;</p>
+        <p>The Cantril ladder, 0 to 10. A considered judgment of one's life as a whole.</p>
+        <p class="scale">Gap = religious mean &minus; non-religious mean, in ladder points.</p>
+      </div>
+      <div class="construct">
+        <h3>Experiential</h3>
+        <p class="q">&ldquo;Did you feel a lot of worry / enjoyment yesterday?&rdquo;</p>
+        <p>Five yes/no affect items, averaged to a 0&ndash;1 share. The texture of an ordinary day.</p>
+        <p class="scale">A dividend means <em>more</em> positive affect, or <em>less</em> negative affect, among the religious.</p>
+      </div>
+    </div>
+
+    <h2><span class="no">1</span>The bend is the argument</h2>
+    <p>Each dot below is one country. Its height is the within-country gap in life evaluation between people who say religion is important and people who say it is not &mdash; weighted, as Gallup requires, by the within-country sampling weight. The horizontal axis is a national condition: human development, income, or the homicide rate. The white line across the middle is the only line that matters in the end. It marks <em class="term">no dividend</em> &mdash; the height at which faith and well-being have nothing to say to each other.</p>
+  </div>
+
+  <figure class="wide">
+    <div class="figcard">
+      <p class="figtitle" id="fig-title">The religious advantage shrinks as life gets easier</p>
+      <p class="figsub" id="fig-sub">Each point is a country. Above the white line, the religious report higher life evaluation; below it, lower. Point size scales with the number of people surveyed.</p>
+      <div class="controls">
+        <div class="ctlgrp">
+          <span class="ctllab">Happiness measure</span>
+          <div class="seg" role="group" aria-label="Choose happiness measure">
+            <button id="m-ladder" aria-pressed="true">Life evaluation</button>
+            <button id="m-pos" aria-pressed="false">Positive days</button>
+            <button id="m-neg" aria-pressed="false">Negative days</button>
+          </div>
+        </div>
+        <div class="ctlgrp">
+          <span class="ctllab">National condition (x&#8209;axis)</span>
+          <div class="seg" role="group" aria-label="Choose national condition">
+            <button id="x-hdi" aria-pressed="true">Human development</button>
+            <button id="x-loggni" aria-pressed="false">Income</button>
+            <button id="x-hom" aria-pressed="false">Homicide rate</button>
+          </div>
+        </div>
+      </div>
+      <div class="chartbox">
+        <svg class="chart" id="scatter" viewBox="0 0 1040 600" preserveAspectRatio="xMidYMid meet" role="img" aria-labelledby="scatter-title scatter-desc"></svg>
+        <div class="tip" id="tip" role="status" aria-live="polite"></div>
+      </div>
+      <div class="legend" id="legend" aria-hidden="false"></div>
+      <div class="statband" id="statband"></div>
+      <figcaption id="fig-cap"></figcaption>
+    </div>
+  </figure>
+
+  <div class="wrap">
+    <p>The fitted curve &mdash; a locally weighted smoother, with a shaded band for its uncertainty &mdash; starts above the line and slides down to meet it. For life evaluation, the gap among countries averages <strong id="t-mean">near zero</strong>, but that average hides the slope: it runs at about <strong id="t-slope">&minus;0.32 ladder points</strong> for every full point of the Human Development Index, and reaches zero near <strong id="t-zero">HDI 0.67</strong>. Below that, the dividend is positive; above it, it turns slightly negative. A simple regression with each country as one observation puts the fit's R&sup2; at only <strong id="t-r2">0.05</strong> &mdash; the bend is real and statistically clear (its slope is several times its standard error), but national development explains just a sliver of why some countries show a large religious gap and others none. Weighting countries by sample size steepens the slope a little, to <strong id="t-wls">&minus;0.37</strong>, so the direction is not an artifact of small, noisy surveys.</p>
+
+    <p class="pull">Among the 46 lower-development countries, most show a positive religious gap; among the 51 high-development ones, most show none or a negative one.</p>
+
+    <h2><span class="no">2</span>The two extremes</h2>
+    <p>The countries at the top of the ladder ranking are mostly poor or insecure &mdash; places where, for the non-religious, the floor is closer and the supports thinner. The countries where the religious sit <em>lower</em> than their secular neighbours are a different crowd: aging, secularized, often European, where saying religion still matters can mark someone as out of step with the world around them. Hover any point in the chart to read both gaps; the standouts are below.</p>
+
+    <div class="extremes">
+      <div class="ex hi">
+        <h4>Largest life-evaluation dividend</h4>
+        <ul id="ex-top"></ul>
+      </div>
+      <div class="ex lo">
+        <h4>Largest reversal (religious lower)</h4>
+        <ul id="ex-none"></ul>
+      </div>
+    </div>
+
+    <p>None of this means religion <em>makes</em> the difference. Religiosity is bound up with hardship: hard places are more religious to begin with, and they are also less happy for reasons that have nothing to do with faith &mdash; war, poverty, weak institutions. A country like Sudan or Mali is religious and difficult at once, so a gap measured there is partly a story about who, within a struggling society, leans on belief. Read the chart as a description of where the two move together, not a claim that one moves the other.</p>
+
+    <h2><span class="no">3</span>Evaluation versus the ordinary day</h2>
+    <p>Keeping the two kinds of happiness apart turns out to matter, because they do not bend in unison. The cleanest signal is not the headline ladder at all &mdash; it is <em class="term">positive affect</em>, whether people laughed, smiled, felt enjoyment and rest the day before. Switch the measure to <strong>Positive days</strong> in the chart and the cloud tightens dramatically around the curve. National development explains roughly <strong id="t-posr2">46%</strong> of the cross-country variation in the positive-affect gap, against just five for the ladder, and the gap stays positive almost all the way up the development scale, fading out only near the very top, around <strong id="t-poszero">HDI 0.90</strong>.</p>
+
+    <p><em class="term">Negative affect</em> &mdash; worry, sadness, stress, pain, anger &mdash; tells a parallel story with the sign flipped. Here a dividend means the religious report <em>fewer</em> bad-feeling days, so the advantage shows up <em>below</em> the white line. In lower-development countries the religious do report less daily negativity; that edge shrinks as development rises and is gone, on average, by about <strong id="t-negzero">HDI 0.62</strong> &mdash; after which, in the richest places, the religious tend to report slightly <em>more</em> negative affect, not less. Development moves the negative-affect gap with an R&sup2; of about <strong id="t-negr2">0.26</strong>: stronger than evaluation, weaker than the positive side.</p>
+
+    <p>So the three measures rhyme without repeating. Where they agree &mdash; the religious gap is largest in hard places and vanishes in easy ones &mdash; the agreement is the whole point. Where they differ in strength &mdash; faith tracks the felt texture of a good day far more tightly than it tracks a person's summary verdict on their life &mdash; the difference is itself a finding. Across countries the ladder gap and the positive-affect gap move together only moderately (a correlation of about <strong id="t-corr">0.49</strong>), which is another way of saying these really are two different questions.</p>
+
+    <h2><span class="no">4</span>What this shows, and what it doesn't</h2>
+    <p>The honest summary is narrow. <strong>One:</strong> this is association, moderated by national conditions &mdash; never evidence that faith causes happiness. Religiosity is endogenous to hardship, and any number of unmeasured things that make a country hard also shape who is religious and how they answer survey questions.</p>
+    <p><strong>Two:</strong> cross-country comparisons of self-report are slippery. People in different cultures use the same 0-to-10 ladder differently, and an emotion word translated into dozens of languages does not mean exactly the same thing everywhere. A gap of a tenth of a ladder point between two countries is not something to build a theory on; the brief here is the broad slope across 143 of them, not any single country's number.</p>
+    <p><strong>Three:</strong> the affect items are blunt. They ask only whether a feeling happened <em>yesterday</em> &mdash; a yes/no, not an intensity &mdash; so they capture the presence of a good or bad day, not how good or bad. And the national context here is a static snapshot, joined to every survey year; it describes where a country sat around 2015&ndash;2018, not how it changed.</p>
+
+    <p>What survives all that is modest and, to Diener's point, fairly stubborn: the comfort that belief appears to offer is not evenly distributed. It is largest exactly where ordinary life offers the least, and it thins out as the rest of life fills in. Weighted by population, the world's religious ladder gap is almost exactly <strong id="t-world">zero</strong> &mdash; not because faith does nothing, but because its dividend is conditional, and on a planet of mostly middle and rising development, the conditions increasingly cancel out.</p>
+  </div>
+
+  <div class="wrap">
+    <div class="notes">
+      <h2>Notes &amp; data</h2>
+      <p><b>Source.</b> Gallup World Poll, cleaned well-being extract (2,293,396 interviews, 2005&ndash;2020). This piece pools the <b>2009&ndash;2019</b> window, when the religion item and the affect items are well covered; the analysis rests on <span id="n-rows">about 1.5 million</span> interviews with both a ladder score and the religion question. Countries are surveyed roughly 1,000 respondents per year; the median included country contributes <span id="n-ny">10</span> survey years.</p>
+      <p><b>Who counts as religious.</b> The split comes from a single binary item &mdash; <em>&ldquo;Is religion an important part of your daily life?&rdquo;</em> (yes = religious, no = non-religious). The share answering yes ranges from about <span id="n-relmin">16%</span> to <span id="n-relmax">98%</span> across countries.</p>
+      <p><b>Estimating the gap.</b> Within each country we take the Gallup within-country weighted mean of each measure for the religious and the non-religious, then subtract. A country enters only if it has at least <b>150</b> respondents in <em>each</em> group and at least <b>1,000</b> overall, leaving <b>143</b> countries for life evaluation, <span id="n-pos">142</span> for positive affect and <span id="n-neg">140</span> for negative affect. Territories without an ISO3 code (Kosovo, Somaliland, Nagorno-Karabakh) are excluded.</p>
+      <p><b>The moderation.</b> Each country is then one observation in an ordinary-least-squares regression of its gap on a national condition &mdash; the Human Development Index, log GNI per capita, or the homicide rate per 100,000. Reported slopes, R&sup2; values and zero-crossings come from those country-level fits (statsmodels OLS); a sample-size-weighted fit is shown alongside the ladder result as a robustness check. The fitted curve in the chart is a locally weighted regression; its shaded band is a rough standard-error envelope, not a formal confidence interval.</p>
+      <p><b>Weights.</b> Every within-country figure uses Gallup's within-country weight. The cross-country regressions treat each country as one observation. The only genuinely global number quoted &mdash; the world's population-weighted ladder gap &mdash; is weighted across countries by adult-era population (ctry_pop_millions, ~2018 vintage); one of 143 countries lacks that figure and is dropped from it.</p>
+      <p><b>Constructs.</b> The Cantril ladder is <em>evaluative</em>; the affect indices are <em>experiential</em>. They are never averaged together. For negative affect, higher means worse, so a religious dividend is a <em>negative</em> gap (less daily negativity) &mdash; which is why, in that view, the dividend lives below the zero line.</p>
+      <p><b>Literature.</b> Diener, E., Tay, L., &amp; Myers, D. G. (2011). <a href="https://psycnet.apa.org/doi/10.1037/a0024402">The religion paradox: If religion makes people happy, why are so many dropping out?</a> <em>Journal of Personality and Social Psychology</em>, 101(6), 1278&ndash;1290. See also Olga Stavrova's cross-national work on <a href="https://doi.org/10.1177/1948550615593149">religion, social norms and well-being</a> for the role a country's religious climate plays in this relationship.</p>
+    </div>
+  </div>
+</main>
+
+<script type="module">
+/*DATA-START*/const DATA = {"meta":{"slug":"religion-conditional-dividend","dataset":"Gallup World Poll (cleaned extract)","window":[2009,2019],"min_cell":150,"min_n":1000,"n_countries":143,"n_neg":140,"n_pos":142,"total_rows":1510159,"ny_min":2,"ny_med":10,"rel_share_min":0.163,"rel_share_max":0.982,"context_vintage":"~2015-2018 (static country join)","regions":["Australia-New Zealand","Commonwealth of Independent States","East Asia","Europe-Other","European Union","Latin America and the Caribbean","Middle East and North Africa","Northern America","South Asia","Southeast Asia","Sub-Saharan Africa"],"no_pop_n":1,"diener_year":2011},"world":{"lad":0.002,"neg":0.0196,"pos":0.028,"n_lad":142,"n_neg":139,"n_pos":141},"summary":{"mean_lad":-0.016,"share_pos_lad":0.434,"poor_mean":0.061,"rich_mean":-0.093,"poor_n":46,"rich_n":51,"poor_pos_share":0.565,"rich_pos_share":0.314,"hdi_zero":0.671,"neg_hdi_zero":0.621,"pos_hdi_zero":0.901,"pred_lad_05":0.054,"pred_lad_09":-0.073,"corr_lad_neg":-0.518,"corr_lad_pos":0.494},"reg":{"ladder":{"hdi":{"slope":-0.3168,"se":0.1188,"intercept":0.2126,"r2":0.048,"n":142,"p":0.0086},"loggni":{"slope":-0.0308,"se":0.0157,"intercept":0.2697,"r2":0.027,"n":142,"p":0.0516},"hom":{"slope":0.0014,"se":0.0017,"intercept":-0.0246,"r2":0.005,"n":142,"p":0.4102},"hdi_wls":{"slope":-0.3671,"intercept":0.2362,"r2":0.061,"n":142}},"neg":{"hdi":{"slope":0.1154,"se":0.0153,"intercept":-0.0717,"r2":0.294,"n":139,"p":0.0},"loggni":{"slope":0.0142,"se":0.0021,"intercept":-0.1196,"r2":0.252,"n":139,"p":0.0},"hom":{"slope":-0.0003,"se":0.0002,"intercept":0.0133,"r2":0.013,"n":139,"p":0.1734}},"pos":{"hdi":{"slope":-0.1957,"se":0.018,"intercept":0.1762,"r2":0.458,"n":141,"p":0.0},"loggni":{"slope":-0.0229,"se":0.0026,"intercept":0.2468,"r2":0.365,"n":141,"p":0.0},"hom":{"slope":0.0007,"se":0.0003,"intercept":0.0311,"r2":0.03,"n":141,"p":0.0416}}},"curves":{"ladder":{"hdi":[{"x":0.354,"y":-0.2113,"lo":-0.4234,"hi":0.0008},{"x":0.3694,"y":-0.1469,"lo":-0.359,"hi":0.0652},{"x":0.3847,"y":-0.0898,"lo":-0.3019,"hi":0.1224},{"x":0.4001,"y":-0.0399,"lo":-0.252,"hi":0.1722},{"x":0.4154,"y":0.0029,"lo":-0.2092,"hi":0.215},{"x":0.4308,"y":0.0388,"lo":-0.1733,"hi":0.2509},{"x":0.4462,"y":0.068,"lo":-0.1442,"hi":0.2801},{"x":0.4615,"y":0.0906,"lo":-0.1215,"hi":0.3027},{"x":0.4769,"y":0.107,"lo":-0.1051,"hi":0.3191},{"x":0.4922,"y":0.1172,"lo":-0.0949,"hi":0.3293},{"x":0.5076,"y":0.1212,"lo":-0.091,"hi":0.3333},{"x":0.5229,"y":0.1187,"lo":-0.0934,"hi":0.3308},{"x":0.5383,"y":0.1092,"lo":-0.1029,"hi":0.3214},{"x":0.5537,"y":0.0916,"lo":-0.1205,"hi":0.3037},{"x":0.569,"y":0.0656,"lo":-0.1465,"hi":0.2777},{"x":0.5844,"y":0.0294,"lo":-0.1827,"hi":0.2415},{"x":0.5997,"y":-0.0143,"lo":-0.2264,"hi":0.1978},{"x":0.6151,"y":-0.0495,"lo":-0.2616,"hi":0.1627},{"x":0.6305,"y":-0.075,"lo":-0.2871,"hi":0.1372},{"x":0.6458,"y":-0.0907,"lo":-0.3029,"hi":0.1214},{"x":0.6612,"y":-0.0957,"lo":-0.3078,"hi":0.1164},{"x":0.6765,"y":-0.0785,"lo":-0.2906,"hi":0.1336},{"x":0.6919,"y":-0.0581,"lo":-0.2702,"hi":0.154},{"x":0.7073,"y":-0.0355,"lo":-0.2476,"hi":0.1766},{"x":0.7226,"y":-0.0109,"lo":-0.2231,"hi":0.2012},{"x":0.738,"y":0.0068,"lo":-0.2053,"hi":0.2189},{"x":0.7533,"y":0.0038,"lo":-0.2084,"hi":0.2159},{"x":0.7687,"y":-0.0149,"lo":-0.227,"hi":0.1972},{"x":0.7841,"y":-0.0389,"lo":-0.251,"hi":0.1732},{"x":0.7994,"y":-0.0781,"lo":-0.2902,"hi":0.134},{"x":0.8148,"y":-0.1314,"lo":-0.3435,"hi":0.0807},{"x":0.8301,"y":-0.1798,"lo":-0.3919,"hi":0.0323},{"x":0.8455,"y":-0.1971,"lo":-0.4092,"hi":0.0151},{"x":0.8608,"y":-0.1952,"lo":-0.4074,"hi":0.0169},{"x":0.8762,"y":-0.1779,"lo":-0.39,"hi":0.0342},{"x":0.8916,"y":-0.1448,"lo":-0.357,"hi":0.0673},{"x":0.9069,"y":-0.0952,"lo":-0.3073,"hi":0.1169},{"x":0.9223,"y":-0.0283,"lo":-0.2404,"hi":0.1838},{"x":0.9376,"y":0.0561,"lo":-0.156,"hi":0.2682},{"x":0.953,"y":0.158,"lo":-0.0541,"hi":0.3701}],"loggni":[{"x":6.5028,"y":-0.1504,"lo":-0.3724,"hi":0.0716},{"x":6.6263,"y":-0.1035,"lo":-0.3255,"hi":0.1186},{"x":6.7499,"y":-0.0614,"lo":-0.2835,"hi":0.1606},{"x":6.8734,"y":-0.0244,"lo":-0.2464,"hi":0.1977},{"x":6.9969,"y":0.0078,"lo":-0.2143,"hi":0.2298},{"x":7.1205,"y":0.035,"lo":-0.1871,"hi":0.257},{"x":7.244,"y":0.0574,"lo":-0.1647,"hi":0.2794},{"x":7.3675,"y":0.075,"lo":-0.147,"hi":0.2971},{"x":7.4911,"y":0.0881,"lo":-0.1339,"hi":0.3101},{"x":7.6146,"y":0.0967,"lo":-0.1254,"hi":0.3187},{"x":7.7381,"y":0.1008,"lo":-0.1213,"hi":0.3228},{"x":7.8617,"y":0.1001,"lo":-0.1219,"hi":0.3221},{"x":7.9852,"y":0.0938,"lo":-0.1282,"hi":0.3159},{"x":8.1087,"y":0.0807,"lo":-0.1413,"hi":0.3028},{"x":8.2323,"y":0.0588,"lo":-0.1632,"hi":0.2809},{"x":8.3558,"y":0.0362,"lo":-0.1858,"hi":0.2582},{"x":8.4793,"y":0.015,"lo":-0.2071,"hi":0.237},{"x":8.6029,"y":-0.0036,"lo":-0.2256,"hi":0.2185},{"x":8.7264,"y":-0.0224,"lo":-0.2444,"hi":0.1996},{"x":8.8499,"y":-0.0275,"lo":-0.2495,"hi":0.1945},{"x":8.9735,"y":-0.0294,"lo":-0.2514,"hi":0.1927},{"x":9.097,"y":-0.0265,"lo":-0.2485,"hi":0.1956},{"x":9.2205,"y":-0.0169,"lo":-0.2389,"hi":0.2052},{"x":9.3441,"y":-0.0143,"lo":-0.2364,"hi":0.2077},{"x":9.4676,"y":-0.0227,"lo":-0.2447,"hi":0.1994},{"x":9.5911,"y":-0.0347,"lo":-0.2568,"hi":0.1873},{"x":9.7147,"y":-0.0755,"lo":-0.2975,"hi":0.1465},{"x":9.8382,"y":-0.1238,"lo":-0.3458,"hi":0.0983},{"x":9.9617,"y":-0.1568,"lo":-0.3788,"hi":0.0653},{"x":10.0853,"y":-0.1808,"lo":-0.4029,"hi":0.0412},{"x":10.2088,"y":-0.1739,"lo":-0.3959,"hi":0.0482},{"x":10.3323,"y":-0.1525,"lo":-0.3745,"hi":0.0696},{"x":10.4559,"y":-0.1275,"lo":-0.3495,"hi":0.0946},{"x":10.5794,"y":-0.0973,"lo":-0.3193,"hi":0.1247},{"x":10.7029,"y":-0.0602,"lo":-0.2823,"hi":0.1618},{"x":10.8265,"y":-0.0159,"lo":-0.238,"hi":0.2061},{"x":10.95,"y":0.0352,"lo":-0.1868,"hi":0.2573},{"x":11.0735,"y":0.0926,"lo":-0.1295,"hi":0.3146},{"x":11.1971,"y":0.1551,"lo":-0.0669,"hi":0.3771},{"x":11.3206,"y":0.222,"lo":-0.0,"hi":0.4441}],"hom":[{"x":0.3,"y":-0.0431,"lo":-0.2724,"hi":0.1863},{"x":2.4154,"y":-0.0717,"lo":-0.3011,"hi":0.1576},{"x":4.5308,"y":-0.0425,"lo":-0.2719,"hi":0.1868},{"x":6.6462,"y":0.0512,"lo":-0.1781,"hi":0.2805},{"x":8.7615,"y":0.0806,"lo":-0.1488,"hi":0.3099},{"x":10.8769,"y":0.0863,"lo":-0.143,"hi":0.3157},{"x":12.9923,"y":0.0552,"lo":-0.1741,"hi":0.2846},{"x":15.1077,"y":0.0191,"lo":-0.2102,"hi":0.2485},{"x":17.2231,"y":0.0033,"lo":-0.226,"hi":0.2326},{"x":19.3385,"y":-0.0154,"lo":-0.2448,"hi":0.2139},{"x":21.4538,"y":-0.0251,"lo":-0.2545,"hi":0.2042},{"x":23.5692,"y":-0.017,"lo":-0.2464,"hi":0.2123},{"x":25.6846,"y":-0.0013,"lo":-0.2306,"hi":0.2281},{"x":27.8,"y":0.0139,"lo":-0.2155,"hi":0.2432},{"x":29.9154,"y":0.0232,"lo":-0.2061,"hi":0.2526},{"x":32.0308,"y":0.0255,"lo":-0.2039,"hi":0.2548},{"x":34.1462,"y":0.0266,"lo":-0.2028,"hi":0.2559},{"x":36.2615,"y":0.0287,"lo":-0.2006,"hi":0.2581},{"x":38.3769,"y":0.0311,"lo":-0.1982,"hi":0.2605},{"x":40.4923,"y":0.0332,"lo":-0.1961,"hi":0.2626},{"x":42.6077,"y":0.0346,"lo":-0.1947,"hi":0.264},{"x":44.7231,"y":0.0355,"lo":-0.1938,"hi":0.2649},{"x":46.8385,"y":0.0342,"lo":-0.1952,"hi":0.2635},{"x":48.9538,"y":0.0301,"lo":-0.1992,"hi":0.2594},{"x":51.0692,"y":0.0244,"lo":-0.2049,"hi":0.2538},{"x":53.1846,"y":0.0176,"lo":-0.2118,"hi":0.2469},{"x":55.3,"y":0.0096,"lo":-0.2197,"hi":0.239},{"x":57.4154,"y":0.0006,"lo":-0.2287,"hi":0.23},{"x":59.5308,"y":-0.0094,"lo":-0.2387,"hi":0.2199},{"x":61.6462,"y":-0.0205,"lo":-0.2498,"hi":0.2089},{"x":63.7615,"y":-0.0326,"lo":-0.2619,"hi":0.1968},{"x":65.8769,"y":-0.0458,"lo":-0.2751,"hi":0.1836},{"x":67.9923,"y":-0.06,"lo":-0.2893,"hi":0.1694},{"x":70.1077,"y":-0.0752,"lo":-0.3046,"hi":0.1541},{"x":72.2231,"y":-0.0916,"lo":-0.3209,"hi":0.1378},{"x":74.3385,"y":-0.109,"lo":-0.3383,"hi":0.1204},{"x":76.4538,"y":-0.1274,"lo":-0.3567,"hi":0.1019},{"x":78.5692,"y":-0.1469,"lo":-0.3762,"hi":0.0825},{"x":80.6846,"y":-0.1674,"lo":-0.3968,"hi":0.0619},{"x":82.8,"y":-0.189,"lo":-0.4184,"hi":0.0403}]},"neg":{"hdi":[{"x":0.354,"y":-0.0108,"lo":-0.0392,"hi":0.0176},{"x":0.3694,"y":-0.0127,"lo":-0.0411,"hi":0.0158},{"x":0.3847,"y":-0.0143,"lo":-0.0427,"hi":0.0142},{"x":0.4001,"y":-0.0156,"lo":-0.044,"hi":0.0128},{"x":0.4154,"y":-0.0166,"lo":-0.045,"hi":0.0118},{"x":0.4308,"y":-0.0174,"lo":-0.0458,"hi":0.0111},{"x":0.4462,"y":-0.0178,"lo":-0.0462,"hi":0.0107},{"x":0.4615,"y":-0.0178,"lo":-0.0463,"hi":0.0106},{"x":0.4769,"y":-0.0175,"lo":-0.0459,"hi":0.0109},{"x":0.4922,"y":-0.0169,"lo":-0.0453,"hi":0.0116},{"x":0.5076,"y":-0.0159,"lo":-0.0443,"hi":0.0125},{"x":0.5229,"y":-0.0146,"lo":-0.043,"hi":0.0138},{"x":0.5383,"y":-0.0132,"lo":-0.0416,"hi":0.0152},{"x":0.5537,"y":-0.0116,"lo":-0.04,"hi":0.0168},{"x":0.569,"y":-0.0099,"lo":-0.0383,"hi":0.0186},{"x":0.5844,"y":-0.0075,"lo":-0.0359,"hi":0.0209},{"x":0.5997,"y":-0.0032,"lo":-0.0316,"hi":0.0252},{"x":0.6151,"y":0.0023,"lo":-0.0262,"hi":0.0307},{"x":0.6305,"y":0.0071,"lo":-0.0213,"hi":0.0355},{"x":0.6458,"y":0.0109,"lo":-0.0175,"hi":0.0393},{"x":0.6612,"y":0.0141,"lo":-0.0144,"hi":0.0425},{"x":0.6765,"y":0.0155,"lo":-0.013,"hi":0.0439},{"x":0.6919,"y":0.0162,"lo":-0.0123,"hi":0.0446},{"x":0.7073,"y":0.0164,"lo":-0.012,"hi":0.0448},{"x":0.7226,"y":0.0162,"lo":-0.0122,"hi":0.0446},{"x":0.738,"y":0.0165,"lo":-0.012,"hi":0.0449},{"x":0.7533,"y":0.0188,"lo":-0.0096,"hi":0.0472},{"x":0.7687,"y":0.0222,"lo":-0.0062,"hi":0.0507},{"x":0.7841,"y":0.0259,"lo":-0.0025,"hi":0.0543},{"x":0.7994,"y":0.0297,"lo":0.0013,"hi":0.0582},{"x":0.8148,"y":0.0343,"lo":0.0059,"hi":0.0627},{"x":0.8301,"y":0.0386,"lo":0.0102,"hi":0.0671},{"x":0.8455,"y":0.0403,"lo":0.0119,"hi":0.0687},{"x":0.8608,"y":0.0403,"lo":0.0119,"hi":0.0687},{"x":0.8762,"y":0.0388,"lo":0.0103,"hi":0.0672},{"x":0.8916,"y":0.0356,"lo":0.0072,"hi":0.064},{"x":0.9069,"y":0.0307,"lo":0.0023,"hi":0.0592},{"x":0.9223,"y":0.0242,"lo":-0.0042,"hi":0.0526},{"x":0.9376,"y":0.0159,"lo":-0.0125,"hi":0.0444},{"x":0.953,"y":0.006,"lo":-0.0224,"hi":0.0345}],"loggni":[{"x":6.5028,"y":-0.0226,"lo":-0.0526,"hi":0.0073},{"x":6.6263,"y":-0.0214,"lo":-0.0514,"hi":0.0085},{"x":6.7499,"y":-0.0204,"lo":-0.0503,"hi":0.0096},{"x":6.8734,"y":-0.0193,"lo":-0.0493,"hi":0.0106},{"x":6.9969,"y":-0.0183,"lo":-0.0482,"hi":0.0116},{"x":7.1205,"y":-0.0173,"lo":-0.0472,"hi":0.0127},{"x":7.244,"y":-0.0161,"lo":-0.0461,"hi":0.0138},{"x":7.3675,"y":-0.015,"lo":-0.0449,"hi":0.015},{"x":7.4911,"y":-0.0138,"lo":-0.0437,"hi":0.0162},{"x":7.6146,"y":-0.0126,"lo":-0.0425,"hi":0.0174},{"x":7.7381,"y":-0.0114,"lo":-0.0413,"hi":0.0185},{"x":7.8617,"y":-0.0104,"lo":-0.0403,"hi":0.0196},{"x":7.9852,"y":-0.0094,"lo":-0.0393,"hi":0.0206},{"x":8.1087,"y":-0.0078,"lo":-0.0377,"hi":0.0222},{"x":8.2323,"y":-0.0049,"lo":-0.0348,"hi":0.0251},{"x":8.3558,"y":-0.0013,"lo":-0.0313,"hi":0.0286},{"x":8.4793,"y":0.0021,"lo":-0.0278,"hi":0.0321},{"x":8.6029,"y":0.006,"lo":-0.0239,"hi":0.036},{"x":8.7264,"y":0.0097,"lo":-0.0202,"hi":0.0396},{"x":8.8499,"y":0.0124,"lo":-0.0176,"hi":0.0423},{"x":8.9735,"y":0.0144,"lo":-0.0156,"hi":0.0443},{"x":9.097,"y":0.0155,"lo":-0.0144,"hi":0.0454},{"x":9.2205,"y":0.0158,"lo":-0.0142,"hi":0.0457},{"x":9.3441,"y":0.0171,"lo":-0.0128,"hi":0.047},{"x":9.4676,"y":0.0192,"lo":-0.0107,"hi":0.0492},{"x":9.5911,"y":0.022,"lo":-0.0079,"hi":0.052},{"x":9.7147,"y":0.0268,"lo":-0.0031,"hi":0.0568},{"x":9.8382,"y":0.0314,"lo":0.0014,"hi":0.0613},{"x":9.9617,"y":0.0343,"lo":0.0044,"hi":0.0642},{"x":10.0853,"y":0.0357,"lo":0.0057,"hi":0.0656},{"x":10.2088,"y":0.0355,"lo":0.0056,"hi":0.0655},{"x":10.3323,"y":0.0344,"lo":0.0044,"hi":0.0643},{"x":10.4559,"y":0.0327,"lo":0.0027,"hi":0.0626},{"x":10.5794,"y":0.0302,"lo":0.0003,"hi":0.0601},{"x":10.7029,"y":0.027,"lo":-0.0029,"hi":0.0569},{"x":10.8265,"y":0.023,"lo":-0.007,"hi":0.0529},{"x":10.95,"y":0.0182,"lo":-0.0117,"hi":0.0482},{"x":11.0735,"y":0.0128,"lo":-0.0172,"hi":0.0427},{"x":11.1971,"y":0.0066,"lo":-0.0233,"hi":0.0366},{"x":11.3206,"y":-0.0001,"lo":-0.0301,"hi":0.0298}],"hom":[{"x":0.3,"y":0.0361,"lo":0.0019,"hi":0.0703},{"x":2.4154,"y":0.0062,"lo":-0.028,"hi":0.0404},{"x":4.5308,"y":0.0197,"lo":-0.0146,"hi":0.0539},{"x":6.6462,"y":0.0086,"lo":-0.0257,"hi":0.0428},{"x":8.7615,"y":0.0025,"lo":-0.0318,"hi":0.0367},{"x":10.8769,"y":-0.0003,"lo":-0.0345,"hi":0.034},{"x":12.9923,"y":0.0015,"lo":-0.0327,"hi":0.0357},{"x":15.1077,"y":0.0059,"lo":-0.0283,"hi":0.0401},{"x":17.2231,"y":0.0079,"lo":-0.0263,"hi":0.0421},{"x":19.3385,"y":0.0112,"lo":-0.023,"hi":0.0454},{"x":21.4538,"y":0.014,"lo":-0.0203,"hi":0.0482},{"x":23.5692,"y":0.0163,"lo":-0.0179,"hi":0.0505},{"x":25.6846,"y":0.0159,"lo":-0.0184,"hi":0.0501},{"x":27.8,"y":0.0122,"lo":-0.022,"hi":0.0464},{"x":29.9154,"y":0.0075,"lo":-0.0267,"hi":0.0417},{"x":32.0308,"y":0.0059,"lo":-0.0283,"hi":0.0402},{"x":34.1462,"y":0.006,"lo":-0.0283,"hi":0.0402},{"x":36.2615,"y":0.006,"lo":-0.0282,"hi":0.0402},{"x":38.3769,"y":0.006,"lo":-0.0282,"hi":0.0402},{"x":40.4923,"y":0.0062,"lo":-0.0281,"hi":0.0404},{"x":42.6077,"y":0.0064,"lo":-0.0278,"hi":0.0406},{"x":44.7231,"y":0.0069,"lo":-0.0273,"hi":0.0412},{"x":46.8385,"y":0.0074,"lo":-0.0268,"hi":0.0417},{"x":48.9538,"y":0.0077,"lo":-0.0265,"hi":0.0419},{"x":51.0692,"y":0.0079,"lo":-0.0264,"hi":0.0421},{"x":53.1846,"y":0.008,"lo":-0.0262,"hi":0.0423},{"x":55.3,"y":0.0083,"lo":-0.0259,"hi":0.0425},{"x":57.4154,"y":0.0086,"lo":-0.0256,"hi":0.0428},{"x":59.5308,"y":0.009,"lo":-0.0253,"hi":0.0432},{"x":61.6462,"y":0.0094,"lo":-0.0248,"hi":0.0436},{"x":63.7615,"y":0.0099,"lo":-0.0243,"hi":0.0441},{"x":65.8769,"y":0.0104,"lo":-0.0238,"hi":0.0446},{"x":67.9923,"y":0.011,"lo":-0.0233,"hi":0.0452},{"x":70.1077,"y":0.0115,"lo":-0.0227,"hi":0.0458},{"x":72.2231,"y":0.0121,"lo":-0.0221,"hi":0.0463},{"x":74.3385,"y":0.0127,"lo":-0.0215,"hi":0.0469},{"x":76.4538,"y":0.0132,"lo":-0.021,"hi":0.0475},{"x":78.5692,"y":0.0138,"lo":-0.0204,"hi":0.048},{"x":80.6846,"y":0.0143,"lo":-0.0199,"hi":0.0485},{"x":82.8,"y":0.0148,"lo":-0.0194,"hi":0.049}]},"pos":{"hdi":[{"x":0.354,"y":0.0903,"lo":0.0563,"hi":0.1244},{"x":0.3694,"y":0.0903,"lo":0.0563,"hi":0.1244},{"x":0.3847,"y":0.0901,"lo":0.0561,"hi":0.1242},{"x":0.4001,"y":0.0898,"lo":0.0557,"hi":0.1238},{"x":0.4154,"y":0.0892,"lo":0.0552,"hi":0.1233},{"x":0.4308,"y":0.0884,"lo":0.0544,"hi":0.1225},{"x":0.4462,"y":0.0874,"lo":0.0533,"hi":0.1214},{"x":0.4615,"y":0.086,"lo":0.052,"hi":0.1201},{"x":0.4769,"y":0.0843,"lo":0.0503,"hi":0.1184},{"x":0.4922,"y":0.0823,"lo":0.0483,"hi":0.1164},{"x":0.5076,"y":0.08,"lo":0.046,"hi":0.1141},{"x":0.5229,"y":0.0775,"lo":0.0435,"hi":0.1116},{"x":0.5383,"y":0.0749,"lo":0.0409,"hi":0.109},{"x":0.5537,"y":0.0723,"lo":0.0383,"hi":0.1064},{"x":0.569,"y":0.0697,"lo":0.0357,"hi":0.1038},{"x":0.5844,"y":0.0664,"lo":0.0323,"hi":0.1004},{"x":0.5997,"y":0.0613,"lo":0.0272,"hi":0.0953},{"x":0.6151,"y":0.0547,"lo":0.0207,"hi":0.0888},{"x":0.6305,"y":0.0484,"lo":0.0144,"hi":0.0825},{"x":0.6458,"y":0.0432,"lo":0.0092,"hi":0.0773},{"x":0.6612,"y":0.0386,"lo":0.0045,"hi":0.0726},{"x":0.6765,"y":0.0354,"lo":0.0014,"hi":0.0695},{"x":0.6919,"y":0.0329,"lo":-0.0012,"hi":0.0669},{"x":0.7073,"y":0.031,"lo":-0.0031,"hi":0.065},{"x":0.7226,"y":0.03,"lo":-0.0041,"hi":0.064},{"x":0.738,"y":0.0289,"lo":-0.0051,"hi":0.063},{"x":0.7533,"y":0.0256,"lo":-0.0084,"hi":0.0597},{"x":0.7687,"y":0.0205,"lo":-0.0135,"hi":0.0545},{"x":0.7841,"y":0.015,"lo":-0.019,"hi":0.0491},{"x":0.7994,"y":0.0099,"lo":-0.0241,"hi":0.044},{"x":0.8148,"y":0.0051,"lo":-0.0289,"hi":0.0392},{"x":0.8301,"y":-0.0016,"lo":-0.0357,"hi":0.0324},{"x":0.8455,"y":-0.0051,"lo":-0.0391,"hi":0.029},{"x":0.8608,"y":-0.0062,"lo":-0.0403,"hi":0.0278},{"x":0.8762,"y":-0.0057,"lo":-0.0397,"hi":0.0284},{"x":0.8916,"y":-0.0033,"lo":-0.0374,"hi":0.0307},{"x":0.9069,"y":0.0008,"lo":-0.0332,"hi":0.0349},{"x":0.9223,"y":0.007,"lo":-0.0271,"hi":0.041},{"x":0.9376,"y":0.0152,"lo":-0.0189,"hi":0.0492},{"x":0.953,"y":0.0254,"lo":-0.0087,"hi":0.0594}],"loggni":[{"x":6.5028,"y":0.0724,"lo":0.0353,"hi":0.1095},{"x":6.6263,"y":0.0749,"lo":0.0378,"hi":0.112},{"x":6.7499,"y":0.077,"lo":0.0399,"hi":0.1142},{"x":6.8734,"y":0.0788,"lo":0.0416,"hi":0.1159},{"x":6.9969,"y":0.08,"lo":0.0429,"hi":0.1172},{"x":7.1205,"y":0.0808,"lo":0.0437,"hi":0.1179},{"x":7.244,"y":0.0811,"lo":0.0439,"hi":0.1182},{"x":7.3675,"y":0.0808,"lo":0.0436,"hi":0.1179},{"x":7.4911,"y":0.0799,"lo":0.0428,"hi":0.1171},{"x":7.6146,"y":0.0786,"lo":0.0415,"hi":0.1157},{"x":7.7381,"y":0.0769,"lo":0.0398,"hi":0.114},{"x":7.8617,"y":0.0748,"lo":0.0377,"hi":0.1119},{"x":7.9852,"y":0.0724,"lo":0.0352,"hi":0.1095},{"x":8.1087,"y":0.069,"lo":0.0319,"hi":0.1061},{"x":8.2323,"y":0.0636,"lo":0.0265,"hi":0.1007},{"x":8.3558,"y":0.0577,"lo":0.0205,"hi":0.0948},{"x":8.4793,"y":0.0513,"lo":0.0142,"hi":0.0884},{"x":8.6029,"y":0.0456,"lo":0.0085,"hi":0.0827},{"x":8.7264,"y":0.0389,"lo":0.0017,"hi":0.076},{"x":8.8499,"y":0.0349,"lo":-0.0022,"hi":0.072},{"x":8.9735,"y":0.0322,"lo":-0.005,"hi":0.0693},{"x":9.097,"y":0.0312,"lo":-0.0059,"hi":0.0683},{"x":9.2205,"y":0.0325,"lo":-0.0047,"hi":0.0696},{"x":9.3441,"y":0.0312,"lo":-0.0059,"hi":0.0683},{"x":9.4676,"y":0.0284,"lo":-0.0087,"hi":0.0655},{"x":9.5911,"y":0.0247,"lo":-0.0124,"hi":0.0618},{"x":9.7147,"y":0.0177,"lo":-0.0194,"hi":0.0549},{"x":9.8382,"y":0.0105,"lo":-0.0266,"hi":0.0476},{"x":9.9617,"y":0.0052,"lo":-0.032,"hi":0.0423},{"x":10.0853,"y":0.0013,"lo":-0.0358,"hi":0.0384},{"x":10.2088,"y":-0.0003,"lo":-0.0374,"hi":0.0368},{"x":10.3323,"y":-0.0011,"lo":-0.0382,"hi":0.036},{"x":10.4559,"y":-0.001,"lo":-0.0381,"hi":0.0361},{"x":10.5794,"y":0.0004,"lo":-0.0367,"hi":0.0376},{"x":10.7029,"y":0.0034,"lo":-0.0338,"hi":0.0405},{"x":10.8265,"y":0.0077,"lo":-0.0295,"hi":0.0448},{"x":10.95,"y":0.0133,"lo":-0.0238,"hi":0.0505},{"x":11.0735,"y":0.0203,"lo":-0.0169,"hi":0.0574},{"x":11.1971,"y":0.0285,"lo":-0.0087,"hi":0.0656},{"x":11.3206,"y":0.0379,"lo":0.0008,"hi":0.0751}],"hom":[{"x":0.3,"y":0.0015,"lo":-0.0418,"hi":0.0449},{"x":2.4154,"y":0.0362,"lo":-0.0072,"hi":0.0795},{"x":4.5308,"y":0.0292,"lo":-0.0141,"hi":0.0726},{"x":6.6462,"y":0.0503,"lo":0.007,"hi":0.0936},{"x":8.7615,"y":0.0603,"lo":0.017,"hi":0.1037},{"x":10.8769,"y":0.065,"lo":0.0216,"hi":0.1083},{"x":12.9923,"y":0.0648,"lo":0.0215,"hi":0.1082},{"x":15.1077,"y":0.0618,"lo":0.0185,"hi":0.1051},{"x":17.2231,"y":0.0591,"lo":0.0158,"hi":0.1025},{"x":19.3385,"y":0.0549,"lo":0.0116,"hi":0.0982},{"x":21.4538,"y":0.0505,"lo":0.0071,"hi":0.0938},{"x":23.5692,"y":0.0464,"lo":0.003,"hi":0.0897},{"x":25.6846,"y":0.0435,"lo":0.0002,"hi":0.0868},{"x":27.8,"y":0.0436,"lo":0.0002,"hi":0.0869},{"x":29.9154,"y":0.0441,"lo":0.0008,"hi":0.0875},{"x":32.0308,"y":0.0434,"lo":0.0001,"hi":0.0868},{"x":34.1462,"y":0.0424,"lo":-0.0009,"hi":0.0858},{"x":36.2615,"y":0.0417,"lo":-0.0017,"hi":0.085},{"x":38.3769,"y":0.0411,"lo":-0.0023,"hi":0.0844},{"x":40.4923,"y":0.0406,"lo":-0.0027,"hi":0.0839},{"x":42.6077,"y":0.0402,"lo":-0.0031,"hi":0.0836},{"x":44.7231,"y":0.0399,"lo":-0.0034,"hi":0.0833},{"x":46.8385,"y":0.0397,"lo":-0.0036,"hi":0.0831},{"x":48.9538,"y":0.0397,"lo":-0.0037,"hi":0.083},{"x":51.0692,"y":0.0397,"lo":-0.0037,"hi":0.083},{"x":53.1846,"y":0.0398,"lo":-0.0035,"hi":0.0831},{"x":55.3,"y":0.04,"lo":-0.0034,"hi":0.0833},{"x":57.4154,"y":0.0402,"lo":-0.0031,"hi":0.0836},{"x":59.5308,"y":0.0405,"lo":-0.0028,"hi":0.0839},{"x":61.6462,"y":0.0409,"lo":-0.0024,"hi":0.0843},{"x":63.7615,"y":0.0414,"lo":-0.0019,"hi":0.0847},{"x":65.8769,"y":0.0419,"lo":-0.0014,"hi":0.0853},{"x":67.9923,"y":0.0426,"lo":-0.0008,"hi":0.0859},{"x":70.1077,"y":0.0433,"lo":-0.0,"hi":0.0866},{"x":72.2231,"y":0.0441,"lo":0.0008,"hi":0.0874},{"x":74.3385,"y":0.045,"lo":0.0017,"hi":0.0883},{"x":76.4538,"y":0.046,"lo":0.0027,"hi":0.0893},{"x":78.5692,"y":0.0471,"lo":0.0037,"hi":0.0904},{"x":80.6846,"y":0.0483,"lo":0.0049,"hi":0.0916},{"x":82.8,"y":0.0496,"lo":0.0062,"hi":0.0929}]}},"band_sd":{"ladder|hdi":0.2039,"ladder|loggni":0.2134,"ladder|hom":0.2205,"neg|hdi":0.027,"neg|loggni":0.0285,"neg|hom":0.0326,"pos|hdi":0.0326,"pos|loggni":0.0356,"pos|hom":0.0415},"standouts":{"top":[{"country":"Sudan","iso3":"SDN","gap":0.55,"hdi":0.502,"neg":-0.0557,"N":7296},{"country":"Trinidad and Tobago","iso3":"TTO","gap":0.547,"hdi":0.784,"neg":-0.0048,"N":1485},{"country":"Bahrain","iso3":"BHR","gap":0.51,"hdi":0.846,"neg":-0.0043,"N":6021},{"country":"Mali","iso3":"MLI","gap":0.488,"hdi":0.427,"neg":-0.0107,"N":10904},{"country":"Zambia","iso3":"ZMB","gap":0.451,"hdi":0.588,"neg":-0.016,"N":9853}],"none":[{"country":"Turkmenistan","iso3":"TKM","gap":-0.618,"hdi":0.706,"neg":0.0723,"N":9838},{"country":"Portugal","iso3":"PRT","gap":-0.473,"hdi":0.847,"neg":0.048,"N":10846},{"country":"Greece","iso3":"GRC","gap":-0.416,"hdi":0.87,"neg":0.0609,"N":10996},{"country":"Iraq","iso3":"IRQ","gap":-0.383,"hdi":0.685,"neg":0.0398,"N":13659},{"country":"Bangladesh","iso3":"BGD","gap":-0.379,"hdi":0.608,"neg":0.0153,"N":12813}]},"countries":[{"iso3":"AFG","name":"Afghanistan","region":"South Asia","N":11962,"relN":11689,"nonrelN":273,"relShare":0.977,"lad":-0.155,"neg":0.008,"pos":0.05,"hdi":0.498,"loggni":7.509,"hom":6.3,"inc":"Low income"},{"iso3":"ALB","name":"Albania","region":"Europe-Other","N":10771,"relN":6208,"nonrelN":4563,"relShare":0.576,"lad":-0.308,"neg":0.0669,"pos":0.008,"hdi":0.785,"loggni":9.383,"hom":2.7,"inc":"Upper middle income"},{"iso3":"DZA","name":"Algeria","region":"Middle East and North Africa","N":4011,"relN":3734,"nonrelN":277,"relShare":0.931,"lad":-0.04,"neg":-0.0084,"pos":0.104,"hdi":0.754,"loggni":9.533,"hom":1.4,"inc":"Upper middle income"},{"iso3":"AGO","name":"Angola","region":"Sub-Saharan Africa","N":3837,"relN":3432,"nonrelN":405,"relShare":0.894,"lad":0.156,"neg":-0.0338,"pos":0.117,"hdi":0.581,"loggni":8.664,"hom":4.8,"inc":"Lower middle income"},{"iso3":"ARG","name":"Argentina","region":"Latin America and the Caribbean","N":10931,"relN":6872,"nonrelN":4059,"relShare":0.629,"lad":-0.074,"neg":0.0182,"pos":0.015,"hdi":0.825,"loggni":9.823,"hom":5.9,"inc":"High income"},{"iso3":"ARM","name":"Armenia","region":"Commonwealth of Independent States","N":10658,"relN":8018,"nonrelN":2640,"relShare":0.752,"lad":-0.138,"neg":0.0016,"pos":0.031,"hdi":0.755,"loggni":9.121,"hom":3.0,"inc":"Upper middle income"},{"iso3":"AUS","name":"Australia","region":"Australia-New Zealand","N":9988,"relN":3242,"nonrelN":6746,"relShare":0.325,"lad":0.107,"neg":0.0034,"pos":0.037,"hdi":0.939,"loggni":10.682,"hom":0.9,"inc":"High income"},{"iso3":"AUT","name":"Austria","region":"European Union","N":10898,"relN":4958,"nonrelN":5940,"relShare":0.455,"lad":-0.069,"neg":0.0227,"pos":-0.009,"hdi":0.908,"loggni":10.724,"hom":0.7,"inc":"High income"},{"iso3":"AZE","name":"Azerbaijan","region":"Commonwealth of Independent States","N":10642,"relN":3930,"nonrelN":6712,"relShare":0.369,"lad":-0.116,"neg":0.0157,"pos":-0.02,"hdi":0.757,"loggni":9.655,"hom":2.1,"inc":"Upper middle income"},{"iso3":"BHR","name":"Bahrain","region":"Middle East and North Africa","N":6021,"relN":5842,"nonrelN":179,"relShare":0.97,"lad":0.51,"neg":null,"pos":null,"hdi":0.846,"loggni":10.635,"hom":0.5,"inc":"High income"},{"iso3":"BGD","name":"Bangladesh","region":"South Asia","N":12813,"relN":12557,"nonrelN":256,"relShare":0.98,"lad":-0.379,"neg":0.0153,"pos":0.058,"hdi":0.608,"loggni":8.21,"hom":2.5,"inc":"Lower middle income"},{"iso3":"BLR","name":"Belarus","region":"Commonwealth of Independent States","N":10582,"relN":4055,"nonrelN":6527,"relShare":0.383,"lad":-0.276,"neg":0.0675,"pos":-0.014,"hdi":0.808,"loggni":9.7,"hom":3.6,"inc":"Upper middle income"},{"iso3":"BEL","name":"Belgium","region":"European Union","N":9970,"relN":2931,"nonrelN":7039,"relShare":0.294,"lad":-0.123,"neg":0.0426,"pos":0.004,"hdi":0.916,"loggni":10.649,"hom":1.9,"inc":"High income"},{"iso3":"BEN","name":"Benin","region":"Sub-Saharan Africa","N":8745,"relN":7618,"nonrelN":1127,"relShare":0.871,"lad":0.084,"neg":-0.016,"pos":0.091,"hdi":0.515,"loggni":7.631,"hom":6.2,"inc":"Low income"},{"iso3":"BOL","name":"Bolivia","region":"Latin America and the Caribbean","N":9697,"relN":8639,"nonrelN":1058,"relShare":0.891,"lad":-0.148,"neg":0.0247,"pos":0.034,"hdi":0.693,"loggni":8.812,"hom":6.3,"inc":"Lower middle income"},{"iso3":"BIH","name":"Bosnia Herzegovina","region":"Europe-Other","N":10776,"relN":8014,"nonrelN":2762,"relShare":0.744,"lad":0.301,"neg":-0.007,"pos":0.035,"hdi":0.768,"loggni":9.369,"hom":1.3,"inc":"Upper middle income"},{"iso3":"BWA","name":"Botswana","region":"Sub-Saharan Africa","N":9982,"relN":9122,"nonrelN":860,"relShare":0.914,"lad":0.069,"neg":-0.0048,"pos":0.067,"hdi":0.717,"loggni":9.651,"hom":15.0,"inc":"Upper middle income"},{"iso3":"BRA","name":"Brazil","region":"Latin America and the Caribbean","N":12878,"relN":11503,"nonrelN":1375,"relShare":0.893,"lad":0.192,"neg":-0.0007,"pos":0.053,"hdi":0.759,"loggni":9.529,"hom":29.5,"inc":"Upper middle income"},{"iso3":"BGR","name":"Bulgaria","region":"European Union","N":10527,"relN":4377,"nonrelN":6150,"relShare":0.416,"lad":-0.37,"neg":0.0612,"pos":-0.026,"hdi":0.813,"loggni":9.838,"hom":1.1,"inc":"Upper middle income"},{"iso3":"BFA","name":"Burkina Faso","region":"Sub-Saharan Africa","N":9731,"relN":9002,"nonrelN":729,"relShare":0.925,"lad":0.084,"neg":-0.0361,"pos":0.113,"hdi":0.423,"loggni":7.409,"hom":0.4,"inc":"Low income"},{"iso3":"BDI","name":"Burundi","region":"Sub-Saharan Africa","N":3892,"relN":3644,"nonrelN":248,"relShare":0.936,"lad":-0.121,"neg":-0.1044,"pos":0.148,"hdi":0.417,"loggni":6.554,"hom":6.0,"inc":"Low income"},{"iso3":"KHM","name":"Cambodia","region":"Southeast Asia","N":11082,"relN":9749,"nonrelN":1333,"relShare":0.88,"lad":0.28,"neg":-0.0486,"pos":0.056,"hdi":0.582,"loggni":8.135,"hom":1.8,"inc":"Lower middle income"},{"iso3":"CMR","name":"Cameroon","region":"Sub-Saharan Africa","N":10958,"relN":10311,"nonrelN":647,"relShare":0.941,"lad":0.091,"neg":0.0234,"pos":0.07,"hdi":0.556,"loggni":8.106,"hom":4.2,"inc":"Lower middle income"},{"iso3":"CAN","name":"Canada","region":"Northern America","N":9817,"relN":3849,"nonrelN":5968,"relShare":0.392,"lad":-0.062,"neg":0.0296,"pos":-0.001,"hdi":0.926,"loggni":10.679,"hom":1.7,"inc":"High income"},{"iso3":"TCD","name":"Chad","region":"Sub-Saharan Africa","N":10819,"relN":10063,"nonrelN":756,"relShare":0.93,"lad":-0.366,"neg":-0.0273,"pos":0.065,"hdi":0.404,"loggni":7.467,"hom":9.0,"inc":"Low income"},{"iso3":"CHL","name":"Chile","region":"Latin America and the Caribbean","N":10010,"relN":6689,"nonrelN":3321,"relShare":0.668,"lad":-0.223,"neg":0.0412,"pos":-0.003,"hdi":0.843,"loggni":9.995,"hom":3.5,"inc":"High income"},{"iso3":"CHN","name":"China","region":"East Asia","N":26613,"relN":4327,"nonrelN":22286,"relShare":0.163,"lad":0.131,"neg":0.0467,"pos":0.0,"hdi":0.752,"loggni":9.634,"hom":0.6,"inc":"Upper middle income"},{"iso3":"COL","name":"Colombia","region":"Latin America and the Caribbean","N":10812,"relN":9414,"nonrelN":1398,"relShare":0.871,"lad":-0.159,"neg":0.0369,"pos":0.007,"hdi":0.747,"loggni":9.468,"hom":25.5,"inc":"Upper middle income"},{"iso3":"COG","name":"Congo Brazzaville","region":"Sub-Saharan Africa","N":8264,"relN":7491,"nonrelN":773,"relShare":0.906,"lad":0.304,"neg":-0.0499,"pos":0.093,"hdi":0.606,"loggni":8.647,"hom":9.3,"inc":"Lower middle income"},{"iso3":"COD","name":"Congo Kinshasa","region":"Sub-Saharan Africa","N":7893,"relN":7456,"nonrelN":437,"relShare":0.945,"lad":0.084,"neg":-0.0442,"pos":0.063,"hdi":0.457,"loggni":6.68,"hom":13.5,"inc":"Low income"},{"iso3":"CRI","name":"Costa Rica","region":"Latin America and the Caribbean","N":10812,"relN":8965,"nonrelN":1847,"relShare":0.829,"lad":0.118,"neg":-0.0004,"pos":0.022,"hdi":0.794,"loggni":9.591,"hom":11.9,"inc":"Upper middle income"},{"iso3":"HRV","name":"Croatia","region":"European Union","N":10505,"relN":6736,"nonrelN":3769,"relShare":0.641,"lad":-0.324,"neg":0.0257,"pos":-0.011,"hdi":0.831,"loggni":10.006,"hom":1.0,"inc":"High income"},{"iso3":"CYP","name":"Cyprus","region":"European Union","N":15413,"relN":10677,"nonrelN":4736,"relShare":0.693,"lad":-0.337,"neg":0.0419,"pos":-0.004,"hdi":0.869,"loggni":10.36,"hom":1.1,"inc":"High income"},{"iso3":"CZE","name":"Czech Republic","region":"European Union","N":9696,"relN":2452,"nonrelN":7244,"relShare":0.253,"lad":-0.29,"neg":0.0612,"pos":-0.019,"hdi":0.888,"loggni":10.328,"hom":0.6,"inc":"High income"},{"iso3":"DNK","name":"Denmark","region":"European Union","N":10705,"relN":1960,"nonrelN":8745,"relShare":0.183,"lad":0.038,"neg":0.0379,"pos":0.009,"hdi":0.929,"loggni":10.777,"hom":1.0,"inc":"High income"},{"iso3":"DOM","name":"Dominican Republic","region":"Latin America and the Caribbean","N":10866,"relN":9691,"nonrelN":1175,"relShare":0.892,"lad":-0.193,"neg":0.0203,"pos":0.021,"hdi":0.736,"loggni":9.541,"hom":15.2,"inc":"Upper middle income"},{"iso3":"ECU","name":"Ecuador","region":"Latin America and the Caribbean","N":10878,"relN":9395,"nonrelN":1483,"relShare":0.864,"lad":-0.272,"neg":0.0638,"pos":0.015,"hdi":0.752,"loggni":9.244,"hom":5.9,"inc":"Upper middle income"},{"iso3":"EGY","name":"Egypt","region":"Middle East and North Africa","N":14600,"relN":14282,"nonrelN":318,"relShare":0.978,"lad":-0.005,"neg":-0.0404,"pos":0.09,"hdi":0.696,"loggni":9.245,"hom":2.5,"inc":"Lower middle income"},{"iso3":"SLV","name":"El Salvador","region":"Latin America and the Caribbean","N":10779,"relN":9472,"nonrelN":1307,"relShare":0.879,"lad":-0.193,"neg":0.0104,"pos":0.051,"hdi":0.674,"loggni":8.835,"hom":82.8,"inc":"Lower middle income"},{"iso3":"EST","name":"Estonia","region":"European Union","N":9327,"relN":2103,"nonrelN":7224,"relShare":0.225,"lad":-0.208,"neg":0.0648,"pos":-0.033,"hdi":0.871,"loggni":10.275,"hom":3.2,"inc":"High income"},{"iso3":"ETH","name":"Ethiopia","region":"Sub-Saharan Africa","N":9609,"relN":9405,"nonrelN":204,"relShare":0.979,"lad":0.342,"neg":0.0287,"pos":0.096,"hdi":0.463,"loggni":7.449,"hom":7.6,"inc":"Low income"},{"iso3":"FIN","name":"Finland","region":"European Union","N":9689,"relN":2951,"nonrelN":6738,"relShare":0.305,"lad":-0.087,"neg":0.0317,"pos":0.014,"hdi":0.92,"loggni":10.621,"hom":1.4,"inc":"High income"},{"iso3":"FRA","name":"France","region":"European Union","N":10679,"relN":3159,"nonrelN":7520,"relShare":0.296,"lad":-0.092,"neg":0.0334,"pos":-0.024,"hdi":0.901,"loggni":10.578,"hom":1.4,"inc":"High income"},{"iso3":"GAB","name":"Gabon","region":"Sub-Saharan Africa","N":8917,"relN":8061,"nonrelN":856,"relShare":0.904,"lad":0.432,"neg":-0.0137,"pos":0.105,"hdi":0.702,"loggni":9.707,"hom":8.0,"inc":"Upper middle income"},{"iso3":"GEO","name":"Georgia","region":"Commonwealth of Independent States","N":10780,"relN":9117,"nonrelN":1663,"relShare":0.846,"lad":0.263,"neg":-0.0086,"pos":0.052,"hdi":0.78,"loggni":9.125,"hom":1.0,"inc":"Lower middle income"},{"iso3":"DEU","name":"Germany","region":"European Union","N":14031,"relN":5571,"nonrelN":8460,"relShare":0.397,"lad":0.013,"neg":0.0226,"pos":0.003,"hdi":0.936,"loggni":10.739,"hom":1.2,"inc":"High income"},{"iso3":"GHA","name":"Ghana","region":"Sub-Saharan Africa","N":10845,"relN":10206,"nonrelN":639,"relShare":0.941,"lad":-0.071,"neg":-0.0354,"pos":0.086,"hdi":0.592,"loggni":8.318,"hom":1.7,"inc":"Lower middle income"},{"iso3":"GRC","name":"Greece","region":"European Union","N":10996,"relN":7894,"nonrelN":3102,"relShare":0.718,"lad":-0.416,"neg":0.0609,"pos":-0.044,"hdi":0.87,"loggni":10.112,"hom":0.8,"inc":"High income"},{"iso3":"GTM","name":"Guatemala","region":"Latin America and the Caribbean","N":10661,"relN":9632,"nonrelN":1029,"relShare":0.903,"lad":-0.093,"neg":0.0255,"pos":0.032,"hdi":0.65,"loggni":8.893,"hom":27.3,"inc":"Upper middle income"},{"iso3":"GIN","name":"Guinea","region":"Sub-Saharan Africa","N":8854,"relN":8542,"nonrelN":312,"relShare":0.965,"lad":0.385,"neg":0.0277,"pos":0.033,"hdi":0.459,"loggni":7.634,"hom":8.8,"inc":"Low income"},{"iso3":"HTI","name":"Haiti","region":"Latin America and the Caribbean","N":4422,"relN":3737,"nonrelN":685,"relShare":0.845,"lad":-0.071,"neg":-0.0058,"pos":0.019,"hdi":0.498,"loggni":7.418,"hom":10.0,"inc":"Low income"},{"iso3":"HND","name":"Honduras","region":"Latin America and the Caribbean","N":10638,"relN":9058,"nonrelN":1580,"relShare":0.851,"lad":-0.159,"neg":0.0418,"pos":0.04,"hdi":0.617,"loggni":8.346,"hom":56.5,"inc":"Lower middle income"},{"iso3":"HKG","name":"Hong Kong","region":"East Asia","N":7486,"relN":1939,"nonrelN":5547,"relShare":0.259,"lad":0.235,"neg":0.0454,"pos":0.027,"hdi":0.933,"loggni":10.975,"hom":0.4,"inc":"High income"},{"iso3":"HUN","name":"Hungary","region":"European Union","N":10936,"relN":4149,"nonrelN":6787,"relShare":0.379,"lad":-0.288,"neg":0.0769,"pos":-0.007,"hdi":0.838,"loggni":10.142,"hom":2.1,"inc":"High income"},{"iso3":"ISL","name":"Iceland","region":"Europe-Other","N":3548,"relN":1192,"nonrelN":2356,"relShare":0.336,"lad":0.092,"neg":0.0146,"pos":0.026,"hdi":0.935,"loggni":10.732,"hom":0.3,"inc":"High income"},{"iso3":"IND","name":"India","region":"South Asia","N":39420,"relN":33053,"nonrelN":6367,"relShare":0.838,"lad":-0.256,"neg":0.0332,"pos":0.009,"hdi":0.64,"loggni":8.757,"hom":3.2,"inc":"Lower middle income"},{"iso3":"IRN","name":"Iran","region":"Middle East and North Africa","N":7886,"relN":6819,"nonrelN":1067,"relShare":0.865,"lad":0.281,"neg":-0.012,"pos":0.064,"hdi":0.798,"loggni":9.859,"hom":2.5,"inc":"Upper middle income"},{"iso3":"IRQ","name":"Iraq","region":"Middle East and North Africa","N":13659,"relN":12111,"nonrelN":1548,"relShare":0.887,"lad":-0.383,"neg":0.0398,"pos":0.042,"hdi":0.685,"loggni":9.786,"hom":9.9,"inc":"Upper middle income"},{"iso3":"IRL","name":"Ireland","region":"European Union","N":10471,"relN":5465,"nonrelN":5006,"relShare":0.522,"lad":0.068,"neg":-0.012,"pos":0.023,"hdi":0.938,"loggni":10.892,"hom":0.8,"inc":"High income"},{"iso3":"ISR","name":"Israel","region":"Middle East and North Africa","N":9844,"relN":4472,"nonrelN":5372,"relShare":0.454,"lad":-0.016,"neg":0.0055,"pos":0.016,"hdi":0.903,"loggni":10.395,"hom":1.4,"inc":"High income"},{"iso3":"ITA","name":"Italy","region":"European Union","N":10935,"relN":6767,"nonrelN":4168,"relShare":0.619,"lad":-0.139,"neg":0.0318,"pos":0.002,"hdi":0.88,"loggni":10.472,"hom":0.7,"inc":"High income"},{"iso3":"CIV","name":"Ivory Coast","region":"Sub-Saharan Africa","N":7799,"relN":7141,"nonrelN":658,"relShare":0.916,"lad":0.267,"neg":0.0092,"pos":0.113,"hdi":0.492,"loggni":8.155,"hom":11.6,"inc":"Lower middle income"},{"iso3":"JAM","name":"Jamaica","region":"Latin America and the Caribbean","N":1939,"relN":1692,"nonrelN":247,"relShare":0.873,"lad":-0.034,"neg":0.0141,"pos":-0.011,"hdi":0.732,"loggni":8.968,"hom":47.0,"inc":"Upper middle income"},{"iso3":"JPN","name":"Japan","region":"East Asia","N":9672,"relN":2436,"nonrelN":7236,"relShare":0.252,"lad":0.067,"neg":0.0129,"pos":0.049,"hdi":0.909,"loggni":10.571,"hom":0.3,"inc":"High income"},{"iso3":"KAZ","name":"Kazakhstan","region":"Commonwealth of Independent States","N":10321,"relN":4696,"nonrelN":5625,"relShare":0.455,"lad":-0.055,"neg":-0.0001,"pos":0.002,"hdi":0.8,"loggni":10.027,"hom":4.8,"inc":"Upper middle income"},{"iso3":"KEN","name":"Kenya","region":"Sub-Saharan Africa","N":10931,"relN":10308,"nonrelN":623,"relShare":0.943,"lad":0.169,"neg":-0.0042,"pos":0.079,"hdi":0.59,"loggni":7.993,"hom":4.9,"inc":"Lower middle income"},{"iso3":"KWT","name":"Kuwait","region":"Middle East and North Africa","N":3956,"relN":3797,"nonrelN":159,"relShare":0.96,"lad":0.159,"neg":null,"pos":0.046,"hdi":0.803,"loggni":11.164,"hom":1.8,"inc":"High income"},{"iso3":"KGZ","name":"Kyrgyzstan","region":"Commonwealth of Independent States","N":10664,"relN":8029,"nonrelN":2635,"relShare":0.753,"lad":0.164,"neg":-0.001,"pos":0.028,"hdi":0.672,"loggni":8.088,"hom":4.5,"inc":"Lower middle income"},{"iso3":"LVA","name":"Latvia","region":"European Union","N":9031,"relN":3449,"nonrelN":5582,"relShare":0.382,"lad":-0.205,"neg":0.0562,"pos":0.005,"hdi":0.847,"loggni":10.127,"hom":3.4,"inc":"High income"},{"iso3":"LBN","name":"Lebanon","region":"Middle East and North Africa","N":12897,"relN":11052,"nonrelN":1845,"relShare":0.857,"lad":0.082,"neg":-0.0111,"pos":0.02,"hdi":0.757,"loggni":9.501,"hom":4.0,"inc":"Upper middle income"},{"iso3":"LSO","name":"Lesotho","region":"Sub-Saharan Africa","N":3901,"relN":3739,"nonrelN":162,"relShare":0.958,"lad":-0.153,"neg":-0.0969,"pos":0.102,"hdi":0.52,"loggni":8.088,"hom":41.2,"inc":"Lower middle income"},{"iso3":"LBR","name":"Liberia","region":"Sub-Saharan Africa","N":6743,"relN":6330,"nonrelN":413,"relShare":0.939,"lad":-0.141,"neg":-0.0298,"pos":0.074,"hdi":0.435,"loggni":6.503,"hom":3.2,"inc":"Low income"},{"iso3":"LTU","name":"Lithuania","region":"European Union","N":9383,"relN":4260,"nonrelN":5123,"relShare":0.454,"lad":-0.374,"neg":0.0767,"pos":-0.043,"hdi":0.858,"loggni":10.251,"hom":5.2,"inc":"High income"},{"iso3":"LUX","name":"Luxembourg","region":"European Union","N":9924,"relN":3462,"nonrelN":6462,"relShare":0.349,"lad":-0.217,"neg":0.0346,"pos":-0.021,"hdi":0.904,"loggni":11.082,"hom":0.7,"inc":"High income"},{"iso3":"MDG","name":"Madagascar","region":"Sub-Saharan Africa","N":8897,"relN":8245,"nonrelN":652,"relShare":0.927,"lad":0.425,"neg":-0.0245,"pos":0.06,"hdi":0.519,"loggni":7.214,"hom":7.7,"inc":"Low income"},{"iso3":"MWI","name":"Malawi","region":"Sub-Saharan Africa","N":9923,"relN":9747,"nonrelN":176,"relShare":0.982,"lad":0.131,"neg":0.0024,"pos":0.053,"hdi":0.477,"loggni":6.97,"hom":1.7,"inc":"Low income"},{"iso3":"MYS","name":"Malaysia","region":"Southeast Asia","N":8933,"relN":8312,"nonrelN":621,"relShare":0.93,"lad":0.091,"neg":-0.0545,"pos":0.1,"hdi":0.802,"loggni":10.17,"hom":2.1,"inc":"Upper middle income"},{"iso3":"MLI","name":"Mali","region":"Sub-Saharan Africa","N":10904,"relN":10478,"nonrelN":426,"relShare":0.961,"lad":0.488,"neg":-0.0107,"pos":0.133,"hdi":0.427,"loggni":7.577,"hom":10.9,"inc":"Low income"},{"iso3":"MLT","name":"Malta","region":"European Union","N":9961,"relN":8271,"nonrelN":1690,"relShare":0.83,"lad":-0.196,"neg":0.0103,"pos":-0.005,"hdi":0.878,"loggni":10.446,"hom":0.9,"inc":"High income"},{"iso3":"MRT","name":"Mauritania","region":"Sub-Saharan Africa","N":13848,"relN":13448,"nonrelN":400,"relShare":0.971,"lad":0.346,"neg":-0.0379,"pos":0.161,"hdi":0.52,"loggni":8.186,"hom":9.9,"inc":"Lower middle income"},{"iso3":"MUS","name":"Mauritius","region":"Sub-Saharan Africa","N":5981,"relN":5518,"nonrelN":463,"relShare":0.923,"lad":-0.106,"neg":0.0097,"pos":-0.01,"hdi":0.79,"loggni":9.913,"hom":1.8,"inc":"Upper middle income"},{"iso3":"MEX","name":"Mexico","region":"Latin America and the Caribbean","N":10734,"relN":6952,"nonrelN":3782,"relShare":0.648,"lad":-0.16,"neg":0.0442,"pos":0.038,"hdi":0.774,"loggni":9.738,"hom":19.3,"inc":"Upper middle income"},{"iso3":"MDA","name":"Moldova","region":"Commonwealth of Independent States","N":10165,"relN":8151,"nonrelN":2014,"relShare":0.802,"lad":0.06,"neg":0.0455,"pos":-0.004,"hdi":0.7,"loggni":8.622,"hom":3.2,"inc":"Lower middle income"},{"iso3":"MNG","name":"Mongolia","region":"East Asia","N":9799,"relN":4406,"nonrelN":5393,"relShare":0.45,"lad":0.054,"neg":0.008,"pos":0.021,"hdi":0.741,"loggni":9.221,"hom":5.7,"inc":"Lower middle income"},{"iso3":"MNE","name":"Montenegro","region":"Europe-Other","N":10805,"relN":6286,"nonrelN":4519,"relShare":0.582,"lad":-0.192,"neg":0.0496,"pos":0.013,"hdi":0.814,"loggni":9.728,"hom":4.5,"inc":"Upper middle income"},{"iso3":"MAR","name":"Morocco","region":"Middle East and North Africa","N":4931,"relN":4701,"nonrelN":230,"relShare":0.953,"lad":0.04,"neg":0.0249,"pos":0.024,"hdi":0.667,"loggni":8.901,"hom":1.2,"inc":"Lower middle income"},{"iso3":"MOZ","name":"Mozambique","region":"Sub-Saharan Africa","N":4836,"relN":4519,"nonrelN":317,"relShare":0.934,"lad":-0.207,"neg":0.0168,"pos":0.087,"hdi":0.437,"loggni":6.997,"hom":3.4,"inc":"Low income"},{"iso3":"MMR","name":"Myanmar","region":"Southeast Asia","N":8615,"relN":8173,"nonrelN":442,"relShare":0.949,"lad":-0.055,"neg":-0.0407,"pos":0.076,"hdi":0.578,"loggni":8.625,"hom":2.3,"inc":"Lower middle income"},{"iso3":"NAM","name":"Namibia","region":"Sub-Saharan Africa","N":3937,"relN":3477,"nonrelN":460,"relShare":0.883,"lad":-0.129,"neg":-0.0003,"pos":0.076,"hdi":0.647,"loggni":9.147,"hom":17.1,"inc":"Upper middle income"},{"iso3":"NPL","name":"Nepal","region":"South Asia","N":11547,"relN":10990,"nonrelN":557,"relShare":0.952,"lad":-0.139,"neg":0.0044,"pos":0.027,"hdi":0.574,"loggni":7.812,"hom":2.2,"inc":"Low income"},{"iso3":"NLD","name":"Netherlands","region":"European Union","N":9740,"relN":2790,"nonrelN":6950,"relShare":0.286,"lad":-0.098,"neg":0.0348,"pos":-0.006,"hdi":0.931,"loggni":10.777,"hom":0.6,"inc":"High income"},{"iso3":"NZL","name":"New Zealand","region":"Australia-New Zealand","N":9242,"relN":2966,"nonrelN":6276,"relShare":0.321,"lad":-0.045,"neg":0.0236,"pos":0.021,"hdi":0.917,"loggni":10.433,"hom":1.0,"inc":"High income"},{"iso3":"NIC","name":"Nicaragua","region":"Latin America and the Caribbean","N":10633,"relN":9125,"nonrelN":1508,"relShare":0.858,"lad":-0.001,"neg":0.0274,"pos":0.023,"hdi":0.658,"loggni":8.548,"hom":7.4,"inc":"Lower middle income"},{"iso3":"NER","name":"Niger","region":"Sub-Saharan Africa","N":10617,"relN":10373,"nonrelN":244,"relShare":0.977,"lad":-0.276,"neg":-0.0129,"pos":0.087,"hdi":0.354,"loggni":6.809,"hom":4.4,"inc":"Low income"},{"iso3":"NGA","name":"Nigeria","region":"Sub-Saharan Africa","N":11747,"relN":11269,"nonrelN":478,"relShare":0.959,"lad":0.158,"neg":-0.0324,"pos":0.071,"hdi":0.532,"loggni":8.562,"hom":9.8,"inc":"Lower middle income"},{"iso3":"MKD","name":"North Macedonia","region":"Europe-Other","N":10895,"relN":8374,"nonrelN":2521,"relShare":0.769,"lad":-0.007,"neg":-0.0006,"pos":0.032,"hdi":0.757,"loggni":9.434,"hom":1.6,"inc":"Upper middle income"},{"iso3":"NOR","name":"Norway","region":"Europe-Other","N":6978,"relN":1507,"nonrelN":5471,"relShare":0.216,"lad":0.097,"neg":0.0088,"pos":0.015,"hdi":0.953,"loggni":11.127,"hom":0.5,"inc":"High income"},{"iso3":"PAK","name":"Pakistan","region":"South Asia","N":12605,"relN":11947,"nonrelN":658,"relShare":0.948,"lad":0.285,"neg":0.0113,"pos":0.058,"hdi":0.562,"loggni":8.578,"hom":4.4,"inc":"Lower middle income"},{"iso3":"PSE","name":"Palestine","region":"Middle East and North Africa","N":13990,"relN":13460,"nonrelN":530,"relShare":0.962,"lad":-0.115,"neg":0.0182,"pos":0.018,"hdi":0.686,"loggni":8.528,"hom":0.7,"inc":"Lower middle income"},{"iso3":"PAN","name":"Panama","region":"Latin America and the Caribbean","N":10872,"relN":9122,"nonrelN":1750,"relShare":0.839,"lad":0.028,"neg":0.019,"pos":0.032,"hdi":0.789,"loggni":9.862,"hom":9.7,"inc":"High income"},{"iso3":"PRY","name":"Paraguay","region":"Latin America and the Caribbean","N":10930,"relN":9810,"nonrelN":1120,"relShare":0.898,"lad":-0.171,"neg":-0.01,"pos":0.022,"hdi":0.702,"loggni":9.034,"hom":9.3,"inc":"Upper middle income"},{"iso3":"PER","name":"Peru","region":"Latin America and the Caribbean","N":10705,"relN":8964,"nonrelN":1741,"relShare":0.837,"lad":-0.061,"neg":0.0423,"pos":0.008,"hdi":0.75,"loggni":9.375,"hom":7.7,"inc":"Upper middle income"},{"iso3":"PHL","name":"Philippines","region":"Southeast Asia","N":13024,"relN":12239,"nonrelN":785,"relShare":0.94,"lad":0.111,"neg":0.0016,"pos":0.058,"hdi":0.699,"loggni":9.122,"hom":11.0,"inc":"Lower middle income"},{"iso3":"POL","name":"Poland","region":"European Union","N":11266,"relN":7443,"nonrelN":3823,"relShare":0.661,"lad":-0.273,"neg":0.013,"pos":0.004,"hdi":0.865,"loggni":10.172,"hom":0.7,"inc":"High income"},{"iso3":"PRT","name":"Portugal","region":"European Union","N":10846,"relN":6293,"nonrelN":4553,"relShare":0.58,"lad":-0.473,"neg":0.048,"pos":-0.017,"hdi":0.847,"loggni":10.215,"hom":0.6,"inc":"High income"},{"iso3":"ROU","name":"Romania","region":"European Union","N":10713,"relN":8789,"nonrelN":1924,"relShare":0.82,"lad":-0.36,"neg":0.0842,"pos":-0.026,"hdi":0.811,"loggni":10.028,"hom":1.2,"inc":"Upper middle income"},{"iso3":"RUS","name":"Russia","region":"Commonwealth of Independent States","N":21015,"relN":7636,"nonrelN":13379,"relShare":0.363,"lad":-0.139,"neg":0.0498,"pos":-0.011,"hdi":0.816,"loggni":10.095,"hom":10.8,"inc":"Upper middle income"},{"iso3":"RWA","name":"Rwanda","region":"Sub-Saharan Africa","N":9929,"relN":9377,"nonrelN":552,"relShare":0.944,"lad":0.384,"neg":-0.0526,"pos":0.083,"hdi":0.524,"loggni":7.502,"hom":2.5,"inc":"Low income"},{"iso3":"SEN","name":"Senegal","region":"Sub-Saharan Africa","N":10836,"relN":10531,"nonrelN":305,"relShare":0.972,"lad":0.438,"neg":-0.035,"pos":0.142,"hdi":0.505,"loggni":7.777,"hom":7.4,"inc":"Low income"},{"iso3":"SRB","name":"Serbia","region":"Europe-Other","N":10715,"relN":6009,"nonrelN":4706,"relShare":0.561,"lad":-0.15,"neg":0.0373,"pos":-0.003,"hdi":0.787,"loggni":9.474,"hom":1.4,"inc":"Upper middle income"},{"iso3":"SLE","name":"Sierra Leone","region":"Sub-Saharan Africa","N":8880,"relN":8598,"nonrelN":282,"relShare":0.968,"lad":-0.133,"neg":-0.035,"pos":0.094,"hdi":0.419,"loggni":7.123,"hom":1.7,"inc":"Low income"},{"iso3":"SGP","name":"Singapore","region":"Southeast Asia","N":9856,"relN":6499,"nonrelN":3357,"relShare":0.659,"lad":0.097,"neg":0.0009,"pos":0.064,"hdi":0.932,"loggni":11.321,"hom":0.3,"inc":"High income"},{"iso3":"SVK","name":"Slovakia","region":"European Union","N":9775,"relN":4784,"nonrelN":4991,"relShare":0.489,"lad":-0.122,"neg":0.0254,"pos":0.008,"hdi":0.855,"loggni":10.291,"hom":1.0,"inc":"High income"},{"iso3":"SVN","name":"Slovenia","region":"European Union","N":10408,"relN":3837,"nonrelN":6571,"relShare":0.369,"lad":-0.355,"neg":0.0514,"pos":-0.021,"hdi":0.896,"loggni":10.329,"hom":0.5,"inc":"High income"},{"iso3":"ZAF","name":"South Africa","region":"Sub-Saharan Africa","N":11963,"relN":10241,"nonrelN":1722,"relShare":0.856,"lad":0.192,"neg":-0.0055,"pos":0.051,"hdi":0.699,"loggni":9.386,"hom":34.0,"inc":"Upper middle income"},{"iso3":"KOR","name":"South Korea","region":"East Asia","N":9702,"relN":4467,"nonrelN":5235,"relShare":0.46,"lad":0.237,"neg":-0.0007,"pos":0.038,"hdi":0.903,"loggni":10.49,"hom":0.7,"inc":"High income"},{"iso3":"SSD","name":"South Sudan","region":"Sub-Saharan Africa","N":3822,"relN":3556,"nonrelN":266,"relShare":0.93,"lad":0.07,"neg":-0.0047,"pos":0.194,"hdi":0.388,"loggni":6.87,"hom":13.9,"inc":"Low income"},{"iso3":"ESP","name":"Spain","region":"European Union","N":10964,"relN":4102,"nonrelN":6862,"relShare":0.374,"lad":-0.158,"neg":0.0365,"pos":-0.03,"hdi":0.891,"loggni":10.442,"hom":0.6,"inc":"High income"},{"iso3":"SDN","name":"Sudan","region":"Sub-Saharan Africa","N":7296,"relN":6920,"nonrelN":376,"relShare":0.948,"lad":0.55,"neg":-0.0557,"pos":0.007,"hdi":0.502,"loggni":8.323,"hom":5.2,"inc":"Lower middle income"},{"iso3":"SWE","name":"Sweden","region":"European Union","N":10647,"relN":2060,"nonrelN":8587,"relShare":0.193,"lad":-0.087,"neg":0.0337,"pos":-0.004,"hdi":0.933,"loggni":10.774,"hom":1.1,"inc":"High income"},{"iso3":"CHE","name":"Switzerland","region":"Europe-Other","N":7452,"relN":3063,"nonrelN":4389,"relShare":0.411,"lad":-0.044,"neg":0.019,"pos":-0.014,"hdi":0.944,"loggni":10.962,"hom":0.5,"inc":"High income"},{"iso3":"SYR","name":"Syria","region":"Middle East and North Africa","N":6754,"relN":5882,"nonrelN":872,"relShare":0.871,"lad":-0.264,"neg":-0.0212,"pos":0.03,"hdi":0.536,"loggni":7.757,"hom":2.2,"inc":"Low income"},{"iso3":"TWN","name":"Taiwan","region":"East Asia","N":9880,"relN":4568,"nonrelN":5312,"relShare":0.462,"lad":-0.117,"neg":0.0199,"pos":0.009,"hdi":null,"loggni":null,"hom":null,"inc":null},{"iso3":"TJK","name":"Tajikistan","region":"Commonwealth of Independent States","N":8618,"relN":7088,"nonrelN":1530,"relShare":0.822,"lad":-0.36,"neg":-0.0063,"pos":0.013,"hdi":0.65,"loggni":8.107,"hom":1.6,"inc":"Low income"},{"iso3":"TZA","name":"Tanzania","region":"Sub-Saharan Africa","N":10956,"relN":10545,"nonrelN":411,"relShare":0.962,"lad":0.12,"neg":-0.0295,"pos":0.131,"hdi":0.538,"loggni":7.884,"hom":7.0,"inc":"Low income"},{"iso3":"THA","name":"Thailand","region":"Southeast Asia","N":12767,"relN":12276,"nonrelN":491,"relShare":0.962,"lad":0.244,"neg":-0.0255,"pos":0.015,"hdi":0.755,"loggni":9.65,"hom":3.2,"inc":"Upper middle income"},{"iso3":"TGO","name":"Togo","region":"Sub-Saharan Africa","N":6951,"relN":6054,"nonrelN":897,"relShare":0.871,"lad":0.274,"neg":-0.0353,"pos":0.055,"hdi":0.503,"loggni":7.281,"hom":9.0,"inc":"Low income"},{"iso3":"TTO","name":"Trinidad and Tobago","region":"Latin America and the Caribbean","N":1485,"relN":1271,"nonrelN":214,"relShare":0.856,"lad":0.547,"neg":-0.0048,"pos":0.082,"hdi":0.784,"loggni":10.262,"hom":30.9,"inc":"High income"},{"iso3":"TUN","name":"Tunisia","region":"Middle East and North Africa","N":12976,"relN":12136,"nonrelN":840,"relShare":0.935,"lad":-0.137,"neg":0.0576,"pos":0.071,"hdi":0.735,"loggni":9.237,"hom":3.0,"inc":"Lower middle income"},{"iso3":"TUR","name":"Turkey","region":"Middle East and North Africa","N":12654,"relN":10296,"nonrelN":2358,"relShare":0.814,"lad":-0.026,"neg":0.0056,"pos":0.012,"hdi":0.791,"loggni":10.119,"hom":4.3,"inc":"Upper middle income"},{"iso3":"TKM","name":"Turkmenistan","region":"Commonwealth of Independent States","N":9838,"relN":7333,"nonrelN":2505,"relShare":0.745,"lad":-0.618,"neg":0.0723,"pos":0.001,"hdi":0.706,"loggni":9.655,"hom":4.2,"inc":"Upper middle income"},{"iso3":"UGA","name":"Uganda","region":"Sub-Saharan Africa","N":10825,"relN":10382,"nonrelN":443,"relShare":0.959,"lad":0.093,"neg":-0.0003,"pos":0.083,"hdi":0.516,"loggni":7.413,"hom":11.5,"inc":"Low income"},{"iso3":"UKR","name":"Ukraine","region":"Commonwealth of Independent States","N":10250,"relN":5002,"nonrelN":5248,"relShare":0.488,"lad":-0.233,"neg":0.0682,"pos":-0.043,"hdi":0.751,"loggni":9.003,"hom":6.3,"inc":"Lower middle income"},{"iso3":"ARE","name":"United Arab Emirates","region":"Middle East and North Africa","N":4044,"relN":3791,"nonrelN":253,"relShare":0.937,"lad":0.043,"neg":null,"pos":-0.015,"hdi":0.863,"loggni":11.124,"hom":0.9,"inc":"High income"},{"iso3":"GBR","name":"United Kingdom","region":"European Union","N":13040,"relN":3820,"nonrelN":9220,"relShare":0.293,"lad":0.015,"neg":0.0268,"pos":-0.008,"hdi":0.922,"loggni":10.574,"hom":1.2,"inc":"High income"},{"iso3":"USA","name":"United States","region":"Northern America","N":9745,"relN":6238,"nonrelN":3507,"relShare":0.64,"lad":0.225,"neg":0.0001,"pos":0.027,"hdi":0.924,"loggni":10.914,"hom":5.4,"inc":"High income"},{"iso3":"URY","name":"Uruguay","region":"Latin America and the Caribbean","N":9817,"relN":4143,"nonrelN":5674,"relShare":0.422,"lad":-0.07,"neg":0.0426,"pos":0.009,"hdi":0.804,"loggni":9.9,"hom":7.7,"inc":"High income"},{"iso3":"UZB","name":"Uzbekistan","region":"Commonwealth of Independent States","N":10515,"relN":6423,"nonrelN":4092,"relShare":0.611,"lad":0.213,"neg":0.0191,"pos":0.006,"hdi":0.71,"loggni":8.775,"hom":3.0,"inc":"Lower middle income"},{"iso3":"VEN","name":"Venezuela","region":"Latin America and the Caribbean","N":10914,"relN":8728,"nonrelN":2186,"relShare":0.8,"lad":0.197,"neg":0.0011,"pos":0.034,"hdi":0.761,"loggni":9.275,"hom":56.3,"inc":"Upper middle income"},{"iso3":"VNM","name":"Vietnam","region":"Southeast Asia","N":6409,"relN":2224,"nonrelN":4185,"relShare":0.347,"lad":-0.082,"neg":0.0236,"pos":0.019,"hdi":0.694,"loggni":8.676,"hom":1.5,"inc":"Lower middle income"},{"iso3":"YEM","name":"Yemen","region":"Middle East and North Africa","N":13990,"relN":13684,"nonrelN":306,"relShare":0.978,"lad":-0.152,"neg":0.0297,"pos":0.012,"hdi":0.452,"loggni":7.122,"hom":6.7,"inc":"Low income"},{"iso3":"ZMB","name":"Zambia","region":"Sub-Saharan Africa","N":9853,"relN":9438,"nonrelN":415,"relShare":0.958,"lad":0.451,"neg":-0.016,"pos":0.158,"hdi":0.588,"loggni":8.177,"hom":5.3,"inc":"Lower middle income"},{"iso3":"ZWE","name":"Zimbabwe","region":"Sub-Saharan Africa","N":10989,"relN":10069,"nonrelN":920,"relShare":0.916,"lad":0.014,"neg":-0.0083,"pos":0.089,"hdi":0.535,"loggni":7.428,"hom":6.7,"inc":"Low income"}]};/*DATA-END*/
+import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+
+const REGION_COLORS = {
+  "Sub-Saharan Africa":      "#e6a817",
+  "Middle East and North Africa": "#d8722f",
+  "South Asia":              "#b35ca6",
+  "Southeast Asia":          "#8a6fd4",
+  "East Asia":               "#5a8ad6",
+  "Commonwealth of Independent States": "#3fb8c9",
+  "Europe-Other":            "#8f9bb3",
+  "European Union":          "#4a6fa5",
+  "Latin America and the Caribbean": "#36c2a4",
+  "Northern America":        "#7d8aa0",
+  "Australia-New Zealand":   "#c0a35a"
+};
+const REGION_SHORT = {
+  "Sub-Saharan Africa":"Sub-Saharan Africa",
+  "Middle East and North Africa":"MENA",
+  "South Asia":"South Asia",
+  "Southeast Asia":"SE Asia",
+  "East Asia":"East Asia",
+  "Commonwealth of Independent States":"Post-Soviet",
+  "Europe-Other":"Europe (other)",
+  "European Union":"European Union",
+  "Latin America and the Caribbean":"Latin America",
+  "Northern America":"N. America",
+  "Australia-New Zealand":"Australia/NZ"
+};
+
+const M = DATA.meta, S = DATA.summary, R = DATA.reg, W = DATA.world;
+// Animate only on explicit user interaction AND when motion is allowed. Initial render is
+// always static so the headless render gate (which does not advance time) sees final marks.
+const PREFERS_REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
+let ANIMATE = false;
+
+// ---- fill prose spans (all numbers trace to data.json / claims.json) ----
+const setTx = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+const f2 = n => (n>=0?"+":"−") + Math.abs(n).toFixed(2);
+const f3 = n => n.toFixed(3);
+setTx("t-slope", "−" + Math.abs(R.ladder.hdi.slope).toFixed(2) + " ladder points");
+setTx("t-zero", "HDI " + S.hdi_zero.toFixed(2));
+setTx("t-r2", R.ladder.hdi.r2.toFixed(2));
+setTx("t-wls", "−" + Math.abs(R.ladder.hdi_wls.slope).toFixed(2));
+setTx("t-mean", "near zero");
+setTx("t-posr2", Math.round(R.pos.hdi.r2*100) + "%");
+setTx("t-poszero", "HDI " + S.pos_hdi_zero.toFixed(2));
+setTx("t-negzero", "HDI " + S.neg_hdi_zero.toFixed(2));
+setTx("t-negr2", R.neg.hdi.r2.toFixed(2));
+setTx("t-corr", S.corr_lad_pos.toFixed(2));
+setTx("t-world", "zero");
+setTx("chip-n", M.n_countries);
+setTx("chip-poor", f2(S.poor_mean));
+setTx("chip-rich", "−" + Math.abs(S.rich_mean).toFixed(2));
+setTx("chip-zero", S.hdi_zero.toFixed(2));
+setTx("n-pos", M.n_pos); setTx("n-neg", M.n_neg);
+setTx("n-ny", M.ny_med);
+setTx("n-relmin", Math.round(M.rel_share_min*100) + "%");
+setTx("n-relmax", Math.round(M.rel_share_max*100) + "%");
+setTx("n-rows", (M.total_rows/1e6).toFixed(1) + " million");
+
+// ---- standout lists ----
+const fmtGap = g => (g>=0?"+":"−") + Math.abs(g).toFixed(2);
+function fillList(id, arr){
+  const ul = document.getElementById(id);
+  arr.slice(0,5).forEach(r=>{
+    const li = document.createElement("li");
+    const nm = document.createElement("b"); nm.textContent = r.country;
+    const g = document.createElement("span"); g.className="g"; g.textContent = fmtGap(r.gap);
+    li.append(nm, g); ul.append(li);
+  });
+}
+fillList("ex-top", DATA.standouts.top);
+fillList("ex-none", DATA.standouts.none);
+
+// ---- chart state ----
+let measure = "ladder";   // ladder | pos | neg
+let xkey = "hdi";         // hdi | loggni | hom
+const FIELD = { ladder:"lad", pos:"pos", neg:"neg" };   // measure -> country-record key
+
+const CFG = {
+  ladder: { ylab:"Life-evaluation gap (ladder points)", unit:"ladder pts",
+            title:"The religious advantage shrinks as life gets easier",
+            sub:"Above the white line, the religious report higher life evaluation; below it, lower. Point size scales with how many people were surveyed.",
+            dom:[-0.7,0.6], dividendUp:true, fmt:v=>(v>=0?"+":"−")+Math.abs(v).toFixed(2) },
+  pos:    { ylab:"Positive-affect gap (share of items)", unit:"affect share",
+            title:"For ordinary good days, the dividend lasts longer",
+            sub:"Above the line, the religious report more positive affect yesterday. The cloud hugs the curve far more tightly than life evaluation does.",
+            dom:[-0.10,0.14], dividendUp:true, fmt:v=>(v>=0?"+":"−")+Math.abs(v).toFixed(3) },
+  neg:    { ylab:"Negative-affect gap (share of items)", unit:"affect share",
+            title:"For bad-feeling days, the dividend is a dip below the line",
+            sub:"Higher negative affect is worse, so a dividend sits BELOW the white line: the religious report fewer worry / sadness / stress days. That edge fades as development rises.",
+            dom:[-0.12,0.10], dividendUp:false, fmt:v=>(v>=0?"+":"−")+Math.abs(v).toFixed(3) }
+};
+const XCFG = {
+  hdi:    { lab:"Human Development Index → easier life", get:d=>d.hdi, fmt:v=>v.toFixed(2), curveX:p=>p.x },
+  loggni: { lab:"Income per person (log GNI) → richer", get:d=>d.loggni, fmt:v=>"$"+Math.round(Math.exp(v)/1000)+"k", curveX:p=>p.x },
+  hom:    { lab:"Homicide rate (per 100,000) → more dangerous", get:d=>d.hom, fmt:v=>v.toFixed(0), curveX:p=>p.x }
+};
+
+const svg = d3.select("#scatter");
+const VB = {w:1040, h:600};
+const margin = {top:24, right:26, bottom:54, left:64};
+const iw = VB.w - margin.left - margin.right;
+const ih = VB.h - margin.top - margin.bottom;
+const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+
+svg.append("title").attr("id","scatter-title").text("Within-country religion–happiness gap versus national conditions");
+svg.append("desc").attr("id","scatter-desc").text("A zero-centered scatter where each point is a country's gap in well-being between religious and non-religious people, plotted against a national condition, with a fitted curve that bends toward the no-dividend line as conditions improve.");
+
+const gGrid = g.append("g");
+const gBand = g.append("g");
+const gZero = g.append("g");
+const gDots = g.append("g");
+const gFit  = g.append("g");
+const gAxisX = g.append("g").attr("class","axis").attr("transform",`translate(0,${ih})`);
+const gAxisY = g.append("g").attr("class","axis");
+const gAnno = g.append("g");
+const xTitle = g.append("text").attr("class","axtitle").attr("text-anchor","middle").attr("x",iw/2).attr("y",ih+44);
+const yTitle = g.append("text").attr("class","axtitle").attr("text-anchor","middle")
+  .attr("transform",`translate(${-48},${ih/2}) rotate(-90)`);
+
+const tip = document.getElementById("tip");
+const chartbox = document.querySelector(".chartbox");
+
+const rScale = d3.scaleSqrt().domain([1000, 25000]).range([3.2, 11]);
+
+function rows(){
+  return DATA.countries.filter(d => {
+    const yv = d[FIELD[measure]];
+    const xv = XCFG[xkey].get(d);
+    return yv !== null && yv !== undefined && xv !== null && xv !== undefined;
+  });
+}
+
+function draw(){
+  const cfg = CFG[measure], xc = XCFG[xkey];
+  const data = rows();
+  const curve = DATA.curves[measure][xkey];
+
+  // scales
+  const xExt = d3.extent(data, xc.get);
+  const xpad = (xExt[1]-xExt[0])*0.04;
+  const x = d3.scaleLinear().domain([xExt[0]-xpad, xExt[1]+xpad]).range([0, iw]);
+  const yDom = cfg.dom;
+  const y = d3.scaleLinear().domain(yDom).range([ih, 0]);
+
+  // y grid
+  const yticks = y.ticks(7);
+  const gl = gGrid.selectAll("line.gridln").data(yticks, d=>d);
+  gl.join(
+    en => en.append("line").attr("class","gridln"),
+    up => up, ex => ex.remove()
+  ).attr("x1",0).attr("x2",iw).attr("y1",d=>y(d)).attr("y2",d=>y(d));
+
+  // axes
+  const tx = sel => ANIMATE ? sel.transition().duration(450) : sel;
+  tx(gAxisX).call(d3.axisBottom(x).ticks(7).tickFormat(xc.fmt).tickSizeOuter(0));
+  tx(gAxisY).call(d3.axisLeft(y).ticks(7).tickFormat(cfg.fmt).tickSizeOuter(0));
+  xTitle.text(xc.lab);
+  yTitle.text(cfg.ylab);
+
+  // uncertainty band
+  const area = d3.area().x(p=>x(p.x)).y0(p=>y(p.lo)).y1(p=>y(p.hi)).curve(d3.curveBasis);
+  const bsel = gBand.selectAll("path.fitband").data([curve]);
+  const bj = bsel.join(
+    en=>en.append("path").attr("class","fitband"),
+    up=>up, ex=>ex.remove()
+  );
+  (ANIMATE ? bj.transition().duration(450) : bj).attr("d", area);
+
+  // zero line + label
+  gZero.selectAll("*").remove();
+  gZero.append("line").attr("class","zeroline").attr("x1",0).attr("x2",iw).attr("y1",y(0)).attr("y2",y(0));
+  gZero.append("text").attr("class","zerolab").attr("x",6).attr("y",y(0) + (cfg.dividendUp? -8 : 16))
+    .text("no dividend — faith and well-being unrelated");
+  // direction hint
+  gZero.append("text").attr("class","zerolab").attr("x",iw).attr("text-anchor","end")
+    .attr("y", cfg.dividendUp ? 14 : ih-6).attr("opacity",0.78)
+    .text(cfg.dividendUp ? "↑ religious better off" : (measure==="neg" ? "↓ religious better off" : "↑ religious better off"));
+
+  // fitted curve
+  const line = d3.line().x(p=>x(p.x)).y(p=>y(p.y)).curve(d3.curveBasis);
+  const fsel = gFit.selectAll("path.fitline").data([curve]);
+  const fj = fsel.join(
+    en=>en.append("path").attr("class","fitline"),
+    up=>up, ex=>ex.remove()
+  );
+  (ANIMATE ? fj.transition().duration(450) : fj).attr("d", line);
+
+  // dots — final state set synchronously (no animation dependency; render gate + reduced-motion safe)
+  const rOf = d => rScale(Math.min(d.N, 25000));
+  const dots = gDots.selectAll("circle.dot").data(data, d=>d.iso3);
+  dots.join(
+    en => en.append("circle").attr("class","dot")
+            .attr("cx",d=>x(xc.get(d))).attr("cy",d=>y(d[FIELD[measure]]))
+            .attr("r",rOf)
+            .attr("fill",d=>REGION_COLORS[d.region]||"#888")
+            .attr("fill-opacity",0.82),
+    up => { up.attr("fill",d=>REGION_COLORS[d.region]||"#888");
+            (ANIMATE ? up.transition().duration(450) : up)
+              .attr("cx",d=>x(xc.get(d))).attr("cy",d=>y(d[FIELD[measure]])).attr("r",rOf);
+            return up; },
+    ex => ex.remove()
+  );
+  // re-bind hover handlers (join doesn't on update path return merged easily)
+  gDots.selectAll("circle.dot")
+    .on("mouseenter focus", (ev,d)=>showTip(ev,d,x,y,xc,cfg))
+    .on("mousemove", (ev,d)=>moveTip(ev))
+    .on("mouseleave blur", hideTip)
+    .attr("tabindex",0)
+    .attr("role","img")
+    .attr("aria-label", d => `${d.name}: ${cfg.ylab} ${cfg.fmt(d[FIELD[measure]])}, ${xc.lab.split(' →')[0]} ${xc.fmt(xc.get(d))}`);
+
+  // annotations: name one high-dividend and one no-dividend standout that's on-screen
+  gAnno.selectAll("*").remove();
+  if (measure==="ladder" && xkey==="hdi"){
+    annotate(gAnno, x, y, xc, data, "SDN", -14, -18, true);
+    annotate(gAnno, x, y, xc, data, "PRT", 8, 20, false);
+    annotate(gAnno, x, y, xc, data, "TKM", -10, 22, false);
+  }
+
+  // titles + caption + stats
+  document.getElementById("fig-title").textContent = cfg.title;
+  document.getElementById("fig-sub").textContent = cfg.sub;
+  updateStats();
+  updateCaption();
+}
+
+function annotate(layer, x, y, xc, data, iso, dx, dy, dark){
+  const d = data.find(r=>r.iso3===iso); if(!d) return;
+  const px = x(xc.get(d)), py = y(d[FIELD[measure]]);
+  const tx = px+dx, ty = py+dy;
+  layer.append("line").attr("class","lead-line").attr("x1",px).attr("y1",py).attr("x2",tx).attr("y2",ty - (dy>0?6:-2));
+  layer.append("text").attr("class","anno"+(dark?" dark":"")).attr("x",tx).attr("y",ty)
+    .attr("text-anchor", dx<0?"end":"start").text(d.name);
+}
+
+function updateStats(){
+  const cfg = CFG[measure];
+  const reg = R[measure][xkey];
+  const sb = document.getElementById("statband");
+  const slopeUnit = measure==="ladder" ? "ladder pts" : "affect share";
+  const dir = reg.slope<0 ? "falls" : "rises";
+  const cells = [
+    [ (reg.slope<0?"−":"+") + Math.abs(reg.slope).toFixed(measure==="ladder"?2:3),
+      `slope of the gap per unit of ${XCFG[xkey].lab.split(' →')[0].toLowerCase()}` ],
+    [ reg.r2.toFixed(2), "R² — share of cross-country variation explained" ],
+    [ reg.n, "countries in this fit" ]
+  ];
+  sb.innerHTML = "";
+  cells.forEach(([v,l])=>{
+    const d=document.createElement("div"); d.className="stat";
+    const sv=document.createElement("span"); sv.className="sv"; sv.textContent=v;
+    const sl=document.createElement("span"); sl.className="sl"; sl.textContent=l;
+    d.append(sv,sl); sb.append(d);
+  });
+}
+
+function updateCaption(){
+  const cap = document.getElementById("fig-cap");
+  const reg = R[measure][xkey];
+  const base = "Gallup World Poll, pooled 2009–2019; within-country weighted means, each country one observation. ";
+  let zero = "";
+  if (xkey==="hdi"){
+    const zc = measure==="ladder"? S.hdi_zero : (measure==="pos"? S.pos_hdi_zero : S.neg_hdi_zero);
+    zero = `The fitted curve crosses the no-dividend line near HDI ${zc.toFixed(2)}. `;
+  }
+  const construct = measure==="ladder" ? "Evaluative measure (Cantril ladder). " : "Experiential measure (yes/no affect items). ";
+  cap.textContent = base + construct + zero + "Shaded band is a rough uncertainty envelope, not a formal confidence interval.";
+}
+
+// ---- tooltip ----
+function showTip(ev,d,x,y,xc,cfg){
+  const lad = d.lad===null? "—" : (d.lad>=0?"+":"−")+Math.abs(d.lad).toFixed(2);
+  const pos = d.pos===null? "—" : (d.pos>=0?"+":"−")+Math.abs(d.pos).toFixed(3);
+  const neg = d.neg===null? "—" : (d.neg>=0?"+":"−")+Math.abs(d.neg).toFixed(3);
+  const hdi = d.hdi===null? "—" : d.hdi.toFixed(2);
+  tip.innerHTML =
+    `<span class="tname">${d.name}</span>`+
+    `<div class="trow"><span>Life-evaluation gap</span><b>${lad}</b></div>`+
+    `<div class="trow"><span>Positive-affect gap</span><b>${pos}</b></div>`+
+    `<div class="trow"><span>Negative-affect gap</span><b>${neg}</b></div>`+
+    `<div class="trow"><span>HDI</span><b>${hdi}</b></div>`+
+    `<div class="trow"><span>Surveyed (N)</span><b>${d.N.toLocaleString()}</b></div>`+
+    `<span class="treg">${REGION_SHORT[d.region]||d.region}</span>`;
+  tip.style.opacity = 1;
+  moveTip(ev);
+  d3.select(ev.currentTarget).raise().attr("stroke","#fff").attr("stroke-width",1.6);
+}
+function moveTip(ev){
+  const box = chartbox.getBoundingClientRect();
+  let px, py;
+  if (ev.clientX!==undefined){ px = ev.clientX-box.left; py = ev.clientY-box.top; }
+  else { const r = ev.currentTarget.getBoundingClientRect(); px = r.left+r.width/2-box.left; py = r.top-box.top; }
+  const tw = tip.offsetWidth, th = tip.offsetHeight;
+  let left = px+14, top = py-th-10;
+  if (left+tw > box.width) left = px-tw-14;
+  if (left<0) left = 6;
+  if (top<0) top = py+16;
+  tip.style.left = left+"px"; tip.style.top = top+"px";
+}
+function hideTip(ev){ tip.style.opacity=0; d3.select(ev.currentTarget).attr("stroke","var(--bg2)").attr("stroke-width",0.8); }
+
+// ---- legend ----
+function buildLegend(){
+  const used = Array.from(new Set(DATA.countries.map(d=>d.region)));
+  const order = M.regions.filter(r=>used.includes(r));
+  const L = document.getElementById("legend");
+  L.innerHTML = "";
+  order.forEach(r=>{
+    const k=document.createElement("span"); k.className="lk";
+    const sw=document.createElement("span"); sw.className="sw"; sw.style.background=REGION_COLORS[r]||"#888";
+    const t=document.createElement("span"); t.textContent=REGION_SHORT[r]||r;
+    k.append(sw,t); L.append(k);
+  });
+}
+
+// ---- controls ----
+function bindSeg(ids, cur, setter){
+  ids.forEach(id=>{
+    document.getElementById(id).addEventListener("click", ()=>{
+      ids.forEach(o=>document.getElementById(o).setAttribute("aria-pressed","false"));
+      document.getElementById(id).setAttribute("aria-pressed","true");
+      setter(id);
+      ANIMATE = !PREFERS_REDUCED;   // animate transitions only after a real user toggle
+      draw();
+    });
+  });
+}
+bindSeg(["m-ladder","m-pos","m-neg"], measure, id=>{ measure = id.split("-")[1]; });
+bindSeg(["x-hdi","x-loggni","x-hom"], xkey, id=>{ xkey = id.split("-")[1]; });
+
+buildLegend();
+draw();
+</script>
+<!--SL_BOOKNAV_START-->
+<style>
+.slbn{font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;background:#0f1417;border-top:1px solid #27313a;color:#9fb0ba;padding:24px 20px 40px;margin:48px 0 0}
+.slbn-in{max-width:1080px;margin:0 auto;display:flex;align-items:stretch;gap:12px}
+.slbn a{flex:1 1 0;min-width:0;text-decoration:none;color:inherit;border:1px solid #27313a;border-radius:10px;padding:13px 15px;display:flex;flex-direction:column;gap:4px;background:#161d22;transition:border-color .15s,transform .15s}
+.slbn a:hover{border-color:#3fa9a0;transform:translateY(-2px)}
+.slbn a:focus-visible{outline:2px solid #3fa9a0;outline-offset:2px}
+.slbn a.slbn-next{text-align:right;align-items:flex-end}
+.slbn a.slbn-toc{flex:0 0 auto;min-width:120px;justify-content:center;align-items:center;text-align:center}
+.slbn .slbn-dir{font:700 10px/1 inherit;letter-spacing:.13em;text-transform:uppercase;color:#6b7c87}
+.slbn .slbn-ttl{font:700 14px/1.3 inherit;color:#eef2f4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.slbn a.slbn-disabled{opacity:.38;pointer-events:none}
+@media(max-width:640px){.slbn-in{flex-wrap:wrap}.slbn a{flex:1 1 100%}.slbn a.slbn-next{text-align:left;align-items:flex-start}.slbn a.slbn-toc{order:-1}}
+</style>
+<nav class="slbn" aria-label="Book navigation"><div class="slbn-in"><a class="slbn-prev" href="../read.html?ch=female-happiness-paradox" target="_top"><span class="slbn-dir">‹ Previous</span><span class="slbn-ttl">The Paradox That Didn't Hold</span></a><a class="slbn-toc" href="../index.html#book" target="_top"><span class="slbn-dir">The Scissors</span><span class="slbn-ttl">Appendix</span></a><span class="slbn-next slbn-disabled"><span class="slbn-dir">Next ›</span><span class="slbn-ttl">The end</span></span></div></nav>
+<!--SL_BOOKNAV_END-->
+</body>
+</html>

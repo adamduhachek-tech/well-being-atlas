@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Mood That Didn't Lift</title>
+<meta name="description" content="Gallup World Poll, 2006-2025: the world's daily emotional life got worse for fifteen years and never fully recovered, even as its rating of life as a whole reached an all-time high.">
+<style>
+  :root{
+    --paper:#101418;
+    --paper2:#161b21;
+    --panel:#1b2129;
+    --panel-edge:#2b333d;
+    --ink:#eef1f4;
+    --ink-dim:#aab4be;
+    --ink-faint:#7b8794;
+    --hairline:#2a323b;
+    --eval:#46c4b8;      /* evaluative - cool teal (the ladder, holding up) */
+    --eval-soft:rgba(70,196,184,.16);
+    --exp:#e87a4e;       /* experiential - warm amber (the mood) */
+    --exp-soft:rgba(232,122,78,.18);
+    --exp-deep:#d75b3a;
+    --maxw:720px;
+    --figw:1000px;
+    --sans:"Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --serif:"Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font:18px/1.68 var(--serif);
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  .skip{position:absolute; left:-9999px; top:0; background:var(--ink); color:var(--paper); padding:.5em 1em; z-index:40; font-family:var(--sans)}
+  .skip:focus{left:8px; top:8px}
+  a{color:var(--eval); text-decoration-color:rgba(70,196,184,.45); text-underline-offset:3px}
+  a:focus-visible, button:focus-visible{outline:2.5px solid var(--exp); outline-offset:2px}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 22px}
+  .wrap-wide{max-width:var(--figw); margin:0 auto; padding:0 22px}
+
+  header{position:relative; padding:90px 0 6px; overflow:hidden}
+  .hwave{position:absolute; inset:0; z-index:0; opacity:.9; pointer-events:none}
+  .kicker{font:700 12px/1.5 var(--sans); letter-spacing:.28em; text-transform:uppercase; color:var(--exp); position:relative; z-index:1}
+  h1{
+    font:800 clamp(40px,7.8vw,76px)/1.0 var(--sans); letter-spacing:-.028em;
+    margin:.22em 0 .32em; text-wrap:balance; position:relative; z-index:1;
+  }
+  .dek{font:400 clamp(19px,2.7vw,23px)/1.5 var(--serif); color:var(--ink-dim); margin:0 0 24px; max-width:36em; position:relative; z-index:1}
+  .byline{
+    font:400 13px/1.7 var(--sans); color:var(--ink-faint);
+    border-top:1.5px solid var(--panel-edge); padding-top:13px; display:flex; gap:20px; flex-wrap:wrap;
+    position:relative; z-index:1;
+  }
+  .byline b{color:var(--ink-dim); font-weight:600}
+
+  main{position:relative; z-index:1}
+  h2{font:800 clamp(25px,3.8vw,34px)/1.16 var(--sans); letter-spacing:-.018em; margin:2.15em 0 .55em}
+  p{margin:0 0 1.18em}
+  strong{color:#fff; font-weight:700}
+  em{color:var(--ink)}
+  .tagline{font:700 10.5px/1 var(--sans); letter-spacing:.16em; text-transform:uppercase; padding:4px 8px; border-radius:3px; white-space:nowrap}
+  .tag-eval{background:var(--eval-soft); color:var(--eval)}
+  .tag-exp{background:var(--exp-soft); color:var(--exp)}
+
+  .statrow{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:32px 0 8px}
+  .stat{background:var(--panel); border:1px solid var(--panel-edge); border-top:3px solid var(--ink-faint); padding:14px 15px 12px; border-radius:4px}
+  .stat.exp{border-top-color:var(--exp)}
+  .stat.eval{border-top-color:var(--eval)}
+  .stat .lab{font:700 10.5px/1.4 var(--sans); letter-spacing:.1em; text-transform:uppercase; color:var(--ink-faint)}
+  .stat .val{font:800 clamp(20px,2.6vw,28px)/1.12 var(--sans); margin-top:7px; font-variant-numeric:tabular-nums; color:var(--ink)}
+  .stat.exp .val{color:var(--exp)} .stat.eval .val{color:var(--eval)}
+  .stat .sub{font:400 12px/1.45 var(--sans); color:var(--ink-dim); margin-top:5px}
+  @media(max-width:680px){ .statrow{grid-template-columns:1fr 1fr} }
+  @media(max-width:420px){ .statrow{grid-template-columns:1fr} }
+
+  figure{margin:40px 0}
+  .fig{
+    background:var(--paper2); border:1px solid var(--panel-edge);
+    padding:22px 22px 16px; position:relative; border-radius:6px;
+    box-shadow:0 30px 60px -40px rgba(0,0,0,.8);
+  }
+  .figtitle{font:800 18px/1.3 var(--sans); margin:0 0 3px; color:var(--ink)}
+  .figsub{font:400 13.5px/1.55 var(--sans); color:var(--ink-dim); margin:0 0 12px; max-width:56em}
+  figcaption{font:400 12.5px/1.6 var(--sans); color:var(--ink-faint); margin-top:11px}
+  .chart{position:relative}
+  .chart svg{display:block; width:100%; height:auto}
+
+  .controls{display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin:6px 0 10px; font-family:var(--sans)}
+  button.mbtn{
+    font:700 12.5px/1.2 var(--sans); letter-spacing:.01em; cursor:pointer;
+    background:var(--panel); color:var(--ink-dim); border:1.5px solid var(--panel-edge);
+    border-radius:999px; padding:8px 14px; transition:all .15s;
+  }
+  button.mbtn:hover{border-color:var(--ink-faint); color:var(--ink)}
+  button.mbtn[aria-pressed="true"]{background:var(--ink); border-color:var(--ink); color:var(--paper)}
+  button.mbtn .cdot{display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:6px; vertical-align:1px}
+
+  .legend{display:flex; gap:6px 14px; flex-wrap:wrap; margin:2px 0 8px; font:600 12px/1.6 var(--sans); color:var(--ink-dim)}
+  .legend .item{display:inline-flex; align-items:center; gap:6px}
+  .legend .sw{width:13px; height:4px; border-radius:2px; flex:none}
+  .legend .sw.round{width:11px; height:11px; border-radius:50%}
+
+  .annote{
+    display:flex; gap:10px; align-items:flex-start;
+    background:rgba(199,144,35,.08); border:1px solid rgba(199,144,35,.32); border-left:4px solid #c79023;
+    padding:10px 14px; margin:6px 0 12px; font:400 13px/1.55 var(--sans); color:#d9c79a; border-radius:4px;
+  }
+  .annote b{color:#f0dca8}
+  .annote .ex{font:900 15px/1.2 var(--sans); color:#c79023; flex:none}
+
+  .tip{
+    position:absolute; pointer-events:none; z-index:20; display:none;
+    background:#05080b; color:#eef1f4; border-radius:6px; padding:9px 11px;
+    font:400 12.5px/1.5 var(--sans); max-width:250px; box-shadow:0 8px 24px rgba(0,0,0,.6); border:1px solid #2b333d;
+  }
+  .tip b{color:#fff} .tip .trg{color:#9aa6b2; font-size:11px; letter-spacing:.06em; text-transform:uppercase}
+  .tip .num{font-variant-numeric:tabular-nums}
+
+  . rankbox, .rankbox{margin:26px 0}
+  .rankbox h3{font:800 12px/1.4 var(--sans); letter-spacing:.1em; text-transform:uppercase; margin:0 0 10px; color:var(--ink-dim)}
+  .rankrow{display:grid; grid-template-columns:130px 1fr 64px; gap:10px; align-items:center; margin-bottom:7px; font-family:var(--sans)}
+  .rankrow .nm{font:600 13px/1.3 var(--sans); color:var(--ink); text-align:right}
+  .rankrow .bar{height:18px; background:var(--exp); border-radius:3px; min-width:2px}
+  .rankrow.flat .bar{background:var(--eval)}
+  .rankrow .dv{font:700 13px/1 var(--sans); font-variant-numeric:tabular-nums; color:var(--exp); text-align:left}
+  .rankrow.flat .dv{color:var(--eval)}
+  @media(max-width:480px){ .rankrow{grid-template-columns:96px 1fr 52px} .rankrow .nm{font-size:11.5px} }
+
+  .notes{
+    margin-top:66px; border-top:1.5px solid var(--panel-edge); padding:26px 0 80px;
+    font:400 14px/1.7 var(--sans); color:var(--ink-dim);
+  }
+  .notes h2{font-size:19px; margin:0 0 14px; color:var(--ink)}
+  .notes ul{padding-left:1.2em; margin:0}
+  .notes li{margin-bottom:9px}
+  .notes code{font:400 12.5px/1 ui-monospace, "Cascadia Mono", Consolas, monospace; background:var(--panel); padding:1px 5px; border-radius:3px; color:var(--ink-dim)}
+  .smallcaps{font-variant:small-caps; letter-spacing:.04em; color:var(--ink)}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to article</a>
+<header>
+  <svg class="hwave" viewBox="0 0 1000 280" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg>
+  <div class="wrap">
+    <p class="kicker">Gallup World Poll &middot; 2006&ndash;2025 &middot; population-weighted world</p>
+    <h1>The Mood That Didn&rsquo;t Lift</h1>
+    <p class="dek">For fifteen years the world&rsquo;s daily emotional life slid downhill. Then the pandemic passed, life ratings climbed to an all-time high &mdash; and the mood stayed where the bad years had left it.</p>
+    <div class="byline">
+      <span><b>Data</b> Gallup World Poll, 2006&ndash;2025 (20 waves)</span>
+      <span><b>Sample</b> ~3.0M interviews across 2,646 country-years</span>
+      <span><b>Method</b> within-country weighted, then population-weighted</span>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <div class="wrap">
+    <p>There are two ways to ask someone how they are. You can ask them to step back and rate their life as a whole &mdash; a slow, considered verdict. Or you can ask what yesterday actually felt like: did you worry, did you smile, were you stressed for much of the day? Gallup has been asking the whole world both questions every year since 2006, and for most of that run the two answers moved together, or at least didn&rsquo;t openly contradict each other.</p>
+    <p>Then they came apart. By 2025 the world&rsquo;s rating of its own life reached the highest point in the entire series, a population-weighted <strong>5.574</strong> on the 0&ndash;10 ladder. The same year, the share of people reporting a lot of daily negative emotion sat at <strong>0.315</strong> &mdash; still about <strong>0.071</strong> above where it was in 2010, and nowhere near recovered. The verdict on life recovered. The texture of the days did not.</p>
+    <p>The freshest part of this story is when the mood bottomed out. It was not the pandemic year. Negative affect kept climbing <em>after</em> 2020, peaking in <strong>2022</strong> at <strong>0.341</strong> &mdash; the worst reading in twenty waves &mdash; before easing only partway back. The world&rsquo;s emotional low point came two years after the year everyone remembers as the worst.</p>
+
+    <div class="statrow" role="list" aria-label="Headline numbers">
+      <div class="stat eval" role="listitem"><div class="lab">Ladder 2025 &middot; evaluative</div><div class="val">5.574</div><div class="sub">a series high, up from 5.337 in 2010</div></div>
+      <div class="stat exp" role="listitem"><div class="lab">Neg. affect 2025 &middot; experiential</div><div class="val">0.315</div><div class="sub">still +0.071 above its 2010 level</div></div>
+      <div class="stat exp" role="listitem"><div class="lab">Worst mood &middot; experiential</div><div class="val">2022</div><div class="sub">neg. affect peaked at 0.341, not in 2020</div></div>
+      <div class="stat exp" role="listitem"><div class="lab">Worry, 2010&rarr;2025 &middot; experiential</div><div class="val">+0.089</div><div class="sub">the emotion that rose the most</div></div>
+    </div>
+
+    <h2>Two rulers, two stories</h2>
+    <p>These are different constructs, and the gap between them is the entire point of this piece, so they are kept on separate rulers throughout. <span class="tagline tag-eval">Evaluative</span>&ensp;The Cantril ladder is a 0&ndash;10 judgment of life as a whole &mdash; reflective, comparative, anchored to expectations. <span class="tagline tag-exp">Experiential</span>&ensp;The &ldquo;yesterday&rdquo; items are yes/no recollections of worry, stress, sadness and anger during a lot of the previous day, reported as the share of people saying yes. One is points on a scale; the other is a proportion. The chart below draws negative affect and its four components against the left axis and overlays the ladder on a clearly labeled right axis &mdash; never on the same scale &mdash; so the eye can watch the ladder recover while the mood stays stuck.</p>
+  </div>
+
+  <div class="wrap-wide">
+    <figure>
+      <div class="fig">
+        <p class="figtitle">The ladder recovered. The mood didn&rsquo;t.</p>
+        <p class="figsub">Population-weighted world series, 2006&ndash;2025. The amber band and lines are <em>experiential</em> negative affect and its components (left axis, share saying yes). The teal line is the <em>evaluative</em> ladder on a separate right axis (0&ndash;10 points). Toggle the components; hover any year.</p>
+        <div class="controls" id="layer-controls" role="group" aria-label="Show negative-affect components"></div>
+        <div class="legend" id="main-legend" aria-hidden="false"></div>
+        <div class="chart" id="dual-chart"></div>
+        <div class="annote"><span class="ex" aria-hidden="true">!</span><span><b>One caveat sits inside 2020.</b> Gallup shifted most countries from face-to-face to phone interviewing that year, and this extract has no mode flag &mdash; so part of the 2020 jump may be the telephone, not the times. The pre-2020 climb and the post-2020 non-recovery don&rsquo;t depend on that one point.</span></div>
+        <figcaption>Within-country estimates use Gallup&rsquo;s weight (<code>wgt</code>); the world series weights countries by population (<code>ctry_pop_millions</code>, static ~2018 vintage). Country coverage floats from 96 to 147 countries per wave (the count is shown on hover). Negative affect is the mean of the four yesterday-items; the ladder is on the 0&ndash;10 scale, axis labeled at right. The left (negative-affect) axis starts at 0.10, not zero, to resolve the wave-to-wave movement; read it for shape, not absolute height.</figcaption>
+      </div>
+    </figure>
+  </div>
+
+  <div class="wrap">
+    <h2>A long slide, then a stall</h2>
+    <p>Read the amber band left to right and the shape is unmistakable. Negative affect sat near <strong>0.244</strong> in 2010, drifted up through the 2010s, and accelerated into the turn of the decade. It did not stop in the pandemic year: from <strong>0.328</strong> in 2020 it rose again to its <strong>2022</strong> peak, then receded to <strong>0.315</strong> by 2025. That last figure is a partial recovery at best &mdash; the world&rsquo;s daily mood in 2025 is roughly where it was in the worst pre-pandemic years, not where it was a decade ago.</p>
+    <p>The teal line tells the opposite story. The ladder dipped through the late 2010s, touching <strong>5.028</strong> in 2019, then climbed steadily after 2020 &mdash; up <strong>0.210</strong> points from 2020 to 2025 alone &mdash; to finish at its series high. Whatever recovered after the pandemic, it was the considered judgment of life, not the lived feeling of the day.</p>
+    <p>The component lines explain which feeling drove the slide. Worry did the most work: it rose <strong>0.089</strong> of a share from 2010 to 2025, more than sadness (+0.075), stress (+0.069) or anger (+0.034). Worry is also the most volatile of the four, peaking around <strong>0.430</strong> in 2022 before falling back &mdash; the emotional signature of a decade that kept finding new things to be anxious about.</p>
+  </div>
+
+  <div class="wrap-wide">
+    <figure>
+      <div class="fig">
+        <p class="figtitle">Where the mood rose &mdash; and where it didn&rsquo;t</p>
+        <p class="figsub">Negative affect by region, 2006&ndash;2025 (<em>experiential</em>, share saying yes, same left-axis scale on every panel). Each panel marks its 2010 and 2025 values; the world series is ghosted behind for reference. The Anglosphere is the one region essentially flat.</p>
+        <div class="chart" id="region-chart"></div>
+        <figcaption>Seven colorable groups collapse Gallup&rsquo;s global regions. Region series are population-weighted within region; panel y-axis is shared (0 to ~0.45) so heights compare directly. Africa&rsquo;s rise is the steepest of any region.</figcaption>
+      </div>
+    </figure>
+  </div>
+
+  <div class="wrap">
+    <h2>Africa rose most, the Anglosphere held</h2>
+    <p>The world figure is an average of very different regional trajectories. Africa&rsquo;s daily negative emotion rose the most of any region between 2010 and 2025 &mdash; up <strong>0.133</strong> of a share, from a low base &mdash; a climb that dwarfs everywhere else. Asia (+0.077), Latin America (+0.068) and the Post-Soviet group (+0.060) all rose meaningfully. Europe barely moved (+0.025), and the <span class="tagline tag-exp">Experiential</span> story&rsquo;s lone exception is the Anglosphere, where negative affect in 2025 finished essentially where it started in 2010, a change of <strong>-0.001</strong>.</p>
+    <p>That flat Anglosphere line is its own warning, because the region&rsquo;s ladder actually <em>fell</em> over the same window &mdash; the only region where the considered verdict on life declined while daily mood held steady. The divergence runs in both directions depending on where you stand.</p>
+  </div>
+
+  <div class="wrap-wide">
+    <div class="rankbox">
+      <h3>Change in daily negative affect by region, 2010 &rarr; 2025 (experiential)</h3>
+      <div id="rank-rows"></div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <h2>What this does and doesn&rsquo;t show</h2>
+    <p><strong>The mode change sits in 2020.</strong> Gallup moved most countries from face-to-face to phone interviewing that year, and this extract carries no indicator of which interviews were which. Mode can move answer levels on its own. But the finding here doesn&rsquo;t hang on the 2020 point: negative affect was already climbing for a decade before it, and the story of non-recovery is about 2023&ndash;2025, well after fieldwork stabilized.</p>
+    <p><strong>The panel is unbalanced.</strong> The number of countries surveyed each wave swings from 96 to 147, and the &ldquo;world&rdquo; here means whichever countries qualified that wave, weighted by population. A fixed-set robustness series &mdash; 137 countries present in at least twelve of the twenty waves &mdash; tracks the floating series closely, so the trends are not an artifact of which countries came and went. Population weights are static (~2018 vintage), and thinly-sampled country-years are dropped.</p>
+    <p><strong>These are two measures, not one.</strong> The ladder is a 0&ndash;10 judgment; the affect items are binary yes/no recollections of a single day, reported as shares of people. A region whose negative affect rose 0.10 did not get &ldquo;10% sadder&rdquo;; ten more people in every hundred had a bad-feeling day. The two are never plotted on the same axis, because the whole argument lives in the space between them. The World Happiness Report has documented the post-2020 resilience of life evaluation on this same survey; what the year-by-year world series makes plain is that the recovery was lopsided &mdash; the verdict rose back, the mood did not.</p>
+  </div>
+
+  <div class="wrap notes">
+    <h2 id="notes">Notes &amp; data</h2>
+    <ul>
+      <li><span class="smallcaps">Source.</span> Gallup World Poll cleaned well-being extract, 2006&ndash;2025 (20 survey waves; 2,646 qualifying country-years; ~2,999,305 interviews). 2005 is excluded. Every figure in the text is recomputed in <code>analysis/the-mood-that-didnt-lift/build_data.py</code> and traced in <code>claims.json</code>.</li>
+      <li><span class="smallcaps">Weights.</span> Within each country-wave, estimates use Gallup&rsquo;s within-country sampling weight (<code>wgt</code>). The &ldquo;world&rdquo; series weights country means by population (<code>ctry_pop_millions</code>, a static ~2018-vintage attribute), never a plain average of country means. Countries missing a population figure are counted but excluded from the population-weighted aggregate.</li>
+      <li><span class="smallcaps">Panel &amp; suppression.</span> Floating country set: each wave uses all qualifying country-years, so coverage varies (96&ndash;147 countries per wave). Country-years with fewer than three hundred interviews are suppressed. A fixed-set robustness series of 137 countries present in &ge;12 of 20 waves confirms the trends are not composition artifacts. Wave assignment uses <code>year_wave</code> (fieldwork year).</li>
+      <li><span class="smallcaps">Constructs.</span> Evaluative = Cantril ladder (0&ndash;10 points). Experiential = binary &ldquo;yesterday&rdquo; affect items (worry, stress, sadness, anger), reported as shares; negative affect is the mean of the four. The two constructs are labeled throughout and never share an axis &mdash; the ladder is drawn on a separate, clearly marked right axis.</li>
+      <li><span class="smallcaps">Known limits.</span> 2020 survey mode switched to phone in most countries (no mode flag in this extract); the panel is unbalanced (population weighting and a fixed-set check address this); population weights are static; affect items are binary one-day recollections, not intensity scales.</li>
+      <li><span class="smallcaps">Prior art.</span> <a href="https://worldhappiness.report/">World Happiness Report</a> (annual; documents post-2020 resilience of life evaluation on this survey); <a href="https://news.gallup.com/poll/352205/2020-sets-records-negative-emotions.aspx">Gallup Global Emotions</a> (the rise of daily negative emotion). This piece re-derives the divergence on a population-weighted world series and locates the negative-affect peak in 2022, after the pandemic year.</li>
+    </ul>
+  </div>
+</main>
+
+<script type="module">
+import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+
+const DATA = /*DATA*/{"meta":{"title":"The Mood That Didn't Lift","slug":"the-mood-that-didnt-lift","dataset":"Gallup World Poll","years":"2006-2025","weight":"wgt (within-country) + ctry_pop_millions (population-weighted)","construct_ladder":"evaluative (Cantril ladder 0-10)","construct_affect":"experiential (binary yesterday-affect shares, 0-1)","min_n_rule":"Suppress country-years with <300 interviews (wgt-weighted country mean still used for remaining countries).","floating_series_note":"The 'world' floating series uses all qualifying country-years each wave, population-weighted by ctry_pop_millions (static ~2018 vintage). Country count varies by year.","fixed_set_rule":"Fixed-set robustness: 137 countries present in >=12 of the 20 waves 2006-2025 with >=300 interviews each time. Confirms trends are not composition artifacts.","region_note":"Region groups collapse 11 Gallup global regions to 7 colorable groups (Europe, Post-Soviet, Latin America, Africa, MENA, Asia, Anglosphere).","pop_note":"ctry_pop_millions is static (~2018 vintage); countries missing pop are included in country counts but excluded from population-weighted aggregates.","mode_note":"Gallup shifted most countries from face-to-face to telephone interviewing in 2020; this is a potential confound for 2020 levels. The pre-2020 trend and the post-2020 non-recovery of neg_affect are unaffected by this mode shift."},"n_fixed_set":137,"n_total_interviews":2999305,"n_country_years":2646,"n_countries_per_wave":{"2006":122,"2007":96,"2008":120,"2009":113,"2010":122,"2011":146,"2012":140,"2013":135,"2014":147,"2015":140,"2016":140,"2017":147,"2018":141,"2019":143,"2020":115,"2021":121,"2022":140,"2023":140,"2024":142,"2025":136},"series_floating":[{"wave":2006,"n_countries":122,"n_countries_with_pop":120,"neg_affect":0.2423,"worry":0.3054,"stress":0.289,"sadness":0.1878,"anger":0.1934,"pos_affect":0.694,"enjoyment":0.7542,"ladder":5.3142},{"wave":2007,"n_countries":96,"n_countries_with_pop":96,"neg_affect":0.2372,"worry":0.3087,"stress":0.2937,"sadness":0.1869,"anger":0.2019,"pos_affect":0.6945,"enjoyment":0.7552,"ladder":5.405},{"wave":2008,"n_countries":120,"n_countries_with_pop":119,"neg_affect":0.2433,"worry":0.3021,"stress":0.2949,"sadness":0.1865,"anger":0.1967,"pos_affect":0.6998,"enjoyment":0.746,"ladder":5.3413},{"wave":2009,"n_countries":113,"n_countries_with_pop":113,"neg_affect":0.2495,"worry":0.3169,"stress":0.2936,"sadness":0.1855,"anger":0.2104,"pos_affect":0.7116,"enjoyment":0.7601,"ladder":5.1668},{"wave":2010,"n_countries":122,"n_countries_with_pop":121,"neg_affect":0.244,"worry":0.294,"stress":0.296,"sadness":0.1863,"anger":0.1996,"pos_affect":0.7084,"enjoyment":0.7402,"ladder":5.3371},{"wave":2011,"n_countries":146,"n_countries_with_pop":145,"neg_affect":0.2481,"worry":0.3032,"stress":0.3129,"sadness":0.18,"anger":0.1941,"pos_affect":0.6933,"enjoyment":0.7303,"ladder":5.3378},{"wave":2012,"n_countries":140,"n_countries_with_pop":139,"neg_affect":0.2647,"worry":0.3254,"stress":0.3161,"sadness":0.2071,"anger":0.2064,"pos_affect":0.6995,"enjoyment":0.7345,"ladder":5.3023},{"wave":2013,"n_countries":135,"n_countries_with_pop":134,"neg_affect":0.2745,"worry":0.3507,"stress":0.3296,"sadness":0.2071,"anger":0.2029,"pos_affect":0.7139,"enjoyment":0.7427,"ladder":5.2739},{"wave":2014,"n_countries":147,"n_countries_with_pop":145,"neg_affect":0.2577,"worry":0.3453,"stress":0.3071,"sadness":0.1942,"anger":0.1858,"pos_affect":0.7144,"enjoyment":0.7451,"ladder":5.2941},{"wave":2015,"n_countries":140,"n_countries_with_pop":139,"neg_affect":0.2868,"worry":0.3682,"stress":0.3469,"sadness":0.2182,"anger":0.2064,"pos_affect":0.712,"enjoyment":0.737,"ladder":5.2112},{"wave":2016,"n_countries":140,"n_countries_with_pop":139,"neg_affect":0.2926,"worry":0.3695,"stress":0.3496,"sadness":0.2316,"anger":0.2035,"pos_affect":0.708,"enjoyment":0.7377,"ladder":5.208},{"wave":2017,"n_countries":147,"n_countries_with_pop":146,"neg_affect":0.306,"worry":0.3877,"stress":0.3671,"sadness":0.2423,"anger":0.2115,"pos_affect":0.6995,"enjoyment":0.7132,"ladder":5.1446},{"wave":2018,"n_countries":141,"n_countries_with_pop":140,"neg_affect":0.3059,"worry":0.3948,"stress":0.3492,"sadness":0.249,"anger":0.2217,"pos_affect":0.7121,"enjoyment":0.713,"ladder":5.1341},{"wave":2019,"n_countries":143,"n_countries_with_pop":142,"neg_affect":0.3143,"worry":0.3961,"stress":0.3559,"sadness":0.2694,"anger":0.2253,"pos_affect":0.7091,"enjoyment":0.7181,"ladder":5.0275},{"wave":2020,"n_countries":115,"n_countries_with_pop":114,"neg_affect":0.328,"worry":0.4195,"stress":0.398,"sadness":0.2784,"anger":0.2482,"pos_affect":0.7162,"enjoyment":0.7297,"ladder":5.3649},{"wave":2021,"n_countries":121,"n_countries_with_pop":120,"neg_affect":0.3317,"worry":0.4224,"stress":0.4069,"sadness":0.2832,"anger":0.234,"pos_affect":0.6944,"enjoyment":0.6942,"ladder":5.1884},{"wave":2022,"n_countries":140,"n_countries_with_pop":138,"neg_affect":0.3406,"worry":0.4304,"stress":0.3584,"sadness":0.3096,"anger":0.2454,"pos_affect":0.6939,"enjoyment":0.688,"ladder":5.1216},{"wave":2023,"n_countries":140,"n_countries_with_pop":139,"neg_affect":0.3163,"worry":0.4011,"stress":0.3725,"sadness":0.2698,"anger":0.2275,"pos_affect":0.7155,"enjoyment":0.7336,"ladder":5.4843},{"wave":2024,"n_countries":142,"n_countries_with_pop":141,"neg_affect":0.3133,"worry":0.396,"stress":0.3661,"sadness":0.2622,"anger":0.2211,"pos_affect":0.7173,"enjoyment":0.7305,"ladder":5.3761},{"wave":2025,"n_countries":136,"n_countries_with_pop":135,"neg_affect":0.315,"worry":0.3835,"stress":0.3653,"sadness":0.2608,"anger":0.2337,"pos_affect":0.7025,"enjoyment":0.7052,"ladder":5.5745}],"divergence":{"ladder_2006":5.3142,"ladder_2010":5.3371,"ladder_2020":5.3649,"ladder_2025":5.5745,"ladder_chg_2010_to_2025":0.2374,"ladder_chg_2020_to_2025":0.2096,"neg_affect_2006":0.2423,"neg_affect_2010":0.244,"neg_affect_2020":0.328,"neg_affect_2025":0.315,"neg_affect_chg_2010_to_2025":0.071,"neg_affect_chg_2020_to_2025":-0.013,"pos_affect_2010":0.7084,"pos_affect_2020":0.7162,"pos_affect_2025":0.7025,"pos_affect_chg_2010_to_2025":-0.0059},"region_changes":{"Africa":{"neg_affect_2010":0.2056,"neg_affect_2020":0.3393,"neg_affect_2025":0.3389,"neg_affect_chg_2010_to_2025":0.1333,"neg_affect_chg_2020_to_2025":-0.0004,"ladder_2010":4.3569,"ladder_2025":4.5405,"ladder_chg_2010_to_2025":0.1836},"Anglosphere":{"neg_affect_2010":0.2785,"neg_affect_2020":0.3184,"neg_affect_2025":0.2778,"neg_affect_chg_2010_to_2025":-0.0007,"neg_affect_chg_2020_to_2025":-0.0406,"ladder_2010":7.228,"ladder_2025":6.9413,"ladder_chg_2010_to_2025":-0.2867},"Asia":{"neg_affect_2010":0.2396,"neg_affect_2020":0.321,"neg_affect_2025":0.3162,"neg_affect_chg_2010_to_2025":0.0766,"neg_affect_chg_2020_to_2025":-0.0048,"ladder_2010":5.0035,"ladder_2025":5.4062,"ladder_chg_2010_to_2025":0.4027},"Europe":{"neg_affect_2010":0.2565,"neg_affect_2020":0.2793,"neg_affect_2025":0.2811,"neg_affect_chg_2010_to_2025":0.0246,"neg_affect_chg_2020_to_2025":0.0018,"ladder_2010":6.3835,"ladder_2025":6.7205,"ladder_chg_2010_to_2025":0.337},"Latin America":{"neg_affect_2010":0.2553,"neg_affect_2020":0.3856,"neg_affect_2025":0.3236,"neg_affect_chg_2010_to_2025":0.0683,"neg_affect_chg_2020_to_2025":-0.062,"ladder_2010":6.5447,"ladder_2025":6.5586,"ladder_chg_2010_to_2025":0.0139},"MENA":{"neg_affect_2010":0.3366,"neg_affect_2020":0.4246,"neg_affect_2025":0.3701,"neg_affect_chg_2010_to_2025":0.0335,"neg_affect_chg_2020_to_2025":-0.0545,"ladder_2010":5.1864,"ladder_2025":5.2299,"ladder_chg_2010_to_2025":0.0435},"Post-Soviet":{"neg_affect_2010":0.1802,"neg_affect_2020":0.2272,"neg_affect_2025":0.2406,"neg_affect_chg_2010_to_2025":0.0604,"neg_affect_chg_2020_to_2025":0.0134,"ladder_2010":5.209,"ladder_2025":5.6376,"ladder_chg_2010_to_2025":0.4286}},"region_series":{"Africa":[{"wave":2006,"n_countries":22,"neg_affect":0.2391,"worry":0.2874,"stress":0.2362,"sadness":0.1888,"anger":0.1831,"ladder":4.299,"pos_affect":0.7108},{"wave":2007,"n_countries":20,"neg_affect":0.2131,"worry":0.2449,"stress":null,"sadness":0.1705,"anger":0.1744,"ladder":4.6307,"pos_affect":0.7309},{"wave":2008,"n_countries":26,"neg_affect":0.2439,"worry":0.2843,"stress":0.2587,"sadness":0.1868,"anger":0.2147,"ladder":4.5472,"pos_affect":0.7012},{"wave":2009,"n_countries":22,"neg_affect":0.2366,"worry":0.2638,"stress":0.246,"sadness":0.1801,"anger":0.1973,"ladder":4.4772,"pos_affect":0.7036},{"wave":2010,"n_countries":21,"neg_affect":0.2056,"worry":0.2187,"stress":0.2272,"sadness":0.1569,"anger":0.1716,"ladder":4.3569,"pos_affect":0.7294},{"wave":2011,"n_countries":37,"neg_affect":0.2469,"worry":0.2975,"stress":0.2965,"sadness":0.1754,"anger":0.1694,"ladder":4.5524,"pos_affect":0.7043},{"wave":2012,"n_countries":28,"neg_affect":0.2383,"worry":0.2723,"stress":0.2756,"sadness":0.1709,"anger":0.1784,"ladder":4.622,"pos_affect":0.7002},{"wave":2013,"n_countries":29,"neg_affect":0.2722,"worry":0.3315,"stress":0.3103,"sadness":0.2031,"anger":0.1935,"ladder":4.2189,"pos_affect":0.6732},{"wave":2014,"n_countries":36,"neg_affect":0.3062,"worry":0.3933,"stress":0.3551,"sadness":0.2271,"anger":0.2055,"ladder":4.1524,"pos_affect":0.6839},{"wave":2015,"n_countries":32,"neg_affect":0.2895,"worry":0.3854,"stress":0.3322,"sadness":0.2207,"anger":0.182,"ladder":4.3881,"pos_affect":0.6854},{"wave":2016,"n_countries":34,"neg_affect":0.3163,"worry":0.391,"stress":0.3564,"sadness":0.2581,"anger":0.22,"ladder":4.3746,"pos_affect":0.6992},{"wave":2017,"n_countries":36,"neg_affect":0.3457,"worry":0.4169,"stress":0.3816,"sadness":0.3011,"anger":0.243,"ladder":4.4888,"pos_affect":0.6763},{"wave":2018,"n_countries":35,"neg_affect":0.3381,"worry":0.398,"stress":0.3882,"sadness":0.2907,"anger":0.2402,"ladder":4.6402,"pos_affect":0.7068},{"wave":2019,"n_countries":35,"neg_affect":0.3352,"worry":0.3974,"stress":0.3947,"sadness":0.2797,"anger":0.2262,"ladder":4.426,"pos_affect":0.6932},{"wave":2020,"n_countries":20,"neg_affect":0.3393,"worry":0.4166,"stress":0.4288,"sadness":0.285,"anger":0.2398,"ladder":4.8506,"pos_affect":0.7024},{"wave":2021,"n_countries":23,"neg_affect":0.3169,"worry":0.3666,"stress":0.395,"sadness":0.2522,"anger":0.2004,"ladder":4.4692,"pos_affect":0.7065},{"wave":2022,"n_countries":34,"neg_affect":0.3573,"worry":0.4267,"stress":0.4149,"sadness":0.3053,"anger":0.2471,"ladder":4.3863,"pos_affect":0.6974},{"wave":2023,"n_countries":35,"neg_affect":0.3561,"worry":0.4213,"stress":0.4363,"sadness":0.298,"anger":0.2356,"ladder":4.4493,"pos_affect":0.6849},{"wave":2024,"n_countries":36,"neg_affect":0.3598,"worry":0.4278,"stress":0.4213,"sadness":0.3054,"anger":0.2511,"ladder":4.342,"pos_affect":0.6838},{"wave":2025,"n_countries":33,"neg_affect":0.3389,"worry":0.3973,"stress":0.4058,"sadness":0.2782,"anger":0.2315,"ladder":4.5405,"pos_affect":0.6895}],"Anglosphere":[{"wave":2006,"n_countries":4,"neg_affect":0.2985,"worry":0.3542,"stress":0.4434,"sadness":0.205,"anger":0.2083,"ladder":7.2154,"pos_affect":0.7696},{"wave":2007,"n_countries":4,"neg_affect":0.2325,"worry":0.3352,"stress":null,"sadness":0.1871,"anger":0.177,"ladder":7.4966,"pos_affect":0.771},{"wave":2008,"n_countries":4,"neg_affect":0.2697,"worry":0.3331,"stress":0.4303,"sadness":0.1754,"anger":0.1631,"ladder":7.2992,"pos_affect":0.7854},{"wave":2009,"n_countries":2,"neg_affect":0.3074,"worry":0.3826,"stress":0.4626,"sadness":0.2088,"anger":0.1899,"ladder":7.1915,"pos_affect":0.7692},{"wave":2010,"n_countries":4,"neg_affect":0.2785,"worry":0.3322,"stress":0.4565,"sadness":0.199,"anger":0.1603,"ladder":7.228,"pos_affect":0.7924},{"wave":2011,"n_countries":4,"neg_affect":0.3095,"worry":0.3864,"stress":0.4788,"sadness":0.2188,"anger":0.1906,"ladder":7.1634,"pos_affect":0.7643},{"wave":2012,"n_countries":4,"neg_affect":0.3023,"worry":0.3818,"stress":0.4563,"sadness":0.2106,"anger":0.1675,"ladder":7.076,"pos_affect":0.7725},{"wave":2013,"n_countries":4,"neg_affect":0.3163,"worry":0.3813,"stress":0.4936,"sadness":0.2124,"anger":0.1675,"ladder":7.2892,"pos_affect":0.7832},{"wave":2014,"n_countries":4,"neg_affect":0.3286,"worry":0.4166,"stress":0.518,"sadness":0.234,"anger":0.1772,"ladder":7.176,"pos_affect":0.7853},{"wave":2015,"n_countries":4,"neg_affect":0.3179,"worry":0.3993,"stress":0.4902,"sadness":0.2386,"anger":0.1726,"ladder":6.95,"pos_affect":0.776},{"wave":2016,"n_countries":4,"neg_affect":0.3132,"worry":0.3769,"stress":0.4692,"sadness":0.2272,"anger":0.1786,"ladder":6.8781,"pos_affect":0.7592},{"wave":2017,"n_countries":4,"neg_affect":0.3075,"worry":0.3891,"stress":0.4751,"sadness":0.2262,"anger":0.1624,"ladder":7.0521,"pos_affect":0.7774},{"wave":2018,"n_countries":4,"neg_affect":0.3384,"worry":0.4323,"stress":0.5288,"sadness":0.2053,"anger":0.2048,"ladder":6.9345,"pos_affect":0.7702},{"wave":2019,"n_countries":4,"neg_affect":0.299,"worry":0.3579,"stress":0.4927,"sadness":0.227,"anger":0.1485,"ladder":6.9806,"pos_affect":0.7714},{"wave":2020,"n_countries":4,"neg_affect":0.3184,"worry":0.4258,"stress":0.4846,"sadness":0.2679,"anger":0.1751,"ladder":7.0374,"pos_affect":0.7753},{"wave":2021,"n_countries":4,"neg_affect":0.3297,"worry":0.405,"stress":0.5137,"sadness":0.2467,"anger":0.1691,"ladder":6.969,"pos_affect":0.7596},{"wave":2022,"n_countries":4,"neg_affect":0.3252,"worry":0.4007,"stress":0.5216,"sadness":0.2391,"anger":0.1629,"ladder":6.7388,"pos_affect":0.7403},{"wave":2023,"n_countries":4,"neg_affect":0.3386,"worry":0.4111,"stress":0.5052,"sadness":0.2579,"anger":0.1799,"ladder":6.588,"pos_affect":0.7391},{"wave":2024,"n_countries":4,"neg_affect":0.3143,"worry":0.3701,"stress":0.4845,"sadness":0.2247,"anger":0.1602,"ladder":6.923,"pos_affect":0.7749},{"wave":2025,"n_countries":4,"neg_affect":0.2778,"worry":0.3471,"stress":0.4494,"sadness":0.1728,"anger":0.1451,"ladder":6.9413,"pos_affect":0.777}],"Asia":[{"wave":2006,"n_countries":18,"neg_affect":0.2168,"worry":0.2684,"stress":0.2752,"sadness":0.1539,"anger":0.1877,"ladder":5.0064,"pos_affect":0.6779},{"wave":2007,"n_countries":17,"neg_affect":0.2278,"worry":0.2901,"stress":0.2985,"sadness":0.1661,"anger":0.206,"ladder":5.0645,"pos_affect":0.6728},{"wave":2008,"n_countries":20,"neg_affect":0.2305,"worry":0.2841,"stress":0.2947,"sadness":0.1711,"anger":0.192,"ladder":4.9895,"pos_affect":0.6885},{"wave":2009,"n_countries":17,"neg_affect":0.2382,"worry":0.3017,"stress":0.2878,"sadness":0.1712,"anger":0.218,"ladder":4.7296,"pos_affect":0.7087},{"wave":2010,"n_countries":19,"neg_affect":0.2396,"worry":0.2802,"stress":0.2943,"sadness":0.1803,"anger":0.2127,"ladder":5.0035,"pos_affect":0.6957},{"wave":2011,"n_countries":20,"neg_affect":0.2244,"worry":0.2638,"stress":0.2916,"sadness":0.1542,"anger":0.1956,"ladder":5.0089,"pos_affect":0.6849},{"wave":2012,"n_countries":21,"neg_affect":0.2478,"worry":0.2948,"stress":0.297,"sadness":0.192,"anger":0.2119,"ladder":4.9747,"pos_affect":0.6943},{"wave":2013,"n_countries":19,"neg_affect":0.2526,"worry":0.3214,"stress":0.3052,"sadness":0.1819,"anger":0.2001,"ladder":4.9972,"pos_affect":0.7203},{"wave":2014,"n_countries":21,"neg_affect":0.2208,"worry":0.3018,"stress":0.2577,"sadness":0.1605,"anger":0.1791,"ladder":4.9896,"pos_affect":0.7186},{"wave":2015,"n_countries":20,"neg_affect":0.2751,"worry":0.3401,"stress":0.3341,"sadness":0.2005,"anger":0.2166,"ladder":4.9277,"pos_affect":0.7171},{"wave":2016,"n_countries":18,"neg_affect":0.2789,"worry":0.3471,"stress":0.3328,"sadness":0.2166,"anger":0.2012,"ladder":4.9201,"pos_affect":0.7049},{"wave":2017,"n_countries":21,"neg_affect":0.2931,"worry":0.3718,"stress":0.3481,"sadness":0.2245,"anger":0.2123,"ladder":4.7739,"pos_affect":0.6988},{"wave":2018,"n_countries":20,"neg_affect":0.2915,"worry":0.3828,"stress":0.312,"sadness":0.2399,"anger":0.221,"ladder":4.7339,"pos_affect":0.7141},{"wave":2019,"n_countries":21,"neg_affect":0.3105,"worry":0.3928,"stress":0.321,"sadness":0.2766,"anger":0.2449,"ladder":4.5464,"pos_affect":0.7095},{"wave":2020,"n_countries":19,"neg_affect":0.321,"worry":0.4059,"stress":0.3785,"sadness":0.2706,"anger":0.2681,"ladder":5.0736,"pos_affect":0.7198},{"wave":2021,"n_countries":21,"neg_affect":0.334,"worry":0.4257,"stress":0.4033,"sadness":0.2888,"anger":0.2567,"ladder":4.858,"pos_affect":0.6887},{"wave":2022,"n_countries":20,"neg_affect":0.3553,"worry":0.4497,"stress":0.3016,"sadness":0.357,"anger":0.2917,"ladder":4.5418,"pos_affect":0.6785},{"wave":2023,"n_countries":21,"neg_affect":0.3037,"worry":0.3874,"stress":0.337,"sadness":0.2712,"anger":0.2446,"ladder":5.3715,"pos_affect":0.7254},{"wave":2024,"n_countries":20,"neg_affect":0.3027,"worry":0.3867,"stress":0.3304,"sadness":0.2628,"anger":0.2352,"ladder":5.1351,"pos_affect":0.7229},{"wave":2025,"n_countries":20,"neg_affect":0.3162,"worry":0.3775,"stress":0.3415,"sadness":0.2723,"anger":0.2636,"ladder":5.4062,"pos_affect":0.6942}],"Europe":[{"wave":2006,"n_countries":33,"neg_affect":0.2595,"worry":0.3456,"stress":0.318,"sadness":0.2185,"anger":0.1851,"ladder":6.5753,"pos_affect":0.7122},{"wave":2007,"n_countries":17,"neg_affect":0.2493,"worry":0.3421,"stress":null,"sadness":0.2189,"anger":0.2023,"ladder":6.5428,"pos_affect":0.715},{"wave":2008,"n_countries":28,"neg_affect":0.2547,"worry":0.3161,"stress":0.3219,"sadness":0.2019,"anger":0.1866,"ladder":6.793,"pos_affect":0.7157},{"wave":2009,"n_countries":27,"neg_affect":0.2785,"worry":0.3758,"stress":0.3447,"sadness":0.218,"anger":0.1928,"ladder":6.3104,"pos_affect":0.7217},{"wave":2010,"n_countries":31,"neg_affect":0.2565,"worry":0.335,"stress":0.3227,"sadness":0.1943,"anger":0.1884,"ladder":6.3835,"pos_affect":0.7199},{"wave":2011,"n_countries":33,"neg_affect":0.2616,"worry":0.3488,"stress":0.3325,"sadness":0.1984,"anger":0.1814,"ladder":6.3683,"pos_affect":0.7163},{"wave":2012,"n_countries":36,"neg_affect":0.2819,"worry":0.3828,"stress":0.3512,"sadness":0.2316,"anger":0.1768,"ladder":6.3476,"pos_affect":0.7207},{"wave":2013,"n_countries":34,"neg_affect":0.2947,"worry":0.4033,"stress":0.3743,"sadness":0.2385,"anger":0.1728,"ladder":6.3523,"pos_affect":0.724},{"wave":2014,"n_countries":35,"neg_affect":0.2843,"worry":0.3864,"stress":0.3811,"sadness":0.2194,"anger":0.1699,"ladder":6.3841,"pos_affect":0.7289},{"wave":2015,"n_countries":36,"neg_affect":0.2691,"worry":0.3754,"stress":0.361,"sadness":0.2118,"anger":0.1494,"ladder":6.3754,"pos_affect":0.7309},{"wave":2016,"n_countries":36,"neg_affect":0.2755,"worry":0.3791,"stress":0.3602,"sadness":0.2168,"anger":0.1585,"ladder":6.4537,"pos_affect":0.7227},{"wave":2017,"n_countries":36,"neg_affect":0.2672,"worry":0.3633,"stress":0.3607,"sadness":0.2027,"anger":0.1518,"ladder":6.5801,"pos_affect":0.7106},{"wave":2018,"n_countries":35,"neg_affect":0.2805,"worry":0.3796,"stress":0.3546,"sadness":0.2354,"anger":0.1844,"ladder":6.6966,"pos_affect":0.7177},{"wave":2019,"n_countries":35,"neg_affect":0.2753,"worry":0.3616,"stress":0.366,"sadness":0.225,"anger":0.1583,"ladder":6.687,"pos_affect":0.7136},{"wave":2020,"n_countries":35,"neg_affect":0.2793,"worry":0.394,"stress":0.3492,"sadness":0.2328,"anger":0.1549,"ladder":6.7186,"pos_affect":0.7356},{"wave":2021,"n_countries":34,"neg_affect":0.2838,"worry":0.3851,"stress":0.3598,"sadness":0.2386,"anger":0.1792,"ladder":6.6277,"pos_affect":0.7236},{"wave":2022,"n_countries":36,"neg_affect":0.269,"worry":0.3593,"stress":0.3414,"sadness":0.2224,"anger":0.1454,"ladder":6.5547,"pos_affect":0.7156},{"wave":2023,"n_countries":36,"neg_affect":0.2764,"worry":0.3681,"stress":0.3428,"sadness":0.2221,"anger":0.1532,"ladder":6.5771,"pos_affect":0.7202},{"wave":2024,"n_countries":35,"neg_affect":0.2702,"worry":0.3553,"stress":0.3503,"sadness":0.2143,"anger":0.1429,"ladder":6.7132,"pos_affect":0.7228},{"wave":2025,"n_countries":36,"neg_affect":0.2811,"worry":0.3648,"stress":0.369,"sadness":0.2246,"anger":0.156,"ladder":6.7205,"pos_affect":0.7183}],"Latin America":[{"wave":2006,"n_countries":23,"neg_affect":0.3005,"worry":0.4318,"stress":0.3212,"sadness":0.2619,"anger":0.18,"ladder":6.2154,"pos_affect":0.7783},{"wave":2007,"n_countries":20,"neg_affect":0.2771,"worry":0.4241,"stress":0.269,"sadness":0.2446,"anger":0.1655,"ladder":6.1492,"pos_affect":0.7872},{"wave":2008,"n_countries":20,"neg_affect":0.2728,"worry":0.3977,"stress":0.2838,"sadness":0.2258,"anger":0.171,"ladder":6.2806,"pos_affect":0.7734},{"wave":2009,"n_countries":18,"neg_affect":0.2586,"worry":0.3936,"stress":0.2841,"sadness":0.1978,"anger":0.1632,"ladder":6.675,"pos_affect":0.7896},{"wave":2010,"n_countries":19,"neg_affect":0.2553,"worry":0.3738,"stress":0.2679,"sadness":0.1993,"anger":0.1528,"ladder":6.5447,"pos_affect":0.7849},{"wave":2011,"n_countries":21,"neg_affect":0.2897,"worry":0.4197,"stress":0.3468,"sadness":0.2193,"anger":0.1473,"ladder":6.5995,"pos_affect":0.7579},{"wave":2012,"n_countries":20,"neg_affect":0.3127,"worry":0.4616,"stress":0.3494,"sadness":0.2476,"anger":0.1775,"ladder":6.6484,"pos_affect":0.7638},{"wave":2013,"n_countries":21,"neg_affect":0.3,"worry":0.4408,"stress":0.3326,"sadness":0.2303,"anger":0.1602,"ladder":6.7401,"pos_affect":0.7714},{"wave":2014,"n_countries":22,"neg_affect":0.2952,"worry":0.4452,"stress":0.3399,"sadness":0.2247,"anger":0.1408,"ladder":6.5307,"pos_affect":0.779},{"wave":2015,"n_countries":19,"neg_affect":0.322,"worry":0.4846,"stress":0.3747,"sadness":0.2398,"anger":0.1719,"ladder":6.2259,"pos_affect":0.7612},{"wave":2016,"n_countries":19,"neg_affect":0.3163,"worry":0.4697,"stress":0.3792,"sadness":0.2464,"anger":0.1672,"ladder":6.2003,"pos_affect":0.7774},{"wave":2017,"n_countries":21,"neg_affect":0.3257,"worry":0.4616,"stress":0.4022,"sadness":0.2613,"anger":0.164,"ladder":6.1334,"pos_affect":0.765},{"wave":2018,"n_countries":19,"neg_affect":0.3366,"worry":0.4831,"stress":0.4135,"sadness":0.2678,"anger":0.177,"ladder":6.0816,"pos_affect":0.7782},{"wave":2019,"n_countries":19,"neg_affect":0.3513,"worry":0.5087,"stress":0.4497,"sadness":0.273,"anger":0.165,"ladder":6.24,"pos_affect":0.784},{"wave":2020,"n_countries":16,"neg_affect":0.3856,"worry":0.5603,"stress":0.4908,"sadness":0.3231,"anger":0.1944,"ladder":5.8214,"pos_affect":0.7461},{"wave":2021,"n_countries":18,"neg_affect":0.3824,"worry":0.5635,"stress":0.4767,"sadness":0.3279,"anger":0.1735,"ladder":5.8737,"pos_affect":0.752},{"wave":2022,"n_countries":20,"neg_affect":0.3355,"worry":0.4768,"stress":0.4234,"sadness":0.2632,"anger":0.1513,"ladder":6.333,"pos_affect":0.7841},{"wave":2023,"n_countries":18,"neg_affect":0.3336,"worry":0.4659,"stress":0.4276,"sadness":0.2599,"anger":0.156,"ladder":6.4453,"pos_affect":0.7853},{"wave":2024,"n_countries":20,"neg_affect":0.3238,"worry":0.4549,"stress":0.4289,"sadness":0.2381,"anger":0.1466,"ladder":6.4998,"pos_affect":0.7979},{"wave":2025,"n_countries":18,"neg_affect":0.3236,"worry":0.4564,"stress":0.4103,"sadness":0.2423,"anger":0.1511,"ladder":6.5586,"pos_affect":0.7885}],"MENA":[{"wave":2006,"n_countries":11,"neg_affect":0.3498,"worry":0.4201,"stress":0.3865,"sadness":0.3075,"anger":0.3486,"ladder":5.3448,"pos_affect":0.6487},{"wave":2007,"n_countries":8,"neg_affect":0.3367,"worry":0.4056,"stress":0.4337,"sadness":0.2925,"anger":0.3523,"ladder":5.6838,"pos_affect":0.6552},{"wave":2008,"n_countries":11,"neg_affect":0.3378,"worry":0.3732,"stress":0.348,"sadness":0.2781,"anger":0.3448,"ladder":5.1318,"pos_affect":0.6357},{"wave":2009,"n_countries":15,"neg_affect":0.3534,"worry":0.3942,"stress":0.3952,"sadness":0.2708,"anger":0.3499,"ladder":5.2935,"pos_affect":0.616},{"wave":2010,"n_countries":17,"neg_affect":0.3366,"worry":0.38,"stress":0.4178,"sadness":0.2535,"anger":0.3,"ladder":5.1864,"pos_affect":0.6269},{"wave":2011,"n_countries":19,"neg_affect":0.3606,"worry":0.4034,"stress":0.4287,"sadness":0.2844,"anger":0.3393,"ladder":4.983,"pos_affect":0.6102},{"wave":2012,"n_countries":19,"neg_affect":0.3831,"worry":0.4423,"stress":0.4574,"sadness":0.3216,"anger":0.3515,"ladder":4.9178,"pos_affect":0.6146},{"wave":2013,"n_countries":16,"neg_affect":0.4316,"worry":0.4998,"stress":0.5115,"sadness":0.3832,"anger":0.4017,"ladder":4.7572,"pos_affect":0.6266},{"wave":2014,"n_countries":17,"neg_affect":0.3759,"worry":0.4353,"stress":0.4279,"sadness":0.3179,"anger":0.3264,"ladder":5.2273,"pos_affect":0.6125},{"wave":2015,"n_countries":17,"neg_affect":0.4032,"worry":0.4656,"stress":0.4519,"sadness":0.3582,"anger":0.3721,"ladder":4.9789,"pos_affect":0.6058},{"wave":2016,"n_countries":17,"neg_affect":0.4014,"worry":0.4523,"stress":0.4546,"sadness":0.3401,"anger":0.3515,"ladder":5.0349,"pos_affect":0.6295},{"wave":2017,"n_countries":17,"neg_affect":0.3991,"worry":0.4626,"stress":0.4801,"sadness":0.3184,"anger":0.3395,"ladder":4.903,"pos_affect":0.6042},{"wave":2018,"n_countries":16,"neg_affect":0.3872,"worry":0.4463,"stress":0.461,"sadness":0.2979,"anger":0.342,"ladder":4.7626,"pos_affect":0.5962},{"wave":2019,"n_countries":17,"neg_affect":0.3806,"worry":0.4359,"stress":0.4501,"sadness":0.304,"anger":0.3181,"ladder":4.9122,"pos_affect":0.5968},{"wave":2020,"n_countries":13,"neg_affect":0.4246,"worry":0.47,"stress":0.5031,"sadness":0.3672,"anger":0.3852,"ladder":4.9732,"pos_affect":0.6092},{"wave":2021,"n_countries":12,"neg_affect":0.3932,"worry":0.4431,"stress":0.4572,"sadness":0.3426,"anger":0.3318,"ladder":4.8066,"pos_affect":0.5756},{"wave":2022,"n_countries":16,"neg_affect":0.378,"worry":0.4425,"stress":0.4476,"sadness":0.309,"anger":0.319,"ladder":4.8794,"pos_affect":0.6024},{"wave":2023,"n_countries":16,"neg_affect":0.4061,"worry":0.4891,"stress":0.5026,"sadness":0.3045,"anger":0.3302,"ladder":4.9486,"pos_affect":0.5971},{"wave":2024,"n_countries":17,"neg_affect":0.3911,"worry":0.4544,"stress":0.4915,"sadness":0.3126,"anger":0.3186,"ladder":4.9585,"pos_affect":0.6068},{"wave":2025,"n_countries":15,"neg_affect":0.3701,"worry":0.416,"stress":0.4507,"sadness":0.2879,"anger":0.3124,"ladder":5.2299,"pos_affect":0.6068}],"Post-Soviet":[{"wave":2006,"n_countries":11,"neg_affect":0.2164,"worry":0.288,"stress":0.1419,"sadness":0.2422,"anger":0.1693,"ladder":4.9766,"pos_affect":0.6081},{"wave":2007,"n_countries":10,"neg_affect":0.2073,"worry":0.2524,"stress":null,"sadness":0.2186,"anger":0.1405,"ladder":5.178,"pos_affect":0.6095},{"wave":2008,"n_countries":11,"neg_affect":0.1762,"worry":0.2271,"stress":0.1106,"sadness":0.1828,"anger":0.1391,"ladder":5.431,"pos_affect":0.6343},{"wave":2009,"n_countries":12,"neg_affect":0.1747,"worry":0.2256,"stress":0.0994,"sadness":0.1824,"anger":0.1296,"ladder":5.1643,"pos_affect":0.6345},{"wave":2010,"n_countries":11,"neg_affect":0.1802,"worry":0.2432,"stress":0.1176,"sadness":0.191,"anger":0.1303,"ladder":5.209,"pos_affect":0.6352},{"wave":2011,"n_countries":12,"neg_affect":0.1792,"worry":0.2356,"stress":0.1154,"sadness":0.1906,"anger":0.119,"ladder":5.3153,"pos_affect":0.6448},{"wave":2012,"n_countries":12,"neg_affect":0.1861,"worry":0.2349,"stress":0.1308,"sadness":0.1913,"anger":0.1285,"ladder":5.4909,"pos_affect":0.6442},{"wave":2013,"n_countries":12,"neg_affect":0.1828,"worry":0.2433,"stress":0.1251,"sadness":0.1714,"anger":0.1461,"ladder":5.4345,"pos_affect":0.6589},{"wave":2014,"n_countries":12,"neg_affect":0.175,"worry":0.24,"stress":0.1276,"sadness":0.1721,"anger":0.1111,"ladder":5.6367,"pos_affect":0.6722},{"wave":2015,"n_countries":12,"neg_affect":0.1649,"worry":0.2359,"stress":0.1228,"sadness":0.1637,"anger":0.1012,"ladder":5.5469,"pos_affect":0.6759},{"wave":2016,"n_countries":12,"neg_affect":0.171,"worry":0.222,"stress":0.131,"sadness":0.1666,"anger":0.122,"ladder":5.4374,"pos_affect":0.6671},{"wave":2017,"n_countries":12,"neg_affect":0.2169,"worry":0.2609,"stress":0.1711,"sadness":0.214,"anger":0.1591,"ladder":5.4518,"pos_affect":0.6816},{"wave":2018,"n_countries":12,"neg_affect":0.2114,"worry":0.2518,"stress":0.1699,"sadness":0.212,"anger":0.1619,"ladder":5.4333,"pos_affect":0.6701},{"wave":2019,"n_countries":12,"neg_affect":0.2066,"worry":0.2481,"stress":0.1667,"sadness":0.2123,"anger":0.1468,"ladder":5.4668,"pos_affect":0.6935},{"wave":2020,"n_countries":8,"neg_affect":0.2272,"worry":0.279,"stress":0.2006,"sadness":0.2388,"anger":0.1549,"ladder":5.5589,"pos_affect":0.6876},{"wave":2021,"n_countries":9,"neg_affect":0.2162,"worry":0.2593,"stress":0.1853,"sadness":0.218,"anger":0.1488,"ladder":5.5658,"pos_affect":0.6695},{"wave":2022,"n_countries":10,"neg_affect":0.2522,"worry":0.3141,"stress":0.2204,"sadness":0.2466,"anger":0.1897,"ladder":5.6993,"pos_affect":0.6835},{"wave":2023,"n_countries":10,"neg_affect":0.2242,"worry":0.2923,"stress":0.2045,"sadness":0.2283,"anger":0.1522,"ladder":5.7136,"pos_affect":0.6731},{"wave":2024,"n_countries":10,"neg_affect":0.2326,"worry":0.3063,"stress":0.2031,"sadness":0.2195,"anger":0.1503,"ladder":5.76,"pos_affect":0.6679},{"wave":2025,"n_countries":10,"neg_affect":0.2406,"worry":0.3053,"stress":0.2281,"sadness":0.2342,"anger":0.1573,"ladder":5.6376,"pos_affect":0.6746}]},"region_ranked_by_neg_affect_rise_2010_2025":[["Africa",0.1333],["Asia",0.0766],["Latin America",0.0683],["Post-Soviet",0.0604],["MENA",0.0335],["Europe",0.0246],["Anglosphere",-0.0007]],"emotion_changes":{"worry":{"val_2010":0.294,"val_2025":0.3835,"change_2010_to_2025":0.0895,"val_2020":0.4195,"change_2020_to_2025":-0.036},"stress":{"val_2010":0.296,"val_2025":0.3653,"change_2010_to_2025":0.0693,"val_2020":0.398,"change_2020_to_2025":-0.0327},"sadness":{"val_2010":0.1863,"val_2025":0.2608,"change_2010_to_2025":0.0745,"val_2020":0.2784,"change_2020_to_2025":-0.0176},"anger":{"val_2010":0.1996,"val_2025":0.2337,"change_2010_to_2025":0.0341,"val_2020":0.2482,"change_2020_to_2025":-0.0145}},"top_emotion_2010_to_2025":"worry","ladder_series_max":{"wave":2025,"value":5.5745},"neg_affect_series_max":{"wave":2022,"value":0.3406},"neg_affect_series_min":{"wave":2007,"value":0.2372}}/*/DATA*/;
+
+const EVAL = "#46c4b8", EXP = "#e87a4e", EXP_DEEP = "#d75b3a";
+const INK = "#eef1f4", INK_DIM = "#aab4be", INK_FAINT = "#7b8794", HAIR = "#2a323b", PAPER2 = "#161b21";
+
+const COMP_COLORS = { worry:"#f0a13b", stress:"#e8704a", sadness:"#c25d8a", anger:"#b14a3f" };
+const COMP_LABEL = { worry:"Worry", stress:"Stress", sadness:"Sadness", anger:"Anger" };
+const COMPONENTS = ["worry","stress","sadness","anger"];
+
+const REG_COLORS = {
+  "Africa":"#e0823d", "Asia":"#46c4b8", "Latin America":"#e6b54a",
+  "Europe":"#7fa8d8", "MENA":"#d05a6e", "Post-Soviet":"#9d8fd1", "Anglosphere":"#8aa39b"
+};
+
+const S = DATA.series_floating;
+const years = S.map(d => d.wave);
+const fmtShare = v => v.toFixed(3);
+const fmtLad = v => v.toFixed(3);
+
+/* ---------- shared tip helpers ---------- */
+function makeTip(container){
+  const tip = document.createElement("div");
+  tip.className = "tip";
+  container.appendChild(tip);
+  return tip;
+}
+function showTip(tip, container, x, y, html){
+  tip.innerHTML = html;
+  tip.style.display = "block";
+  const cw = container.clientWidth, tw = tip.offsetWidth;
+  let lx = x + 14;
+  if (lx + tw > cw - 4) lx = x - tw - 14;
+  tip.style.left = Math.max(2, lx) + "px";
+  tip.style.top = Math.max(0, y - 10) + "px";
+}
+
+/* =========================================================
+   Header decorative wave (purely aesthetic, aria-hidden)
+   ========================================================= */
+(function drawHeaderWave(){
+  const svg = d3.select(".hwave");
+  const W = 1000, H = 280;
+  const x = d3.scaleLinear().domain(d3.extent(years)).range([0, W]);
+  const yA = d3.scaleLinear().domain([0.2, 0.36]).range([H-30, 60]);
+  const yL = d3.scaleLinear().domain([4.9, 5.65]).range([H-30, 40]);
+  const area = d3.area().x(d=>x(d.wave)).y0(H).y1(d=>yA(d.neg_affect)).curve(d3.curveCatmullRom);
+  const lineL = d3.line().x(d=>x(d.wave)).y(d=>yL(d.ladder)).curve(d3.curveCatmullRom);
+  const grad = svg.append("defs").append("linearGradient").attr("id","hgrad").attr("x1",0).attr("x2",0).attr("y1",0).attr("y2",1);
+  grad.append("stop").attr("offset","0%").attr("stop-color",EXP).attr("stop-opacity",0.22);
+  grad.append("stop").attr("offset","100%").attr("stop-color",EXP).attr("stop-opacity",0);
+  svg.append("path").attr("d", area(S)).attr("fill","url(#hgrad)");
+  svg.append("path").attr("d", lineL(S)).attr("fill","none").attr("stroke",EVAL).attr("stroke-width",2).attr("opacity",0.5);
+})();
+
+/* =========================================================
+   FIGURE 1: dual-axis — neg affect (+components) vs ladder
+   ========================================================= */
+const dualBox = document.getElementById("dual-chart");
+const dualTip = makeTip(dualBox);
+const shownComponents = new Set(); // start empty: just the band + neg_affect line
+
+// layer toggle buttons
+const layerCtrl = d3.select("#layer-controls");
+COMPONENTS.forEach(k => {
+  layerCtrl.append("button").attr("class","mbtn").attr("aria-pressed","false")
+    .html(`<span class="cdot" style="background:${COMP_COLORS[k]}"></span>${COMP_LABEL[k]}`)
+    .on("click", function(){
+      if (shownComponents.has(k)) shownComponents.delete(k); else shownComponents.add(k);
+      d3.select(this).attr("aria-pressed", shownComponents.has(k) ? "true" : "false");
+      drawDual();
+    });
+});
+
+// legend
+(function buildMainLegend(){
+  const lg = d3.select("#main-legend");
+  lg.append("span").attr("class","item").html(`<span class="sw" style="background:${EXP}"></span>Negative affect &middot; experiential (left axis)`);
+  lg.append("span").attr("class","item").html(`<span class="sw" style="background:${EVAL}"></span>Ladder &middot; evaluative (right axis, 0&ndash;10)`);
+})();
+
+function drawDual(){
+  const W = Math.max(330, dualBox.clientWidth);
+  const narrow = W < 560;
+  const H = narrow ? 420 : 460;
+  const mg = {top:34, right:narrow?52:64, bottom:46, left:narrow?46:56};
+
+  let svg = d3.select(dualBox).select("svg");
+  if (svg.empty()) svg = d3.select(dualBox).append("svg");
+  svg.selectAll("*").remove();
+  svg.attr("viewBox",`0 0 ${W} ${H}`).attr("width","100%")
+     .attr("role","img")
+     .attr("aria-label",`Dual-axis line chart, 2006 to 2025. Left axis: experiential negative affect share, rising from about 0.24 in 2010 to a peak of 0.341 in 2022, then easing to 0.315 in 2025. Right axis: the evaluative Cantril ladder, dipping to about 5.0 in 2019 then climbing to a series high of 5.574 in 2025. The two diverge after 2020.`);
+
+  const x = d3.scalePoint().domain(years).range([mg.left, W-mg.right]).padding(0.02);
+  // left axis: shares (affect). pick domain to fit components when shown
+  const compMax = shownComponents.size ? d3.max(S, d => d3.max([...shownComponents].map(k=>d[k]))) : d3.max(S, d=>d.neg_affect);
+  const yL = d3.scaleLinear().domain([0.10, Math.max(0.45, compMax*1.06)]).range([H-mg.bottom, mg.top]);
+  // right axis: ladder
+  const yR = d3.scaleLinear().domain([4.8, 5.7]).range([H-mg.bottom, mg.top]);
+
+  // gridlines (left)
+  const gl = svg.append("g");
+  yL.ticks(6).forEach(t => {
+    gl.append("line").attr("x1",mg.left).attr("x2",W-mg.right).attr("y1",yL(t)).attr("y2",yL(t))
+      .attr("stroke",HAIR).attr("stroke-width",1);
+  });
+
+  // 2020 marker + 2022 peak marker
+  const mark = svg.append("g");
+  [2020, 2022].forEach((yr)=>{
+    mark.append("line").attr("x1",x(yr)).attr("x2",x(yr)).attr("y1",mg.top-4).attr("y2",H-mg.bottom)
+      .attr("stroke", yr===2022?EXP_DEEP:INK_FAINT).attr("stroke-width", yr===2022?1.6:1).attr("stroke-dasharray", yr===2022?"none":"3,3").attr("opacity", yr===2022?0.65:0.5);
+  });
+
+  // experiential band (neg_affect area) for visual weight
+  const grad = svg.append("defs").append("linearGradient").attr("id","fgrad").attr("x1",0).attr("x2",0).attr("y1",0).attr("y2",1);
+  grad.append("stop").attr("offset","0%").attr("stop-color",EXP).attr("stop-opacity",0.30);
+  grad.append("stop").attr("offset","100%").attr("stop-color",EXP).attr("stop-opacity",0.02);
+  const area = d3.area().x(d=>x(d.wave)).y0(H-mg.bottom).y1(d=>yL(d.neg_affect)).curve(d3.curveMonotoneX);
+  svg.append("path").datum(S).attr("d",area).attr("fill","url(#fgrad)");
+
+  // component lines (if toggled)
+  [...shownComponents].forEach(k=>{
+    const ln = d3.line().x(d=>x(d.wave)).y(d=>yL(d[k])).curve(d3.curveMonotoneX);
+    svg.append("path").datum(S).attr("d",ln).attr("fill","none")
+      .attr("stroke",COMP_COLORS[k]).attr("stroke-width",1.8).attr("opacity",0.92).attr("stroke-dasharray","4,3");
+    // end label
+    const last = S[S.length-1];
+    svg.append("text").attr("x", x(last.wave)+5).attr("y", yL(last[k])+3).attr("text-anchor","start")
+      .attr("font-family","var(--sans)").attr("font-size",10).attr("font-weight",700).attr("fill",COMP_COLORS[k])
+      .text(COMP_LABEL[k]);
+  });
+
+  // neg_affect main line (experiential)
+  const lnNeg = d3.line().x(d=>x(d.wave)).y(d=>yL(d.neg_affect)).curve(d3.curveMonotoneX);
+  svg.append("path").datum(S).attr("d",lnNeg).attr("fill","none").attr("stroke",EXP).attr("stroke-width",3).attr("stroke-linecap","round");
+
+  // ladder line (evaluative) on RIGHT axis
+  const lnLad = d3.line().x(d=>x(d.wave)).y(d=>yR(d.ladder)).curve(d3.curveMonotoneX);
+  svg.append("path").datum(S).attr("d",lnLad).attr("fill","none").attr("stroke",EVAL).attr("stroke-width",3).attr("stroke-dasharray","1,0").attr("stroke-linecap","round");
+
+  // dots
+  svg.append("g").selectAll("circle.neg").data(S).join("circle").attr("class","neg")
+    .attr("cx",d=>x(d.wave)).attr("cy",d=>yL(d.neg_affect)).attr("r",2.6).attr("fill",EXP);
+  svg.append("g").selectAll("circle.lad").data(S).join("circle").attr("class","lad")
+    .attr("cx",d=>x(d.wave)).attr("cy",d=>yR(d.ladder)).attr("r",2.6).attr("fill",EVAL);
+
+  // peak callout for 2022 neg affect
+  const peak = S.find(d=>d.wave===2022);
+  svg.append("circle").attr("cx",x(2022)).attr("cy",yL(peak.neg_affect)).attr("r",5).attr("fill","none").attr("stroke",EXP_DEEP).attr("stroke-width",2);
+  svg.append("text").attr("x",x(2022)).attr("y",yL(peak.neg_affect)-12).attr("text-anchor","middle")
+    .attr("font-family","var(--sans)").attr("font-size",11).attr("font-weight",800).attr("fill",EXP_DEEP)
+    .text(`peak 0.341`);
+  // ladder 2025 high callout
+  const lhi = S[S.length-1];
+  svg.append("text").attr("x",x(2025)).attr("y",yR(lhi.ladder)-10).attr("text-anchor","end")
+    .attr("font-family","var(--sans)").attr("font-size",11).attr("font-weight",800).attr("fill",EVAL)
+    .text(`high 5.574`);
+
+  // x axis
+  const xa = svg.append("g");
+  const xticks = narrow ? [2006,2010,2015,2020,2025] : [2006,2008,2010,2012,2014,2016,2018,2020,2022,2024];
+  xticks.forEach(t=>{
+    xa.append("text").attr("x",x(t)).attr("y",H-mg.bottom+18).attr("text-anchor","middle")
+      .attr("font-family","var(--sans)").attr("font-size",10.5).attr("fill",INK_FAINT).text(t);
+  });
+  // 2020/2022 labels under axis
+  svg.append("text").attr("x",x(2020)).attr("y",mg.top+10).attr("text-anchor","middle")
+    .attr("font-family","var(--sans)").attr("font-size",9.5).attr("fill",INK_FAINT).text("2020");
+
+  // left axis labels
+  const la = svg.append("g");
+  yL.ticks(6).forEach(t=>{
+    la.append("text").attr("x",mg.left-8).attr("y",yL(t)+3.5).attr("text-anchor","end")
+      .attr("font-family","var(--sans)").attr("font-size",10).attr("fill",INK_FAINT).text(t.toFixed(2));
+  });
+  svg.append("text").attr("transform",`translate(${narrow?13:15},${(mg.top+H-mg.bottom)/2}) rotate(-90)`).attr("text-anchor","middle")
+    .attr("font-family","var(--sans)").attr("font-size",10.5).attr("font-weight",700).attr("fill",EXP)
+    .text("NEGATIVE AFFECT · share saying yes");
+
+  // right axis labels
+  const ra = svg.append("g");
+  yR.ticks(5).forEach(t=>{
+    ra.append("text").attr("x",W-mg.right+8).attr("y",yR(t)+3.5).attr("text-anchor","start")
+      .attr("font-family","var(--sans)").attr("font-size",10).attr("fill",INK_FAINT).text(t.toFixed(1));
+  });
+  svg.append("text").attr("transform",`translate(${W-(narrow?12:14)},${(mg.top+H-mg.bottom)/2}) rotate(-90)`).attr("text-anchor","middle")
+    .attr("font-family","var(--sans)").attr("font-size",10.5).attr("font-weight",700).attr("fill",EVAL)
+    .text("LADDER · 0–10 points");
+
+  // hover layer
+  const focus = svg.append("g").style("display","none");
+  focus.append("line").attr("class","fline").attr("y1",mg.top).attr("y2",H-mg.bottom).attr("stroke",INK_DIM).attr("stroke-width",1).attr("opacity",0.6);
+  focus.append("circle").attr("class","fneg").attr("r",4.5).attr("fill",EXP).attr("stroke",PAPER2).attr("stroke-width",1.5);
+  focus.append("circle").attr("class","flad").attr("r",4.5).attr("fill",EVAL).attr("stroke",PAPER2).attr("stroke-width",1.5);
+
+  svg.append("rect").attr("x",mg.left).attr("y",mg.top).attr("width",W-mg.right-mg.left).attr("height",H-mg.bottom-mg.top)
+    .attr("fill","transparent").style("cursor","crosshair")
+    .on("mousemove", function(ev){
+      const [mx] = d3.pointer(ev);
+      let best=S[0], bd=Infinity;
+      S.forEach(d=>{ const dd=Math.abs(x(d.wave)-mx); if(dd<bd){bd=dd; best=d;} });
+      focus.style("display",null);
+      focus.select(".fline").attr("x1",x(best.wave)).attr("x2",x(best.wave));
+      focus.select(".fneg").attr("cx",x(best.wave)).attr("cy",yL(best.neg_affect));
+      focus.select(".flad").attr("cx",x(best.wave)).attr("cy",yR(best.ladder));
+      const comps = COMPONENTS.map(k=>`${COMP_LABEL[k]} ${best[k].toFixed(3)}`).join(" · ");
+      showTip(dualTip, dualBox, x(best.wave), yL(best.neg_affect),
+        `<b>${best.wave}</b> <span class="trg">${best.n_countries} countries</span><br>
+         <span class="num" style="color:${EXP}">Neg. affect ${best.neg_affect.toFixed(3)}</span> &middot; experiential<br>
+         <span class="num" style="color:${EVAL}">Ladder ${best.ladder.toFixed(3)}</span> &middot; evaluative<br>
+         <span class="num" style="color:${INK_FAINT};font-size:11px">${comps}</span>`);
+    })
+    .on("mouseleave", function(){ focus.style("display","none"); dualTip.style.display="none"; });
+}
+
+/* =========================================================
+   FIGURE 2: region small-multiples of neg affect rise
+   ========================================================= */
+const regionBox = document.getElementById("region-chart");
+const REGION_ORDER = DATA.region_ranked_by_neg_affect_rise_2010_2025.map(d=>d[0]);
+
+function drawRegions(){
+  const W = Math.max(330, regionBox.clientWidth);
+  let cols = W > 820 ? 4 : (W > 540 ? 3 : 2);
+  const rows = Math.ceil(REGION_ORDER.length / cols);
+  const gap = 14;
+  const cellW = (W - gap*(cols-1)) / cols;
+  const cellH = Math.max(120, cellW * 0.78);
+  const H = rows*cellH + (rows-1)*gap + 6;
+
+  let svg = d3.select(regionBox).select("svg");
+  if (svg.empty()) svg = d3.select(regionBox).append("svg");
+  svg.selectAll("*").remove();
+  svg.attr("viewBox",`0 0 ${W} ${H}`).attr("width","100%")
+     .attr("role","img")
+     .attr("aria-label",`Small-multiple line charts of experiential negative affect by region, 2006 to 2025, on a shared 0 to 0.45 axis. Africa rises the most (plus 0.133 from 2010 to 2025); the Anglosphere is essentially flat (minus 0.001). Asia, Latin America and the Post-Soviet group rise meaningfully; Europe barely moves.`);
+
+  const x = d3.scaleLinear().domain(d3.extent(years)).range([0, 1]);
+  const y = d3.scaleLinear().domain([0, 0.45]);
+
+  REGION_ORDER.forEach((reg, idx)=>{
+    const ci = idx % cols, ri = Math.floor(idx/cols);
+    const ox = ci*(cellW+gap), oy = ri*(cellH+gap);
+    const padL = 6, padR = 8, padT = 30, padB = 22;
+    const ix = d3.scaleLinear().domain(d3.extent(years)).range([ox+padL, ox+cellW-padR]);
+    const iy = d3.scaleLinear().domain([0,0.45]).range([oy+cellH-padB, oy+padT]);
+    const col = REG_COLORS[reg];
+    const g = svg.append("g");
+
+    // panel bg
+    g.append("rect").attr("x",ox).attr("y",oy).attr("width",cellW).attr("height",cellH)
+      .attr("fill",PAPER2).attr("stroke",HAIR).attr("stroke-width",1).attr("rx",4);
+
+    // baseline gridlines at 0.2 and 0.4
+    [0.2,0.4].forEach(t=>{
+      g.append("line").attr("x1",ox+padL).attr("x2",ox+cellW-padR).attr("y1",iy(t)).attr("y2",iy(t))
+        .attr("stroke",HAIR).attr("stroke-width",1).attr("opacity",0.7);
+      g.append("text").attr("x",ox+cellW-padR).attr("y",iy(t)-2).attr("text-anchor","end")
+        .attr("font-family","var(--sans)").attr("font-size",8).attr("fill",INK_FAINT).text(t.toFixed(1));
+    });
+
+    // ghosted world series behind
+    const lnW = d3.line().x(d=>ix(d.wave)).y(d=>iy(d.neg_affect)).curve(d3.curveMonotoneX);
+    g.append("path").datum(S).attr("d",lnW).attr("fill","none").attr("stroke",INK_FAINT).attr("stroke-width",1).attr("opacity",0.35).attr("stroke-dasharray","2,2");
+
+    // region series
+    const rs = DATA.region_series[reg];
+    const ln = d3.line().x(d=>ix(d.wave)).y(d=>iy(d.neg_affect)).curve(d3.curveMonotoneX);
+    g.append("path").datum(rs).attr("d",ln).attr("fill","none").attr("stroke",col).attr("stroke-width",2.4).attr("stroke-linecap","round");
+
+    // 2010 and 2025 dots
+    const d2010 = rs.find(d=>d.wave===2010), d2025 = rs.find(d=>d.wave===2025);
+    [d2010,d2025].forEach(d=>{
+      if(!d) return;
+      g.append("circle").attr("cx",ix(d.wave)).attr("cy",iy(d.neg_affect)).attr("r",3).attr("fill",col).attr("stroke",PAPER2).attr("stroke-width",1.2);
+    });
+    // value labels
+    if(d2010) g.append("text").attr("x",ix(2010)).attr("y",iy(d2010.neg_affect)+(d2010.neg_affect<d2025.neg_affect?14:-7)).attr("text-anchor","middle")
+      .attr("font-family","var(--sans)").attr("font-size",8.5).attr("fill",INK_DIM).attr("font-variant-numeric","tabular-nums").text(d2010.neg_affect.toFixed(2));
+    if(d2025) g.append("text").attr("x",ix(2025)).attr("y",iy(d2025.neg_affect)-7).attr("text-anchor","end")
+      .attr("font-family","var(--sans)").attr("font-size",8.5).attr("font-weight",700).attr("fill",col).attr("font-variant-numeric","tabular-nums").text(d2025.neg_affect.toFixed(2));
+
+    // title + change chip
+    const chg = DATA.region_changes[reg].neg_affect_chg_2010_to_2025;
+    const chgStr = (chg>=0?"+":"−")+Math.abs(chg).toFixed(3);
+    g.append("text").attr("x",ox+padL).attr("y",oy+15).attr("text-anchor","start")
+      .attr("font-family","var(--sans)").attr("font-size",12.5).attr("font-weight",800).attr("fill",INK).text(reg);
+    g.append("text").attr("x",ox+cellW-padR).attr("y",oy+15).attr("text-anchor","end")
+      .attr("font-family","var(--sans)").attr("font-size",11).attr("font-weight",800).attr("font-variant-numeric","tabular-nums")
+      .attr("fill", chg>0.02 ? EXP : (chg<0 ? EVAL : INK_DIM)).text(chgStr);
+  });
+}
+
+/* =========================================================
+   Region rank bars (HTML)
+   ========================================================= */
+(function buildRankBars(){
+  const box = d3.select("#rank-rows");
+  const data = DATA.region_ranked_by_neg_affect_rise_2010_2025;
+  const maxAbs = d3.max(data, d=>Math.abs(d[1]));
+  data.forEach(([reg, chg])=>{
+    const flat = chg <= 0.001;
+    const row = box.append("div").attr("class", "rankrow" + (flat?" flat":""));
+    row.append("div").attr("class","nm").text(reg);
+    const barWrap = row.append("div");
+    const pct = Math.max(2, Math.abs(chg)/maxAbs*100);
+    barWrap.append("div").attr("class","bar").style("width", pct+"%");
+    row.append("div").attr("class","dv").text((chg>=0?"+":"−")+Math.abs(chg).toFixed(3));
+  });
+})();
+
+/* ---------- render + responsive ---------- */
+function renderAll(){ drawDual(); drawRegions(); }
+renderAll();
+let rt;
+window.addEventListener("resize", ()=>{ clearTimeout(rt); rt=setTimeout(renderAll, 160); });
+</script>
+<!--SL_BOOKNAV_START-->
+<style>
+.slbn{font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;background:#0f1417;border-top:1px solid #27313a;color:#9fb0ba;padding:24px 20px 40px;margin:48px 0 0}
+.slbn-in{max-width:1080px;margin:0 auto;display:flex;align-items:stretch;gap:12px}
+.slbn a{flex:1 1 0;min-width:0;text-decoration:none;color:inherit;border:1px solid #27313a;border-radius:10px;padding:13px 15px;display:flex;flex-direction:column;gap:4px;background:#161d22;transition:border-color .15s,transform .15s}
+.slbn a:hover{border-color:#3fa9a0;transform:translateY(-2px)}
+.slbn a:focus-visible{outline:2px solid #3fa9a0;outline-offset:2px}
+.slbn a.slbn-next{text-align:right;align-items:flex-end}
+.slbn a.slbn-toc{flex:0 0 auto;min-width:120px;justify-content:center;align-items:center;text-align:center}
+.slbn .slbn-dir{font:700 10px/1 inherit;letter-spacing:.13em;text-transform:uppercase;color:#6b7c87}
+.slbn .slbn-ttl{font:700 14px/1.3 inherit;color:#eef2f4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.slbn a.slbn-disabled{opacity:.38;pointer-events:none}
+@media(max-width:640px){.slbn-in{flex-wrap:wrap}.slbn a{flex:1 1 100%}.slbn a.slbn-next{text-align:left;align-items:flex-start}.slbn a.slbn-toc{order:-1}}
+</style>
+<nav class="slbn" aria-label="Book navigation"><div class="slbn-in"><a class="slbn-prev" href="../read.html?ch=marriage-premium" target="_top"><span class="slbn-dir">‹ Previous</span><span class="slbn-ttl">Does the Ring Still Matter?</span></a><a class="slbn-toc" href="../index.html#book" target="_top"><span class="slbn-dir">The Scissors</span><span class="slbn-ttl">Chapter 9 / 36</span></a><a class="slbn-next" href="../read.html?ch=worst-year" target="_top"><span class="slbn-dir">Next ›</span><span class="slbn-ttl">2020 Was Not the End</span></a></div></nav>
+<!--SL_BOOKNAV_END-->
+</body>
+</html>

@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Across 2.46 million Gallup interviews from 2008 to 2017, the share of Americans rating their lives well enough to count as thriving varies by roughly 19 points across states — and the map follows income, density, and despair.">
+<title>The Geography of American Thriving</title>
+<style>
+  :root{
+    --paper:#f8f5ee;
+    --paper2:#efe9dd;
+    --card:#fffdf8;
+    --ink:#22201a;
+    --ink2:#5d5749;
+    --hair:#d9d2c2;
+    --accent:#0b6b63;
+    --pos:#01665e;
+    --neg:#8c510a;
+    --dem:#3B6CA8;
+    --rep:#B5394C;
+    --nodata:#e8e2d5;
+    --sans: ui-sans-serif, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+  }
+  *{ box-sizing:border-box; }
+  html{ -webkit-text-size-adjust:100%; }
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font:18px/1.68 var(--serif);
+    font-feature-settings:"liga","onum";
+  }
+  a{ color:var(--accent); text-decoration:underline; text-decoration-color:rgba(11,107,99,.35); text-underline-offset:2.5px; }
+  a:hover{ text-decoration-color:var(--accent); }
+  a:focus-visible, button:focus-visible{ outline:3px solid var(--accent); outline-offset:2px; border-radius:3px; }
+
+  .prose{ max-width:690px; margin:0 auto; padding:0 22px; }
+  .prose p{ margin:1.15em 0; }
+
+  /* ---------- hero ---------- */
+  .scalebar{ height:7px;
+    background:linear-gradient(90deg,#8c510a,#bf812d,#dfc27d,#f6e8c3,#f3f1ea,#c7eae5,#80cdc1,#35978f,#01665e); }
+  header.hero{ padding:58px 0 8px; }
+  .kicker{ font:700 12px/1.4 var(--sans); letter-spacing:.22em; text-transform:uppercase; color:var(--accent); margin:0; }
+  h1{ font-size:clamp(2.35rem, 6.6vw, 4rem); line-height:1.04; letter-spacing:-.015em; margin:.4em 0 .35em; font-weight:800; }
+  .dek{ font-size:clamp(1.07rem, 2.5vw, 1.32rem); line-height:1.5; color:var(--ink2); margin:0; max-width:640px; }
+  .meta{ font:13px/1.6 var(--sans); color:var(--ink2); border-top:1px solid var(--hair); border-bottom:1px solid var(--hair);
+    padding:10px 0; margin-top:28px; display:flex; gap:8px 22px; flex-wrap:wrap; }
+  .meta b{ color:var(--ink); font-weight:600; }
+
+  /* ---------- type & structure ---------- */
+  .dropcap::first-letter{
+    font-size:3.5em; float:left; line-height:.8; padding:7px 10px 0 0; font-weight:800; color:var(--accent);
+  }
+  h2{ font-size:clamp(1.5rem, 3.6vw, 2.05rem); line-height:1.15; margin:2.7em 0 .55em; letter-spacing:-.01em; }
+  .secnum{ display:block; font:700 12px/1 var(--sans); letter-spacing:.24em; color:var(--accent); margin-bottom:12px; }
+  .smallnote{ font:13px/1.6 var(--sans); color:var(--ink2); }
+
+  .stats{ display:grid; grid-template-columns:repeat(auto-fit, minmax(140px,1fr)); gap:1px;
+    background:var(--hair); border:1px solid var(--hair); margin:34px 0; }
+  .stat{ background:var(--card); padding:14px 16px 12px; }
+  .stat b{ display:block; font:700 27px/1.15 var(--serif); letter-spacing:-.01em; }
+  .stat span{ font:12px/1.45 var(--sans); color:var(--ink2); }
+
+  .callout{ border:1px solid var(--hair); border-left:4px solid var(--accent); background:var(--card);
+    padding:18px 20px 20px; margin:32px 0; }
+  .callout h3{ margin:0 0 8px; font:700 12.5px/1.3 var(--sans); letter-spacing:.14em; text-transform:uppercase; color:var(--ink); }
+  .callout p{ margin:.5em 0; font-size:16px; }
+  .lrow{ display:flex; align-items:center; gap:8px; margin-top:9px; font:12px/1.2 var(--sans); color:var(--ink2); }
+  .llab{ flex:none; width:84px; text-align:right; }
+  .cells{ display:flex; gap:4px; flex:1; min-width:0; }
+  .cell{ flex:1; max-width:27px; aspect-ratio:1; display:grid; place-items:center; border:1px solid var(--hair);
+    background:#f2eee3; color:var(--ink2); font:11px var(--sans); border-radius:3px; }
+  .cell.on{ background:var(--pos); border-color:var(--pos); color:#fff; font-weight:700; }
+  .lkey{ margin-top:10px; font:12px/1.5 var(--sans); color:var(--ink2); }
+
+  ul.shows{ padding-left:20px; }
+  ul.shows li{ margin:13px 0; }
+  ul.shows li::marker{ color:var(--accent); font-weight:700; }
+  ul.shows b{ font-family:var(--sans); font-size:15px; letter-spacing:.01em; }
+
+  /* ---------- figures ---------- */
+  figure{ margin:42px auto; width:min(1080px,100%); padding:0 22px; }
+  .figtitle{ font:700 17px/1.3 var(--sans); margin:0 0 3px; letter-spacing:-.005em; }
+  .figsub{ font:13px/1.5 var(--sans); color:var(--ink2); margin:0 0 14px; max-width:760px; }
+  .figbody{ position:relative; }
+  figcaption{ font:12.5px/1.55 var(--sans); color:var(--ink2); margin-top:12px; max-width:780px; }
+  figcaption .rule{ color:#80796a; }
+  svg{ display:block; }
+  svg text{ font-family:var(--sans); }
+
+  .controls{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin:2px 0 14px; }
+  .ctl-label{ font:600 12px/1 var(--sans); letter-spacing:.12em; text-transform:uppercase; color:var(--ink2); margin-right:2px; }
+  button.btn{
+    font:600 13px/1 var(--sans); letter-spacing:.02em; padding:9px 15px; border:1px solid var(--hair);
+    background:var(--card); color:var(--ink); border-radius:999px; cursor:pointer; touch-action:manipulation;
+  }
+  button.btn:hover{ border-color:#b9b09a; }
+  button.btn[aria-pressed="true"]{ background:var(--ink); color:var(--paper); border-color:var(--ink); }
+
+  .tip{
+    position:absolute; pointer-events:none; z-index:6; opacity:0; transition:opacity .12s;
+    background:var(--card); border:1px solid var(--hair); border-radius:6px;
+    box-shadow:0 8px 22px rgba(45,38,20,.14); padding:8px 11px; font:13px/1.5 var(--sans); color:var(--ink);
+    max-width:250px;
+  }
+  .tip b{ font-size:13.5px; }
+  .tip .tipnote{ color:var(--ink2); font-size:12px; }
+
+  .dot{ stroke:var(--card); stroke-width:.6; cursor:crosshair; }
+  .dot.hl{ stroke:#16140f; stroke-width:1.8; fill-opacity:.95; }
+  .dot.dim{ opacity:.1; }
+
+  .duo{ display:grid; grid-template-columns:1fr 1fr; gap:28px; }
+  .panel h4{ font:700 14px/1.35 var(--sans); margin:0 0 10px; }
+  @media (max-width:760px){ .duo{ grid-template-columns:1fr; } }
+
+  /* ---------- footer ---------- */
+  footer{ margin-top:74px; background:var(--paper2); border-top:1px solid var(--hair);
+    padding:44px 0 80px; font:14px/1.7 var(--sans); color:#403a2e; }
+  footer h2{ font:700 13px/1 var(--sans); letter-spacing:.22em; text-transform:uppercase; color:var(--ink); margin:0 0 20px; }
+  footer h3{ font:700 13px/1.3 var(--sans); margin:26px 0 8px; color:var(--ink); }
+  footer ul{ margin:6px 0 0; padding-left:19px; }
+  footer li{ margin:7px 0; }
+  .endmark{ color:var(--accent); font-weight:800; }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="scalebar" role="presentation"></div>
+  <div class="prose">
+    <p class="kicker">A Data Essay · Life Evaluation in America</p>
+    <h1>The Geography of American Thriving</h1>
+    <p class="dek">Gallup asked 2.46 million Americans to rate their own lives. Whether the answer counts
+    as &ldquo;thriving&rdquo; depends, far more than chance would allow, on where the phone rang: roughly
+    nineteen points separate the most and least thriving states, and the map traces lines of income,
+    density, and despair.</p>
+    <div class="meta">
+      <span><b>Source</b> Gallup U.S. Daily, 2008&ndash;2017</span>
+      <span><b>Interviews</b> 2,456,863 (unweighted)</span>
+      <span><b>Graphics</b> hand-built in D3</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="prose">
+    <p class="dropcap">Between 2008 and 2017, Gallup&rsquo;s U.S. Daily survey asked 2,456,863 Americans to
+    place themselves on a ladder. The device is psychologist Hadley Cantril&rsquo;s &ldquo;ladder of
+    life,&rdquo; in continuous use since the 1960s: eleven rungs, where zero is the worst possible life you
+    can imagine for yourself and ten is the best. Two questions follow. On which rung do you stand today?
+    And on which rung do you expect to stand about five years from now?</p>
+
+    <p>Gallup compresses the two answers into three bands. Respondents who rate their present life at
+    <strong>7 or higher</strong> and their anticipated life at <strong>8 or higher</strong> count as
+    <strong>thriving</strong>; those who rate both present and future low count as
+    <strong>suffering</strong>; everyone else is <strong>struggling</strong>. Over the full decade, 52.0%
+    of interviews in this extract land in the thriving band, 44.3% in struggling, and 3.8% in suffering.
+    The average respondent put their current life on rung 7.04.</p>
+
+    <div class="callout" id="ladderBox">
+      <h3>The thriving rule</h3>
+      <p>A respondent counts as thriving only if <em>both</em> answers clear their bar:</p>
+      <div class="lrow"><span class="llab">Life today</span><div class="cells" data-ladder="7"></div></div>
+      <div class="lrow"><span class="llab">In ~5 years</span><div class="cells" data-ladder="8"></div></div>
+      <p class="lkey">Green rungs qualify. This is a judgment people render on their lives as a whole
+      &mdash; an <em>evaluative</em> measure, not a report of yesterday&rsquo;s emotions.</p>
+    </div>
+
+    <p>Two ground rules before the maps. First, everything below concerns those evaluations &mdash; how
+    people <em>rate</em> their lives, not how they experience them hour to hour; the two are related but
+    distinct, and this essay stays strictly on the rating side. Second, this extract of the Gallup data
+    carries <strong>no survey weights</strong>, so every figure here is an unweighted summary of whoever
+    Gallup happened to reach &mdash; an enormous sample estimate, not an official population benchmark.</p>
+
+    <div class="stats" role="group" aria-label="National summary statistics">
+      <div class="stat"><b>52.0%</b><span>thriving (today &ge;7 and in ~5 yrs &ge;8)</span></div>
+      <div class="stat"><b>44.3%</b><span>struggling</span></div>
+      <div class="stat"><b>3.8%</b><span>suffering</span></div>
+      <div class="stat"><b>7.04</b><span>mean rung, current life (0&ndash;10)</span></div>
+    </div>
+  </section>
+
+  <section class="prose">
+    <h2 id="spread"><span class="secnum">01</span>A nineteen-point country</h2>
+    <p>Averaged over a decade, the national thriving share barely moves. Across the country, it moves a
+    great deal. Rank the fifty states and the District of Columbia by their unweighted thriving share and
+    the spread from bottom to top runs about <strong>19.1 percentage points</strong>. West Virginia anchors
+    the floor at 45.5%. The District of Columbia sits at the ceiling, 64.6% &mdash; with an asterisk it
+    will keep for the rest of this essay, because D.C. is a single dense, affluent city being graded
+    against entire states.</p>
+    <p>Among the states proper, Hawaii leads at 60.8%, with Alaska (58.0%), Maryland (56.3%), Utah (55.6%),
+    and Texas and Virginia (each 55.0%) close behind. The bottom of the table reads like a gazetteer of the
+    old coal and factory belts: West Virginia, then Kentucky (47.4%), Arkansas (48.2%), Ohio (48.8%), and
+    Wisconsin (49.0%).</p>
+  </section>
+
+  <figure id="figStrip" aria-labelledby="figStripT">
+    <p class="figtitle" id="figStripT">Fifty states and a city, ranked by thriving</p>
+    <p class="figsub">Each dot is a state (plus D.C.), placed by its share of respondents thriving,
+      2008&ndash;2017. Dots stack where states crowd together. Hover or tap for details.</p>
+    <div class="figbody" id="stripBody"></div>
+    <figcaption>Unweighted shares of 2,456,863 interviews. <span class="rule">Thriving = rates life today
+      &ge;7 <em>and</em> expected life in about five years &ge;8.</span> D.C. is a city benchmarked against
+      whole states.</figcaption>
+  </figure>
+
+  <section class="prose">
+    <h2 id="map"><span class="secnum">02</span>The terrain of high marks</h2>
+    <p>Put the same numbers on a map and the ranking turns into terrain. A trough of low life evaluation
+    runs down the Appalachian spine and bleeds west into the Ohio Valley and the mid-South. High shares
+    pool where money and momentum pool: around Washington&rsquo;s commuter counties, through Utah and
+    pieces of the Mountain West, across urban Texas, and out in Hawaii and Alaska.</p>
+    <p>Switch the view to counties and the monoliths crack. Nearly every low-thriving state contains a
+    high-thriving metro county, and nearly every high-thriving state has a rural fringe that rates its
+    life more like West Virginia than like its own largest city. The county layer colors only the
+    <span data-dyn="nCounties">2,013</span> counties where Gallup completed at least 150 interviews over
+    the decade; the rest stay gray &mdash; unknown, not zero.</p>
+  </section>
+
+  <figure id="figMap" aria-labelledby="figMapT">
+    <p class="figtitle" id="figMapT">Where Americans rate their lives highest</p>
+    <p class="figsub">Share of respondents thriving, 2008&ndash;2017. Toggle between state and county
+      resolution; hover for the share and sample size. County hovers light up the matching dot in the
+      scatterplot below.</p>
+    <div class="controls" role="group" aria-label="Map resolution">
+      <span class="ctl-label">View</span>
+      <button class="btn" type="button" data-mapmode="states" aria-pressed="true">States</button>
+      <button class="btn" type="button" data-mapmode="counties" aria-pressed="false">Counties</button>
+    </div>
+    <div id="mapLegend"></div>
+    <div class="figbody" id="mapBody"></div>
+    <figcaption>Unweighted Gallup U.S. Daily interviews. The county view shows counties with &ge;150
+      interviews; gray counties fall below that threshold and are suppressed. Color is centered on the
+      national share, 52.0%. <span class="rule">Thriving = rates life today &ge;7 and expected life in
+      about five years &ge;8.</span> Boundaries: U.S. Atlas TopoJSON, Albers USA projection.</figcaption>
+  </figure>
+
+  <section class="prose">
+    <h2 id="correlates"><span class="secnum">03</span>What travels with thriving</h2>
+    <p>Why these places? The interviews alone cannot say, but joining each county&rsquo;s decade of answers
+    to a snapshot of its circumstances &mdash; taken once, around 2018 &mdash; lines the candidates up side
+    by side. Across the 1,352 counties with at least 300 interviews, <strong>median household income</strong>
+    is the strongest single correlate of the thriving share, at <em>r</em> &asymp; +0.58. The share of
+    residents living in <strong>rural territory</strong> runs the other way, at &minus;0.54. The local rate
+    of <strong>deaths from drugs, alcohol, and suicide</strong> &mdash; the &ldquo;deaths of despair&rdquo;
+    that Anne Case and Angus Deaton traced through these same years &mdash; correlates at &minus;0.41
+    across the 1,204 larger counties where mortality data exist. A county&rsquo;s average
+    <strong>Republican margin</strong> across the 2008, 2012, and 2016 presidential elections sits at
+    &minus;0.39, its <strong>poverty rate</strong> at
+    &minus;0.26, and a widely used <strong>social-capital index</strong> barely registers, at +0.11.</p>
+    <p>Two readings of that list are tempting, and both are wrong. These are cross-sectional correlations
+    against context measured once, so they cannot show that income raises life ratings or that despair
+    lowers them &mdash; only that the same counties keep landing on the same ends. And the correlates
+    overlap heavily: rural counties are poorer, poorer counties voted redder, and the counties hit hardest
+    by despair mortality are often both. The scatterplot lets you hold the map in one hand and each
+    correlate in the other.</p>
+  </section>
+
+  <figure id="figScatter" aria-labelledby="figScatterT">
+    <p class="figtitle" id="figScatterT">County thriving against four kinds of context</p>
+    <p class="figsub">Each circle is a county, sized by its number of interviews. Hover a circle to find
+      it on the map above; hover the county map to find its circle here.</p>
+    <div class="controls" role="group" aria-label="Scatterplot context variable">
+      <span class="ctl-label">Context</span>
+      <button class="btn" type="button" data-var="inc" aria-pressed="true">Income</button>
+      <button class="btn" type="button" data-var="rural" aria-pressed="false">Rurality</button>
+      <button class="btn" type="button" data-var="despair" aria-pressed="false">Despair</button>
+      <button class="btn" type="button" data-var="rep" aria-pressed="false">Politics</button>
+    </div>
+    <div class="figbody" id="scatterBody"></div>
+    <figcaption><span id="scCap"></span> Counties shown have &ge;150 interviews; the fitted line and
+      <em>r</em> use counties with &ge;300. <span class="rule">Thriving = rates life today &ge;7 and
+      expected life in about five years &ge;8. Unweighted.</span></figcaption>
+  </figure>
+
+  <figure id="figCorr" aria-labelledby="figCorrT">
+    <p class="figtitle" id="figCorrT">The ledger, at a glance</p>
+    <p class="figsub">Pearson correlation between a county&rsquo;s thriving share and each piece of
+      context.</p>
+    <div class="figbody" id="corrBody"></div>
+    <figcaption>Counties with &ge;300 interviews (about 1,350, varying slightly by measure);
+      deaths-of-despair mortality exists only for larger counties, so its correlation uses the 1,204 of
+      those counties that have mortality data. Context was measured once, circa 2018, and joined to all
+      interview years. Correlation, not cause.</figcaption>
+  </figure>
+
+  <section class="prose">
+    <p>One detail in the ledger is worth pausing on: the poverty rate (&minus;0.26) tracks thriving far
+    less tightly than median income (+0.58). In these data, how well the middle of a county lives says
+    more about its life ratings than how many of its residents fall below the poverty line &mdash; a
+    pattern worth carrying around, though a cross-section cannot explain it.</p>
+
+    <h2 id="gradients"><span class="secnum">04</span>Density and party, read carefully</h2>
+    <p>Two cuts make the gradients concrete. Sort counties along the USDA&rsquo;s rural&ndash;urban
+    continuum and the thriving share steps down almost rung by rung, from 54.1% in the counties of the
+    largest metros to 46.0% in the most remote rural counties &mdash; a gap of about eight points. Sort
+    them instead by presidential lean, and solidly Democratic counties sit at 54.9% against 49.1% in
+    solidly Republican ones &mdash; just under six.</p>
+    <p>The partisan cut is the one most likely to be over-read, so read it as written: it is descriptive.
+    Redder counties are also more rural and lower-income, and nothing in a cross-section can apportion
+    credit among those three intertwined facts. This is one gradient wearing three costumes, not three
+    findings.</p>
+  </section>
+
+  <figure id="figDuo" aria-labelledby="figDuoT">
+    <p class="figtitle" id="figDuoT">Two cuts through the same gradient</p>
+    <p class="figsub">Bars show each group&rsquo;s distance from the national thriving share, 52.0%.</p>
+    <div class="figbody duo">
+      <div class="panel">
+        <h4>By rural&ndash;urban continuum (USDA codes, 2013)</h4>
+        <div id="ruccBody" class="figbody"></div>
+      </div>
+      <div class="panel">
+        <h4>By presidential lean of the county (avg. margin, 2008&ndash;2016)</h4>
+        <div id="partyBody" class="figbody"></div>
+      </div>
+    </div>
+    <figcaption>Left: 1 = counties in metros of 1M+, 9 = remote rural counties. Right: counties grouped by
+      their two-party presidential margin averaged across the 2008, 2012, and 2016 elections &mdash;
+      Solid Dem is a margin beyond D+20, Lean Dem D+5 to D+20, Swing within &plusmn;5 points, Lean Rep R+5
+      to R+20, Solid Rep beyond R+20. Both cuts are descriptive &mdash; density, income, and partisanship
+      overlap and cannot be separated here. <span class="rule">Thriving = rates life today &ge;7 and expected life
+      in about five years &ge;8. Unweighted.</span></figcaption>
+  </figure>
+
+  <section class="prose">
+    <h2 id="caveats"><span class="secnum">05</span>What this shows &mdash; and what it doesn&rsquo;t</h2>
+    <ul class="shows">
+      <li><b>It measures evaluations, not experiences.</b> The ladder asks people to judge their lives,
+      and judged well-being behaves differently from moment-to-moment emotion &mdash; famously so in
+      Kahneman and Deaton&rsquo;s work, where income kept lifting life evaluations long after it stopped
+      lifting the emotional texture of the day. Nothing here is a mood map.</li>
+      <li><b>It is unweighted.</b> With samples this large the estimates are very stable, but stability is
+      not representativeness. Treat every number as a description of Gallup&rsquo;s respondents, not a
+      certified portrait of the population.</li>
+      <li><b>It is a cross-section.</b> County context comes from one snapshot, circa 2018, joined to all
+      ten years of interviews. The correlations are context, not causes &mdash; and a county&rsquo;s score
+      reflects <em>who lives there</em>, through sorting and selective migration, as much as what living
+      there does to anyone.</li>
+      <li><b>The differences are real but modest.</b> Nineteen points separate the extremes of a ranking;
+      most of the group gaps are single digits, and even in West Virginia almost half of respondents were
+      thriving. Geography shifts the odds. It does not write anyone&rsquo;s answer.</li>
+      <li><b>D.C. is a city.</b> Its first-place 64.6% says more about dense, educated, high-income urban
+      cores than about a fifty-first state outperforming the other fifty.</li>
+    </ul>
+    <p>The two questions Gallup asks are deliberately placeless: your life, your ladder, your five years.
+    The answers are anything but. Richer, denser, better-connected counties rate their lives higher;
+    poorer, emptier, harder-hit ones rate theirs lower &mdash; year after year, across millions of
+    interviews. The ladder is the same in every one of them. The ground it stands on is not.
+    <span class="endmark">&#9632;</span></p>
+  </section>
+</main>
+
+<footer>
+  <div class="prose">
+    <h2 id="notes">Notes &amp; Data</h2>
+
+    <h3>Source and construct</h3>
+    <ul>
+      <li><b>Data:</b> Gallup U.S. Daily survey (&ldquo;Motherlode&rdquo; extract), 2008&ndash;2017
+        &mdash; 2,456,863 interviews. State samples range from
+        <span data-dyn="stateNMin">several thousand</span> to
+        <span data-dyn="stateNMax">several hundred thousand</span> interviews.</li>
+      <li><b>Construct:</b> evaluative life evaluation on the Cantril ladder (0&ndash;10), current and
+        anticipated (~5 years). <b>Thriving = current rating &ge;7 and anticipated rating &ge;8</b>
+        (Gallup&rsquo;s standard classification, used by the Gallup-Healthways Well-Being Index). This
+        measures how people rate their lives, not their experienced emotion.</li>
+      <li><b>Weighting: none.</b> This extract carries no survey weight, so every estimate on this page is
+        unweighted. Figures are sample summaries, not official population benchmarks.</li>
+    </ul>
+
+    <h3>Suppression and coverage</h3>
+    <ul>
+      <li>The county map colors the <span data-dyn="nCounties2">2,013</span> counties with at least 150
+        interviews (of <span data-dyn="nTotalCounties">3,100+</span> county shapes drawn); counties below
+        the threshold are shown in neutral gray.</li>
+      <li>County correlations use counties with at least 300 interviews (1,352 counties; per-measure
+        counts vary slightly with data availability).</li>
+      <li>Deaths-of-despair mortality (drugs, alcohol, suicide, per 100,000) is available only for larger
+        counties, so smaller counties are absent from that scatter view; its fitted line and correlation
+        use the <b>1,204 counties</b> that have mortality data and at least 300 interviews.</li>
+      <li>The District of Columbia is a city compared against whole states; its estimates are flagged as
+        such wherever they appear.</li>
+    </ul>
+
+    <h3>County context (one snapshot, circa 2018, joined to all years)</h3>
+    <ul>
+      <li>Median household income and poverty rate: American Community Survey five-year estimates.</li>
+      <li>Share rural: decennial census definition of rural territory.</li>
+      <li>Rural&ndash;urban continuum: <a href="https://www.ers.usda.gov/data-products/rural-urban-continuum-codes/">USDA ERS Rural&ndash;Urban Continuum Codes</a> (2013).</li>
+      <li>Presidential margin: county-level two-party returns averaged across the 2008, 2012, and 2016
+        elections (<a href="https://electionlab.mit.edu/data">MIT Election Data + Science Lab</a>); the
+        lean categories use the same averaged margin.</li>
+      <li>Social-capital index: the county index of Rupasingha, Goetz &amp; Freshwater
+        (<a href="https://aese.psu.edu/nercrd/community/social-capital-resources">Penn State NERCRD</a>,
+        2018 update).</li>
+      <li>Because context is measured once and the interviews span a decade, all county relationships are
+        cross-sectional correlations &mdash; context, not survey data, and never causal claims.</li>
+    </ul>
+
+    <h3>Reading</h3>
+    <ul>
+      <li>Cantril, H. (1965). <i>The Pattern of Human Concerns</i>. Rutgers University Press &mdash; the
+        original ladder.</li>
+      <li>Kahneman, D. &amp; Deaton, A. (2010).
+        <a href="https://www.pnas.org/doi/10.1073/pnas.1011492107">&ldquo;High income improves evaluation
+        of life but not emotional well-being.&rdquo;</a> <i>PNAS</i> 107(38) &mdash; on why evaluative and
+        experienced well-being must be kept apart.</li>
+      <li>Case, A. &amp; Deaton, A. (2020).
+        <a href="https://press.princeton.edu/books/hardcover/9780691190785/deaths-of-despair-and-the-future-of-capitalism"><i>Deaths
+        of Despair and the Future of Capitalism</i></a>. Princeton University Press.</li>
+      <li>Gallup &amp; Healthways.
+        <a href="https://news.gallup.com/175196/gallup-healthways-index-methodology.aspx">Gallup-Healthways
+        Well-Being Index: methodology</a> &mdash; the thriving / struggling / suffering classification.</li>
+    </ul>
+
+    <h3>Craft</h3>
+    <ul>
+      <li>One self-contained page. Charts are hand-built with <a href="https://d3js.org/">D3 v7</a> and
+        topojson-client; geography from <a href="https://github.com/topojson/us-atlas">U.S. Atlas
+        TopoJSON</a>, drawn with the Albers USA composite projection (Alaska and Hawaii repositioned).
+        No frameworks, no trackers, no analytics.</li>
+      <li>Thriving is encoded with a colorblind-safe brown&ndash;teal diverging scale centered on the
+        national share. Partisan color (blue/red) appears only where partisanship itself is plotted.</li>
+    </ul>
+  </div>
+</footer>
+
+<script type="module">
+import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+import * as topojson from "https://cdn.jsdelivr.net/npm/topojson-client@3/+esm";
+
+const DATA = {"meta":{"title":"The Geography of American Thriving","dataset":"Gallup US Daily ('Motherlode' extract)","years":"2008-2017","weight":"unweighted (Gallup US has no survey weight)","construct":"evaluative","thrive_rule":"Thriving = current Cantril ladder >= 7 AND anticipated ladder (~5 yrs) >= 8","county_min_n":150,"corr_min_n":300,"n_corr_counties":1352,"n_despair_counties":1204,"geo":"join on zero-padded FIPS; states keyed by 2-digit FIPS, counties by 5-digit FIPS"},"national":{"n":2456863,"thriving":0.5199,"struggling":0.4425,"suffering":0.0376,"ladder_mean":7.039},"states":[{"fips":"11","abbr":"DC","name":"District of Columbia","n":5392,"thr":0.6461,"ladder":7.3},{"fips":"15","abbr":"HI","name":"Hawaii","n":7541,"thr":0.6081,"ladder":7.325},{"fips":"02","abbr":"AK","name":"Alaska","n":7906,"thr":0.5797,"ladder":7.182},{"fips":"24","abbr":"MD","name":"Maryland","n":45417,"thr":0.5632,"ladder":7.157},{"fips":"49","abbr":"UT","name":"Utah","n":27812,"thr":0.5557,"ladder":7.149},{"fips":"48","abbr":"TX","name":"Texas","n":159065,"thr":0.5498,"ladder":7.169},{"fips":"51","abbr":"VA","name":"Virginia","n":69630,"thr":0.5498,"ladder":7.131},{"fips":"13","abbr":"GA","name":"Georgia","n":69748,"thr":0.5455,"ladder":7.083},{"fips":"06","abbr":"CA","name":"California","n":239757,"thr":0.5392,"ladder":7.067},{"fips":"25","abbr":"MA","name":"Massachusetts","n":53726,"thr":0.5381,"ladder":7.078},{"fips":"08","abbr":"CO","name":"Colorado","n":48370,"thr":0.537,"ladder":7.081},{"fips":"38","abbr":"ND","name":"North Dakota","n":7119,"thr":0.536,"ladder":7.13},{"fips":"53","abbr":"WA","name":"Washington","n":67592,"thr":0.5315,"ladder":7.063},{"fips":"35","abbr":"NM","name":"New Mexico","n":19670,"thr":0.5299,"ladder":7.13},{"fips":"27","abbr":"MN","name":"Minnesota","n":49633,"thr":0.5297,"ladder":7.113},{"fips":"45","abbr":"SC","name":"South Carolina","n":36740,"thr":0.5266,"ladder":7.109},{"fips":"31","abbr":"NE","name":"Nebraska","n":18026,"thr":0.5254,"ladder":7.076},{"fips":"56","abbr":"WY","name":"Wyoming","n":7227,"thr":0.5251,"ladder":7.152},{"fips":"50","abbr":"VT","name":"Vermont","n":8523,"thr":0.5243,"ladder":7.073},{"fips":"04","abbr":"AZ","name":"Arizona","n":56123,"thr":0.5242,"ladder":7.09},{"fips":"22","abbr":"LA","name":"Louisiana","n":33596,"thr":0.5222,"ladder":7.081},{"fips":"10","abbr":"DE","name":"Delaware","n":7295,"thr":0.5215,"ladder":7.062},{"fips":"17","abbr":"IL","name":"Illinois","n":82166,"thr":0.5199,"ladder":7.007},{"fips":"09","abbr":"CT","name":"Connecticut","n":29535,"thr":0.5187,"ladder":7.019},{"fips":"34","abbr":"NJ","name":"New Jersey","n":63672,"thr":0.5185,"ladder":6.99},{"fips":"33","abbr":"NH","name":"New Hampshire","n":13007,"thr":0.5179,"ladder":7.031},{"fips":"30","abbr":"MT","name":"Montana","n":14449,"thr":0.5168,"ladder":7.115},{"fips":"36","abbr":"NY","name":"New York","n":135310,"thr":0.5161,"ladder":6.981},{"fips":"01","abbr":"AL","name":"Alabama","n":40841,"thr":0.5156,"ladder":7.088},{"fips":"16","abbr":"ID","name":"Idaho","n":17156,"thr":0.5155,"ladder":7.064},{"fips":"46","abbr":"SD","name":"South Dakota","n":7760,"thr":0.5143,"ladder":7.067},{"fips":"37","abbr":"NC","name":"North Carolina","n":81211,"thr":0.5136,"ladder":7.029},{"fips":"12","abbr":"FL","name":"Florida","n":132727,"thr":0.5105,"ladder":7.036},{"fips":"20","abbr":"KS","name":"Kansas","n":25457,"thr":0.5102,"ladder":7.054},{"fips":"41","abbr":"OR","name":"Oregon","n":42000,"thr":0.508,"ladder":7.014},{"fips":"28","abbr":"MS","name":"Mississippi","n":21866,"thr":0.5064,"ladder":7.076},{"fips":"44","abbr":"RI","name":"Rhode Island","n":9122,"thr":0.5042,"ladder":6.953},{"fips":"26","abbr":"MI","name":"Michigan","n":71705,"thr":0.5037,"ladder":6.953},{"fips":"19","abbr":"IA","name":"Iowa","n":29894,"thr":0.5035,"ladder":7.05},{"fips":"40","abbr":"OK","name":"Oklahoma","n":36429,"thr":0.5013,"ladder":6.99},{"fips":"47","abbr":"TN","name":"Tennessee","n":55689,"thr":0.4998,"ladder":6.995},{"fips":"42","abbr":"PA","name":"Pennsylvania","n":126739,"thr":0.4975,"ladder":6.976},{"fips":"32","abbr":"NV","name":"Nevada","n":19582,"thr":0.4973,"ladder":6.882},{"fips":"18","abbr":"IN","name":"Indiana","n":55457,"thr":0.4951,"ladder":6.95},{"fips":"29","abbr":"MO","name":"Missouri","n":51548,"thr":0.4924,"ladder":6.939},{"fips":"23","abbr":"ME","name":"Maine","n":16813,"thr":0.4921,"ladder":6.975},{"fips":"55","abbr":"WI","name":"Wisconsin","n":53156,"thr":0.4898,"ladder":6.959},{"fips":"39","abbr":"OH","name":"Ohio","n":90768,"thr":0.488,"ladder":6.911},{"fips":"05","abbr":"AR","name":"Arkansas","n":26259,"thr":0.4818,"ladder":6.991},{"fips":"21","abbr":"KY","name":"Kentucky","n":38364,"thr":0.4736,"ladder":6.874},{"fips":"54","abbr":"WV","name":"West Virginia","n":17478,"thr":0.4554,"ladder":6.841}],"county_cols":["fips","n","thr","rep","rural","despair","inc_k","pov"],"counties":[["20209",1061,0.478,-0.358,6.1,47.4,40.8,22.7],["42049",3206,0.485,-0.115,20.0,53.6,47.1,16.7],["48027",2207,0.581,0.137,15.2,50.0,51.5,14.7],["53011",4085,0.521,-0.022,13.8,51.4,62.9,10.2],["08069",3205,0.554,-0.068,11.7,51.7,61.9,13.2],["12009",4944,0.478,0.143,5.1,74.4,49.9,14.0],["42003",13679,0.509,-0.156,2.5,66.9,54.4,12.7],["37047",429,0.457,0.125,80.6,47.4,35.8,23.0],["41051",6953,0.529,-0.557,1.3,54.8,57.4,17.1],["45041",1074,0.499,0.029,38.5,36.5,42.5,19.6],["47157",6301,0.563,-0.27,2.8,47.3,46.9,21.4],["47165",1477,0.531,0.405,27.9,44.8,59.0,9.7],["42077",3277,0.482,-0.094,7.9,48.8,57.7,13.0],["53025",791,0.501,0.325,38.7,52.8,50.1,16.9],["22103",1898,0.543,0.521,23.2,56.7,63.7,11.1],["35045",1015,0.508,0.273,33.7,104.0,48.6,20.6],["04027",1446,0.476,0.092,10.4,52.8,41.5,20.5],["06085",10109,0.575,-0.453,1.1,31.2,101.2,9.3],["34007",3973,0.509,-0.355,1.6,54.8,63.0,13.3],["42059",415,0.46,0.195,66.8,67.2,49.1,15.3],["26045",1006,0.49,-0.023,38.0,54.3,56.5,11.1],["25017",12571,0.574,-0.319,3.0,38.4,89.0,8.2],["51107",2347,0.619,-0.099,12.6,24.5,125.7,4.0],["55073",1182,0.496,0.051,43.0,37.2,54.2,11.1],["09003",7667,0.526,-0.267,5.4,47.4,68.0,11.6],["48201",21593,0.569,-0.047,1.2,41.5,55.6,17.4],["17043",6137,0.547,-0.088,0.0,31.7,81.5,7.0],["47037",5459,0.561,-0.218,3.4,60.2,50.5,17.7],["08101",1477,0.464,-0.095,14.2,101.8,42.0,20.2],["42045",4717,0.527,-0.217,0.5,63.3,66.6,10.9],["32001",323,0.458,0.409,34.7,88.7,45.4,16.3],["29187",538,0.442,0.232,39.8,52.3,41.5,16.8],["41003",959,0.561,-0.308,18.8,34.2,52.0,21.5],["13295",684,0.449,0.528,43.9,52.8,41.5,18.4],["37097",1357,0.499,0.304,37.9,41.5,53.9,13.3],["12119",1282,0.569,0.337,35.0,68.3,52.6,9.9],["50007",1933,0.571,-0.433,26.0,49.2,66.4,11.5],["13179",417,0.556,-0.266,23.2,43.8,42.5,16.9],["47047",209,0.541,0.317,79.0,null,56.0,15.0],["42039",1179,0.442,0.225,63.7,67.6,45.6,14.5],["05059",270,0.43,0.318,66.0,null,42.6,17.0],["12055",846,0.472,0.244,21.1,43.2,35.9,19.4],["06111",5910,0.543,-0.123,3.1,46.4,78.6,10.6],["26099",4743,0.486,-0.004,2.8,57.6,56.0,12.0],["18057",2246,0.63,0.254,5.6,34.0,87.8,5.1],["28047",1397,0.508,0.274,22.8,64.3,43.1,21.0],["42063",985,0.471,0.204,60.1,76.3,45.1,17.8],["12021",2554,0.552,0.262,8.5,44.7,59.8,13.2],["26087",549,0.501,0.176,77.3,41.2,54.2,10.3],["39041",1348,0.581,0.196,19.3,27.1,94.2,4.9],["48339",3279,0.554,0.548,22.7,48.2,70.8,11.0],["25009",5823,0.525,-0.198,4.2,54.1,70.9,11.3],["48329",1071,0.586,0.578,12.3,46.4,71.4,7.9],["31055",4775,0.557,-0.013,2.2,38.2,56.0,14.2],["42085",1349,0.454,0.094,44.5,41.6,45.8,14.0],["51117",322,0.481,0.083,77.8,55.0,40.0,17.8],["05007",1933,0.533,0.37,25.2,46.3,59.0,11.4],["06061",3395,0.568,0.141,13.8,44.8,76.9,8.7],["26031",200,0.425,0.148,82.7,67.9,41.0,18.6],["47031",636,0.454,0.383,47.3,86.8,45.5,15.9],["28029",205,0.459,-0.074,65.6,null,34.7,28.1],["48381",1196,0.563,0.652,14.4,58.4,62.6,10.5],["37057",1209,0.452,0.408,47.4,57.4,44.5,16.2],["18163",1666,0.479,0.082,9.2,72.5,43.3,17.0],["21093",1037,0.517,0.239,34.2,47.4,51.5,14.3],["19113",2103,0.522,-0.161,12.7,45.0,61.0,9.4],["19145",189,0.439,0.293,33.4,null,46.1,14.9],["40031",1004,0.559,0.194,21.8,56.7,47.2,16.8],["39089",1271,0.471,0.195,35.5,60.5,57.6,12.6],["21035",361,0.507,0.269,48.7,null,36.7,24.9],["36081",9458,0.499,-0.545,0.0,22.6,59.8,14.6],["27041",424,0.526,0.201,52.8,null,56.3,8.7],["22055",1694,0.56,0.328,8.3,42.5,52.4,16.5],["05019",201,0.438,0.064,54.4,null,35.6,24.0],["06039",1030,0.485,0.15,32.9,59.8,45.7,22.1],["16031",235,0.468,0.652,51.5,null,46.2,15.5],["26145",1445,0.467,-0.094,31.1,56.6,43.7,17.9],["18095",1127,0.463,0.078,23.1,71.4,44.8,16.8],["51177",892,0.559,0.117,32.3,38.7,79.7,8.5],["42009",665,0.424,0.557,83.8,44.8,46.7,14.2],["26139",2119,0.564,0.296,20.3,36.3,61.4,9.9],["51650",1098,0.566,-0.397,0.2,46.4,49.9,15.6],["27025",418,0.524,0.177,55.6,40.8,72.9,6.0],["37159",1046,0.453,0.284,38.8,61.6,44.5,18.0],["37155",856,0.472,-0.09,62.6,45.8,31.3,30.8],["10005",2009,0.513,0.145,41.3,64.6,54.2,12.9],["40041",512,0.455,0.431,81.1,83.1,38.4,19.8],["37023",704,0.395,0.271,42.7,87.8,39.8,19.9],["46011",275,0.571,0.041,29.7,null,52.1,16.5],["27003",2874,0.508,0.049,13.5,39.1,73.6,7.4],["39173",999,0.514,-0.013,29.5,47.6,56.0,13.7],["48303",1990,0.518,0.385,11.3,67.0,46.9,19.5],["55039",943,0.45,0.168,35.1,46.8,56.4,8.6],["12113",1528,0.52,0.513,21.0,45.5,60.7,12.3],["30001",155,0.555,0.382,50.2,null,38.2,17.0],["08123",2470,0.53,0.146,20.5,49.3,62.8,12.6],["06055",1116,0.529,-0.322,13.4,51.0,74.6,8.8],["51197",319,0.464,0.414,75.3,83.4,42.9,16.2],["37195",577,0.52,-0.064,38.7,52.7,40.3,22.5],["42121",722,0.467,0.291,54.8,63.4,43.9,14.4],["17081",300,0.44,0.254,58.8,60.4,43.5,17.7],["18051",305,0.452,0.306,53.6,null,49.7,11.0],["45069",210,0.486,-0.222,55.0,null,32.6,26.7],["47167",486,0.494,0.412,55.1,74.7,54.6,13.8],["48277",447,0.485,0.504,47.1,59.6,40.3,19.9],["29073",192,0.406,0.396,80.9,null,45.5,14.3],["17141",353,0.47,0.168,47.1,null,55.8,10.9],["22119",382,0.466,0.268,53.0,65.7,31.9,24.7],["54077",307,0.446,0.422,90.5,null,45.2,15.3],["26121",1383,0.479,-0.162,23.3,62.6,43.9,19.6],["42021",1773,0.409,0.181,32.0,84.3,42.9,15.6],["39011",407,0.452,0.506,39.1,55.1,55.9,8.8],["39171",419,0.461,0.229,63.6,null,45.0,14.4],["48375",825,0.488,0.419,9.0,78.7,40.3,21.9],["13131",175,0.446,0.278,62.4,null,35.5,29.6],["05131",1072,0.484,0.365,20.8,61.7,40.0,22.2],["27171",962,0.548,0.24,32.5,38.2,75.7,5.6],["20041",207,0.449,0.478,64.3,null,48.1,11.2],["05033",559,0.395,0.501,52.0,66.0,41.8,18.8],["32023",476,0.368,0.265,35.3,106.0,42.3,17.2],["34027",4193,0.545,0.078,6.8,29.6,102.8,4.6],["05045",812,0.543,0.293,38.8,39.2,50.9,16.1],["37065",352,0.466,-0.342,45.3,50.5,32.3,25.7],["22089",378,0.54,0.299,11.5,60.6,61.7,12.6],["36017",555,0.445,0.094,83.4,null,47.0,15.4],["42089",1358,0.476,-0.101,38.4,64.7,59.0,12.2],["46065",183,0.585,0.3,25.3,null,58.9,8.9],["56021",1193,0.516,0.257,19.8,69.6,61.2,10.4],["16087",165,0.552,0.486,45.6,null,37.5,15.3],["35006",166,0.458,-0.201,55.3,93.9,36.2,27.4],["39087",525,0.444,0.248,45.9,96.6,44.3,18.4],["20111",281,0.512,0.11,26.3,null,40.6,20.9],["25005",4007,0.492,-0.177,9.8,59.3,59.3,12.5],["13143",245,0.473,0.644,77.4,63.2,42.3,20.3],["45047",584,0.502,0.176,39.8,49.3,37.6,24.2],["29027",338,0.432,0.31,62.0,47.3,50.4,13.1],["31067",217,0.452,0.201,44.4,null,48.7,10.4],["39123",368,0.497,0.031,49.4,49.6,54.6,11.1],["18067",766,0.474,0.181,21.5,79.8,45.9,16.8],["48053",394,0.475,0.517,55.7,34.4,54.3,14.4],["36117",925,0.448,0.13,60.7,32.1,51.6,11.9],["55027",779,0.467,0.176,48.6,57.4,54.1,8.8],["46103",1047,0.524,0.279,20.8,54.0,51.1,13.8],["18091",883,0.47,-0.094,35.6,53.3,48.2,17.3],["39149",356,0.452,0.473,51.1,52.3,56.2,9.5],["36107",535,0.48,0.16,65.7,41.7,58.1,11.0],["01127",572,0.453,0.555,74.1,72.6,37.0,21.9],["24001",791,0.48,0.337,27.3,49.2,41.6,17.4],["48401",337,0.493,0.513,65.9,43.0,47.4,16.5],["48397",510,0.631,0.488,16.0,40.5,89.2,6.2],["36095",406,0.448,0.191,82.8,null,50.6,14.1],["05121",176,0.443,0.314,67.4,null,36.3,19.6],["48427",190,0.463,-0.676,23.7,40.2,26.7,37.6],["55005",542,0.428,0.069,65.9,null,46.9,12.2],["29221",186,0.403,0.247,80.5,87.9,36.7,19.8],["48349",339,0.504,0.414,52.7,57.6,43.4,19.9],["55029",379,0.533,-0.071,69.0,null,54.0,9.0],["19187",385,0.447,0.024,33.9,null,42.2,15.7],["49013",304,0.526,0.727,68.2,109.5,61.2,12.1],["21157",322,0.45,0.369,85.9,68.3,45.7,10.5],["29049",241,0.44,0.26,76.2,null,57.5,9.5],["47109",289,0.37,0.476,85.3,89.3,32.0,23.1],["29225",268,0.388,0.425,73.9,87.3,44.8,18.7],["50025",656,0.512,-0.454,68.2,44.5,50.9,14.0],["51820",310,0.481,0.108,2.5,98.1,45.1,16.0],["37153",356,0.444,0.018,45.5,56.7,32.5,25.8],["48071",199,0.548,0.58,45.7,48.3,70.4,11.7],["47117",300,0.46,0.323,65.8,64.6,44.9,15.1],["22015",1033,0.546,0.449,24.3,46.0,51.9,15.5],["53045",741,0.511,-0.033,63.7,82.1,51.8,17.0],["19031",186,0.478,0.012,83.4,null,60.4,6.4],["27017",325,0.554,-0.182,55.2,67.0,55.6,13.1],["19121",154,0.63,0.177,67.8,null,60.3,6.8],["31053",382,0.479,0.23,25.1,null,49.8,11.8],["29037",853,0.531,0.279,32.4,47.4,63.6,9.3],["19127",388,0.487,-0.035,33.9,51.2,54.2,10.7],["54083",326,0.494,0.293,62.4,54.2,40.3,16.9],["54039",1939,0.491,0.11,25.2,117.1,46.5,16.0],["05137",182,0.407,0.445,100.0,null,30.5,23.6],["16053",198,0.409,0.47,51.3,null,44.4,16.9],["32005",610,0.469,0.247,31.6,51.3,59.8,10.9],["21019",503,0.439,0.219,25.3,106.0,44.1,19.0],["42109",430,0.453,0.374,66.8,null,51.1,11.1],["37037",516,0.475,-0.081,65.9,20.3,58.6,13.6],["37027",686,0.404,0.384,34.4,85.4,37.1,17.6],["37127",820,0.512,0.002,47.6,48.7,43.8,17.4],["13225",277,0.466,-0.038,38.2,null,41.1,21.0],["55047",214,0.458,0.242,74.3,null,47.2,11.2],["48015",189,0.508,0.569,66.3,62.4,56.7,14.5],["29021",730,0.501,0.116,13.4,56.4,46.7,18.4],["56005",420,0.507,0.711,29.1,62.3,80.8,8.1],["22087",190,0.421,0.345,4.3,87.0,43.6,20.1],["30089",235,0.417,0.39,100.0,null,34.3,22.3],["48481",252,0.488,0.368,49.9,null,46.4,17.7],["39051",446,0.471,0.189,56.2,45.4,55.9,11.2],["55119",193,0.373,0.213,80.4,null,47.3,12.4],["39135",379,0.417,0.405,69.2,63.4,51.4,13.5],["08087",301,0.455,0.302,32.5,null,49.5,10.7],["13103",387,0.465,0.524,67.1,48.4,62.8,10.8],["18169",352,0.409,0.356,50.0,null,47.5,12.7],["51570",202,0.46,0.397,0.0,null,49.6,12.9],["27093",243,0.494,0.222,65.5,null,58.6,9.4],["39033",413,0.421,0.292,35.3,65.7,40.6,15.7],["55113",202,0.465,0.039,84.2,null,41.9,16.4],["28071",384,0.628,0.142,45.6,null,43.2,25.3],["29013",162,0.414,0.351,77.3,null,41.5,16.3],["36033",597,0.509,-0.146,62.7,56.3,49.8,19.2],["13227",309,0.518,0.648,73.1,null,56.8,10.3],["21097",176,0.449,0.313,65.9,null,40.2,19.0],["27105",171,0.398,0.135,41.0,null,53.3,14.1],["21005",199,0.452,0.385,41.7,null,53.5,11.3],["37061",346,0.477,0.133,86.5,35.6,35.4,27.6],["40111",357,0.44,0.224,48.6,79.9,38.7,20.2],["55069",353,0.425,0.025,54.0,null,52.2,9.6],["21177",314,0.43,0.24,68.4,null,40.4,19.7],["13195",207,0.444,0.521,91.9,null,45.1,16.1],["17029",417,0.494,0.113,24.3,null,38.8,21.9],["53055",299,0.595,-0.405,100.0,null,58.0,11.1],["19149",234,0.521,0.369,62.9,null,60.3,8.6],["40121",423,0.461,0.424,51.9,94.6,43.6,17.5],["48225",186,0.425,0.44,73.5,null,32.4,24.4],["22031",224,0.558,0.162,77.3,null,42.4,26.4],["18083",332,0.458,0.275,36.2,67.3,44.6,14.1],["47103",352,0.46,0.5,72.5,56.2,41.0,18.5],["39131",256,0.414,0.126,74.2,97.0,41.1,20.7],["01019",235,0.506,0.584,85.7,null,38.9,16.4],["28161",156,0.487,0.08,79.3,null,34.7,21.6],["48347",511,0.532,0.329,46.5,70.4,38.9,24.4],["20139",182,0.505,0.351,83.5,null,52.2,11.6],["50001",515,0.569,-0.366,78.4,null,61.0,8.7],["17027",237,0.468,0.295,48.8,null,63.9,9.5],["48189",240,0.458,0.47,23.1,62.7,45.0,20.7],["39159",299,0.545,0.317,50.0,35.2,71.3,7.9],["16043",180,0.483,0.642,72.0,null,50.0,12.0],["28031",152,0.454,0.195,100.0,null,31.7,25.8],["21089",312,0.468,0.261,39.3,83.9,46.8,17.6],["29217",190,0.458,0.385,58.3,null,40.7,17.4],["29121",171,0.398,0.378,67.8,null,37.1,18.8],["13281",164,0.384,0.568,100.0,null,39.3,15.1],["28043",164,0.396,0.105,52.2,null,33.0,24.1],["27135",170,0.506,0.286,82.3,null,54.8,8.4],["29167",304,0.414,0.44,68.9,null,42.5,17.6],["35047",278,0.522,-0.546,46.9,111.5,27.0,30.1],["12063",388,0.482,0.315,75.4,56.0,35.5,22.9],["21211",314,0.535,0.287,47.0,66.6,61.7,12.9],["28137",230,0.465,0.237,77.4,69.8,43.9,15.7],["01133",227,0.383,0.722,84.9,null,33.9,20.6],["01013",163,0.436,0.114,71.2,null,34.3,25.7],["48227",210,0.548,0.507,20.1,62.9,51.0,14.9],["45053",153,0.464,-0.151,66.7,null,39.0,23.4],["48281",214,0.514,0.554,68.3,null,50.4,13.7],["27001",177,0.446,0.09,100.0,null,44.5,12.8],["26057",322,0.429,0.084,60.2,48.7,42.1,19.0],["19067",169,0.438,-0.072,52.7,null,46.4,14.1],["26129",228,0.386,0.135,100.0,null,36.9,20.0],["13237",164,0.555,0.356,80.9,null,45.8,17.8],["27127",175,0.491,0.254,69.1,null,48.9,11.6],["37067",3337,0.53,-0.094,7.3,44.9,46.3,19.5],["06115",594,0.443,0.185,26.2,77.1,48.7,20.8],["27045",244,0.52,0.02,93.3,null,54.4,12.1],["12103",7333,0.494,-0.043,0.3,58.0,47.1,14.1],["31157",336,0.485,0.396,29.8,null,46.6,13.5],["48439",11293,0.558,0.12,1.3,43.2,60.4,14.4],["37171",758,0.409,0.383,68.8,67.3,37.3,17.9],["24013",1340,0.519,0.329,39.5,51.3,87.1,5.7],["40143",5933,0.513,0.249,4.8,61.8,50.7,15.9],["26077",2128,0.536,-0.152,17.5,31.1,49.7,17.5],["48039",2015,0.572,0.294,22.5,41.4,72.0,10.5],["06087",2325,0.569,-0.566,12.0,57.6,70.1,15.1],["36047",10699,0.531,-0.618,0.0,27.3,50.6,22.7],["42071",4986,0.522,0.167,21.3,38.1,59.2,10.8],["39035",9231,0.508,-0.38,0.6,57.7,45.3,18.5],["37133",1248,0.568,0.275,26.3,51.0,46.8,13.9],["47079",400,0.46,0.341,66.8,82.6,38.4,19.4],["53037",447,0.546,0.106,40.1,null,47.9,20.9],["34025",5194,0.522,0.061,3.7,41.8,87.3,7.6],["13059",940,0.56,-0.325,5.9,41.3,33.1,35.2],["19169",871,0.559,-0.141,16.9,37.1,51.2,22.3],["51179",1092,0.592,0.08,19.8,34.6,97.5,5.1],["16001",3916,0.545,0.089,5.5,43.4,58.1,12.2],["29510",2301,0.519,-0.662,0.0,68.5,36.8,26.7],["12099",8989,0.532,-0.185,1.0,52.3,55.3,13.9],["12101",3655,0.465,0.106,9.5,67.1,46.0,13.6],["01117",1612,0.545,0.528,22.9,46.8,72.3,8.5],["06083",3189,0.552,-0.232,5.0,50.9,65.2,15.9],["25013",3575,0.488,-0.224,8.6,51.3,51.0,17.6],["48491",3173,0.575,0.147,12.0,37.3,75.9,7.2],["47113",872,0.529,0.105,25.8,38.1,44.2,19.4],["23011",1655,0.491,-0.082,62.8,64.7,48.6,14.6],["13067",5170,0.589,0.066,0.2,35.4,68.8,11.6],["48355",1802,0.55,0.031,6.4,73.0,51.9,17.0],["42069",2149,0.466,-0.189,16.3,63.3,46.7,15.3],["20155",595,0.511,0.302,31.3,46.7,46.0,14.3],["39039",375,0.523,0.195,43.9,61.0,50.8,13.6],["18141",2488,0.492,-0.069,9.0,58.0,46.2,17.2],["21081",205,0.42,0.389,65.0,null,44.2,20.2],["18139",159,0.421,0.334,61.2,null,46.4,18.0],["13139",1251,0.539,0.525,20.6,38.8,51.9,17.7],["45013",1727,0.589,0.14,19.6,28.3,59.2,12.4],["13119",205,0.424,0.598,88.9,null,37.3,25.2],["47155",794,0.463,0.548,56.6,69.8,42.6,15.3],["42133",4321,0.483,0.213,24.7,52.1,59.9,10.5],["51073",366,0.505,0.313,64.6,64.5,62.9,7.6],["19155",945,0.48,0.095,26.4,39.6,53.3,11.8],["29213",524,0.468,0.479,43.9,41.2,38.0,17.8],["29141",230,0.422,0.371,100.0,null,32.8,24.2],["36019",796,0.499,-0.172,64.2,37.6,50.5,16.1],["26093",1140,0.503,0.22,36.9,39.3,76.8,5.9],["54057",281,0.448,0.464,64.6,80.0,36.2,16.4],["36045",1247,0.493,0.089,48.0,56.9,49.9,14.6],["36013",1555,0.466,0.085,43.9,45.1,43.2,19.4],["28067",536,0.465,0.401,61.4,31.7,37.8,23.7],["48187",845,0.561,0.325,26.2,42.5,64.6,10.5],["55085",402,0.515,0.035,75.0,52.8,49.7,9.4],["19183",229,0.48,0.084,69.5,null,56.9,9.0],["02110",415,0.607,null,21.5,74.2,87.4,7.4],["08035",2589,0.608,0.204,10.3,32.5,105.8,3.8],["06019",5815,0.518,-0.033,10.8,59.0,46.0,26.9],["53029",1115,0.531,-0.055,46.9,50.6,60.3,9.5],["48493",264,0.485,0.414,85.9,44.5,68.7,10.5],["45063",2147,0.497,0.375,25.3,48.6,55.4,13.7],["21117",1324,0.5,0.237,7.0,105.2,56.6,13.6],["24015",811,0.487,0.225,42.1,67.1,67.9,10.6],["48241",319,0.492,0.5,78.2,null,44.6,16.3],["36075",1100,0.472,0.031,61.8,49.2,49.6,18.3],["45051",2582,0.496,0.306,30.4,60.5,44.7,17.6],["13305",223,0.43,0.506,57.9,68.7,39.9,20.6],["13257",279,0.462,0.535,58.6,null,37.1,20.0],["25023",3967,0.521,-0.064,10.3,64.5,77.6,8.0],["28027",160,0.519,-0.456,32.0,null,28.2,35.2],["06107",2710,0.49,0.133,15.5,57.0,42.8,28.3],["17019",1608,0.555,-0.143,12.7,50.4,48.9,21.6],["17085",230,0.496,0.01,72.6,null,54.7,9.3],["53077",2106,0.494,0.119,23.5,60.7,45.7,20.5],["42025",550,0.424,0.132,47.2,68.0,50.8,12.1],["51069",715,0.515,0.281,44.8,58.2,68.9,5.9],["39055",738,0.503,0.207,64.0,43.4,74.2,6.9],["51041",2683,0.56,0.058,5.9,35.0,73.9,7.4],["17201",2096,0.504,-0.061,7.9,63.7,49.5,15.5],["42111",970,0.424,0.413,70.8,60.4,45.4,12.6],["51141",187,0.385,0.415,100.0,103.9,36.0,22.2],["36063",2013,0.47,0.042,22.4,54.3,50.1,13.6],["29099",1516,0.466,0.152,30.2,71.4,58.2,10.9],["47065",2880,0.523,0.144,10.0,47.1,49.4,14.8],["42075",1379,0.498,0.273,26.6,45.2,56.2,10.7],["40081",327,0.474,0.53,92.1,86.4,46.6,15.0],["21145",751,0.465,0.316,27.8,53.0,42.3,17.8],["19013",1212,0.507,-0.167,13.5,36.0,50.3,15.4],["27145",1376,0.525,0.156,36.9,41.2,57.0,13.7],["20045",958,0.574,-0.295,11.0,51.9,52.7,19.2],["26075",1216,0.484,0.078,41.8,54.3,47.7,16.7],["47123",448,0.391,0.477,76.1,75.1,37.1,19.2],["48251",1144,0.526,0.537,37.9,53.2,59.1,12.1],["45077",1018,0.493,0.493,35.8,74.3,43.5,18.7],["48321",252,0.464,0.336,36.4,61.8,41.3,21.7],["01081",1059,0.56,0.208,27.4,35.7,45.1,23.0],["54049",566,0.502,0.158,41.5,53.1,46.4,16.7],["41053",814,0.532,0.037,19.9,36.1,54.0,15.5],["25015",1593,0.558,-0.433,27.4,39.2,62.6,14.7],["26091",769,0.467,0.058,51.8,62.7,49.3,14.4],["35049",1745,0.568,-0.524,25.2,86.8,55.4,15.6],["19163",1481,0.54,-0.099,13.5,61.7,56.5,12.2],["19125",353,0.445,0.182,48.7,null,57.4,9.9],["40097",429,0.462,0.377,77.4,88.6,43.3,21.0],["55031",393,0.476,-0.24,38.8,null,48.2,15.5],["19027",238,0.487,0.113,52.0,null,53.8,9.4],["41005",3682,0.534,-0.068,18.1,44.4,68.9,9.2],["54037",444,0.536,0.048,48.4,58.1,69.8,10.9],["18039",1737,0.484,0.233,20.6,47.9,49.7,14.9],["13285",494,0.488,0.2,44.3,50.3,42.5,21.3],["29147",212,0.486,0.261,43.4,null,39.9,25.5],["26117",477,0.484,0.143,84.6,51.6,43.1,17.4],["24037",820,0.579,0.166,50.4,47.9,86.8,7.8],["13045",879,0.512,0.368,41.8,41.1,45.5,19.3],["54045",333,0.411,0.379,70.8,137.3,37.3,20.2],["56009",180,0.478,0.632,55.4,null,66.7,8.4],["16027",1593,0.461,0.38,19.9,49.0,44.9,18.7],["29039",159,0.39,0.481,75.3,null,33.7,23.3],["37175",440,0.489,0.172,59.6,64.6,43.9,14.4],["24027",2380,0.639,-0.259,9.3,28.1,113.8,4.9],["21167",229,0.459,0.418,59.1,null,46.1,18.1],["08013",2857,0.587,-0.454,8.9,41.5,72.3,13.4],["31001",287,0.488,0.35,22.5,64.2,51.2,11.2],["18157",1332,0.575,-0.008,14.5,44.8,47.4,21.8],["51169",225,0.404,0.532,82.1,75.5,38.0,20.1],["16021",185,0.546,0.437,76.2,null,39.3,16.6],["29007",224,0.464,0.288,41.2,null,41.9,17.7],["50003",473,0.52,-0.291,64.5,null,51.5,13.4],["30029",1357,0.498,0.304,51.5,50.3,48.4,13.8],["20099",202,0.48,0.235,52.3,null,41.9,18.2],["17103",265,0.472,0.101,53.2,null,55.1,12.0],["17113",1346,0.558,0.037,16.5,40.2,63.4,14.2],["30093",407,0.521,-0.288,11.4,82.8,39.6,19.4],["24045",819,0.496,0.069,25.8,28.9,53.5,16.3],["20015",636,0.55,0.397,40.5,50.2,60.3,9.7],["17167",1674,0.513,0.045,14.1,52.3,56.7,15.2],["37117",217,0.493,-0.03,78.1,null,35.0,20.2],["42061",505,0.438,0.384,68.7,46.2,45.2,13.7],["51137",381,0.496,0.166,57.8,63.1,67.0,9.2],["37087",639,0.444,0.163,55.4,58.0,43.1,16.7],["45027",224,0.482,-0.09,85.7,null,34.1,26.0],["50005",431,0.473,-0.175,74.4,65.7,46.9,12.4],["13085",203,0.463,0.708,80.3,87.3,59.3,13.4],["42119",469,0.518,0.211,42.8,null,51.3,11.2],["26027",341,0.478,0.135,71.2,32.4,48.0,14.9],["24041",420,0.49,0.107,54.7,null,61.4,10.9],["33017",1098,0.472,-0.144,32.4,65.1,63.5,10.1],["48457",177,0.446,0.555,78.1,97.7,45.4,15.7],["06103",618,0.468,0.293,51.5,66.3,40.7,21.5],["26105",300,0.487,0.075,62.7,null,43.5,16.2],["51047",463,0.525,0.17,61.9,61.4,66.2,9.2],["13241",197,0.492,0.542,79.3,null,38.3,21.8],["30043",159,0.535,0.25,100.0,null,62.9,8.5],["29105",325,0.418,0.478,60.5,null,40.4,19.2],["39065",235,0.447,0.304,55.4,null,44.8,15.6],["47045",282,0.418,0.459,42.9,null,42.8,18.6],["38089",260,0.577,0.477,27.3,null,76.8,6.8],["35051",197,0.472,0.193,34.0,null,29.7,22.1],["55127",951,0.527,0.116,34.2,45.9,55.6,12.9],["31079",519,0.53,0.293,14.6,32.4,51.4,14.8],["48331",217,0.465,0.368,56.2,null,39.2,15.5],["30095",175,0.6,0.442,100.0,null,59.6,7.3],["08077",1758,0.478,0.327,12.7,70.1,50.1,16.3],["40065",266,0.485,0.526,24.8,70.0,44.3,16.8],["27157",237,0.536,0.114,64.5,null,58.9,6.6],["18055",317,0.445,0.33,74.8,null,45.2,14.9],["27147",350,0.469,0.125,30.6,null,58.1,9.4],["04009",302,0.503,0.391,46.4,69.3,47.4,22.5],["26165",297,0.418,0.186,64.3,77.2,40.4,18.8],["35055",400,0.552,-0.591,58.4,108.5,35.3,21.9],["13151",1399,0.571,0.021,13.9,31.1,62.6,12.1],["51083",308,0.49,0.083,77.1,null,37.0,18.8],["22005",720,0.567,0.353,13.2,36.3,71.8,11.5],["32510",610,0.461,0.074,4.8,121.0,47.9,16.7],["22117",362,0.425,0.328,66.7,74.9,31.0,26.4],["35009",463,0.525,0.389,14.1,79.9,42.2,21.6],["19109",173,0.457,0.15,65.6,null,54.2,9.7],["48143",279,0.505,0.622,46.3,null,42.5,24.5],["51105",214,0.35,0.452,99.6,null,31.6,26.1],["51199",512,0.6,0.186,6.1,30.9,83.4,6.2],["39117",214,0.467,0.324,88.8,null,53.0,11.0],["16013",245,0.584,-0.273,32.8,null,58.1,12.7],["29051",719,0.508,0.324,29.1,30.2,54.1,12.6],["23013",575,0.499,-0.194,67.9,46.1,52.2,11.9],["45087",206,0.393,0.122,65.4,null,35.0,19.9],["16057",483,0.542,-0.052,35.0,null,42.1,22.4],["37181",310,0.477,-0.265,54.1,67.8,32.7,25.6],["47089",425,0.461,0.507,59.5,44.8,43.7,15.2],["36099",312,0.452,-0.009,58.7,null,50.1,12.4],["17183",612,0.426,0.141,31.3,66.3,43.6,19.7],["28093",237,0.481,-0.158,83.4,null,40.6,18.2],["06101",688,0.517,0.17,14.8,51.9,52.9,17.5],["45039",160,0.525,-0.298,78.3,null,33.8,24.5],["22109",806,0.493,0.435,20.6,72.3,48.2,20.2],["12051",201,0.463,0.091,37.9,null,37.6,26.3],["36023",449,0.465,-0.05,44.3,45.4,50.9,13.8],["19129",157,0.503,0.247,59.6,null,66.2,8.2],["40039",251,0.546,0.518,30.3,null,47.2,16.1],["36073",370,0.443,0.241,60.9,null,48.7,15.6],["54053",233,0.309,0.292,65.0,null,37.3,18.9],["48099",473,0.497,0.342,19.4,58.9,49.3,14.1],["18133",368,0.47,0.313,64.8,68.0,52.5,10.3],["37189",549,0.519,-0.009,55.4,50.2,39.4,31.3],["27099",374,0.473,-0.128,35.9,49.3,51.8,14.0],["17037",709,0.519,-0.085,20.3,30.9,56.1,18.2],["05003",210,0.419,0.299,51.7,null,36.4,19.9],["08071",170,0.553,0.02,40.8,null,42.8,14.3],["21021",280,0.432,0.261,34.8,58.7,40.8,16.4],["47017",330,0.43,0.389,83.1,71.4,36.2,19.8],["08081",155,0.419,0.553,27.4,null,53.7,11.1],["28127",195,0.497,0.251,84.8,null,37.3,27.4],["38093",208,0.51,0.261,27.6,null,53.7,10.8],["21071",386,0.389,0.278,83.9,88.3,30.5,30.7],["29069",244,0.361,0.35,50.5,78.7,31.2,27.4],["08067",628,0.594,-0.116,59.9,53.5,61.9,10.7],["13111",265,0.445,0.575,100.0,null,39.0,18.0],["51139",231,0.442,0.308,80.2,null,45.0,16.0],["55065",166,0.41,-0.096,100.0,null,53.0,11.2],["05071",266,0.466,0.304,71.4,null,34.0,21.4],["54061",787,0.554,0.054,26.9,38.6,47.1,22.2],["13145",265,0.517,0.455,96.7,null,65.3,8.4],["38105",316,0.547,0.502,32.5,null,90.1,9.8],["19043",232,0.483,-0.005,96.6,null,48.5,10.5],["16049",257,0.521,0.549,80.6,null,38.6,16.1],["47151",198,0.424,0.58,80.6,null,30.9,27.7],["12041",157,0.389,0.535,83.9,null,40.9,23.8],["08119",281,0.566,0.344,62.6,102.4,63.7,7.5],["47115",229,0.415,0.289,77.0,61.3,41.5,19.2],["51167",244,0.344,0.361,88.2,57.3,38.4,17.0],["48325",209,0.545,0.388,61.6,39.6,58.3,14.0],["48449",231,0.446,0.372,50.6,null,45.0,20.8],["20021",158,0.373,0.339,49.1,null,41.2,16.2],["13293",218,0.486,0.307,46.9,null,35.7,22.9],["24023",320,0.519,0.497,83.9,null,46.3,12.7],["41001",258,0.535,0.407,41.0,null,41.7,15.1],["51079",202,0.584,0.262,51.2,null,61.6,11.0],["17149",154,0.429,0.373,72.3,null,40.2,14.4],["06015",342,0.459,0.111,33.7,null,42.4,21.7],["12121",367,0.441,0.478,83.2,60.5,37.8,22.7],["08051",211,0.54,-0.222,58.6,null,50.7,15.4],["53043",157,0.395,0.402,100.0,null,47.7,14.8],["21163",213,0.469,0.299,85.9,null,50.0,15.6],["48419",203,0.512,0.51,79.4,null,36.3,22.8],["23029",510,0.424,0.053,92.4,65.4,39.5,18.0],["17049",323,0.483,0.493,59.7,null,53.0,10.8],["29207",239,0.452,0.528,69.8,null,38.1,16.7],["16085",153,0.569,0.124,100.0,null,53.6,14.0],["48013",247,0.526,0.193,60.7,43.6,53.2,15.3],["01061",223,0.475,0.658,89.6,null,36.5,22.8],["18151",330,0.497,0.269,67.2,null,50.4,10.4],["19041",176,0.472,0.219,34.3,null,48.9,11.9],["13207",162,0.475,0.368,80.2,null,50.6,13.2],["51127",183,0.552,0.333,100.0,null,75.3,5.0],["28007",154,0.403,0.163,64.3,null,33.0,24.4],["06073",21203,0.552,-0.125,3.3,45.3,66.5,14.0],["04025",2989,0.48,0.287,33.2,89.9,46.6,14.7],["42017",5660,0.536,-0.036,8.8,45.5,79.6,5.9],["02170",1149,0.558,null,50.3,54.7,73.9,9.7],["34035",2534,0.554,-0.082,5.8,24.0,102.4,5.2],["18017",355,0.454,0.24,44.7,49.9,43.9,15.1],["37183",7921,0.579,-0.154,6.1,28.4,70.6,10.8],["31109",2924,0.571,-0.016,8.3,31.4,53.7,14.3],["40101",685,0.499,0.197,41.1,90.4,41.1,21.4],["48215",2635,0.559,-0.403,5.1,39.4,36.1,32.8],["06043",304,0.434,0.18,100.0,null,49.3,16.3],["22001",382,0.479,0.507,51.7,41.3,39.8,20.6],["06071",11950,0.515,-0.081,4.7,42.2,54.5,19.1],["53033",17031,0.578,-0.443,3.2,42.8,78.8,10.7],["51800",692,0.548,-0.135,21.6,34.8,65.4,11.5],["26163",9803,0.501,-0.445,0.7,63.1,42.0,24.5],["06095",2764,0.517,-0.294,3.7,47.8,69.2,12.7],["48199",477,0.503,0.675,51.5,57.9,54.4,11.8],["49003",571,0.513,0.636,31.1,62.1,55.5,10.3],["48085",5948,0.605,0.246,5.2,27.2,86.2,7.1],["36071",2530,0.53,-0.026,22.3,40.1,71.9,12.6],["23025",650,0.448,0.051,80.5,57.8,40.5,18.0],["44005",872,0.54,-0.21,12.1,36.6,71.3,9.2],["12081",2743,0.507,0.122,5.8,81.9,51.5,14.3],["06099",3422,0.498,-0.021,8.0,60.7,51.6,18.2],["21193",298,0.419,0.492,74.1,111.9,31.6,27.4],["36055",6919,0.521,-0.18,6.4,34.5,53.6,14.9],["29189",9165,0.541,-0.167,1.1,45.0,61.1,10.3],["13097",863,0.533,-0.055,15.8,38.2,57.4,15.2],["08041",6001,0.541,0.205,8.9,66.2,60.2,11.3],["26149",469,0.486,0.151,54.4,null,45.4,16.2],["42101",9825,0.518,-0.684,0.0,63.1,39.8,25.9],["36005",5049,0.485,-0.8,0.0,41.2,35.3,30.5],["02130",227,0.595,null,23.2,null,64.2,10.8],["26069",316,0.408,0.099,58.9,85.2,38.9,16.9],["51013",2095,0.691,-0.479,0.0,17.9,108.7,8.7],["01125",1601,0.555,0.176,25.5,33.3,48.0,18.0],["48451",903,0.499,0.457,15.6,65.9,47.6,13.8],["39025",1583,0.495,0.362,22.7,76.7,61.3,10.5],["42091",7894,0.555,-0.189,2.9,41.1,81.9,6.6],["47093",4046,0.525,0.253,10.9,75.8,50.4,16.2],["26043",294,0.497,0.216,32.8,67.3,43.4,14.6],["49005",1236,0.583,0.47,15.7,26.9,51.9,15.0],["31153",1514,0.592,0.201,5.3,25.2,72.3,6.2],["39037",438,0.482,0.472,66.3,81.7,47.0,12.4],["01073",5762,0.561,-0.061,9.8,59.3,47.2,18.1],["01001",489,0.536,0.476,42.0,40.5,53.1,12.3],["05145",698,0.473,0.531,54.3,63.0,42.2,17.7],["20059",248,0.488,0.305,52.1,null,51.5,13.5],["24031",8327,0.609,-0.479,2.4,22.9,100.4,6.9],["08107",259,0.568,-0.198,45.2,null,63.5,10.2],["48423",1773,0.532,0.426,31.6,39.6,48.7,17.0],["41033",1111,0.469,0.217,45.0,88.2,37.9,19.5],["31141",333,0.526,0.502,31.4,null,58.5,8.7],["37013",465,0.471,0.203,65.6,87.8,40.9,17.5],["26133",250,0.444,0.249,100.0,null,39.2,22.7],["45085",771,0.554,-0.15,32.0,30.5,40.8,20.0],["36031",441,0.515,-0.106,74.9,50.8,53.2,10.1],["34029",5063,0.466,0.232,2.9,55.3,63.1,11.2],["39023",1186,0.465,0.076,23.6,105.3,44.2,17.9],["10001",1265,0.502,-0.033,27.0,60.9,55.2,13.2],["18063",1093,0.574,0.307,17.8,39.6,73.0,5.1],["33015",2858,0.539,0.031,24.9,64.2,82.4,5.1],["13089",5115,0.61,-0.596,0.3,26.6,52.6,19.0],["26143",291,0.405,0.103,66.1,null,36.0,19.7],["42131",400,0.445,0.196,83.5,86.8,53.4,10.3],["09001",6429,0.542,-0.162,4.6,32.2,86.7,8.8],["26115",1026,0.497,0.056,37.6,68.3,57.0,10.8],["15007",433,0.591,-0.45,12.9,38.2,68.2,9.6],["05005",582,0.376,0.429,65.8,93.5,38.1,13.8],["39095",3391,0.468,-0.27,4.7,71.7,42.9,20.7],["40051",439,0.462,0.527,63.9,56.6,54.0,12.7],["01049",611,0.435,0.583,90.1,57.6,38.2,19.8],["20087",176,0.506,0.247,98.8,null,56.8,9.1],["29095",5532,0.516,0.071,3.8,51.9,48.1,17.2],["05111",170,0.424,0.361,71.1,89.9,35.2,22.1],["48139",973,0.567,0.449,32.0,39.6,64.4,11.0],["01009",359,0.46,0.748,90.0,58.1,46.2,16.5],["49007",340,0.476,0.3,33.7,null,47.8,15.5],["16019",1174,0.526,0.45,13.0,81.4,52.8,12.7],["06109",822,0.484,0.166,49.0,82.2,50.7,14.2],["06031",801,0.502,0.141,10.9,42.9,47.2,21.6],["13095",705,0.538,-0.375,14.0,null,33.6,30.5],["26007",231,0.442,0.101,51.8,88.0,39.8,16.3],["18085",697,0.491,0.482,46.6,46.3,54.5,11.0],["37099",391,0.488,0.024,73.1,54.3,40.3,23.1],["12109",1765,0.572,0.342,23.8,43.3,69.5,9.0],["01017",229,0.467,0.095,49.1,52.5,36.0,20.3],["17097",4492,0.546,-0.161,1.3,32.5,79.9,8.9],["30047",432,0.479,0.097,83.4,113.3,39.9,21.4],["28091",216,0.444,0.324,73.1,75.3,30.9,27.3],["48177",153,0.51,0.394,65.3,null,46.6,17.2],["35013",1794,0.523,-0.167,19.3,66.4,38.6,27.6],["53009",1085,0.489,-0.003,35.5,90.6,47.2,15.7],["30081",650,0.468,0.302,84.6,35.1,40.5,17.5],["41043",1496,0.458,0.181,31.6,61.6,46.8,17.3],["28109",473,0.442,0.616,69.9,86.9,41.6,20.3],["42081",1368,0.461,0.34,36.3,45.5,48.7,14.4],["05023",283,0.399,0.524,75.5,null,41.7,15.5],["54081",758,0.463,0.411,39.3,132.5,41.5,17.7],["09015",1109,0.472,-0.095,49.8,60.9,60.7,11.2],["50015",324,0.562,-0.378,100.0,null,53.3,12.8],["18093",400,0.407,0.349,58.4,47.2,46.0,12.9],["36053",746,0.483,0.03,58.9,48.8,55.9,11.9],["05053",161,0.503,0.538,75.0,null,49.2,13.0],["46083",315,0.587,0.235,29.3,null,77.5,3.7],["55131",1190,0.467,0.364,30.8,35.1,70.3,5.7],["30049",1002,0.552,0.014,28.9,57.4,59.2,12.1],["41039",4191,0.499,-0.231,17.5,70.5,45.2,19.7],["45003",1352,0.521,0.26,37.0,59.6,46.5,17.4],["51071",193,0.508,0.3,66.3,null,47.7,11.8],["39063",568,0.516,0.304,31.1,47.9,51.6,13.5],["20177",1792,0.503,0.013,15.8,65.3,52.1,14.5],["36021",684,0.478,-0.114,73.3,39.6,59.9,12.7],["05035",274,0.493,-0.129,20.9,53.0,39.4,24.6],["48265",576,0.493,0.549,41.1,72.1,44.3,16.7],["39057",1308,0.511,0.211,14.9,64.0,61.1,12.8],["39147",530,0.44,0.137,47.5,50.4,48.4,15.6],["27097",364,0.478,0.319,72.8,null,51.5,11.7],["21083",401,0.501,0.407,69.4,null,40.3,18.4],["12133",203,0.453,0.508,84.6,null,38.3,20.5],["04017",862,0.456,0.099,54.1,127.6,36.9,29.9],["08029",452,0.44,0.39,63.2,59.3,42.0,16.8],["17163",1871,0.536,-0.142,9.8,39.7,50.0,17.6],["27067",402,0.532,0.125,44.5,45.6,53.5,11.3],["35061",610,0.47,-0.005,16.7,74.8,41.8,23.2],["30053",371,0.429,0.396,79.8,null,35.5,17.9],["48035",178,0.433,0.593,81.2,null,45.4,14.8],["39099",1988,0.452,-0.194,15.2,63.6,41.9,18.1],["39107",375,0.464,0.543,61.4,50.9,55.2,8.3],["36089",1202,0.469,-0.087,62.0,38.9,46.3,19.2],["46035",201,0.488,0.236,23.3,null,48.3,12.0],["18059",617,0.533,0.384,30.4,61.2,68.4,7.4],["51550",1734,0.574,-0.004,7.6,51.6,70.0,9.5],["18033",399,0.436,0.316,42.3,48.8,50.4,12.8],["42033",979,0.444,0.299,53.8,57.5,43.4,14.8],["47073",466,0.393,0.507,57.9,74.8,37.9,19.2],["42001",940,0.491,0.278,53.7,30.0,61.9,9.4],["42093",229,0.48,0.213,53.8,null,55.2,10.0],["42127",588,0.452,0.239,88.1,68.2,50.6,12.7],["45015",1166,0.542,0.15,29.0,47.4,54.5,13.2],["18143",231,0.433,0.153,52.7,null,46.4,14.0],["05055",317,0.451,0.396,41.5,78.7,42.8,17.7],["29109",332,0.404,0.483,58.7,65.0,40.5,18.1],["55011",175,0.486,0.014,100.0,null,52.4,10.8],["19021",194,0.49,0.122,43.9,null,49.9,13.3],["41035",860,0.441,0.38,37.6,91.2,42.0,18.6],["18105",1200,0.548,-0.249,21.2,41.8,43.4,25.0],["13185",856,0.572,0.122,27.2,32.6,38.9,25.0],["17135",249,0.47,0.17,41.6,60.7,45.2,15.4],["17199",507,0.465,0.267,34.8,50.0,45.9,14.9],["17093",615,0.517,-0.012,10.4,25.9,85.7,5.4],["23017",782,0.458,-0.059,83.1,45.7,42.2,16.7],["39073",209,0.416,0.128,70.8,null,43.4,16.6],["45071",303,0.488,0.182,67.8,64.0,39.8,18.7],["21133",214,0.397,0.515,100.0,null,29.2,29.8],["40113",349,0.496,0.286,59.5,61.1,46.3,15.0],["20035",333,0.441,0.307,31.0,51.1,45.0,16.4],["21185",444,0.532,0.328,20.3,51.0,86.3,6.0],["36049",293,0.464,0.174,86.8,null,50.0,14.0],["12039",358,0.506,-0.39,65.4,43.7,38.5,25.6],["42035",423,0.468,0.163,45.7,null,47.2,17.3],["46099",1501,0.529,0.071,13.6,46.3,55.3,11.6],["21115",255,0.427,0.573,73.0,85.6,35.1,26.2],["41007",482,0.49,-0.131,39.0,60.4,47.5,14.0],["16005",900,0.512,0.185,15.7,80.4,45.2,18.3],["55009",2138,0.51,0.011,14.5,40.6,54.2,11.7],["40009",190,0.474,0.62,32.7,null,48.9,14.0],["17137",243,0.494,0.153,36.2,null,47.8,15.0],["01077",844,0.493,0.348,49.3,35.5,43.7,18.3],["26019",178,0.483,0.035,100.0,null,48.7,11.2],["38059",260,0.496,0.347,31.9,null,63.5,8.7],["27103",289,0.585,-0.051,25.6,null,61.5,11.8],["18181",214,0.439,0.249,68.0,null,51.5,10.0],["12061",1334,0.468,0.205,5.0,45.3,47.4,14.1],["22045",492,0.502,0.269,28.1,45.3,44.6,19.9],["39141",614,0.453,0.12,58.7,92.7,44.6,18.8],["37139",345,0.551,-0.103,41.3,null,45.8,17.4],["06093",689,0.466,0.152,65.8,90.0,38.5,22.0],["51067",489,0.454,0.311,89.2,43.1,48.7,14.6],["13189",159,0.535,0.161,61.0,null,37.0,26.1],["27059",287,0.449,0.238,62.3,null,62.7,7.2],["39085",1763,0.48,0.051,6.5,57.2,60.0,8.5],["55095",482,0.498,0.127,85.5,78.4,52.0,9.9],["38101",697,0.529,0.322,21.9,33.0,63.0,7.3],["20055",215,0.456,0.351,18.6,null,50.7,15.9],["08085",502,0.486,0.362,45.0,47.5,43.9,18.0],["13013",507,0.469,0.483,30.1,41.6,53.1,14.5],["45021",353,0.45,0.334,61.0,39.6,35.7,22.7],["13147",161,0.503,0.388,74.5,null,38.0,21.2],["39047",218,0.431,0.306,47.8,100.3,42.0,18.6],["54043",180,0.372,0.317,100.0,null,36.2,25.2],["55135",652,0.457,0.153,64.9,46.5,52.4,10.6],["40047",659,0.483,0.523,21.4,43.5,49.7,13.1],["35025",547,0.495,0.474,21.0,68.8,58.2,15.8],["08093",179,0.453,0.159,100.0,null,61.7,6.3],["18179",265,0.479,0.442,50.6,null,51.6,12.6],["51077",151,0.424,0.415,99.9,null,31.0,19.8],["18021",207,0.444,0.335,60.9,65.5,49.7,16.7],["22037",163,0.515,0.104,100.0,null,49.0,17.2],["36121",429,0.441,0.331,64.1,null,53.6,11.5],["19171",199,0.437,0.002,72.4,null,53.8,13.0],["18027",224,0.451,0.495,60.3,57.6,47.9,13.5],["38077",153,0.49,0.181,52.0,null,58.1,9.9],["37039",346,0.445,0.469,100.0,67.6,35.3,19.5],["17105",286,0.416,0.304,40.8,57.4,54.1,12.8],["40135",444,0.43,0.431,66.6,71.9,36.3,24.9],["28023",151,0.411,0.271,100.0,null,36.4,19.2],["21217",241,0.456,0.435,52.2,null,33.0,25.2],["46081",263,0.548,0.256,36.9,null,48.2,12.0],["47061",172,0.36,0.296,100.0,null,28.5,28.0],["26089",200,0.525,0.022,91.3,null,59.0,8.7],["38015",891,0.576,0.335,18.5,34.4,66.1,7.7],["56003",192,0.474,0.614,100.0,null,50.8,11.9],["17177",427,0.508,0.038,40.1,52.6,45.6,15.9],["35029",213,0.554,-0.001,40.6,null,27.3,29.5],["16041",153,0.588,0.743,66.2,null,50.5,12.4],["54041",205,0.395,0.441,69.0,null,37.8,19.3],["53049",350,0.486,-0.062,64.8,null,38.4,18.7],["18047",162,0.42,0.459,88.9,null,52.1,11.4],["31043",150,0.42,0.094,21.1,null,52.3,16.0],["26067",408,0.502,0.165,60.5,41.1,50.0,14.3],["33001",607,0.506,0.068,66.3,67.1,61.2,10.3],["12003",176,0.506,0.603,59.5,null,53.3,18.5],["17095",430,0.456,-0.114,24.3,51.4,40.6,17.6],["13275",394,0.495,0.187,46.0,null,38.2,21.3],["49047",428,0.507,0.73,46.8,82.9,67.9,9.5],["51590",594,0.498,-0.203,4.5,56.1,33.7,22.5],["51115",170,0.482,0.32,100.0,null,64.0,9.6],["37165",281,0.438,-0.132,48.4,48.7,30.0,31.5],["17051",183,0.448,0.361,67.0,null,44.7,16.1],["20009",239,0.452,0.52,31.8,null,44.4,15.5],["18117",217,0.369,0.272,83.5,null,41.4,16.4],["31177",200,0.475,0.358,61.2,null,65.6,9.2],["54035",285,0.488,0.339,71.4,63.5,40.9,14.9],["47025",284,0.401,0.511,71.6,88.2,33.4,22.3],["48503",174,0.506,0.698,33.6,null,47.0,15.3],["40153",204,0.539,0.684,43.5,null,58.6,12.8],["45001",162,0.562,0.189,78.6,null,34.7,21.6],["12123",154,0.429,0.429,69.3,null,36.2,14.8],["21103",171,0.433,0.282,100.0,131.4,50.4,17.3],["42099",560,0.454,0.415,88.5,50.0,58.6,8.7],["16039",280,0.475,0.391,26.9,null,44.4,18.1],["21205",221,0.421,0.09,68.8,null,36.2,25.9],["48217",332,0.482,0.509,76.3,73.6,43.4,19.1],["39125",171,0.45,0.268,81.9,null,48.0,11.0],["18075",203,0.478,0.252,55.7,null,42.3,15.9],["13071",284,0.461,0.414,58.9,null,34.0,25.0],["55137",226,0.412,0.139,89.5,null,46.6,11.5],["21027",219,0.479,0.349,100.0,null,43.4,17.1],["nan",4795,0.546,null,null,null,null,null],["34021",2992,0.535,-0.37,3.5,40.1,74.0,11.2],["05029",202,0.431,0.22,70.5,null,38.3,21.5],["47189",953,0.536,0.408,38.5,71.7,63.4,9.1],["19167",312,0.529,0.663,50.8,null,63.5,7.6],["25021",5567,0.577,-0.207,1.2,43.6,90.2,6.7],["22033",3301,0.563,-0.055,6.9,41.0,49.9,19.5],["42073",1083,0.481,0.141,40.3,82.0,45.8,14.3],["06077",3981,0.506,-0.129,8.5,59.8,55.0,17.8],["20091",4845,0.578,0.097,3.8,32.3,78.2,6.0],["42125",2380,0.497,0.143,30.8,76.0,57.5,10.1],["53053",7071,0.517,-0.102,6.6,56.7,61.5,12.7],["29047",1877,0.524,0.067,9.8,53.1,63.7,9.1],["41067",4671,0.559,-0.219,5.6,33.7,69.7,11.1],["44009",1388,0.555,-0.156,30.8,55.5,74.3,10.0],["13313",694,0.448,0.431,29.1,50.2,41.8,19.6],["40109",7164,0.54,0.147,6.3,64.7,49.0,17.7],["53071",729,0.494,0.172,17.1,56.0,48.7,16.5],["48453",7225,0.603,-0.307,5.5,43.9,64.4,15.2],["23015",557,0.537,-0.087,100.0,null,53.5,12.1],["51061",698,0.549,0.193,57.5,53.9,91.2,6.0],["11001",5392,0.646,-0.854,0.0,44.5,72.9,17.9],["42129",4321,0.482,0.239,25.4,76.4,54.1,10.3],["39013",619,0.438,0.15,54.7,64.9,44.7,15.1],["26047",373,0.555,0.136,74.9,59.4,51.1,10.5],["29169",344,0.523,0.388,44.0,60.3,49.2,14.6],["12033",2739,0.524,0.201,8.3,57.2,46.1,14.7],["27085",406,0.443,0.262,46.6,null,57.7,8.1],["06017",1930,0.544,0.14,34.7,61.5,72.6,9.8],["37049",1003,0.523,0.172,27.7,64.1,48.0,15.2],["51185",405,0.41,0.521,51.9,70.8,38.2,17.8],["55123",325,0.529,-0.107,85.7,null,49.5,16.3],["36015",896,0.465,0.062,24.2,44.5,49.6,15.9],["50017",450,0.491,-0.268,97.2,null,54.3,12.3],["39009",570,0.477,-0.292,43.2,51.7,34.2,31.2],["47041",194,0.397,0.334,78.4,null,37.6,22.2],["39151",2893,0.485,0.038,13.5,52.2,48.7,14.1],["26049",3139,0.483,-0.234,16.8,48.2,43.2,20.9],["22067",260,0.485,0.093,50.0,null,30.3,28.8],["15009",850,0.611,-0.48,14.6,46.9,68.8,9.8],["42043",2771,0.517,-0.06,13.3,51.0,55.0,13.4],["39113",4751,0.485,-0.034,4.3,85.9,45.4,18.5],["17091",819,0.49,0.039,24.5,34.9,54.7,15.7],["13057",1732,0.543,0.528,17.1,45.9,72.6,10.0],["34017",2811,0.53,-0.518,0.0,33.2,60.9,17.4],["49049",4568,0.615,0.58,3.3,47.0,64.3,12.5],["18035",1013,0.5,-0.015,22.8,77.5,39.5,22.0],["37129",1884,0.512,0.033,2.2,52.2,51.2,17.7],["47043",415,0.48,0.318,67.8,69.2,47.1,15.9],["53067",3188,0.53,-0.189,21.0,49.7,62.9,12.0],["05125",801,0.528,0.423,36.2,43.0,57.6,8.5],["47059",614,0.396,0.492,65.2,39.4,36.7,18.6],["12095",6719,0.565,-0.205,2.0,38.3,49.4,17.3],["55059",1226,0.485,-0.1,10.7,63.4,56.1,15.2],["48485",1103,0.494,0.451,10.7,70.6,45.4,18.5],["25003",1342,0.501,-0.492,31.6,53.1,52.3,12.4],["24009",797,0.572,0.102,38.7,49.1,96.8,6.0],["51161",851,0.531,0.246,18.5,55.8,60.4,8.0],["17143",1484,0.517,-0.071,14.6,46.0,51.6,16.5],["51660",567,0.543,-0.172,0.0,null,40.5,33.1],["33011",3501,0.519,-0.016,21.2,74.1,73.2,8.6],["06097",4582,0.541,-0.475,12.4,51.1,66.8,11.2],["40023",182,0.385,0.441,66.9,null,30.9,28.5],["05009",474,0.449,0.485,62.2,61.6,38.7,17.5],["28059",959,0.474,0.354,27.3,61.0,49.2,15.6],["08005",4680,0.549,-0.123,1.6,48.5,66.3,10.7],["30063",1499,0.54,-0.201,22.3,53.0,46.4,16.1],["39021",354,0.441,0.287,70.8,81.2,53.7,11.2],["39103",1291,0.523,0.152,29.8,48.9,69.3,6.6],["13087",212,0.505,0.148,56.5,null,33.5,26.5],["45073",726,0.486,0.427,64.9,69.3,41.8,18.5],["51630",216,0.588,-0.272,1.2,71.4,54.0,16.6],["55097",683,0.49,-0.15,36.0,28.5,52.4,14.1],["45007",1209,0.525,0.378,37.9,74.0,43.5,16.3],["47099",473,0.421,0.46,75.9,55.3,40.5,19.5],["06025",839,0.534,-0.332,17.4,65.4,42.6,24.1],["04003",1359,0.511,0.214,36.3,75.3,45.4,18.9],["06089",2276,0.446,0.306,29.3,73.4,45.6,17.5],["26029",309,0.521,0.141,70.4,null,48.6,12.4],["23003",938,0.441,-0.0,80.3,47.4,38.1,17.7],["51001",391,0.442,0.055,100.0,54.8,38.5,19.5],["37031",834,0.501,0.398,32.6,78.2,50.6,13.1],["17119",2226,0.508,0.025,13.3,60.8,54.6,13.2],["18107",405,0.486,0.364,52.8,null,50.3,12.7],["13297",787,0.537,0.546,42.7,52.9,54.5,13.2],["55093",413,0.552,0.018,53.6,null,64.4,12.0],["18043",669,0.543,0.148,20.3,55.6,57.5,12.1],["37101",1125,0.464,0.272,52.0,40.8,52.0,14.6],["29029",475,0.469,0.406,74.2,45.2,46.7,18.2],["48459",386,0.477,0.588,79.3,45.0,47.7,13.5],["32031",3865,0.502,-0.059,4.3,70.2,55.0,15.0],["53047",621,0.48,0.13,80.0,89.5,41.2,21.2],["06033",743,0.42,-0.133,33.1,162.4,36.1,24.6],["49043",466,0.607,-0.087,39.2,null,91.5,7.9],["45075",642,0.486,-0.395,63.8,39.4,34.8,23.4],["51015",464,0.509,0.438,66.4,41.5,56.8,9.2],["22097",560,0.504,0.065,48.2,68.0,31.4,27.9],["36007",2127,0.468,-0.042,26.1,56.1,47.7,17.4],["18177",594,0.434,0.162,33.0,91.9,39.7,19.9],["26065",2297,0.532,-0.293,13.2,52.6,46.8,22.2],["22009",254,0.449,0.29,63.8,74.0,35.0,23.1],["51035",253,0.395,0.436,97.1,74.8,37.0,15.7],["19029",165,0.473,0.23,53.6,null,45.5,15.1],["42079",3171,0.449,0.021,20.0,62.5,46.6,15.7],["26151",377,0.456,0.243,90.2,52.7,42.0,15.7],["36043",713,0.466,0.158,51.8,43.3,48.9,14.0],["29071",968,0.469,0.288,55.6,78.9,50.9,12.0],["49053",1624,0.525,0.577,15.2,58.5,52.9,14.8],["55125",354,0.446,0.14,100.0,null,41.6,14.7],["27129",171,0.503,0.156,100.0,null,54.8,10.5],["40123",400,0.53,0.404,53.6,79.4,44.0,18.1],["37167",592,0.458,0.421,67.7,67.9,44.1,17.1],["17055",318,0.418,0.215,48.6,83.1,39.5,19.2],["39161",234,0.457,0.412,50.7,null,50.5,12.3],["04007",561,0.465,0.289,41.1,131.1,40.6,21.2],["27163",1911,0.572,-0.023,14.5,27.3,86.7,5.1],["48213",783,0.465,0.531,60.1,84.8,43.4,18.8],["28149",403,0.511,0.013,40.9,41.1,40.5,23.7],["13077",1032,0.559,0.424,32.9,34.4,65.2,12.0],["18081",1130,0.516,0.354,13.9,45.4,63.0,9.3],["27111",722,0.5,0.232,73.6,55.2,53.4,9.7],["18127",1388,0.533,-0.015,20.8,54.4,64.9,10.8],["18173",549,0.514,0.245,29.3,39.4,61.5,9.5],["05087",195,0.441,0.369,100.0,null,39.8,18.1],["51790",398,0.538,-0.027,3.7,89.5,42.9,15.8],["06047",1417,0.493,-0.097,14.3,63.0,44.4,24.2],["47001",875,0.493,0.301,34.7,76.4,44.2,17.2],["01043",752,0.475,0.706,73.2,70.2,39.3,17.1],["42037",719,0.477,0.165,40.9,52.2,47.0,15.3],["27055",227,0.467,0.0,57.4,null,55.5,10.3],["40019",475,0.467,0.453,56.1,106.2,46.9,15.5],["36079",715,0.529,0.095,20.5,33.8,97.6,5.2],["13213",224,0.388,0.555,70.1,82.9,38.1,18.8],["01091",202,0.485,-0.048,69.3,null,30.7,27.8],["23027",556,0.459,-0.075,91.3,48.9,45.5,16.0],["39077",452,0.478,0.16,50.3,49.9,48.8,12.9],["29201",334,0.422,0.411,41.6,72.2,40.3,19.6],["19087",173,0.462,0.138,57.1,null,49.6,13.6],["51760",1521,0.551,-0.599,0.0,47.1,41.2,25.4],["01123",317,0.483,0.367,74.2,null,39.4,23.4],["28011",260,0.573,-0.353,54.0,null,27.5,37.8],["08014",530,0.611,-0.106,0.6,40.4,83.3,5.9],["08083",345,0.487,0.243,67.2,100.3,41.6,18.7],["35017",355,0.473,-0.137,42.4,103.5,38.9,21.5],["41059",843,0.465,0.281,29.1,41.5,49.3,18.0],["37085",820,0.506,0.198,55.9,47.2,47.9,18.3],["54063",193,0.451,0.412,88.5,null,36.0,17.1],["13291",256,0.477,0.591,100.0,null,41.7,13.1],["26015",436,0.461,0.204,77.1,50.1,56.9,9.3],["47051",356,0.506,0.317,69.6,65.7,44.8,16.2],["48469",604,0.538,0.371,26.6,50.0,54.7,14.7],["51187",304,0.477,0.23,50.4,79.2,63.7,10.4],["16055",1557,0.53,0.344,24.2,63.4,50.9,12.6],["08039",188,0.537,0.469,100.0,null,87.3,5.1],["47057",201,0.448,0.546,100.0,null,37.5,20.2],["50021",795,0.484,-0.168,61.0,58.8,50.0,12.3],["19179",358,0.497,-0.016,30.5,null,42.5,17.5],["13009",288,0.535,-0.039,35.1,null,34.6,29.7],["48289",219,0.475,0.67,100.0,null,47.4,16.0],["05083",207,0.382,0.438,71.0,null,36.5,19.0],["44001",487,0.528,-0.24,1.1,54.7,73.1,7.1],["39109",833,0.46,0.363,30.8,53.9,53.4,11.1],["51750",245,0.482,-0.06,2.9,null,31.5,39.3],["21183",183,0.514,0.363,73.5,null,39.5,21.2],["19165",150,0.447,0.248,59.4,null,52.8,10.0],["01079",264,0.386,0.345,91.3,59.3,42.3,18.3],["40037",660,0.456,0.472,53.9,77.6,46.5,15.0],["47111",220,0.327,0.549,79.6,null,34.1,18.6],["40073",199,0.487,0.695,72.4,null,62.9,8.4],["12093",249,0.418,0.263,36.5,62.5,36.4,25.3],["32019",557,0.451,0.293,36.9,64.6,49.0,15.3],["01007",163,0.491,0.492,68.4,null,39.8,16.5],["55021",614,0.495,-0.089,60.7,67.1,61.0,8.6],["20037",358,0.464,0.092,34.9,null,37.6,21.8],["41065",311,0.473,0.006,33.1,null,46.8,14.5],["37161",612,0.435,0.375,61.0,81.0,36.1,19.3],["27035",732,0.492,0.175,62.7,56.0,50.9,10.4],["48293",185,0.459,0.42,53.6,null,37.4,22.2],["13039",422,0.547,0.283,31.4,51.2,53.3,14.0],["37149",246,0.569,0.214,92.3,null,47.4,14.5],["36011",801,0.477,-0.037,55.8,45.2,53.1,11.4],["20149",226,0.54,0.472,58.9,null,62.5,9.0],["31025",236,0.521,0.28,73.0,null,65.4,7.0],["53065",712,0.49,0.296,79.2,72.0,44.1,16.5],["13137",349,0.496,0.644,58.8,null,41.6,18.3],["39003",909,0.479,0.274,25.9,65.7,45.6,16.1],["28035",535,0.527,0.126,29.6,39.2,37.0,27.3],["47035",645,0.501,0.48,60.9,50.3,40.1,16.0],["35031",433,0.503,-0.433,57.4,132.6,29.3,38.1],["55055",709,0.471,0.075,34.1,39.2,57.3,10.3],["53003",293,0.478,0.19,6.7,null,45.5,14.5],["51099",235,0.553,0.2,73.2,null,84.3,5.6],["48179",190,0.5,0.748,19.4,null,45.3,15.7],["31155",210,0.533,0.345,66.5,null,64.5,9.2],["01059",264,0.462,0.467,70.4,60.6,36.1,22.3],["13031",471,0.52,0.204,48.3,38.8,37.1,31.5],["22085",255,0.435,0.566,88.2,null,39.4,19.5],["20191",238,0.496,0.409,62.9,null,51.0,12.5],["18145",321,0.436,0.332,52.0,55.1,52.7,12.5],["40087",372,0.548,0.56,77.2,69.7,58.7,9.6],["39005",396,0.437,0.336,61.9,38.0,48.5,15.4],["35015",561,0.517,0.334,20.9,117.0,59.6,13.7],["40115",318,0.465,0.335,49.3,78.0,37.1,22.5],["55115",375,0.419,0.134,74.4,null,48.8,11.4],["27083",235,0.511,0.129,47.9,null,51.9,13.9],["26109",227,0.423,0.074,64.3,null,41.2,15.1],["05047",158,0.456,0.459,82.6,null,39.5,21.1],["21013",220,0.414,0.515,62.5,161.8,22.6,36.6],["13233",326,0.475,0.48,51.4,60.4,39.4,20.1],["26079",188,0.41,0.239,84.4,null,42.6,16.8],["55061",211,0.441,0.074,72.3,null,58.2,9.0],["21113",368,0.484,0.39,25.9,70.8,52.7,18.7],["27039",167,0.551,0.173,51.8,null,68.7,6.6],["51163",260,0.55,0.203,91.6,null,52.5,14.7],["51840",305,0.515,-0.034,0.0,null,46.5,14.6],["40049",335,0.439,0.501,68.7,93.9,41.2,18.6],["05093",296,0.483,0.046,36.3,null,35.0,25.5],["48467",443,0.512,0.644,75.0,44.4,46.6,15.8],["04012",201,0.453,0.338,56.3,132.9,36.3,21.1],["28095",301,0.485,0.208,69.6,null,37.3,20.6],["51109",290,0.528,0.154,100.0,null,54.7,12.0],["54099",406,0.399,0.322,65.2,73.2,38.3,20.9],["36097",219,0.502,0.113,81.2,null,47.2,14.6],["55049",205,0.473,-0.268,79.9,null,56.6,9.7],["19059",205,0.517,0.197,35.0,null,57.9,6.9],["48049",345,0.438,0.691,40.4,86.6,43.2,17.7],["55019",326,0.393,0.113,91.7,null,46.8,14.9],["29023",305,0.43,0.485,52.2,62.9,36.3,21.6],["47091",214,0.425,0.533,85.2,null,30.2,26.9],["31185",153,0.477,0.532,44.1,null,55.2,9.4],["51125",243,0.506,-0.021,100.0,null,51.0,14.6],["27079",215,0.544,0.137,62.2,null,62.5,8.5],["55045",307,0.508,-0.151,60.2,null,57.4,8.9],["36123",283,0.438,0.079,71.2,null,50.1,13.9],["54009",176,0.438,0.187,42.1,84.1,46.3,12.7],["05057",173,0.405,0.247,55.8,null,34.1,26.7],["18049",192,0.443,0.325,64.9,null,46.3,14.0],["06037",50057,0.544,-0.439,0.6,38.5,58.0,17.8],["37179",1455,0.527,0.292,27.3,32.5,67.2,9.7],["06023",1735,0.511,-0.268,29.8,95.4,42.7,21.0],["06013",7347,0.56,-0.389,0.8,35.9,82.9,10.2],["36101",1089,0.44,0.214,60.4,24.2,48.8,15.1],["24510",4116,0.544,-0.752,0.0,77.5,44.3,23.1],["28033",1031,0.525,0.353,20.4,41.9,60.1,10.0],["34039",3750,0.528,-0.327,0.0,29.0,70.5,10.8],["01111",192,0.448,0.442,81.3,null,37.5,20.6],["06067",10043,0.525,-0.208,2.1,55.0,57.5,17.9],["48285",200,0.38,0.633,81.3,null,47.8,10.4],["02020",2966,0.594,-0.026,4.1,80.8,80.9,8.1],["53035",2813,0.525,-0.118,16.7,57.1,65.0,10.4],["55075",511,0.429,0.101,61.8,null,43.9,13.1],["51121",807,0.559,-0.02,24.9,29.2,49.7,24.0],["13063",1051,0.551,-0.69,0.9,28.4,42.5,24.3],["55101",1729,0.477,-0.022,12.3,58.8,56.4,12.5],["40015",299,0.468,0.342,80.0,93.4,40.2,20.8],["04019",9624,0.532,-0.089,7.5,68.6,46.8,19.1],["49011",3060,0.584,0.428,0.9,42.1,72.7,7.2],["36009",887,0.425,0.174,61.8,48.0,43.9,17.5],["34023",5062,0.51,-0.237,0.7,29.8,80.7,8.9],["44007",4747,0.487,-0.3,5.5,66.4,50.6,17.2],["28087",482,0.515,0.03,42.6,37.3,41.2,21.9],["48141",3961,0.552,-0.36,2.2,58.9,42.1,22.5],["55033",403,0.467,-0.029,59.3,40.1,51.8,14.2],["55063",1144,0.506,-0.167,16.8,46.2,51.5,14.8],["36083",1605,0.526,-0.078,30.5,37.5,61.8,12.4],["01005",186,0.457,0.013,67.8,null,34.0,26.4],["10003",4021,0.532,-0.347,4.6,47.7,66.3,11.4],["49021",492,0.547,0.6,22.6,60.5,43.8,21.5],["27109",1210,0.569,-0.024,16.6,34.9,69.3,9.2],["12011",9631,0.529,-0.349,0.0,36.2,53.0,14.4],["01103",1051,0.51,0.467,38.6,46.0,46.9,16.3],["47177",413,0.475,0.301,61.4,61.2,36.2,20.7],["09011",2641,0.529,-0.153,25.8,57.5,67.6,9.9],["13051",1843,0.572,-0.138,4.5,40.7,49.6,18.0],["48157",2933,0.622,0.009,5.5,25.9,91.2,8.2],["06027",239,0.519,0.114,46.4,null,47.3,10.8],["48007",231,0.485,0.436,27.3,89.5,44.9,17.0],["34041",971,0.473,0.184,37.6,53.5,73.0,7.9],["17001",637,0.463,0.35,32.6,53.6,48.1,12.9],["53075",524,0.546,-0.023,27.5,null,38.6,30.0],["47163",1501,0.441,0.479,25.6,63.9,41.0,16.8],["13217",699,0.491,-0.018,31.2,45.0,51.1,17.0],["18029",507,0.442,0.433,53.1,77.6,60.8,9.3],["42029",5135,0.571,-0.062,13.3,39.2,89.0,7.2],["51019",763,0.544,0.435,78.4,51.9,56.7,9.2],["12086",9137,0.53,-0.232,0.4,29.2,44.2,19.9],["51095",1134,0.579,0.088,15.9,26.1,80.2,7.9],["01089",3204,0.574,0.166,16.4,44.1,60.1,13.3],["33013",1586,0.517,-0.098,54.6,61.4,67.2,8.6],["23019",1890,0.468,0.01,57.7,49.0,45.3,16.3],["29183",2790,0.545,0.19,5.8,42.5,75.6,6.1],["48121",4247,0.59,0.252,6.9,29.2,76.7,8.7],["24047",499,0.523,0.2,35.5,59.8,57.2,10.2],["21067",2388,0.545,-0.051,3.1,67.5,50.7,18.9],["42107",1550,0.417,0.218,36.5,62.9,46.6,13.0],["29043",602,0.513,0.455,44.8,38.5,54.4,11.0],["20057",213,0.521,0.351,19.3,null,49.7,17.4],["28089",749,0.611,0.157,28.0,31.2,65.9,12.7],["01083",669,0.519,0.447,57.6,35.1,51.1,14.1],["17121",408,0.36,0.217,45.1,83.7,43.4,18.3],["08037",392,0.594,-0.194,20.0,null,78.8,8.1],["19105",170,0.512,0.003,58.0,null,55.5,10.6],["12005",1708,0.498,0.435,12.0,65.2,48.6,15.6],["18023",298,0.483,0.305,49.8,null,50.1,12.7],["08059",5927,0.532,-0.069,6.9,49.2,72.0,8.1],["29219",260,0.492,0.283,63.0,null,51.5,13.6],["18089",3531,0.514,-0.286,4.0,44.7,50.9,17.6],["27169",458,0.493,-0.097,34.5,null,52.8,13.9],["49057",2336,0.524,0.31,5.8,82.1,59.7,12.4],["51510",1252,0.645,-0.487,0.0,22.2,89.2,9.8],["54019",423,0.44,0.21,57.9,92.6,37.8,19.1],["34031",2728,0.504,-0.242,2.4,33.0,61.7,16.8],["54011",862,0.451,0.164,21.6,148.0,37.8,21.8],["36085",2526,0.506,0.045,0.0,35.9,74.0,12.9],["51009",281,0.527,0.221,63.7,null,47.0,14.1],["35005",582,0.488,0.309,24.2,77.8,41.4,22.2],["18109",569,0.459,0.415,49.1,63.7,57.5,12.5],["36105",684,0.431,-0.032,74.2,52.0,52.0,17.1],["37151",1272,0.424,0.495,56.2,60.2,43.0,16.9],["51003",973,0.59,-0.183,45.0,26.5,70.3,9.7],["26161",2749,0.596,-0.394,16.4,39.8,62.5,15.2],["13115",714,0.521,0.398,36.8,38.6,43.0,19.8],["48061",1666,0.564,-0.308,8.4,43.9,34.6,33.0],["01053",295,0.522,0.3,63.5,79.9,32.3,25.2],["19005",186,0.538,0.019,74.0,null,48.1,10.2],["19103",1112,0.589,-0.383,18.5,30.3,56.8,17.9],["41071",978,0.498,0.053,22.6,51.1,55.0,15.7],["35043",1228,0.57,-0.07,17.1,69.5,60.2,14.4],["06035",269,0.48,0.416,70.5,71.3,51.5,16.2],["24029",273,0.531,0.009,72.6,null,55.0,12.0],["37169",492,0.413,0.443,75.7,77.2,42.5,15.4],["42055",1536,0.493,0.391,40.4,41.9,55.8,11.6],["12053",1449,0.445,0.137,19.4,61.1,42.3,15.6],["37093",277,0.588,-0.162,43.2,46.1,42.7,22.9],["34001",1937,0.497,-0.13,12.7,52.2,55.5,15.5],["13245",1308,0.536,-0.326,9.2,63.6,38.6,25.2],["48499",539,0.46,0.628,74.2,null,47.8,13.3],["37115",180,0.461,0.12,90.6,null,40.4,16.6],["55087",1690,0.524,0.009,24.7,40.6,59.8,9.0],["27137",2122,0.495,-0.246,37.1,71.2,49.4,15.5],["47097",224,0.469,0.12,58.7,null,32.4,24.7],["13015",680,0.488,0.506,35.2,52.0,50.6,14.8],["51089",696,0.417,0.181,60.7,36.5,35.0,19.0],["13069",289,0.488,0.327,66.6,49.8,34.5,24.5],["21073",498,0.5,0.015,27.6,70.9,51.0,14.7],["28057",216,0.444,0.644,86.3,null,35.4,20.2],["30041",236,0.445,0.005,40.0,null,43.0,22.0],["55129",224,0.433,0.072,83.2,null,44.4,12.8],["36065",2285,0.473,0.091,33.0,41.5,49.8,16.7],["25011",821,0.526,-0.439,54.4,55.3,56.3,11.3],["37063",2233,0.593,-0.547,5.6,28.9,54.1,17.4],["49051",210,0.586,0.358,26.9,null,71.3,8.8],["40089",352,0.449,0.541,69.3,91.1,33.4,23.7],["19049",441,0.601,0.089,30.6,36.5,78.9,5.7],["41029",2479,0.487,0.044,20.1,62.6,46.3,18.0],["41017",1857,0.536,0.034,27.6,47.7,54.2,13.9],["26055",934,0.501,0.091,48.0,38.2,55.6,9.8],["54069",495,0.483,0.215,23.1,81.1,42.0,16.2],["55121",322,0.46,-0.093,89.6,null,52.4,9.7],["23009",824,0.498,-0.146,90.1,48.1,50.0,12.1],["12091",1769,0.509,0.473,12.1,57.0,57.7,12.0],["20079",338,0.521,0.213,30.9,null,52.5,12.5],["47021",362,0.492,0.384,83.0,106.7,53.2,12.9],["18071",383,0.457,0.308,43.7,60.4,48.5,14.8],["48257",672,0.552,0.423,48.8,49.3,60.2,13.7],["55117",1057,0.486,0.088,28.3,51.5,54.4,8.9],["13113",1009,0.6,0.271,18.2,37.0,81.7,7.1],["47185",295,0.403,0.416,78.2,82.3,36.0,18.1],["47147",415,0.48,0.379,53.2,66.3,56.3,10.5],["27119",317,0.53,0.1,48.5,68.5,53.1,13.0],["08001",3016,0.483,-0.146,3.6,56.3,61.4,12.9],["47081",227,0.441,0.303,100.0,null,37.5,22.9],["13199",168,0.494,0.088,83.3,null,35.0,23.7],["37051",2464,0.554,-0.178,13.4,51.6,44.8,17.6],["39101",536,0.431,0.166,30.3,89.6,43.6,17.4],["26073",465,0.52,-0.083,46.6,39.8,40.7,28.8],["48037",818,0.487,0.42,35.4,58.9,42.7,19.5],["37163",463,0.488,0.12,85.0,53.8,36.7,24.2],["27061",510,0.484,-0.021,79.4,76.3,49.5,13.3],["54079",471,0.484,0.361,35.8,57.0,56.6,9.8],["51103",175,0.497,0.082,100.0,null,50.1,10.0],["53001",167,0.557,0.356,40.2,null,47.6,23.0],["48361",700,0.443,0.544,35.2,62.2,51.4,15.2],["26147",1206,0.478,0.12,38.6,63.1,50.9,14.1],["36035",533,0.45,0.165,50.4,44.1,46.1,16.7],["40001",222,0.419,0.419,83.3,null,33.2,30.1],["21059",927,0.498,0.211,27.0,44.6,46.7,16.3],["21101",394,0.503,0.123,38.2,63.5,41.6,19.2],["47077",268,0.437,0.512,76.4,86.3,41.5,20.7],["48135",836,0.542,0.458,9.5,76.9,58.3,12.4],["41027",226,0.544,-0.291,52.2,null,56.6,13.3],["42047",443,0.427,0.182,55.7,null,47.9,8.8],["26155",614,0.485,0.024,55.0,43.4,48.5,14.2],["51063",170,0.512,0.275,100.0,null,47.3,11.8],["38035",570,0.57,0.055,16.8,51.4,50.7,17.7],["55015",238,0.445,0.103,27.5,null,70.0,6.3],["47019",421,0.43,0.543,41.0,67.4,33.2,23.9],["18065",430,0.428,0.215,42.9,63.2,44.5,16.2],["29119",218,0.408,0.499,100.0,null,38.8,20.7],["12089",728,0.518,0.475,48.1,56.1,59.2,12.7],["19139",355,0.442,-0.084,25.6,44.6,56.0,11.4],["53039",299,0.498,0.072,60.2,null,49.6,15.7],["47179",1185,0.484,0.382,26.4,58.2,44.4,17.1],["45067",202,0.46,-0.266,60.8,null,30.6,26.0],["23007",441,0.488,-0.111,83.0,null,43.0,14.1],["29015",214,0.364,0.374,86.5,null,33.4,19.3],["37105",602,0.498,0.103,42.8,65.7,46.4,18.3],["51171",541,0.516,0.336,66.6,61.8,50.5,10.6],["19011",247,0.449,0.073,80.7,null,61.2,9.2],["28101",192,0.474,0.35,87.1,null,35.5,23.3],["40131",718,0.481,0.502,50.3,54.9,59.8,9.4],["17041",170,0.465,0.346,61.6,null,53.0,11.4],["37125",1017,0.532,0.261,50.7,44.2,51.9,14.6],["30013",1134,0.512,0.094,19.8,70.9,45.5,14.7],["40137",478,0.458,0.558,43.3,80.1,43.5,15.5],["27013",592,0.53,-0.062,26.9,31.9,52.1,18.3],["37017",248,0.391,0.018,91.2,null,30.4,28.1],["13123",259,0.479,0.606,87.6,null,43.8,19.4],["26107",376,0.465,0.122,66.7,null,41.8,22.6],["19055",162,0.457,0.079,71.5,null,59.5,9.6],["29101",399,0.484,0.244,50.4,37.3,49.0,17.0],["28145",163,0.436,0.546,75.6,null,37.9,19.1],["47143",352,0.415,0.519,68.0,76.4,38.4,22.9],["16075",281,0.448,0.476,42.7,null,45.7,18.9],["26137",248,0.419,0.22,65.7,null,50.8,14.2],["21235",446,0.442,0.575,65.2,125.9,32.4,27.0],["54029",335,0.394,0.27,30.3,89.4,40.3,14.5],["37007",172,0.541,-0.197,78.5,null,34.7,22.8],["45025",338,0.503,0.07,73.8,59.2,35.7,24.5],["37197",378,0.37,0.527,84.7,null,38.6,19.0],["20121",265,0.449,0.328,51.0,52.9,63.4,9.6],["48171",287,0.537,0.614,53.7,null,55.9,10.8],["05091",352,0.44,0.39,40.0,44.0,40.0,20.6],["48343",158,0.399,0.295,78.4,null,37.9,18.6],["05123",164,0.427,-0.154,51.6,null,35.1,24.6],["48471",393,0.522,0.294,45.6,66.0,40.1,24.0],["05031",766,0.482,0.301,32.2,49.0,43.9,18.9],["37107",436,0.493,0.013,45.0,59.2,37.0,22.1],["48001",391,0.506,0.512,67.1,79.8,42.1,17.1],["28115",196,0.505,0.558,84.0,null,39.9,18.0],["33019",515,0.497,-0.095,64.2,54.3,58.5,9.0],["42105",219,0.479,0.49,100.0,null,40.9,14.1],["35035",636,0.502,0.254,29.6,74.9,41.5,24.8],["54097",223,0.493,0.453,64.0,null,42.2,17.9],["36025",528,0.447,0.128,78.4,52.4,46.1,15.9],["21009",350,0.449,0.39,63.3,null,39.0,21.4],["37193",617,0.446,0.451,72.8,90.4,34.8,21.1],["48477",220,0.505,0.486,53.5,null,52.7,14.4],["21207",174,0.431,0.63,100.0,null,31.5,26.5],["55017",582,0.46,0.034,46.1,39.0,52.7,11.1],["47005",172,0.366,0.31,78.5,null,33.6,22.6],["19181",437,0.513,0.058,42.0,null,67.1,7.3],["24039",162,0.444,0.041,45.8,null,35.9,25.1],["24035",402,0.565,0.301,54.5,46.6,85.9,6.5],["40021",412,0.451,0.179,60.0,74.1,38.6,22.4],["28141",164,0.451,0.606,100.0,null,35.4,18.6],["27009",246,0.537,0.198,40.0,null,51.8,13.5],["13277",268,0.474,0.341,40.8,47.6,37.6,27.5],["27091",213,0.437,0.267,54.0,null,52.0,11.6],["48299",250,0.476,0.583,45.2,null,48.6,13.8],["27159",177,0.407,0.291,67.0,null,42.7,15.5],["51085",923,0.535,0.342,39.1,36.7,81.2,6.2],["48337",186,0.457,0.686,58.9,null,46.4,16.1],["06069",341,0.548,-0.216,24.0,null,73.8,10.8],["45033",198,0.485,-0.097,69.5,null,31.0,30.6],["40071",520,0.483,0.448,24.5,64.6,42.8,17.8],["40035",166,0.452,0.389,60.1,null,40.0,17.7],["51610",195,0.615,-0.459,0.0,null,115.2,2.7],["28099",159,0.478,0.45,73.9,96.1,36.0,22.3],["18061",328,0.463,0.283,85.8,54.6,52.9,13.2],["54109",204,0.382,0.502,88.9,178.4,35.5,20.1],["45037",255,0.486,0.148,73.3,null,48.1,16.9],["46029",251,0.482,0.214,22.5,null,50.1,10.4],["29209",276,0.46,0.495,88.7,null,41.9,13.4],["51193",174,0.402,-0.034,78.8,null,51.6,11.1],["22047",205,0.493,-0.103,59.2,null,46.5,18.5],["13279",191,0.45,0.418,51.1,85.2,33.1,26.6],["47085",216,0.463,0.193,82.5,null,41.0,18.5],["21099",170,0.429,0.367,87.2,null,35.7,24.2],["35007",181,0.42,-0.015,52.4,null,32.7,21.4],["19191",219,0.521,-0.122,59.0,null,57.0,8.0],["29113",355,0.377,0.303,74.8,67.1,55.2,13.8],["27161",185,0.432,0.161,50.2,null,53.2,7.8],["54047",179,0.369,0.243,86.0,269.6,25.2,37.6],["28113",339,0.522,-0.04,59.4,null,31.5,31.7],["56039",286,0.685,-0.207,46.4,null,75.6,7.3],["18129",208,0.519,0.235,66.8,null,59.9,9.7],["46005",183,0.53,0.212,27.4,null,48.4,21.4],["17021",250,0.492,0.239,43.5,59.4,47.4,13.6],["48273",155,0.581,-0.062,18.9,null,41.5,23.8],["29229",215,0.456,0.516,76.6,null,30.6,25.3],["51155",331,0.444,0.283,46.9,null,49.5,13.5],["13177",212,0.594,0.524,36.2,null,62.8,11.9],["21161",164,0.457,0.272,55.4,null,38.6,20.4],["37121",167,0.407,0.502,82.6,null,39.7,18.0],["20133",180,0.456,0.358,45.1,null,43.9,19.7],["26141",158,0.487,0.12,80.9,null,41.6,13.5],["30083",188,0.543,0.548,44.2,null,65.6,8.6],["19047",158,0.449,0.135,51.8,null,49.7,21.7],["53061",6102,0.523,-0.175,10.8,52.1,73.5,9.3],["06059",18327,0.568,0.001,0.1,36.1,78.1,12.5],["05119",3418,0.547,-0.136,12.3,49.8,47.1,18.0],["36061",11896,0.588,-0.721,0.0,27.4,75.5,17.6],["18135",232,0.466,0.271,61.9,null,42.4,17.3],["48113",13919,0.564,-0.19,0.7,44.5,51.4,18.6],["48029",9669,0.573,-0.078,4.5,58.5,52.4,17.2],["17031",27212,0.545,-0.521,0.0,35.8,56.9,16.7],["06001",9812,0.56,-0.614,0.4,36.2,79.8,12.0],["12105",4429,0.479,0.09,13.5,53.4,44.1,17.7],["06113",1714,0.568,-0.372,6.9,62.5,57.7,19.3],["06075",4955,0.588,-0.723,0.0,51.5,87.7,12.5],["26081",4658,0.551,0.034,15.7,41.9,54.7,14.9],["41009",633,0.496,-0.019,43.6,50.4,55.1,13.4],["12071",5012,0.5,0.158,5.8,49.8,50.4,15.5],["36059",8812,0.541,-0.081,0.2,30.2,102.0,6.0],["28017",155,0.426,-0.002,85.3,null,31.0,27.2],["39049",8887,0.537,-0.232,1.4,56.7,54.0,17.1],["56013",510,0.504,0.345,51.4,157.7,53.6,14.1],["05103",248,0.532,0.099,56.4,null,31.2,24.5],["39007",891,0.416,-0.025,46.4,64.3,41.2,19.6],["51147",228,0.386,-0.093,63.2,null,42.3,18.0],["21151",665,0.481,0.275,38.5,77.0,43.7,21.3],["08043",582,0.46,0.352,26.4,59.6,42.3,16.6],["21227",1030,0.51,0.216,31.2,45.3,46.9,19.2],["30031",1170,0.632,0.003,33.5,28.5,57.0,13.5],["48209",1238,0.588,0.044,31.7,46.6,60.5,16.2],["18103",336,0.426,0.346,46.5,54.7,45.6,16.1],["53007",800,0.517,0.145,27.2,46.3,51.8,12.6],["17089",2815,0.531,-0.078,3.6,29.4,71.6,11.0],["51810",3506,0.577,0.023,1.5,40.6,67.7,8.2],["22017",1997,0.523,-0.04,14.4,59.6,40.8,22.4],["17063",333,0.547,0.101,24.4,47.2,67.2,9.8],["37083",451,0.506,-0.291,54.7,60.7,32.5,26.8],["46093",262,0.466,0.431,38.0,null,53.1,9.0],["17197",3741,0.506,-0.084,3.9,39.2,77.5,7.7],["17179",1055,0.537,0.173,20.4,51.3,60.2,7.9],["09005",1918,0.501,0.041,41.4,57.3,73.5,6.9],["09013",1391,0.516,-0.13,38.2,40.4,80.1,6.8],["13035",170,0.5,0.37,77.9,null,40.8,20.5],["19111",331,0.456,-0.052,40.6,61.4,44.6,16.4],["12069",2886,0.494,0.179,19.3,47.0,47.1,13.5],["56025",903,0.525,0.419,14.4,90.9,57.0,10.5],["05143",1788,0.539,0.131,25.5,43.7,45.4,19.0],["12035",894,0.492,0.088,10.3,57.9,48.9,13.2],["37035",1450,0.442,0.306,30.3,61.4,45.5,15.9],["34037",1468,0.492,0.242,39.8,55.5,87.4,5.8],["24033",5284,0.589,-0.796,2.0,22.4,75.9,9.7],["40013",382,0.432,0.451,61.3,72.4,39.9,17.5],["34003",6078,0.532,-0.114,0.1,27.5,88.5,7.5],["26111",741,0.507,0.128,42.8,25.6,54.9,12.3],["37135",1540,0.615,-0.457,28.5,31.9,61.1,14.5],["13267",172,0.459,0.444,68.2,null,35.6,27.7],["18077",325,0.48,0.158,45.1,67.4,47.1,14.5],["29215",259,0.459,0.481,99.2,null,35.7,26.2],["12001",2005,0.547,-0.205,21.2,49.0,44.7,24.2],["34015",2140,0.493,-0.075,8.3,47.8,78.6,8.1],["27065",170,0.494,0.177,77.4,null,48.0,13.5],["39169",864,0.519,0.232,51.0,44.8,51.4,12.7],["48183",1037,0.505,0.393,13.4,60.7,47.1,18.2],["47107",444,0.441,0.487,60.3,53.2,38.7,19.5],["28003",275,0.473,0.525,66.4,49.5,38.9,19.9],["01015",1118,0.506,0.351,33.7,60.6,42.0,19.6],["40125",653,0.449,0.412,50.7,77.3,44.4,18.1],["27021",297,0.512,0.176,100.0,70.4,47.9,15.9],["27095",339,0.457,0.171,70.8,null,51.2,11.8],["28117",192,0.458,0.475,76.1,null,33.5,22.7],["37001",1331,0.474,0.119,28.6,34.9,43.2,18.5],["51680",832,0.535,0.078,2.7,49.0,40.7,24.3],["27139",1048,0.568,0.138,17.2,29.4,90.2,5.7],["26025",1027,0.483,0.005,31.0,80.2,44.7,17.0],["51093",370,0.562,0.162,57.4,null,66.8,10.9],["13311",253,0.542,0.645,83.8,null,42.3,19.3],["36111",1831,0.493,-0.188,46.0,49.7,60.4,13.0],["13247",621,0.53,-0.173,14.9,36.8,51.1,17.2],["37147",1223,0.558,-0.078,25.4,46.2,42.3,24.5],["46013",330,0.482,0.089,28.9,null,53.1,11.0],["49045",571,0.538,0.369,17.7,67.8,64.1,7.2],["06057",1356,0.531,-0.032,42.1,55.4,57.4,12.1],["39053",325,0.428,0.357,81.4,79.9,39.4,21.4],["13157",573,0.539,0.608,60.0,69.0,54.2,13.5],["26063",297,0.495,0.179,89.5,null,43.1,13.9],["22051",2845,0.507,0.198,1.1,60.4,49.5,16.1],["42019",2070,0.518,0.331,42.0,55.9,63.3,8.5],["51087",2666,0.545,-0.149,4.3,39.4,63.7,10.6],["37089",1193,0.502,0.253,33.3,62.6,48.1,13.3],["27057",241,0.461,0.216,83.4,null,49.7,11.5],["13223",622,0.531,0.411,20.1,41.7,61.0,10.7],["18003",3198,0.508,0.135,11.9,51.0,49.6,15.2],["39143",565,0.464,0.051,44.1,52.7,49.0,13.2],["48091",1186,0.581,0.504,46.1,43.6,69.7,9.2],["28123",203,0.473,0.135,72.2,null,32.6,26.5],["18019",999,0.468,0.13,20.5,59.1,51.8,9.9],["13129",390,0.485,0.571,51.6,40.7,41.4,20.6],["23031",2188,0.516,-0.139,56.8,51.9,59.1,9.4],["19157",215,0.484,-0.049,52.0,null,50.7,10.0],["19101",163,0.552,-0.119,38.7,null,45.3,15.6],["48259",365,0.603,0.601,58.2,44.8,76.3,6.1],["53073",2309,0.546,-0.166,25.9,46.9,54.2,16.0],["39059",346,0.454,0.203,61.4,79.1,41.6,19.8],["24017",1124,0.567,-0.291,29.5,40.2,91.4,7.7],["22057",655,0.508,0.504,24.2,55.2,52.1,15.4],["24019",243,0.465,0.09,56.2,null,47.9,17.0],["37059",439,0.474,0.43,70.3,43.5,51.7,13.9],["55089",884,0.523,0.236,24.9,26.4,78.4,5.5],["05089",211,0.46,0.412,100.0,null,33.7,19.9],["05051",1309,0.465,0.296,36.9,73.9,40.0,20.6],["45089",215,0.553,-0.373,81.9,null,28.5,29.3],["47029",317,0.442,0.529,67.5,77.1,31.1,26.1],["17075",255,0.4,0.433,71.7,null,47.8,16.1],["36113",761,0.51,0.004,33.9,41.7,57.2,11.1],["39045",1031,0.505,0.198,34.7,38.8,61.5,10.2],["30111",1849,0.52,0.18,16.7,64.1,55.0,10.4],["22099",261,0.529,0.262,49.6,52.0,46.5,17.3],["26051",267,0.427,0.135,88.6,76.8,39.6,20.3],["55013",182,0.467,0.11,100.0,null,42.4,15.9],["22039",179,0.486,0.323,61.1,76.7,30.7,28.0],["48441",1162,0.525,0.499,16.0,76.6,47.0,17.5],["41015",407,0.523,0.172,38.7,136.1,38.7,15.2],["22111",215,0.512,0.439,82.9,null,37.0,24.9],["27027",521,0.551,-0.073,27.9,55.6,59.6,11.9],["21047",606,0.521,0.254,28.6,40.0,40.3,20.3],["30067",271,0.572,0.091,47.7,null,43.4,12.1],["13073",1139,0.577,0.41,16.2,37.1,72.0,9.5],["51520",172,0.436,0.335,0.0,null,35.8,20.6],["39015",321,0.427,0.334,76.6,106.5,48.0,16.7],["22063",913,0.52,0.716,41.1,80.7,57.3,14.5],["56023",259,0.541,0.62,82.7,null,64.6,8.8],["40027",2274,0.55,0.239,16.9,56.9,58.5,12.5],["51770",895,0.476,-0.217,0.0,67.8,39.2,22.2],["45035",1127,0.534,0.163,19.5,50.7,56.3,12.1],["50011",539,0.494,-0.17,71.7,49.6,58.9,8.6],["28105",341,0.633,-0.011,36.4,null,33.4,32.6],["55109",729,0.536,0.114,53.2,31.8,73.7,5.7],["18167",925,0.459,-0.005,23.8,65.5,41.2,20.3],["05133",156,0.404,0.456,63.6,null,39.0,22.4],["48233",241,0.544,0.725,22.6,null,50.1,16.5],["51710",1601,0.522,-0.436,0.0,56.3,45.3,21.0],["32013",179,0.503,0.381,37.9,null,67.3,11.9],["42117",491,0.487,0.386,90.1,null,48.4,13.4],["21095",282,0.348,0.608,54.2,129.4,25.4,32.4],["13127",741,0.547,0.263,20.6,49.4,46.5,18.7],["17115",812,0.488,0.073,15.3,41.0,47.5,18.7],["12085",1299,0.493,0.211,8.5,46.9,52.6,11.8],["05135",231,0.433,0.407,80.1,null,31.1,22.2],["48223",320,0.475,0.535,59.6,null,45.7,19.5],["40147",620,0.5,0.47,23.9,51.0,50.0,14.4],["08117",214,0.626,-0.284,19.5,null,70.2,12.1],["47149",1937,0.553,0.232,17.0,48.0,58.0,12.6],["45059",401,0.456,0.218,64.2,58.6,39.8,20.3],["39019",173,0.491,0.216,71.0,null,48.5,14.0],["31047",205,0.463,0.415,26.7,null,49.9,15.2],["42013",1551,0.464,0.347,23.4,67.2,44.0,14.8],["39091",471,0.427,0.367,56.9,62.6,51.1,14.0],["48363",246,0.419,0.573,50.2,null,42.8,17.9],["01031",470,0.526,0.514,47.2,null,47.9,16.4],["16083",861,0.518,0.419,28.0,73.1,45.5,15.6],["36039",508,0.478,0.141,73.1,59.6,51.0,13.0],["48073",419,0.449,0.501,63.0,47.2,40.8,21.9],["12107",708,0.446,0.267,56.2,43.6,33.0,27.0],["54025",373,0.464,0.261,69.7,87.7,40.0,18.4],["53041",979,0.453,0.261,60.7,63.2,44.5,16.3],["37069",443,0.456,0.054,85.3,53.1,44.3,16.3],["21121",169,0.385,0.554,62.9,118.3,26.6,34.4],["42067",234,0.432,0.474,82.3,null,49.0,12.0],["40119",758,0.536,0.279,33.7,56.8,38.1,26.4],["19085",156,0.519,0.182,81.1,null,55.8,10.5],["27007",451,0.539,-0.034,67.1,61.0,45.2,19.1],["21155",184,0.484,0.129,71.5,null,40.4,19.1],["47183",309,0.479,0.411,67.0,63.0,38.0,19.1],["35027",329,0.511,0.327,53.2,null,40.1,18.0],["33009",986,0.537,-0.233,68.7,48.4,58.1,11.7],["36109",1065,0.55,-0.408,43.3,37.6,54.1,20.1],["21141",270,0.481,0.358,75.0,null,39.0,18.1],["55003",196,0.464,-0.265,54.9,null,40.3,15.4],["35041",191,0.518,0.365,36.5,null,34.9,25.9],["13175",387,0.468,0.244,56.6,null,33.6,27.7],["22083",154,0.461,0.285,66.0,null,35.7,24.0],["27015",288,0.493,0.215,34.9,null,53.3,8.0],["39175",212,0.443,0.275,57.4,null,50.7,11.1],["29195",172,0.506,0.171,45.8,null,40.6,17.1],["13055",199,0.482,0.453,57.6,null,35.2,22.4],["50023",933,0.522,-0.39,52.8,36.8,58.2,11.4],["54003",866,0.484,0.238,31.6,79.1,57.1,13.2],["18183",359,0.454,0.371,71.2,null,54.8,8.8],["13187",248,0.5,0.573,83.9,56.4,40.6,21.6],["12075",364,0.398,0.346,92.0,79.6,35.5,22.2],["28073",558,0.527,0.553,50.4,46.9,53.9,16.1],["55053",200,0.44,-0.084,72.2,null,49.6,13.1],["13261",254,0.488,-0.056,41.8,null,33.5,33.6],["36115",682,0.466,0.041,67.9,34.3,51.4,12.9],["16051",266,0.568,0.689,66.6,null,54.6,11.2],["29009",315,0.441,0.465,73.3,54.9,37.9,22.3],["01047",319,0.455,-0.372,45.6,null,28.1,34.3],["51033",212,0.495,-0.051,78.4,null,57.3,13.1],["26009",233,0.485,0.204,100.0,null,48.8,12.9],["47069",190,0.511,-0.014,80.2,null,33.6,23.7],["22101",390,0.515,0.21,13.0,53.3,40.8,21.6],["04023",315,0.565,-0.388,26.9,40.7,38.9,21.9],["26059",372,0.462,0.276,69.1,null,44.5,18.6],["29145",336,0.384,0.485,64.4,55.6,44.5,14.4],["17107",214,0.505,0.294,39.9,76.2,52.7,12.5],["19123",213,0.502,0.274,43.9,null,49.6,13.9],["17133",280,0.511,0.247,41.4,null,73.0,4.4],["35028",263,0.669,-0.103,11.2,null,105.9,5.1],["39001",219,0.429,0.353,89.0,103.3,34.7,24.5],["39145",646,0.437,0.149,54.3,95.4,37.9,24.0],["39129",388,0.492,0.275,49.9,49.7,58.7,12.2],["18045",183,0.415,0.348,66.0,null,45.9,12.7],["12087",657,0.581,0.005,8.7,84.2,60.3,13.0],["05075",155,0.374,0.339,63.6,null,33.4,23.6],["26101",246,0.447,-0.013,61.2,77.1,42.5,16.1],["28045",267,0.472,0.555,42.6,58.0,46.5,18.5],["27131",576,0.53,-0.056,25.9,null,61.7,11.7],["20061",213,0.488,0.154,11.7,null,45.2,12.4],["40133",217,0.447,0.35,64.7,74.8,36.9,22.8],["37113",405,0.523,0.309,80.0,65.9,39.6,18.4],["21003",175,0.429,0.515,78.7,null,41.2,17.0],["45049",165,0.527,-0.24,78.5,null,31.7,17.5],["41031",265,0.498,0.172,63.1,null,47.1,20.3],["48221",532,0.511,0.616,32.8,59.6,58.3,12.1],["18099",440,0.466,0.279,63.3,null,49.7,11.6],["42115",546,0.469,0.248,84.0,71.9,50.2,12.9],["22029",165,0.467,0.207,33.5,null,28.4,31.9],["55081",419,0.461,0.049,57.7,48.3,53.4,13.9],["51165",555,0.472,0.403,59.3,42.8,55.0,11.6],["37077",365,0.521,-0.029,54.7,36.7,50.3,16.5],["17067",193,0.508,0.252,71.0,null,50.1,11.5],["51173",335,0.424,0.39,75.3,75.5,38.9,17.7],["47159",184,0.462,0.333,82.9,null,44.3,16.2],["19019",234,0.44,-0.058,68.5,null,55.9,9.2],["01071",457,0.425,0.469,77.0,55.1,38.4,18.8],["41041",771,0.515,-0.177,37.6,92.5,41.3,18.6],["21125",442,0.437,0.635,56.8,62.8,36.1,22.8],["50019",393,0.494,-0.173,85.3,73.9,44.0,14.6],["05001",161,0.46,0.25,34.7,null,37.3,19.6],["18175",219,0.384,0.302,76.8,76.6,44.9,14.9],["22053",214,0.477,0.47,50.7,null,39.2,19.6],["21203",150,0.387,0.622,83.7,null,33.5,23.4],["13219",276,0.562,0.434,50.3,null,75.9,7.1],["21195",566,0.392,0.424,87.8,88.8,32.8,25.2],["51131",166,0.44,-0.14,100.0,null,37.0,21.9],["37131",161,0.441,-0.304,89.4,null,31.5,28.5],["16047",153,0.477,0.478,58.1,null,40.7,15.6],["56015",197,0.518,0.475,46.0,null,44.9,15.9],["39071",345,0.406,0.373,73.0,71.9,40.6,20.7],["48019",187,0.503,0.574,100.0,null,55.4,16.5],["21231",182,0.412,0.488,67.7,null,30.3,25.4],["05113",254,0.445,0.561,73.4,null,33.2,25.2],["08075",219,0.411,0.43,29.2,null,43.3,16.3],["01093",243,0.481,0.645,88.9,null,34.1,18.6],["54027",252,0.417,0.422,100.0,113.1,32.2,16.9],["56041",235,0.481,0.526,43.1,92.5,53.3,16.8],["51043",164,0.415,0.128,69.5,null,72.0,11.3],["08015",250,0.492,0.015,37.4,null,51.0,9.6],["06065",14029,0.512,-0.031,4.6,48.0,58.0,16.5],["45083",2132,0.491,0.249,27.4,70.2,45.2,17.0],["04013",32562,0.54,0.08,2.4,53.4,55.7,16.5],["13135",4730,0.572,0.045,0.5,33.2,61.9,13.0],["13117",985,0.617,0.56,9.9,38.3,91.8,6.4],["32003",12111,0.507,-0.148,1.3,57.4,52.6,15.0],["39031",296,0.439,0.195,61.5,null,43.4,14.0],["36119",6436,0.56,-0.293,3.3,24.4,86.2,9.8],["39153",4100,0.49,-0.136,3.9,73.0,51.6,14.3],["41013",280,0.45,0.369,48.0,102.5,39.6,17.7],["41047",3154,0.501,0.017,13.1,51.7,50.8,17.2],["27053",11165,0.557,-0.302,2.2,44.2,68.0,11.9],["22069",335,0.54,0.083,50.1,null,30.7,29.8],["06009",699,0.482,0.18,75.4,82.0,53.5,12.7],["48473",191,0.503,0.176,61.6,67.6,53.5,19.0],["35001",6219,0.542,-0.185,4.2,86.8,49.0,18.7],["26021",1452,0.503,0.046,32.9,55.7,46.0,17.9],["48167",2100,0.581,0.236,6.1,61.4,63.1,13.6],["16017",565,0.503,0.264,72.4,48.5,43.7,15.0],["54055",590,0.397,0.433,40.7,124.2,37.3,21.1],["36103",9825,0.519,-0.022,2.6,37.0,90.1,7.3],["39043",668,0.448,-0.055,26.5,62.0,48.3,12.8],["01051",727,0.516,0.504,54.2,42.5,53.4,14.3],["51153",2995,0.586,-0.177,4.2,21.6,98.5,7.0],["55139",1484,0.485,-0.027,13.4,39.8,53.5,12.2],["08045",539,0.536,0.04,24.1,35.7,61.3,11.1],["47125",1428,0.55,0.122,19.7,62.9,51.5,15.2],["06081",4691,0.588,-0.509,1.9,31.0,98.5,7.7],["02090",1111,0.575,null,30.9,46.0,73.8,7.8],["36067",4228,0.528,-0.192,12.6,44.4,55.7,15.2],["13021",1130,0.55,-0.195,14.4,36.8,37.1,27.8],["06053",2560,0.553,-0.386,9.8,41.7,60.9,16.1],["37191",887,0.485,0.095,46.4,44.5,40.5,21.8],["26125",8460,0.542,-0.102,4.8,36.1,69.8,9.6],["36087",1978,0.549,-0.072,0.7,32.5,86.1,14.5],["18147",199,0.503,0.174,100.0,null,54.9,9.9],["39155",1710,0.437,-0.131,27.3,90.7,43.8,17.5],["12117",2832,0.562,0.036,3.2,36.0,58.5,12.1],["15003",4785,0.613,-0.367,0.9,37.7,77.2,9.5],["06029",5442,0.496,0.157,10.2,70.2,49.8,23.1],["12115",3851,0.506,0.064,4.3,73.1,52.8,11.0],["45079",2819,0.578,-0.313,9.1,38.2,50.9,16.6],["34009",992,0.494,0.124,17.5,74.5,59.3,10.4],["21049",224,0.411,0.309,27.5,89.5,49.1,15.1],["39139",1017,0.467,0.234,32.1,74.5,42.8,16.5],["39137",366,0.519,0.523,84.7,null,60.2,7.8],["18113",426,0.465,0.327,68.0,null,49.7,11.4],["39027",375,0.467,0.39,54.6,79.6,48.7,15.2],["48479",714,0.581,-0.497,2.6,51.0,38.7,32.1],["51195",358,0.455,0.461,56.7,91.8,36.4,21.2],["42041",2846,0.531,0.167,22.2,40.7,62.6,8.6],["21119",160,0.35,0.365,100.0,null,28.2,31.6],["29177",195,0.513,0.183,75.2,null,53.5,16.1],["20173",4142,0.509,0.167,7.7,51.2,51.2,15.0],["20113",321,0.517,0.395,43.5,null,56.8,6.6],["55079",7415,0.476,-0.363,0.2,57.9,45.3,21.2],["55133",4034,0.54,0.289,9.9,36.0,78.3,5.2],["29165",765,0.59,0.109,15.8,34.9,70.9,7.1],["55099",193,0.435,0.038,100.0,null,43.5,12.8],["47049",227,0.388,0.549,100.0,null,31.7,23.3],["47003",400,0.468,0.422,55.6,58.6,43.8,16.3],["01069",895,0.497,0.427,33.8,44.8,41.9,18.9],["12027",171,0.48,0.181,46.2,56.1,35.5,29.9],["34005",3771,0.529,-0.172,6.7,40.1,80.0,6.5],["44003",1628,0.483,-0.115,8.0,59.3,65.6,8.2],["36091",2229,0.541,-0.02,30.0,36.2,74.1,6.4],["45057",547,0.505,0.194,50.0,36.7,46.9,17.4],["27037",3347,0.575,-0.044,4.9,37.0,77.3,7.2],["39093",2023,0.494,-0.111,11.7,57.7,53.5,14.0],["36057",549,0.443,0.108,40.9,41.5,44.5,20.6],["18011",513,0.552,0.31,34.4,51.8,72.8,6.1],["39157",762,0.453,0.142,41.6,44.6,47.0,13.6],["17073",476,0.475,0.033,50.3,35.8,54.8,12.3],["22079",1090,0.499,0.302,39.5,59.5,42.1,20.1],["35057",204,0.451,0.19,98.8,null,32.1,31.1],["55043",532,0.483,-0.094,64.5,41.4,49.1,15.3],["47187",1809,0.606,0.403,19.4,35.9,100.1,5.2],["29131",150,0.393,0.507,79.8,null,40.1,19.3],["04021",2079,0.503,0.167,21.9,57.2,51.2,16.5],["24025",2137,0.536,0.201,17.8,49.2,81.1,7.7],["09007",1708,0.505,-0.154,24.5,47.6,79.8,7.0],["17111",2286,0.505,0.037,9.9,45.1,79.8,7.8],["12127",4393,0.491,0.028,9.9,64.5,42.2,16.7],["36077",788,0.472,0.002,70.6,45.8,49.7,16.3],["48291",443,0.449,0.516,63.2,62.5,49.7,17.3],["37145",379,0.462,0.122,75.5,null,43.3,18.5],["26159",617,0.464,0.016,70.9,56.0,47.1,17.5],["24043",1266,0.499,0.202,29.5,72.2,56.3,12.9],["12015",1528,0.456,0.164,8.9,52.7,44.9,12.4],["45029",288,0.503,0.026,75.6,64.8,33.9,20.8],["26061",310,0.568,0.096,37.8,null,39.1,22.8],["19033",462,0.457,-0.089,20.6,64.0,47.8,12.8],["28121",1080,0.568,0.529,33.9,36.6,59.4,9.6],["12131",493,0.481,0.513,63.1,55.9,46.9,17.4],["06021",262,0.469,0.254,40.9,74.3,41.7,20.3],["15001",1470,0.595,-0.472,38.0,43.1,53.9,18.7],["06105",218,0.514,0.022,100.0,null,35.3,20.1],["23001",1212,0.454,-0.062,43.4,60.5,48.7,14.8],["39069",216,0.435,0.237,69.1,null,54.9,10.2],["47141",772,0.478,0.362,35.0,59.8,36.4,24.0],["28049",1734,0.545,-0.425,15.3,36.7,38.8,25.5],["48041",1353,0.6,0.291,12.1,38.1,41.7,27.0],["47131",362,0.453,0.456,61.6,null,38.9,21.1],["41045",364,0.418,0.43,48.4,74.9,34.7,24.8],["17057",286,0.497,-0.058,60.0,57.6,46.2,15.6],["29083",225,0.418,0.282,49.5,null,42.7,21.4],["17099",914,0.479,0.012,30.2,60.0,51.7,13.9],["06005",474,0.504,0.198,60.4,52.4,57.0,11.2],["35039",391,0.565,-0.479,49.8,258.6,34.0,23.4],["51065",239,0.527,0.058,62.9,null,66.4,6.9],["12017",1635,0.436,0.259,34.5,76.5,39.1,17.7],["31119",339,0.463,0.473,27.9,null,48.7,14.9],["51023",291,0.515,0.397,64.1,null,61.5,8.3],["20169",510,0.476,0.306,14.6,45.4,48.5,14.8],["18001",284,0.454,0.391,53.7,null,47.6,18.0],["30009",159,0.491,0.224,100.0,null,52.9,10.8],["47133",222,0.455,0.297,84.2,null,35.1,20.0],["01025",241,0.56,0.101,76.0,null,32.7,24.6],["19023",151,0.457,0.173,100.0,null,52.2,8.8],["55007",205,0.527,-0.204,100.0,null,48.1,11.4],["26041",370,0.451,0.086,43.8,null,42.4,16.6],["39133",1261,0.504,-0.015,32.8,52.1,52.4,15.0],["53027",892,0.475,-0.072,40.1,87.1,44.5,16.6],["48373",340,0.468,0.469,77.6,86.7,40.9,18.2],["47009",1104,0.461,0.445,32.6,57.2,49.5,13.6],["18013",227,0.52,0.169,100.0,null,56.3,12.7],["55035",969,0.482,-0.143,23.0,46.4,50.5,14.6],["29175",225,0.462,0.369,45.2,null,40.6,17.6],["20125",326,0.454,0.425,43.4,60.5,42.6,19.0],["29127",309,0.43,0.352,24.8,null,43.8,17.3],["36001",2856,0.54,-0.29,9.7,35.6,60.9,12.9],["19057",402,0.46,-0.115,26.7,45.1,44.5,16.7],["01003",1940,0.512,0.548,42.3,63.6,51.4,13.0],["28075",620,0.498,0.186,48.3,33.0,38.4,23.1],["51540",551,0.606,-0.593,0.0,null,50.7,25.9],["42065",597,0.486,0.449,61.5,66.1,43.9,14.6],["26127",285,0.456,0.111,89.9,null,42.0,19.9],["48367",816,0.559,0.627,56.1,53.3,68.0,9.4],["40091",207,0.44,0.285,87.3,89.1,36.9,18.9],["55077",208,0.505,0.062,100.0,null,48.4,11.7],["46127",163,0.589,0.26,61.4,null,63.9,6.4],["27049",473,0.562,0.074,47.0,50.9,60.5,10.9],["18037",408,0.446,0.239,49.2,null,55.2,8.5],["33005",834,0.51,-0.215,65.0,48.5,58.4,10.9],["17077",544,0.542,-0.131,37.2,51.7,33.8,28.3],["18119",209,0.493,0.29,100.0,null,45.4,14.8],["51700",1353,0.526,-0.284,0.0,44.9,50.1,16.1],["19017",283,0.572,0.006,64.5,null,64.3,7.3],["01039",359,0.526,0.616,69.7,55.1,37.3,19.0],["13255",391,0.486,0.211,41.6,47.7,40.5,23.6],["21199",640,0.464,0.609,53.9,83.7,34.7,25.0],["01055",1000,0.458,0.421,37.5,60.3,40.5,18.4],["49027",189,0.529,0.69,73.9,null,53.9,10.3],["39081",589,0.443,0.134,39.0,58.5,42.3,17.2],["05085",563,0.512,0.504,44.8,54.1,56.2,12.1],["33003",627,0.547,0.0,90.2,86.9,56.3,10.1],["45031",483,0.464,0.002,57.8,40.7,34.8,23.0],["53057",1326,0.508,-0.065,29.0,62.7,56.4,15.0],["29091",447,0.447,0.459,72.2,49.5,34.0,22.7],["28139",166,0.5,0.504,83.8,null,37.1,23.5],["26035",305,0.403,0.106,70.6,84.8,34.9,24.2],["12111",1916,0.468,-0.059,3.4,55.9,44.1,17.9],["06063",363,0.515,0.164,74.0,119.7,50.1,12.8],["48409",409,0.535,0.204,19.7,88.3,52.7,14.3],["39083",523,0.463,0.274,55.7,41.4,48.6,15.6],["51143",396,0.432,0.302,85.6,56.2,43.1,15.1],["21209",336,0.515,0.253,32.5,70.5,64.3,10.7],["33007",395,0.456,-0.089,66.2,75.2,45.2,13.3],["36051",629,0.512,0.119,54.7,null,52.7,14.9],["16035",166,0.488,0.44,58.6,null,40.3,13.1],["29163",163,0.393,0.28,54.4,null,42.8,15.2],["42087",566,0.428,0.451,50.5,40.2,42.0,14.6],["16045",216,0.44,0.492,45.0,null,40.8,22.2],["53017",358,0.489,0.267,26.6,54.8,53.8,13.4],["13299",276,0.529,0.366,29.4,null,34.7,28.1],["34033",579,0.501,0.033,45.3,56.4,61.3,13.8],["21239",234,0.504,0.187,36.2,null,59.5,14.4],["20161",663,0.612,0.075,13.8,41.1,46.6,21.7],["05063",346,0.436,0.443,68.6,51.8,37.6,19.2],["01033",486,0.444,0.262,43.9,51.7,43.8,16.5],["49039",372,0.481,0.635,40.9,null,48.9,16.7],["04005",1073,0.542,-0.171,31.5,91.8,51.1,22.2],["39029",969,0.457,0.204,43.9,65.8,45.4,15.8],["26157",487,0.466,0.164,84.2,42.5,44.2,15.8],["28107",250,0.552,-0.05,78.9,67.0,37.6,22.4],["05139",409,0.477,0.265,54.5,null,39.8,20.7],["47063",605,0.421,0.472,21.9,77.6,39.3,21.2],["26053",167,0.431,-0.035,68.2,null,35.8,20.6],["47105",585,0.484,0.503,40.6,62.2,53.0,13.5],["28083",238,0.487,-0.404,17.7,null,25.4,40.4],["22011",348,0.5,0.593,66.5,null,46.6,19.0],["36003",541,0.436,0.278,78.7,null,44.1,17.1],["48097",303,0.512,0.647,59.0,57.6,56.3,15.0],["13047",393,0.511,0.542,28.1,47.6,52.3,11.8],["31019",427,0.522,0.42,32.3,null,54.1,13.6],["18137",347,0.45,0.418,83.2,null,52.4,10.1],["17173",203,0.473,0.358,77.7,null,48.6,12.9],["55067",247,0.421,0.141,59.2,null,43.5,15.9],["29031",631,0.488,0.425,30.5,37.3,48.5,17.7],["40099",151,0.483,0.455,45.7,null,51.8,14.4],["23021",290,0.403,0.111,100.0,null,36.9,20.6],["40083",267,0.491,0.438,55.4,64.5,55.7,12.3],["50027",859,0.518,-0.358,75.6,62.2,54.8,10.0],["39105",224,0.348,0.291,81.3,null,39.6,22.8],["48365",215,0.493,0.562,72.7,null,50.7,14.6],["49015",200,0.5,0.656,73.6,null,51.3,12.0],["49041",253,0.482,0.71,64.7,null,48.9,14.5],["18031",241,0.415,0.407,53.8,null,51.2,13.0],["55057",283,0.449,0.033,83.5,null,47.2,13.1],["37033",167,0.431,0.034,99.2,null,38.3,22.1],["51670",175,0.531,-0.124,0.0,null,40.8,20.5],["05027",257,0.463,0.246,57.5,null,36.5,24.9],["35053",160,0.531,-0.166,49.7,null,34.5,22.5],["56029",425,0.532,0.536,44.2,62.3,61.2,8.1],["18015",167,0.467,0.313,81.4,null,54.1,10.8],["51640",178,0.427,0.229,13.7,null,31.1,25.0],["45023",293,0.423,-0.047,71.8,null,34.3,23.4],["29115",156,0.429,0.276,66.5,null,39.3,18.4],["13029",315,0.559,0.43,52.3,68.4,65.9,13.3],["28163",160,0.425,-0.097,44.6,null,27.6,34.5],["40117",178,0.455,0.436,81.1,121.2,45.9,14.6],["16011",441,0.481,0.494,56.0,66.8,49.9,13.4],["17033",214,0.379,0.313,60.2,null,47.4,12.3],["51027",191,0.419,0.335,100.0,82.5,30.3,23.9],["21173",223,0.417,0.28,59.1,87.5,39.8,25.1],["42057",161,0.509,0.586,100.0,null,49.4,11.2],["47071",222,0.374,0.528,67.9,94.0,37.2,22.2],["42027",1612,0.571,-0.048,32.2,27.6,54.4,19.1],["26017",848,0.452,-0.027,30.3,62.2,45.9,15.8],["27123",4431,0.534,-0.361,0.2,47.9,57.7,15.9],["53015",1248,0.46,-0.006,28.7,77.7,49.1,16.9],["21111",6731,0.517,-0.122,1.4,63.6,50.1,16.0],["06007",2456,0.479,0.011,18.9,94.8,44.4,21.3],["13153",1030,0.54,0.207,10.0,33.1,55.5,18.0],["12073",2370,0.56,-0.243,12.3,36.5,48.2,21.3],["37119",6859,0.583,-0.254,1.1,34.7,59.3,14.2],["36027",2358,0.517,-0.067,25.4,44.3,72.7,9.2],["01097",3345,0.522,0.104,20.0,52.1,44.3,19.5],["21043",273,0.41,0.275,79.4,102.4,37.4,18.6],["28081",644,0.511,0.319,45.4,41.5,43.2,18.5],["42095",2769,0.502,-0.044,12.8,67.5,62.8,9.1],["55025",4789,0.558,-0.459,12.3,37.2,64.8,12.7],["25001",2886,0.542,-0.118,7.5,68.9,65.4,8.2],["08031",5357,0.56,-0.522,0.0,64.7,56.3,16.4],["55105",1399,0.447,-0.209,20.4,49.2,51.0,14.7],["12057",8173,0.525,-0.069,3.5,44.2,51.7,16.4],["12031",6030,0.513,0.023,2.9,56.5,49.2,16.6],["45019",2959,0.583,-0.062,10.9,48.0,54.9,16.3],["01113",346,0.529,-0.07,35.4,48.0,38.4,21.5],["05015",316,0.465,0.246,72.8,null,38.1,17.5],["13121",7205,0.612,-0.354,1.1,35.9,58.9,17.0],["49035",9632,0.545,0.037,0.9,64.3,64.6,11.4],["29077",2736,0.496,0.225,14.0,78.3,41.9,18.7],["06045",1092,0.504,-0.371,45.2,73.6,43.5,20.2],["21137",211,0.398,0.459,81.7,80.4,35.2,25.2],["39017",2568,0.499,0.252,9.3,88.0,59.7,13.6],["21037",821,0.462,0.227,15.3,91.1,56.8,14.9],["37141",418,0.483,0.219,68.8,57.4,46.6,18.7],["06041",2406,0.59,-0.572,6.5,27.9,100.3,8.1],["13215",1403,0.554,-0.199,3.0,44.5,42.7,20.9],["19061",937,0.524,-0.114,27.0,41.0,56.2,12.5],["29019",1392,0.564,-0.07,18.8,39.6,50.8,19.3],["29097",1189,0.472,0.416,23.7,46.4,42.6,17.8],["37055",367,0.545,0.156,29.0,66.7,54.8,8.2],["39061",6385,0.513,-0.079,2.2,72.2,50.4,17.8],["37071",1619,0.468,0.274,19.6,66.1,44.3,17.2],["48203",415,0.511,0.366,56.1,51.3,46.2,17.7],["47011",863,0.47,0.541,33.0,54.0,43.7,18.4],["22105",971,0.485,0.304,40.9,62.0,43.7,22.3],["09009",6672,0.501,-0.193,3.6,50.8,62.7,12.8],["56001",457,0.589,0.009,11.9,null,43.0,25.5],["21127",189,0.45,0.442,77.1,null,35.0,22.4],["34013",4961,0.55,-0.556,0.0,30.7,54.9,17.2],["37025",1503,0.521,0.193,19.3,43.6,59.0,11.7],["48181",983,0.47,0.462,43.2,55.0,50.2,15.6],["25025",4569,0.566,-0.586,0.1,49.9,57.4,20.1],["22113",379,0.491,0.532,54.6,47.9,47.1,17.3],["32007",433,0.55,0.493,37.9,65.2,74.7,10.5],["55071",821,0.458,0.056,38.9,69.9,49.6,10.3],["53021",578,0.528,0.219,13.3,38.5,58.3,16.4],["42097",1018,0.426,0.253,34.9,57.9,43.7,14.6],["12083",2998,0.476,0.18,31.0,67.5,40.3,18.2],["36029",8564,0.509,-0.142,9.4,56.1,52.7,14.7],["34011",1080,0.438,-0.174,23.0,54.1,49.5,18.5],["18005",726,0.528,0.233,33.7,43.4,55.9,12.6],["51059",9196,0.629,-0.258,1.4,20.9,114.3,6.0],["26023",309,0.392,0.208,62.7,51.6,46.4,17.9],["42011",3893,0.487,0.006,23.7,39.8,57.1,14.3],["37081",4079,0.539,-0.182,12.7,41.8,46.9,17.6],["24005",6391,0.548,-0.164,6.5,52.7,69.0,9.3],["37157",878,0.442,0.223,61.9,51.9,40.0,19.4],["37109",665,0.468,0.398,54.6,40.8,49.3,15.1],["01101",1888,0.553,-0.232,10.5,36.4,45.4,21.3],["24011",258,0.453,0.281,76.0,61.4,50.8,17.1],["42051",1412,0.436,0.132,47.9,84.9,40.5,18.6],["12097",1334,0.511,-0.231,7.8,38.2,45.5,19.5],["51149",184,0.549,0.129,53.4,null,64.8,9.6],["39165",1437,0.553,0.376,17.3,42.7,76.2,5.4],["47119",921,0.53,0.291,41.6,57.0,49.6,14.7],["40145",653,0.527,0.465,37.5,61.2,57.6,10.8],["01095",866,0.461,0.618,53.3,68.6,39.8,20.5],["25027",6650,0.494,-0.113,18.4,53.2,67.0,11.4],["01121",605,0.511,0.2,55.8,58.5,37.9,20.8],["29107",287,0.509,0.284,56.9,null,50.8,12.2],["19045",406,0.466,-0.136,32.2,46.7,50.1,13.6],["20051",240,0.496,0.424,25.6,null,50.1,14.4],["37199",172,0.471,0.172,100.0,null,37.0,21.3],["53005",1937,0.544,0.263,10.6,59.7,61.1,13.9],["53063",5350,0.515,0.052,13.7,65.4,50.5,15.6],["06079",2837,0.555,-0.048,16.6,56.5,64.0,14.2],["45045",3878,0.547,0.255,12.6,56.6,51.6,14.3],["37003",308,0.406,0.461,72.8,72.7,40.4,17.4],["51740",721,0.483,-0.395,0.0,63.8,47.0,18.2],["18097",7124,0.511,-0.245,0.6,66.0,43.4,20.5],["27019",734,0.548,0.161,18.8,31.8,88.6,4.1],["12023",498,0.448,0.383,62.1,62.3,42.8,19.4],["37009",380,0.447,0.334,84.9,null,37.4,19.9],["42123",564,0.47,0.211,55.0,null,45.0,12.7],["12019",1436,0.516,0.443,15.0,53.8,59.2,10.2],["55141",885,0.456,0.03,36.7,36.5,49.9,10.6],["48005",666,0.495,0.42,43.1,56.1,44.2,19.6],["51775",364,0.5,0.203,0.0,null,52.4,9.4],["20103",591,0.538,0.186,29.1,41.5,66.0,9.9],["22019",1725,0.512,0.289,20.5,45.0,46.5,17.2],["19153",4107,0.536,-0.134,4.9,49.8,61.7,12.4],["28039",200,0.42,0.717,88.3,null,47.3,17.9],["22071",2326,0.587,-0.63,0.6,59.4,37.5,26.2],["48309",1762,0.53,0.268,23.4,49.8,44.2,19.9],["16079",159,0.528,0.177,56.0,null,37.4,17.9],["41061",374,0.463,0.313,42.1,null,45.6,18.6],["24021",2111,0.565,0.022,25.2,37.3,85.7,7.1],["36069",1106,0.527,0.017,47.5,33.9,58.1,10.3],["37021",2553,0.532,-0.135,24.1,53.0,46.9,14.8],["01021",336,0.402,0.615,86.7,62.4,42.6,20.3],["23005",3264,0.545,-0.277,36.1,56.4,61.9,11.1],["22073",1310,0.509,0.238,24.2,47.1,39.0,24.1],["28085",230,0.504,0.35,69.5,null,36.2,25.5],["16069",546,0.502,0.244,19.2,50.2,49.5,13.6],["01115",676,0.497,0.657,72.8,60.1,54.0,13.7],["56037",415,0.501,0.396,10.9,61.8,68.2,11.0],["41019",1539,0.428,0.286,41.2,83.7,42.1,18.6],["51683",289,0.522,-0.135,0.0,null,74.4,8.7],["42103",629,0.467,0.138,70.8,57.1,61.2,10.2],["42007",1792,0.459,0.094,25.8,49.0,51.9,10.8],["54051",241,0.427,0.306,49.0,null,44.5,14.6],["42015",756,0.45,0.296,72.2,47.2,51.0,12.4],["26103",640,0.498,-0.128,41.5,76.2,46.8,16.6],["24003",4326,0.558,-0.001,5.3,45.3,91.9,6.1],["26005",699,0.498,0.197,64.5,47.3,55.6,11.7],["12129",252,0.48,0.31,61.7,null,54.1,14.3],["29161",433,0.49,0.328,46.2,45.6,41.6,20.6],["29001",224,0.491,0.134,37.9,null,38.0,26.0],["02122",741,0.56,null,79.3,70.6,64.9,11.0],["38017",1292,0.582,0.021,10.4,41.6,54.9,11.8],["19015",237,0.405,-0.002,50.6,null,54.5,10.3],["13303",154,0.487,-0.042,65.6,null,37.4,26.4],["37045",793,0.467,0.234,55.8,79.9,39.1,20.8],["34019",1395,0.57,0.15,49.6,37.9,108.2,4.5],["45091",1874,0.557,0.2,23.0,55.3,56.5,12.5],["47145",481,0.449,0.428,51.0,113.9,42.3,16.2],["21029",511,0.495,0.392,30.4,61.2,58.7,10.3],["36037",616,0.502,0.228,59.9,40.5,52.6,12.5],["39075",222,0.505,0.522,93.0,null,53.6,12.9],["36093",1761,0.509,-0.13,8.2,42.2,60.0,12.0],["27005",321,0.536,0.181,75.5,null,54.1,12.8],["17007",327,0.514,0.053,19.4,34.5,60.1,11.1],["18069",391,0.499,0.392,51.0,77.3,47.0,12.0],["04015",2264,0.428,0.421,23.0,101.4,39.9,19.3],["48055",234,0.517,0.109,42.3,52.9,49.5,18.6],["55083",350,0.429,0.134,81.3,null,54.0,9.0],["48231",597,0.415,0.491,56.6,57.4,45.6,18.9],["17161",1220,0.496,-0.183,10.9,35.9,50.2,15.1],["41057",370,0.5,-0.031,69.6,91.5,43.8,15.4],["47013",308,0.409,0.471,55.0,109.5,33.6,22.4],["18053",598,0.485,0.249,28.9,84.7,40.3,19.4],["51730",370,0.481,-0.784,2.1,null,32.2,29.4],["45055",557,0.551,0.206,57.7,47.6,46.3,15.9],["39127",316,0.453,0.159,75.2,null,43.7,20.6],["18123",178,0.449,-0.053,55.0,null,47.4,14.7],["45011",154,0.448,-0.006,82.5,null,34.8,26.5],["22115",431,0.517,0.586,49.9,null,46.6,14.5],["40139",230,0.491,0.686,45.1,null,51.5,13.4],["51031",296,0.497,0.408,61.1,62.9,47.0,12.5],["54033",720,0.467,0.254,37.0,76.6,44.8,15.9],["41011",932,0.458,0.11,38.4,93.5,39.1,18.1],["47055",298,0.456,0.314,73.7,81.6,40.6,16.7],["51145",206,0.529,0.442,99.7,null,77.7,5.6],["21107",437,0.444,0.396,47.1,55.2,43.2,16.1],["54067",265,0.464,0.329,87.2,102.7,39.9,17.6],["19193",861,0.511,0.063,17.5,52.6,49.0,14.2],["48497",433,0.503,0.643,72.1,43.7,56.4,12.5],["39119",794,0.463,0.161,47.0,50.7,42.5,17.4],["05065",181,0.425,0.398,100.0,null,35.2,22.0],["27047",263,0.487,-0.047,42.8,null,48.8,11.2],["30027",207,0.527,0.435,47.4,null,42.4,14.0],["21147",153,0.418,0.629,100.0,113.7,19.0,42.5],["26037",397,0.516,0.061,52.9,38.7,62.6,11.4],["45043",518,0.544,0.086,41.5,64.1,45.3,19.1],["01045",398,0.482,0.456,50.9,49.3,44.1,20.5],["48245",1744,0.499,-0.011,8.4,49.7,45.0,20.0],["01109",250,0.484,0.163,51.7,null,33.2,25.7],["17109",285,0.53,0.025,29.5,null,41.5,23.5],["37111",394,0.398,0.362,70.3,56.0,37.6,20.0],["17203",294,0.626,0.356,54.9,null,68.0,7.7],["08007",158,0.538,0.18,59.4,null,45.6,11.2],["37043",152,0.487,0.43,100.0,null,36.3,16.2],["48323",158,0.506,-0.57,9.3,43.6,37.2,24.7],["37019",1247,0.513,0.228,43.0,68.0,49.4,15.2],["54107",841,0.434,0.362,26.8,57.5,43.9,17.4],["42083",594,0.421,0.307,63.5,55.2,44.0,17.1],["42031",511,0.462,0.351,76.6,48.4,42.9,18.6],["22095",252,0.591,-0.224,13.4,57.5,51.4,18.2],["51075",200,0.54,0.253,97.0,null,82.3,5.0],["26033",351,0.496,0.108,48.9,null,42.3,17.7],["48021",587,0.479,0.152,63.9,46.6,55.8,13.6],["28001",242,0.504,-0.157,37.2,null,31.3,30.4],["25007",247,0.595,-0.502,39.0,null,63.5,9.1],["48149",214,0.561,0.522,67.1,null,51.3,10.8],["56033",435,0.506,0.45,35.5,83.8,53.9,8.2],["01099",168,0.44,0.107,79.0,84.8,28.2,32.1],["40017",968,0.525,0.526,22.5,57.3,66.7,8.0],["42005",588,0.452,0.379,67.5,71.4,45.9,13.2],["21015",947,0.512,0.383,13.3,64.5,69.2,7.9],["16065",395,0.648,0.699,28.5,null,33.9,32.6],["23023",481,0.536,-0.129,61.7,null,55.8,10.7],["55111",633,0.479,-0.137,46.1,57.7,53.2,11.1],["17195",536,0.479,-0.096,37.3,48.5,49.2,11.4],["47053",476,0.445,0.348,47.7,56.7,38.9,18.7],["22061",425,0.508,0.156,40.7,null,34.5,31.5],["18149",175,0.4,0.165,82.4,null,43.4,15.7],["17157",312,0.487,0.216,42.6,58.1,48.3,11.1],["31111",358,0.514,0.443,30.5,null,52.2,12.0],["40079",435,0.457,0.462,72.9,78.1,37.5,22.8],["05141",229,0.406,0.411,100.0,null,34.6,18.5],["13019",163,0.405,0.59,76.1,null,35.7,25.6],["21213",166,0.488,0.286,45.2,null,42.3,19.1],["48067",298,0.453,0.498,74.0,null,39.4,19.2],["19083",254,0.528,0.116,71.1,null,51.8,8.1],["17165",203,0.453,0.293,43.7,null,40.3,22.3],["21085",240,0.425,0.445,73.6,null,36.1,24.2],["16067",227,0.471,0.541,44.2,null,46.1,17.8],["54005",204,0.348,0.25,81.4,117.8,37.8,26.0],["05069",576,0.514,-0.268,30.9,49.6,36.4,25.5],["19099",377,0.456,0.012,57.5,null,55.5,9.3],["26123",385,0.41,0.205,83.8,58.3,44.0,18.2],["19095",188,0.516,0.095,82.2,null,55.1,9.8],["22043",190,0.421,0.665,85.6,null,40.4,19.0],["27115",270,0.485,0.084,89.3,null,45.4,13.7],["39167",611,0.442,0.255,56.6,38.4,44.8,15.7],["04001",399,0.486,-0.315,74.1,138.1,32.5,36.2],["37015",154,0.513,-0.294,83.2,null,31.1,20.9],["55107",157,0.459,0.098,76.6,null,39.9,15.9],["39097",331,0.529,0.276,48.5,54.0,58.3,10.6],["48185",167,0.533,0.432,68.9,null,47.8,20.3],["05115",578,0.474,0.468,54.5,38.1,40.5,19.6],["27141",800,0.531,0.257,44.2,31.5,78.1,7.2],["28151",359,0.49,-0.378,17.5,null,28.5,34.9],["37053",229,0.555,0.385,98.3,null,61.1,10.0],["17117",418,0.452,0.105,58.5,49.0,52.3,13.0],["48249",163,0.503,-0.144,40.1,81.3,43.3,20.7],["51191",538,0.45,0.43,71.7,62.5,43.8,14.3],["48465",228,0.561,-0.076,10.2,null,44.2,20.9],["19097",206,0.5,-0.073,53.3,null,49.1,13.8],["29065",157,0.433,0.518,68.6,null,38.0,22.4],["47171",173,0.405,0.485,44.7,null,35.4,21.0],["29159",327,0.483,0.327,37.8,58.1,40.5,16.9],["08003",181,0.541,-0.109,36.9,null,32.4,31.4],["12007",167,0.413,0.44,75.5,77.8,43.4,19.3],["53031",508,0.555,-0.331,57.5,52.5,50.9,12.0],["39079",293,0.369,0.299,64.6,68.0,40.3,23.0],["54059",256,0.461,0.411,89.7,111.4,32.4,26.0],["18073",356,0.438,0.304,68.0,null,55.5,7.7],["37123",219,0.484,0.173,76.8,null,34.8,21.9],["18041",222,0.383,0.235,36.8,119.7,40.9,19.3],["27153",265,0.498,0.249,78.4,null,47.5,13.5],["21179",346,0.442,0.213,56.9,67.0,51.4,13.9],["48133",214,0.491,0.68,60.3,null,34.4,17.6],["05149",219,0.315,0.391,79.1,null,39.3,17.5],["18087",216,0.468,0.363,91.6,null,53.9,12.5],["20005",167,0.461,0.197,34.2,null,46.1,19.2],["29055",197,0.431,0.393,73.3,101.9,37.0,21.4],["17011",294,0.48,0.047,57.4,90.7,51.4,13.1],["51133",158,0.513,0.147,100.0,null,54.4,11.0],["30017",186,0.543,0.303,17.9,null,50.1,11.2],["56007",236,0.538,0.364,41.6,null,57.0,14.3],["08089",223,0.422,0.143,34.4,null,34.5,23.1],["18079",209,0.407,0.277,60.2,null,47.2,15.3],["19065",215,0.484,-0.031,70.6,null,47.7,13.1],["54103",215,0.465,0.26,53.9,null,39.4,21.1],["48147",247,0.449,0.512,70.5,60.8,45.5,16.5],["53051",164,0.53,0.25,83.1,null,46.0,19.8],["46135",215,0.498,0.131,34.8,null,48.7,14.5],["51005",237,0.426,0.139,52.4,null,45.5,18.3],["27043",170,0.465,0.162,77.6,null,49.1,12.6],["18165",154,0.435,0.093,60.4,null,44.4,13.4]],"correlations":{"median_hhinc":[0.583,1351],"pct_rural":[-0.535,1351],"despair_mortality":[-0.414,1204],"rep_margin":[-0.385,1347],"poverty":[-0.26,1351],"social_capital":[0.111,1347]},"rucc":[{"rucc":1,"n":1192046,"thr":0.5407},{"rucc":2,"n":550515,"thr":0.5186},{"rucc":3,"n":259227,"thr":0.5047},{"rucc":4,"n":127496,"thr":0.4804},{"rucc":5,"n":46692,"thr":0.5012},{"rucc":6,"n":137509,"thr":0.4633},{"rucc":7,"n":83510,"thr":0.4733},{"rucc":8,"n":21861,"thr":0.4627},{"rucc":9,"n":28238,"thr":0.4595}],"party_lean":[{"lean":"Solid Dem","n":598254,"thr":0.5491},{"lean":"Lean Dem","n":514874,"thr":0.5267},{"lean":"Swing","n":311795,"thr":0.5244},{"lean":"Lean Rep","n":387377,"thr":0.5084},{"lean":"Solid Rep","n":634869,"thr":0.491}]};
+
+/* ---------------------------------------------------------------- data prep */
+const ci = Object.fromEntries(DATA.county_cols.map((c, i) => [c, i]));
+const counties = DATA.counties.map(r => ({
+  fips: r[ci.fips], n: r[ci.n], thr: r[ci.thr], rep: r[ci.rep],
+  rural: r[ci.rural], despair: r[ci.despair], inc: r[ci.inc_k], pov: r[ci.pov]
+}));
+const countyByFips = new Map(counties.map(d => [d.fips, d]));
+const stateByFips  = new Map(DATA.states.map(s => [s.fips, s]));
+const stateRank    = new Map(DATA.states.map((s, i) => [s.fips, i + 1])); // sorted desc by thr
+const NAT = DATA.national.thriving;
+
+const fmtPct  = d3.format(".1%");
+const fmtPct0 = d3.format(".0%");
+const fmtN    = d3.format(",");
+const fmtR    = d3.format("+.2f");
+
+/* color: colorblind-safe brown-teal diverging, centered on the national share */
+const color = d3.scaleDiverging(d3.interpolateBrBG).domain([0.40, NAT, 0.64]).clamp(true);
+const party = d3.scaleLinear().domain([-0.5, 0, 0.5])
+  .range(["#3B6CA8", "#cdc7ba", "#B5394C"]).clamp(true);
+
+/* ---------------------------------------------------------------- geography */
+const topo      = await (await fetch("geo.topojson")).json();
+const nationF   = topojson.feature(topo, topo.objects.nation);
+const statesF   = topojson.feature(topo, topo.objects.states).features;
+const countiesF = topojson.feature(topo, topo.objects.counties).features;
+const stateBorders = topojson.mesh(topo, topo.objects.states, (a, b) => a !== b);
+const countyName = new Map(countiesF.map(f => [f.id, f.properties.name]));
+
+/* ------------------------------------------------------- dynamic prose fills */
+{
+  const byN = [...DATA.states].sort((a, b) => a.n - b.n);
+  const lo = byN[0], hi = byN[byN.length - 1];
+  const fills = {
+    nCounties:      fmtN(counties.length),
+    nCounties2:     fmtN(counties.length),
+    nTotalCounties: fmtN(countiesF.length),
+    stateNMin:      `${fmtN(lo.n)} (${lo.name})`,
+    stateNMax:      `${fmtN(hi.n)} (${hi.name})`
+  };
+  for (const [k, v] of Object.entries(fills))
+    document.querySelectorAll(`[data-dyn="${k}"]`).forEach(el => { el.textContent = v; });
+}
+
+/* ladder diagram in the definition callout */
+document.querySelectorAll("[data-ladder]").forEach(box => {
+  const cut = +box.dataset.ladder;
+  for (let i = 0; i <= 10; i++) {
+    const c = document.createElement("span");
+    c.className = "cell" + (i >= cut ? " on" : "");
+    c.textContent = i;
+    box.appendChild(c);
+  }
+});
+
+/* ---------------------------------------------------------------- utilities */
+function tipFor(container) {
+  const tip = d3.select(container).append("div").attr("class", "tip").attr("aria-hidden", "true");
+  return {
+    show(html, ev) { tip.html(html).style("opacity", 1); this.move(ev); },
+    move(ev) {
+      const [x, y] = d3.pointer(ev, container);
+      const w = container.clientWidth, flip = x > w * 0.58;
+      tip.style("left", (flip ? x - 14 : x + 14) + "px")
+         .style("top", (y - 8) + "px")
+         .style("transform", flip ? "translate(-100%,-50%)" : "translate(0,-50%)");
+    },
+    hide() { tip.style("opacity", 0); }
+  };
+}
+function lsq(pts) { // least-squares fit, pts = [[x,y],...]
+  const n = pts.length;
+  let sx = 0, sy = 0, sxx = 0, sxy = 0;
+  for (const [x, y] of pts) { sx += x; sy += y; sxx += x * x; sxy += x * y; }
+  const b = (n * sxy - sx * sy) / (n * sxx - sx * sx), a = sy / n - b * sx / n;
+  return x => a + b * x;
+}
+function dodge(items, xOf, r, pad) { // greedy 1-D stacking for the strip plot
+  const placed = [], out = [];
+  for (const it of [...items].sort((a, b) => xOf(a) - xOf(b))) {
+    const x = xOf(it); let row = 0;
+    while (placed.some(p => p.row === row && Math.abs(p.x - x) < 2 * r + pad)) row++;
+    placed.push({ x, row });
+    out.push({ d: it, x, row });
+  }
+  return out;
+}
+const stateLabel = f => { const s = stateByFips.get(f); return s ? s.name : "Unknown"; };
+const stateAbbr  = f => { const s = stateByFips.get(f); return s ? s.abbr : ""; };
+
+/* cross-highlight registry: map <-> scatter */
+const link = { mode: "states", countyPaths: null, statePaths: null, hlDot: null, dimByState: null };
+function cross(fips, on, source) {
+  if (source !== "scatter" && link.hlDot) link.hlDot(fips, on);
+  if (source !== "map") {
+    if (link.mode === "counties" && link.countyPaths) {
+      const el = link.countyPaths.get(fips);
+      if (el) { d3.select(el).attr("stroke", on ? "#16140f" : "#f8f5ee").attr("stroke-width", on ? 1.4 : 0.35); if (on) d3.select(el).raise(); }
+    } else if (link.statePaths) {
+      const el = link.statePaths.get(fips.slice(0, 2));
+      if (el) { d3.select(el).attr("stroke", on ? "#16140f" : "#f8f5ee").attr("stroke-width", on ? 1.6 : 1); if (on) d3.select(el).raise(); }
+    }
+  }
+}
+
+/* ============================================================ fig 1 : strip */
+function renderStrip() {
+  const cont = document.getElementById("stripBody");
+  cont.innerHTML = "";
+  const W = cont.clientWidth || 800;
+  const r = W < 480 ? 4 : W < 760 ? 5 : 6, pad = 1.8;
+  const m = { l: 14, r: 14, b: 40 };
+  const x = d3.scaleLinear().domain([0.435, 0.665]).range([m.l, W - m.r]);
+  const rows = dodge(DATA.states, s => x(s.thr), r, pad);
+  const maxRow = d3.max(rows, d => d.row);
+  const labelSpace = 44;
+  const H = labelSpace + (maxRow + 1) * (2 * r + pad) + m.b;
+  const base = H - m.b - r - 1;
+
+  const svg = d3.select(cont).append("svg")
+    .attr("viewBox", `0 0 ${W} ${H}`).attr("width", "100%").style("height", "auto")
+    .attr("role", "img")
+    .attr("aria-label", "Strip plot of all fifty states and the District of Columbia by share of respondents thriving, from West Virginia at 45.5 percent to D.C. at 64.6 percent.");
+  svg.append("title").text("States ranked by unweighted thriving share, Gallup 2008-2017.");
+  const tip = tipFor(cont);
+
+  svg.append("g").attr("transform", `translate(0,${H - m.b + r + 6})`)
+    .call(d3.axisBottom(x).tickValues([0.44, 0.48, 0.52, 0.56, 0.60, 0.64]).tickFormat(fmtPct0).tickSizeOuter(0))
+    .call(g => g.select(".domain").attr("stroke", "#b9b09a"))
+    .call(g => g.selectAll("text").attr("fill", "#5d5749").attr("font-size", 11.5))
+    .call(g => g.selectAll("line").attr("stroke", "#b9b09a"));
+
+  // national marker
+  svg.append("line").attr("x1", x(NAT)).attr("x2", x(NAT))
+    .attr("y1", 16).attr("y2", H - m.b + r + 4)
+    .attr("stroke", "#22201a").attr("stroke-dasharray", "3 3").attr("stroke-width", 1);
+  svg.append("text").attr("x", x(NAT)).attr("y", 10).attr("text-anchor", "middle")
+    .attr("font-size", 11).attr("font-weight", 700).attr("fill", "#22201a")
+    .text("U.S. 52.0%");
+
+  svg.append("g").selectAll("circle").data(rows).join("circle")
+    .attr("cx", d => d.x).attr("cy", d => base - d.row * (2 * r + pad)).attr("r", r)
+    .attr("fill", d => color(d.d.thr)).attr("stroke", "#f8f5ee").attr("stroke-width", 1)
+    .style("cursor", "crosshair")
+    .on("pointerenter", function (ev, d) {
+      d3.select(this).attr("stroke", "#16140f").attr("stroke-width", 1.6).raise();
+      tip.show(`<b>${d.d.name}</b><br>${fmtPct(d.d.thr)} thriving &middot; ${fmtN(d.d.n)} interviews<br><span class="tipnote">Rank ${stateRank.get(d.d.fips)} of 51 (incl. D.C.)</span>`, ev);
+    })
+    .on("pointermove", ev => tip.move(ev))
+    .on("pointerleave", function () {
+      d3.select(this).attr("stroke", "#f8f5ee").attr("stroke-width", 1);
+      tip.hide();
+    });
+
+  // a few anchor labels at the uncrowded extremes
+  const callouts = [["54", "W.Va."], ["21", "Ky."], ["02", "Alaska"], ["15", "Hawaii"], ["11", "D.C."]];
+  for (const [fips, label] of callouts) {
+    const row = rows.find(d => d.d.fips === fips);
+    if (!row) continue;
+    svg.append("text").attr("x", row.x).attr("y", base - row.row * (2 * r + pad) - r - 7)
+      .attr("text-anchor", "middle").attr("font-size", 11).attr("font-weight", 600)
+      .attr("fill", "#5d5749").attr("paint-order", "stroke").attr("stroke", "#f8f5ee").attr("stroke-width", 3)
+      .text(label);
+  }
+}
+
+/* ============================================================== fig 2 : map */
+let mapMode = "states";
+let setMapMode = () => {};
+
+function renderLegend() {
+  const cont = document.getElementById("mapLegend");
+  cont.innerHTML = "";
+  const W = Math.min(460, (document.getElementById("mapBody").clientWidth || 460));
+  const H = 52, m = { l: 20, r: 6 }, barY = 8, barH = 10;
+  const x = d3.scaleLinear().domain([0.40, 0.64]).range([m.l, W - m.r - 150]);
+  const svg = d3.select(cont).append("svg")
+    .attr("viewBox", `0 0 ${W} ${H}`).attr("width", "100%").style("height", "auto")
+    .style("max-width", W + "px")
+    .attr("role", "img").attr("aria-label", "Color legend: share thriving from 40 percent or less, in brown, to 64 percent or more, in teal, centered on the national 52 percent. Gray means fewer than 150 interviews.");
+  const grad = svg.append("g");
+  const steps = 60;
+  for (let i = 0; i < steps; i++) {
+    const v0 = 0.40 + (0.24 * i) / steps;
+    grad.append("rect")
+      .attr("x", x(v0)).attr("y", barY)
+      .attr("width", (x(0.64) - x(0.40)) / steps + 0.6).attr("height", barH)
+      .attr("fill", color(v0));
+  }
+  const ax = d3.axisBottom(x).tickValues([0.40, 0.46, 0.52, 0.58, 0.64]).tickFormat(fmtPct0).tickSize(barH + 4);
+  svg.append("g").attr("transform", `translate(0,${barY})`).call(ax)
+    .call(g => g.select(".domain").remove())
+    .call(g => g.selectAll("line").attr("stroke", "#8e8672"))
+    .call(g => g.selectAll("text").attr("fill", "#5d5749").attr("font-size", 10.5).attr("dy", "0.9em"));
+  svg.append("path")
+    .attr("d", `M${x(NAT)},${barY - 6} l4,-5 h-8 z`).attr("fill", "#22201a");
+  svg.append("rect").attr("x", x(0.64) + 18).attr("y", barY).attr("width", 14).attr("height", barH)
+    .attr("fill", "var(--nodata)").attr("stroke", "#c9c1ad");
+  svg.append("text").attr("x", x(0.64) + 37).attr("y", barY + barH - 1)
+    .attr("font-size", 10.5).attr("fill", "#5d5749").text("under 150 interviews");
+  svg.append("text").attr("x", x(NAT)).attr("y", barY + barH + 28).attr("text-anchor", "middle")
+    .attr("font-size", 10).attr("fill", "#8e8672").text("▲ = U.S. share");
+}
+
+function renderMap() {
+  const cont = document.getElementById("mapBody");
+  cont.innerHTML = "";
+  const W = cont.clientWidth || 800;
+  const H = Math.round(W * 0.625);
+  const svg = d3.select(cont).append("svg")
+    .attr("viewBox", `0 0 ${W} ${H}`).attr("width", "100%").style("height", "auto")
+    .attr("role", "img")
+    .attr("aria-label", "Choropleth map of the United States colored by share of respondents thriving, with a toggle between state and county resolution. Appalachia and the mid-South run low; the Washington area, Mountain West, urban Texas, Hawaii and Alaska run high.");
+  svg.append("title").text("Share thriving by state and county, Gallup 2008-2017, unweighted.");
+  const proj = d3.geoAlbersUsa().fitSize([W, H], nationF);
+  const path = d3.geoPath(proj);
+  const tip = tipFor(cont);
+
+  /* county layer (revealed when the state layer fades out) */
+  const gC = svg.append("g");
+  const cPaths = gC.selectAll("path").data(countiesF).join("path")
+    .attr("d", path)
+    .attr("fill", d => { const c = countyByFips.get(d.id); return c ? color(c.thr) : "var(--nodata)"; })
+    .attr("stroke", "#f8f5ee").attr("stroke-width", 0.35)
+    .style("cursor", "crosshair")
+    .on("pointerenter", function (ev, d) {
+      d3.select(this).attr("stroke", "#16140f").attr("stroke-width", 1.4).raise();
+      const c = countyByFips.get(d.id);
+      const where = `${countyName.get(d.id) || "County"}, ${stateAbbr(d.id.slice(0, 2)) || "?"}`;
+      tip.show(c
+        ? `<b>${where}</b><br>${fmtPct(c.thr)} thriving &middot; ${fmtN(c.n)} interviews`
+        : `<b>${where}</b><br><span class="tipnote">Fewer than 150 interviews &mdash; suppressed</span>`, ev);
+      if (c) cross(d.id, true, "map");
+    })
+    .on("pointermove", ev => tip.move(ev))
+    .on("pointerleave", function (ev, d) {
+      d3.select(this).attr("stroke", "#f8f5ee").attr("stroke-width", 0.35);
+      tip.hide();
+      cross(d.id, false, "map");
+    });
+  link.countyPaths = new Map();
+  cPaths.each(function (d) { link.countyPaths.set(d.id, this); });
+
+  /* state borders over the county layer */
+  const borders = svg.append("path")
+    .attr("d", path(stateBorders))
+    .attr("fill", "none").attr("stroke", "#f8f5ee").attr("stroke-width", 1)
+    .attr("pointer-events", "none");
+
+  /* state layer */
+  const gS = svg.append("g");
+  const sPaths = gS.selectAll("path").data(statesF).join("path")
+    .attr("d", path)
+    .attr("fill", d => { const s = stateByFips.get(d.id); return s ? color(s.thr) : "var(--nodata)"; })
+    .attr("stroke", "#f8f5ee").attr("stroke-width", 1)
+    .style("cursor", "crosshair")
+    .on("pointerenter", function (ev, d) {
+      const s = stateByFips.get(d.id);
+      if (!s) return;
+      d3.select(this).attr("stroke", "#16140f").attr("stroke-width", 1.6).raise();
+      const dc = d.id === "11" ? `<br><span class="tipnote">A city, benchmarked against whole states</span>` : "";
+      tip.show(`<b>${s.name}</b><br>${fmtPct(s.thr)} thriving &middot; ${fmtN(s.n)} interviews<br><span class="tipnote">Rank ${stateRank.get(d.id)} of 51 (incl. D.C.)</span>${dc}`, ev);
+      if (link.dimByState) link.dimByState(d.id, true);
+    })
+    .on("pointermove", ev => tip.move(ev))
+    .on("pointerleave", function () {
+      d3.select(this).attr("stroke", "#f8f5ee").attr("stroke-width", 1);
+      tip.hide();
+      if (link.dimByState) link.dimByState(null, false);
+    });
+  link.statePaths = new Map();
+  sPaths.each(function (d) { link.statePaths.set(d.id, this); });
+
+  /* annotations (state view, wide screens) */
+  const gA = svg.append("g").attr("pointer-events", "none");
+  if (W >= 700) {
+    const annos = [
+      { ll: [-80.85, 38.55], dx: 0.055, dy: 0.20, lines: ["Appalachia:", "the deepest lows"] },
+      { ll: [-77.03, 38.90], dx: 0.045, dy: -0.155, lines: ["D.C. & its orbit:", "64.6% thriving"] },
+      { ll: [-157.85, 21.40], dx: 0.005, dy: -0.115, lines: ["Hawaii: highest", "state, 60.8%"] }
+    ];
+    for (const a of annos) {
+      const p = proj(a.ll);
+      if (!p) continue;
+      const lx = p[0] + a.dx * W, ly = p[1] + a.dy * H;
+      gA.append("line").attr("x1", p[0]).attr("y1", p[1]).attr("x2", lx - 4).attr("y2", ly + 4)
+        .attr("stroke", "#22201a").attr("stroke-width", 0.8).attr("opacity", 0.65);
+      const t = gA.append("text").attr("x", lx).attr("y", ly)
+        .attr("font-size", 11.5).attr("font-weight", 600).attr("fill", "#22201a")
+        .attr("paint-order", "stroke").attr("stroke", "#f8f5ee").attr("stroke-width", 3.5);
+      a.lines.forEach((s, i) => t.append("tspan").attr("x", lx).attr("dy", i ? 13 : 0).text(s));
+    }
+  }
+
+  setMapMode = (mode, animate = true) => {
+    mapMode = mode; link.mode = mode;
+    document.querySelectorAll("[data-mapmode]").forEach(b =>
+      b.setAttribute("aria-pressed", String(b.dataset.mapmode === mode)));
+    gS.style("pointer-events", mode === "states" ? "auto" : "none");
+    gC.style("pointer-events", mode === "counties" ? "auto" : "none");
+    const tweenable = sel => animate ? sel.transition().duration(450) : sel;
+    tweenable(gS).style("opacity", mode === "states" ? 1 : 0);
+    tweenable(borders).style("opacity", mode === "counties" ? 1 : 0);
+    tweenable(gA).style("opacity", mode === "states" ? 1 : 0);
+  };
+  setMapMode(mapMode, false);
+}
+document.querySelectorAll("[data-mapmode]").forEach(b =>
+  b.addEventListener("click", () => setMapMode(b.dataset.mapmode)));
+
+/* =========================================================== fig 3 : scatter */
+let scatterVar = "inc";
+let setScatterVar = () => {};
+
+const SC = {
+  inc: {
+    axis: "Median household income ($1,000s)",
+    corr: () => DATA.correlations.median_hhinc,
+    get: d => d.inc,
+    tick: d => "$" + d + "k",
+    tipVal: d => `$${fmtN(Math.round(d.inc * 1000))} median income`,
+    cap: "Median household income from the American Community Survey (5-year estimates, ~2018 vintage), joined to all interview years."
+  },
+  rural: {
+    axis: "Share of residents in rural territory (%)",
+    corr: () => DATA.correlations.pct_rural,
+    get: d => d.rural,
+    tick: d => d + "%",
+    tipVal: d => `${d3.format(".0f")(d.rural)}% rural`,
+    cap: "Share of county residents living in rural territory, decennial census definition."
+  },
+  despair: {
+    axis: "Deaths of despair per 100,000 (drugs, alcohol, suicide)",
+    corr: () => DATA.correlations.despair_mortality,
+    get: d => d.despair,
+    tick: d => d,
+    tipVal: d => `${d3.format(".0f")(d.despair)} deaths of despair per 100k`,
+    cap: "Combined mortality from drugs, alcohol, and suicide per 100,000. Mortality data exist only for larger counties, so this view shows fewer dots; the fitted line and <em>r</em> use the 1,204 such counties with &ge;300 interviews."
+  },
+  rep: {
+    axis: "Avg. presidential margin, 2008–2016",
+    corr: () => DATA.correlations.rep_margin,
+    get: d => d.rep,
+    tick: d => d === 0 ? "Even" : (d > 0 ? "R+" : "D+") + Math.round(Math.abs(d) * 100),
+    tipVal: d => `${d.rep === 0 ? "Even" : (d.rep > 0 ? "R+" : "D+") + Math.round(Math.abs(d.rep) * 100)} avg. margin, 2008–2016`,
+    cap: "Two-party presidential margin averaged across the 2008, 2012, and 2016 elections; blue = more Democratic, red = more Republican. Descriptive only &mdash; partisan lean travels with rurality and income."
+  }
+};
+
+function renderScatter() {
+  const cont = document.getElementById("scatterBody");
+  cont.innerHTML = "";
+  const W = cont.clientWidth || 800;
+  const H = Math.max(330, Math.min(470, Math.round(W * 0.62)));
+  const m = { t: 16, r: 18, b: 56, l: 56 };
+  const maxR = W < 560 ? 9 : 15;
+
+  const svg = d3.select(cont).append("svg")
+    .attr("viewBox", `0 0 ${W} ${H}`).attr("width", "100%").style("height", "auto")
+    .attr("role", "img")
+    .attr("aria-label", "Scatterplot of county thriving share against a selectable context variable: income, rurality, deaths of despair, or average presidential margin across 2008 to 2016. Income relates positively; the others negatively.");
+  svg.append("title").text("County thriving share vs. local context, Gallup 2008-2017, unweighted.");
+  const tip = tipFor(cont);
+
+  const clipId = "scatterClip" + Math.round(Math.random() * 1e6);
+  svg.append("clipPath").attr("id", clipId).append("rect")
+    .attr("x", m.l).attr("y", m.t).attr("width", W - m.l - m.r).attr("height", H - m.t - m.b);
+
+  const x = d3.scaleLinear().range([m.l, W - m.r]);
+  const y = d3.scaleLinear().domain(d3.extent(counties, d => d.thr)).nice().range([H - m.b, m.t]);
+  const rScale = d3.scaleSqrt().domain([150, d3.max(counties, d => d.n)]).range([1.7, maxR]);
+
+  // y axis + grid
+  svg.append("g").attr("transform", `translate(${m.l},0)`)
+    .call(d3.axisLeft(y).ticks(6).tickFormat(fmtPct0).tickSize(-(W - m.l - m.r)))
+    .call(g => g.select(".domain").remove())
+    .call(g => g.selectAll("line").attr("stroke", "#e3dccb"))
+    .call(g => g.selectAll("text").attr("fill", "#5d5749").attr("font-size", 11.5).attr("x", -8));
+  svg.append("text").attr("transform", `translate(14,${(m.t + H - m.b) / 2}) rotate(-90)`)
+    .attr("text-anchor", "middle").attr("font-size", 12).attr("font-weight", 600).attr("fill", "#5d5749")
+    .text("Share thriving");
+
+  const gx = svg.append("g").attr("transform", `translate(0,${H - m.b})`);
+  const xlab = svg.append("text").attr("x", (m.l + W - m.r) / 2).attr("y", H - 12)
+    .attr("text-anchor", "middle").attr("font-size", 12).attr("font-weight", 600).attr("fill", "#5d5749");
+
+  // national reference
+  svg.append("line").attr("x1", m.l).attr("x2", W - m.r).attr("y1", y(NAT)).attr("y2", y(NAT))
+    .attr("stroke", "#9b937e").attr("stroke-dasharray", "4 4").attr("stroke-width", 1);
+  svg.append("text").attr("x", W - m.r).attr("y", y(NAT) - 5).attr("text-anchor", "end")
+    .attr("font-size", 10.5).attr("fill", "#8e8672").text("U.S. 52%");
+
+  const gDots = svg.append("g").attr("clip-path", `url(#${clipId})`);
+  const dotSel = gDots.selectAll("circle")
+    .data([...counties].sort((a, b) => b.n - a.n))
+    .join("circle")
+    .attr("class", "dot")
+    .attr("cy", d => y(d.thr))
+    .attr("r", d => rScale(d.n))
+    .attr("fill-opacity", 0.55)
+    .on("pointerenter", function (ev, d) {
+      d3.select(this).classed("hl", true).raise();
+      const cfg = SC[scatterVar];
+      tip.show(`<b>${countyName.get(d.fips) || "County"}, ${stateAbbr(d.fips.slice(0, 2))}</b><br>${fmtPct(d.thr)} thriving &middot; ${fmtN(d.n)} interviews<br><span class="tipnote">${cfg.tipVal(d)}</span>`, ev);
+      cross(d.fips, true, "scatter");
+    })
+    .on("pointermove", ev => tip.move(ev))
+    .on("pointerleave", function (ev, d) {
+      d3.select(this).classed("hl", false);
+      tip.hide();
+      cross(d.fips, false, "scatter");
+    });
+
+  const dotEls = new Map();
+  dotSel.each(function (d) { dotEls.set(d.fips, this); });
+  link.hlDot = (fips, on) => {
+    const el = dotEls.get(fips);
+    if (!el) return;
+    d3.select(el).classed("hl", on);
+    if (on) d3.select(el).raise();
+  };
+  link.dimByState = (st, on) => {
+    dotSel.classed("dim", d => on && !d.fips.startsWith(st));
+  };
+
+  const trend = svg.append("path").attr("clip-path", `url(#${clipId})`)
+    .attr("fill", "none").attr("stroke", "#16140f").attr("stroke-width", 1.6).attr("opacity", 0.8);
+  const rText = svg.append("text").attr("x", m.l + 10).attr("y", m.t + 16)
+    .attr("font-size", 12.5).attr("font-weight", 700).attr("fill", "#22201a")
+    .attr("paint-order", "stroke").attr("stroke", "#f8f5ee").attr("stroke-width", 3.5);
+
+  setScatterVar = (v, animate = true) => {
+    scatterVar = v;
+    document.querySelectorAll("[data-var]").forEach(b =>
+      b.setAttribute("aria-pressed", String(b.dataset.var === v)));
+    const cfg = SC[v];
+    const present = counties.filter(d => cfg.get(d) != null);
+    x.domain(d3.extent(present, cfg.get)).nice();
+    const tweenable = sel => animate ? sel.transition().duration(650) : sel;
+    const restyleAxis = () => {
+      gx.selectAll("text").attr("fill", "#5d5749").attr("font-size", 11.5);
+      gx.selectAll("line,path").attr("stroke", "#b9b09a");
+    };
+
+    const axis = d3.axisBottom(x).ticks(W < 560 ? 5 : 7).tickFormat(cfg.tick).tickSizeOuter(0);
+    if (animate) {
+      gx.transition().duration(650).call(axis).on("end interrupt", restyleAxis);
+    } else {
+      gx.call(axis);
+    }
+    restyleAxis();
+    xlab.text(cfg.axis);
+
+    dotSel.style("pointer-events", d => cfg.get(d) == null ? "none" : "auto");
+    tweenable(dotSel)
+      .attr("cx", d => { const val = cfg.get(d); return val == null ? x.range()[0] : x(val); })
+      .style("opacity", d => cfg.get(d) == null ? 0 : 1)
+      .attr("fill", d => (v === "rep" && d.rep != null) ? party(d.rep) : "#0b6b63");
+
+    const fit = lsq(counties.filter(d => d.n >= 300 && cfg.get(d) != null).map(d => [cfg.get(d), d.thr]));
+    const [x0, x1] = x.domain();
+    tweenable(trend)
+      .attr("d", `M${x(x0)},${y(fit(x0))} L${x(x1)},${y(fit(x1))}`);
+
+    const [r, nC] = cfg.corr();
+    rText.text(`r = ${fmtR(r)} · ${fmtN(nC)} counties (N ≥ 300)`);
+    document.getElementById("scCap").innerHTML = cfg.cap;
+  };
+  setScatterVar(scatterVar, false);
+}
+document.querySelectorAll("[data-var]").forEach(b =>
+  b.addEventListener("click", () => setScatterVar(b.dataset.var)));
+
+/* ============================================================ fig 4 : ledger */
+function renderCorr() {
+  const cont = document.getElementById("corrBody");
+  cont.innerHTML = "";
+  const W = cont.clientWidth || 800;
+  const rows = [
+    { k: "median_hhinc",      label: "Median household income" },
+    { k: "pct_rural",         label: "Share of residents rural" },
+    { k: "despair_mortality", label: "Deaths of despair per 100k", note: "1,204 larger counties" },
+    { k: "rep_margin",        label: "Avg. Republican margin, 2008–2016" },
+    { k: "poverty",           label: "Poverty rate" },
+    { k: "social_capital",    label: "Social-capital index" }
+  ];
+  const rowH = 54, m = { t: 8, b: 34, l: 10, r: 10 };
+  const H = m.t + rows.length * rowH + m.b;
+  const x = d3.scaleLinear().domain([-0.65, 0.65]).range([m.l, W - m.r]);
+
+  const svg = d3.select(cont).append("svg")
+    .attr("viewBox", `0 0 ${W} ${H}`).attr("width", "100%").style("height", "auto")
+    .attr("role", "img")
+    .attr("aria-label", "Bar chart of Pearson correlations between county thriving share and six context measures, from income at plus 0.58 to the social-capital index at plus 0.11.");
+  svg.append("title").text("Correlates of county thriving share, counties with at least 300 interviews.");
+
+  // r axis
+  const ax = svg.append("g").attr("transform", `translate(0,${H - m.b + 6})`)
+    .call(d3.axisBottom(x).tickValues([-0.6, -0.3, 0, 0.3, 0.6]).tickFormat(d3.format("+.1f")).tickSizeOuter(0));
+  ax.selectAll("text").attr("fill", "#5d5749").attr("font-size", 11);
+  ax.selectAll("line,path").attr("stroke", "#b9b09a");
+  svg.append("text").attr("x", W - m.r).attr("y", H - 2).attr("text-anchor", "end")
+    .attr("font-size", 10.5).attr("fill", "#8e8672").text("Pearson r");
+  svg.append("line").attr("x1", x(0)).attr("x2", x(0)).attr("y1", m.t).attr("y2", H - m.b + 6)
+    .attr("stroke", "#9b937e").attr("stroke-width", 1);
+
+  rows.forEach((row, i) => {
+    const [r, nC] = DATA.correlations[row.k];
+    const yTop = m.t + i * rowH;
+    const lab = svg.append("text").attr("x", x(0) + (r >= 0 ? -8 : 8))
+      .attr("y", yTop + 14).attr("text-anchor", r >= 0 ? "end" : "start")
+      .attr("font-size", 13).attr("font-weight", 600).attr("fill", "#22201a")
+      .text(row.label);
+    if (row.note) lab.append("tspan").attr("fill", "#8e8672").attr("font-weight", 400)
+      .attr("font-size", 11.5).text("  (" + row.note + ")");
+    svg.append("rect")
+      .attr("x", Math.min(x(0), x(r))).attr("y", yTop + 21)
+      .attr("width", Math.abs(x(r) - x(0))).attr("height", 15).attr("rx", 2)
+      .attr("fill", r >= 0 ? "var(--pos)" : "var(--neg)");
+    /* annotations sit past the bar tip unless that would run off the chart,
+       in which case they flip back inside / under the bar */
+    const room = 96; // px needed for the widest annotation line
+    const flip = r >= 0 ? (x(r) + room > W) : (x(r) - room < 0);
+    const annoX = x(r) + ((r >= 0) !== flip ? 7 : -7);
+    const annoAnchor = (r >= 0) !== flip ? "start" : "end";
+    svg.append("text")
+      .attr("x", annoX).attr("y", yTop + 33)
+      .attr("text-anchor", annoAnchor)
+      .attr("font-size", 12.5).attr("font-weight", 700)
+      .attr("fill", flip ? "#fffdf8" : (r >= 0 ? "var(--pos)" : "var(--neg)"))
+      .text(fmtR(r));
+    svg.append("text")
+      .attr("x", annoX).attr("y", yTop + 46)
+      .attr("text-anchor", annoAnchor)
+      .attr("font-size", 10.5).attr("fill", "#8e8672")
+      .text(fmtN(nC) + " counties");
+  });
+}
+
+/* ====================================================== fig 5 : rucc & party */
+const RUCC_DESC = {
+  1: "Metro, 1M+ population", 2: "Metro, 250k–1M", 3: "Metro, under 250k",
+  4: "Nonmetro, urban 20k+, metro-adjacent", 5: "Nonmetro, urban 20k+, remote",
+  6: "Nonmetro, urban 2.5–20k, adjacent", 7: "Nonmetro, urban 2.5–20k, remote",
+  8: "Rural, metro-adjacent", 9: "Rural, remote"
+};
+
+function renderRucc() {
+  const cont = document.getElementById("ruccBody");
+  cont.innerHTML = "";
+  const W = cont.clientWidth || 480;
+  const H = 280, m = { t: 18, r: 8, b: 46, l: 44 };
+  const x = d3.scaleBand().domain(DATA.rucc.map(d => d.rucc)).range([m.l, W - m.r]).padding(0.3);
+  const y = d3.scaleLinear().domain([0.445, 0.555]).range([H - m.b, m.t]);
+
+  const svg = d3.select(cont).append("svg")
+    .attr("viewBox", `0 0 ${W} ${H}`).attr("width", "100%").style("height", "auto")
+    .attr("role", "img")
+    .attr("aria-label", "Bar chart: thriving share steps down the rural-urban continuum from 54.1 percent in the largest metros to 46.0 percent in the most rural counties.");
+  svg.append("title").text("Thriving share by USDA rural-urban continuum code.");
+  const tip = tipFor(cont);
+
+  svg.append("g").attr("transform", `translate(${m.l},0)`)
+    .call(d3.axisLeft(y).tickValues([0.46, 0.48, 0.50, 0.52, 0.54]).tickFormat(fmtPct0).tickSize(-(W - m.l - m.r)))
+    .call(g => g.select(".domain").remove())
+    .call(g => g.selectAll("line").attr("stroke", "#e3dccb"))
+    .call(g => g.selectAll("text").attr("fill", "#5d5749").attr("font-size", 11));
+
+  svg.append("line").attr("x1", m.l).attr("x2", W - m.r).attr("y1", y(NAT)).attr("y2", y(NAT))
+    .attr("stroke", "#22201a").attr("stroke-dasharray", "3 3").attr("stroke-width", 1);
+  svg.append("text").attr("x", W - m.r).attr("y", y(NAT) - 5).attr("text-anchor", "end")
+    .attr("font-size", 10).attr("fill", "#5d5749").text("U.S. 52.0%");
+
+  svg.append("g").selectAll("rect").data(DATA.rucc).join("rect")
+    .attr("x", d => x(d.rucc)).attr("width", x.bandwidth())
+    .attr("y", d => Math.min(y(d.thr), y(NAT)))
+    .attr("height", d => Math.abs(y(d.thr) - y(NAT)))
+    .attr("rx", 2)
+    .attr("fill", d => d.thr >= NAT ? "var(--pos)" : "var(--neg)")
+    .style("cursor", "crosshair")
+    .on("pointerenter", function (ev, d) {
+      d3.select(this).attr("opacity", 0.75);
+      tip.show(`<b>RUCC ${d.rucc}: ${RUCC_DESC[d.rucc]}</b><br>${fmtPct(d.thr)} thriving &middot; ${fmtN(d.n)} interviews`, ev);
+    })
+    .on("pointermove", ev => tip.move(ev))
+    .on("pointerleave", function () { d3.select(this).attr("opacity", 1); tip.hide(); });
+
+  svg.append("g").selectAll("text").data(DATA.rucc).join("text")
+    .attr("x", d => x(d.rucc) + x.bandwidth() / 2)
+    .attr("y", d => d.thr >= NAT ? y(d.thr) - 5 : y(d.thr) + 13)
+    .attr("text-anchor", "middle").attr("font-size", 10.5).attr("font-weight", 700)
+    .attr("fill", d => d.thr >= NAT ? "var(--pos)" : "var(--neg)")
+    .attr("paint-order", "stroke").attr("stroke", "#f8f5ee").attr("stroke-width", 3)
+    .text(d => (W < 420 && d.rucc !== 1 && d.rucc !== 9) ? "" : d3.format(".1%")(d.thr));
+
+  const gx = svg.append("g").attr("transform", `translate(0,${H - m.b})`)
+    .call(d3.axisBottom(x).tickSizeOuter(0));
+  gx.selectAll("text").attr("fill", "#5d5749").attr("font-size", 11);
+  gx.selectAll("line,path").attr("stroke", "#b9b09a");
+  svg.append("text").attr("x", m.l).attr("y", H - 8).attr("font-size", 10.5).attr("fill", "#8e8672")
+    .text("← most urban");
+  svg.append("text").attr("x", W - m.r).attr("y", H - 8).attr("text-anchor", "end")
+    .attr("font-size", 10.5).attr("fill", "#8e8672").text("most rural →");
+}
+
+function renderParty() {
+  const cont = document.getElementById("partyBody");
+  cont.innerHTML = "";
+  const W = cont.clientWidth || 480;
+  const rows = DATA.party_lean;
+  const rowH = 44, m = { t: 18, r: 56, b: 30, l: 86 };
+  const H = m.t + rows.length * rowH + m.b;
+  const dev = d3.scaleLinear().domain([-0.034, 0.034]).range([m.l, W - m.r]);
+
+  const svg = d3.select(cont).append("svg")
+    .attr("viewBox", `0 0 ${W} ${H}`).attr("width", "100%").style("height", "auto")
+    .attr("role", "img")
+    .attr("aria-label", "Bar chart: thriving share by county presidential lean, from 54.9 percent in solidly Democratic counties to 49.1 percent in solidly Republican counties. Descriptive only.");
+  svg.append("title").text("Thriving share by county presidential lean, averaged across the 2008, 2012, and 2016 elections, relative to the national 52 percent.");
+
+  svg.append("line").attr("x1", dev(0)).attr("x2", dev(0)).attr("y1", m.t - 6).attr("y2", H - m.b)
+    .attr("stroke", "#22201a").attr("stroke-dasharray", "3 3").attr("stroke-width", 1);
+  svg.append("text").attr("x", dev(0)).attr("y", m.t - 10).attr("text-anchor", "middle")
+    .attr("font-size", 10).attr("fill", "#5d5749").text("U.S. 52.0%");
+
+  rows.forEach((row, i) => {
+    const d = row.thr - NAT;
+    const yTop = m.t + i * rowH;
+    svg.append("text").attr("x", m.l - 10).attr("y", yTop + rowH / 2 + 1)
+      .attr("text-anchor", "end").attr("dominant-baseline", "middle")
+      .attr("font-size", 12.5).attr("font-weight", 600).attr("fill", "#22201a")
+      .text(row.lean);
+    const barW = Math.max(1, Math.abs(dev(d) - dev(0)));
+    svg.append("rect")
+      .attr("x", Math.min(dev(0), dev(d))).attr("y", yTop + rowH / 2 - 8)
+      .attr("width", barW).attr("height", 16).attr("rx", 2)
+      .attr("fill", d >= 0 ? "var(--pos)" : "var(--neg)");
+    /* value labels: positive bars label past the free (right) end; negative bars
+       label inside the bar at its free (left) end when it fits, otherwise in the
+       empty half-row just right of the zero line — never over the category text */
+    const inside = d < 0 && barW >= 48;
+    svg.append("text")
+      .attr("x", d >= 0 ? dev(d) + 7 : (inside ? dev(d) + 6 : dev(0) + 7))
+      .attr("y", yTop + rowH / 2 + 1)
+      .attr("text-anchor", "start").attr("dominant-baseline", "middle")
+      .attr("font-size", 12).attr("font-weight", 700)
+      .attr("fill", inside ? "#fffdf8" : (d >= 0 ? "var(--pos)" : "var(--neg)"))
+      .text(fmtPct(row.thr));
+  });
+  svg.append("text").attr("x", (m.l + W - m.r) / 2).attr("y", H - 8).attr("text-anchor", "middle")
+    .attr("font-size", 10.5).attr("fill", "#8e8672")
+    .text("Distance from the national thriving share");
+}
+
+/* ------------------------------------------------------------ boot & resize */
+const renders = [renderStrip, renderLegend, renderMap, renderScatter, renderCorr, renderRucc, renderParty];
+renders.forEach(f => f());
+const probe = document.getElementById("mapBody");
+let resizeTimer, lastW = probe.clientWidth;
+const onResize = () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => {
+    if (probe.clientWidth !== lastW) { lastW = probe.clientWidth; renders.forEach(f => f()); }
+  }, 180);
+};
+window.addEventListener("resize", onResize);
+if (window.ResizeObserver) new ResizeObserver(onResize).observe(probe);
+</script>
+
+<noscript>
+  <div class="prose" style="padding:24px 22px;">This essay&rsquo;s maps and charts are drawn in the
+  browser with JavaScript. The text above stands on its own; the graphics need scripts enabled.</div>
+</noscript>
+
+<!--SL_BOOKNAV_START-->
+<style>
+.slbn{font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;background:#0f1417;border-top:1px solid #27313a;color:#9fb0ba;padding:24px 20px 40px;margin:48px 0 0}
+.slbn-in{max-width:1080px;margin:0 auto;display:flex;align-items:stretch;gap:12px}
+.slbn a{flex:1 1 0;min-width:0;text-decoration:none;color:inherit;border:1px solid #27313a;border-radius:10px;padding:13px 15px;display:flex;flex-direction:column;gap:4px;background:#161d22;transition:border-color .15s,transform .15s}
+.slbn a:hover{border-color:#3fa9a0;transform:translateY(-2px)}
+.slbn a:focus-visible{outline:2px solid #3fa9a0;outline-offset:2px}
+.slbn a.slbn-next{text-align:right;align-items:flex-end}
+.slbn a.slbn-toc{flex:0 0 auto;min-width:120px;justify-content:center;align-items:center;text-align:center}
+.slbn .slbn-dir{font:700 10px/1 inherit;letter-spacing:.13em;text-transform:uppercase;color:#6b7c87}
+.slbn .slbn-ttl{font:700 14px/1.3 inherit;color:#eef2f4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.slbn a.slbn-disabled{opacity:.38;pointer-events:none}
+@media(max-width:640px){.slbn-in{flex-wrap:wrap}.slbn a{flex:1 1 100%}.slbn a.slbn-next{text-align:left;align-items:flex-start}.slbn a.slbn-toc{order:-1}}
+</style>
+<nav class="slbn" aria-label="Book navigation"><div class="slbn-in"><a class="slbn-prev" href="../read.html?ch=keeping-up-with-the-county" target="_top"><span class="slbn-dir">‹ Previous</span><span class="slbn-ttl">Keeping Up With the County</span></a><a class="slbn-toc" href="../index.html#book" target="_top"><span class="slbn-dir">The Scissors</span><span class="slbn-ttl">Chapter 28 / 36</span></a><a class="slbn-next" href="../read.html?ch=happiness-moved-inside-borders" target="_top"><span class="slbn-dir">Next ›</span><span class="slbn-ttl">Happiness Moved Inside Borders</span></a></div></nav>
+<!--SL_BOOKNAV_END-->
+</body>
+</html>

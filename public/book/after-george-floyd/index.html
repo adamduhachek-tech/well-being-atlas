@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>After George Floyd: the reckoning that snapped back</title>
+<meta name="description" content="Nationscape (UCLA / Democracy Fund), 85 weekly waves, 2019-2021: after George Floyd was killed on May 25, 2020, American opinion on police, race and discrimination shifted sharply - then largely reverted by 2021.">
+<style>
+  :root{
+    --paper:#0e1116;
+    --paper2:#141922;
+    --panel:#19202b;
+    --panel-edge:#2a3340;
+    --ink:#eef2f6;
+    --ink-dim:#a7b2c0;
+    --ink-faint:#74808f;
+    --hairline:#28303b;
+    --accent:#e0533e;       /* the reckoning - warm signal red */
+    --accent-soft:rgba(224,83,62,.16);
+    --accent-deep:#c63d29;
+    --cool:#48b6c4;         /* recovery / the snap-back - cool */
+    --cool-soft:rgba(72,182,196,.16);
+    --dem:#3B6CA8;
+    --rep:#B5394C;
+    --ind:#8c93a0;
+    --maxw:720px;
+    --figw:1040px;
+    --sans:"Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --serif:"Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font:18px/1.68 var(--serif);
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  .skip{position:absolute; left:-9999px; top:0; background:var(--ink); color:var(--paper); padding:.5em 1em; z-index:40; font-family:var(--sans)}
+  .skip:focus{left:8px; top:8px}
+  a{color:var(--cool); text-decoration-color:rgba(72,182,196,.45); text-underline-offset:3px}
+  a:focus-visible, button:focus-visible, select:focus-visible{outline:2.5px solid var(--accent); outline-offset:2px}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 22px}
+  .wrap-wide{max-width:var(--figw); margin:0 auto; padding:0 22px}
+
+  header{position:relative; padding:88px 0 6px; overflow:hidden}
+  .hwave{position:absolute; inset:0; z-index:0; opacity:.92; pointer-events:none}
+  .kicker{font:700 12px/1.5 var(--sans); letter-spacing:.26em; text-transform:uppercase; color:var(--accent); position:relative; z-index:1}
+  h1{
+    font:800 clamp(38px,7.4vw,72px)/1.02 var(--sans); letter-spacing:-.028em;
+    margin:.22em 0 .32em; text-wrap:balance; position:relative; z-index:1;
+  }
+  .dek{font:400 clamp(19px,2.7vw,23px)/1.5 var(--serif); color:var(--ink-dim); margin:0 0 24px; max-width:37em; position:relative; z-index:1}
+  .byline{
+    font:400 13px/1.7 var(--sans); color:var(--ink-faint);
+    border-top:1.5px solid var(--panel-edge); padding-top:13px; display:flex; gap:20px; flex-wrap:wrap;
+    position:relative; z-index:1;
+  }
+  .byline b{color:var(--ink-dim); font-weight:600}
+
+  main{position:relative; z-index:1}
+  h2{font:800 clamp(25px,3.8vw,34px)/1.16 var(--sans); letter-spacing:-.018em; margin:2.1em 0 .55em}
+  p{margin:0 0 1.18em}
+  strong{color:#fff; font-weight:700}
+  em{color:var(--ink)}
+
+  .statrow{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:32px 0 8px}
+  .stat{background:var(--panel); border:1px solid var(--panel-edge); border-top:3px solid var(--ink-faint); padding:14px 15px 12px; border-radius:4px}
+  .stat.acc{border-top-color:var(--accent)}
+  .stat.cool{border-top-color:var(--cool)}
+  .stat .lab{font:700 10.5px/1.4 var(--sans); letter-spacing:.09em; text-transform:uppercase; color:var(--ink-faint)}
+  .stat .val{font:800 clamp(20px,2.6vw,28px)/1.12 var(--sans); margin-top:7px; font-variant-numeric:tabular-nums; color:var(--ink)}
+  .stat.acc .val{color:var(--accent)} .stat.cool .val{color:var(--cool)}
+  .stat .sub{font:400 12px/1.45 var(--sans); color:var(--ink-dim); margin-top:5px}
+  @media(max-width:680px){ .statrow{grid-template-columns:1fr 1fr} }
+  @media(max-width:420px){ .statrow{grid-template-columns:1fr} }
+
+  figure{margin:40px 0}
+  .fig{
+    background:var(--paper2); border:1px solid var(--panel-edge);
+    padding:22px 22px 16px; position:relative; border-radius:6px;
+    box-shadow:0 30px 60px -40px rgba(0,0,0,.8);
+  }
+  .figtitle{font:800 18px/1.3 var(--sans); margin:0 0 3px; color:var(--ink)}
+  .figsub{font:400 13.5px/1.55 var(--sans); color:var(--ink-dim); margin:0 0 12px; max-width:58em}
+  figcaption{font:400 12.5px/1.6 var(--sans); color:var(--ink-faint); margin-top:11px}
+  .chart{position:relative}
+  .chart svg{display:block; width:100%; height:auto}
+
+  .controls{display:flex; gap:14px; flex-wrap:wrap; align-items:flex-end; margin:4px 0 12px; font-family:var(--sans)}
+  .ctrlgroup{display:flex; flex-direction:column; gap:5px}
+  .ctrllab{font:700 10px/1 var(--sans); letter-spacing:.13em; text-transform:uppercase; color:var(--ink-faint)}
+  .segbtns{display:inline-flex; background:var(--panel); border:1.5px solid var(--panel-edge); border-radius:999px; padding:3px; gap:2px; flex-wrap:wrap}
+  button.seg{
+    font:700 12px/1.2 var(--sans); cursor:pointer; white-space:nowrap;
+    background:transparent; color:var(--ink-dim); border:none;
+    border-radius:999px; padding:7px 13px; transition:all .15s;
+  }
+  button.seg:hover{color:var(--ink)}
+  button.seg[aria-pressed="true"]{background:var(--ink); color:var(--paper)}
+
+  .legend{display:flex; gap:6px 16px; flex-wrap:wrap; margin:8px 0 2px; font:600 12px/1.6 var(--sans); color:var(--ink-dim)}
+  .legend .item{display:inline-flex; align-items:center; gap:6px}
+  .legend .sw{width:14px; height:4px; border-radius:2px; flex:none}
+  .legend .sw.round{width:11px; height:11px; border-radius:50%}
+
+  .annote{
+    display:flex; gap:11px; align-items:flex-start;
+    background:var(--accent-soft); border:1px solid rgba(224,83,62,.32); border-left:4px solid var(--accent);
+    padding:11px 15px; margin:18px 0 8px; font:400 13.5px/1.55 var(--sans); color:#f0c4b8; border-radius:4px;
+  }
+  .annote b{color:#fff}
+  .annote .ex{font:900 16px/1.2 var(--sans); color:var(--accent); flex:none}
+
+  .tip{
+    position:absolute; pointer-events:none; z-index:20; display:none;
+    background:#05080b; color:#eef2f6; border-radius:6px; padding:9px 11px;
+    font:400 12.5px/1.5 var(--sans); max-width:240px; box-shadow:0 8px 24px rgba(0,0,0,.6); border:1px solid #2b333d;
+  }
+  .tip b{color:#fff} .tip .trg{color:#9aa6b2; font-size:11px; letter-spacing:.05em; text-transform:uppercase}
+  .tip .num{font-variant-numeric:tabular-nums}
+  .tip .row{display:flex; justify-content:space-between; gap:14px}
+
+  .notes{
+    margin-top:62px; border-top:1.5px solid var(--panel-edge); padding:26px 0 80px;
+    font:400 14px/1.7 var(--sans); color:var(--ink-dim);
+  }
+  .notes h2{font-size:19px; margin:0 0 14px; color:var(--ink)}
+  .notes ul{padding-left:1.2em; margin:0}
+  .notes li{margin-bottom:9px}
+  .notes code{font:400 12.5px/1 ui-monospace, "Cascadia Mono", Consolas, monospace; background:var(--panel); padding:1px 5px; border-radius:3px; color:var(--ink-dim)}
+  .notes a{color:var(--cool)}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to article</a>
+<header>
+  <svg class="hwave" viewBox="0 0 1040 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg>
+  <div class="wrap">
+    <p class="kicker">Nationscape &middot; UCLA / Democracy Fund &middot; 85 weekly waves, 2019&ndash;2021</p>
+    <h1>After George Floyd: the reckoning that snapped back</h1>
+    <p class="dek">When George Floyd was killed on May&nbsp;25,&nbsp;2020, American opinion on the police and on race lurched in a single direction within days. A year later, most of that movement was gone.</p>
+    <div class="byline">
+      <span><b>Data</b> Nationscape, weekly 2019&ndash;2021</span>
+      <span><b>Sample</b> 494,532 respondents across 85 waves</span>
+      <span><b>Method</b> weighted to U.S. adult population targets</span>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <div class="wrap">
+    <p>For most of a year before the spring of 2020, American attitudes toward the police barely moved. Week after week, in a survey that interviewed roughly six thousand adults every seven days, the share saying they felt favorably toward &ldquo;the police&rdquo; sat in the mid-seventies. In the four-and-a-half months before George Floyd was killed it averaged <strong>76.1%</strong>, weighted to the U.S. adult population. It was one of the steadier lines in American public opinion.</p>
+
+    <p>Then a Minneapolis police officer knelt on George Floyd&rsquo;s neck for more than nine minutes, the video circled the world, and the line broke. By June, favorability toward the police had fallen to <strong>61.3%</strong> &mdash; a drop of <strong>14.8 percentage points</strong> in a matter of weeks, the steepest move in the entire series. The week Floyd died, the line was already cracking, at <strong>64.8%</strong>; by the trough of <strong>59.4%</strong> in mid-June it had lost a sixth of its level. At the same time, the share of Americans who said Black people face &ldquo;a great deal&rdquo; or &ldquo;a lot&rdquo; of discrimination jumped <strong>8.9</strong> points, belief in structural racism rose <strong>5.6</strong>, and racial resentment fell <strong>3.9</strong>. Every needle on the dashboard swung toward the protesters at once.</p>
+
+    <p>That much is the story almost everyone remembers: the summer of 2020 as a genuine, measurable shift in how the country talked about race and policing. The part that gets told less often is what happened next. The reckoning did not hold. By the first months of <strong>2021</strong>, police favorability had climbed back to <strong>72.6%</strong> &mdash; meaning only <strong>23.6%</strong> of the June drop was still there. Perceived anti-Black discrimination had given back almost everything: just <strong>5.6%</strong> of its jump survived. The country moved, hard and fast and in unison &mdash; and then, just as clearly, moved most of the way back.</p>
+
+    <div class="statrow" role="list" aria-label="Headline numbers">
+      <div class="stat acc" role="listitem"><div class="lab">Police favorability &middot; pre&rarr;June</div><div class="val">&minus;14.8 pp</div><div class="sub">from 76.1% to a 61.3% June low</div></div>
+      <div class="stat acc" role="listitem"><div class="lab">Anti-Black discrimination &middot; pre&rarr;June</div><div class="val">+8.9 pp</div><div class="sub">share saying &ldquo;a great deal / a lot&rdquo;</div></div>
+      <div class="stat cool" role="listitem"><div class="lab">Police move retained by 2021</div><div class="val">23.6%</div><div class="sub">favorability back up to 72.6%</div></div>
+      <div class="stat cool" role="listitem"><div class="lab">Discrimination move retained</div><div class="val">5.6%</div><div class="sub">back to 53.4%, near its old level</div></div>
+    </div>
+
+    <h2>The cliff, and the climb back</h2>
+    <p>The clearest way to see both halves of the story is to watch a single attitude week by week across the whole window and mark the day Floyd died. Use the controls to switch the measure, and to split the country into its political parties or its racial groups &mdash; the cliff appears in every line, but it is far from the same size in each.</p>
+  </div>
+
+  <div class="wrap-wide">
+    <figure>
+      <div class="fig">
+        <div class="figtitle" id="hero-title">Police favorability, week by week</div>
+        <div class="figsub" id="hero-sub">Weighted share of U.S. adults expressing a favorable view, each weekly wave from July 2019 to February 2021. The dashed line marks the week George Floyd was killed.</div>
+        <div class="controls" role="group" aria-label="Chart controls">
+          <div class="ctrlgroup">
+            <span class="ctrllab" id="metric-lab">Measure</span>
+            <div class="segbtns" role="group" aria-labelledby="metric-lab" id="metric-ctrl"></div>
+          </div>
+          <div class="ctrlgroup">
+            <span class="ctrllab" id="group-lab">Break out by</span>
+            <div class="segbtns" role="group" aria-labelledby="group-lab" id="group-ctrl"></div>
+          </div>
+        </div>
+        <div class="legend" id="hero-legend"></div>
+        <div class="chart" id="hero-chart"></div>
+        <figcaption id="hero-cap">Each point is one weekly wave, weighted to U.S. adult population targets. Weeks with effective N below 100 are suppressed. Source: Nationscape (UCLA / Democracy Fund).</figcaption>
+      </div>
+    </figure>
+  </div>
+
+  <div class="wrap">
+    <div class="annote"><span class="ex">&#9650;</span><div>Watching the <b>By party</b> view of police favorability is the fastest way to feel the asymmetry. Democrats fell off a cliff &mdash; <b>&minus;22.0 points</b> by June &mdash; while Republicans, already near the ceiling, barely flinched at <b>&minus;6.5</b>. By 2021 both had recovered most of the ground.</div></div>
+
+    <h2>Who moved the most</h2>
+    <p>A national average flattens a very uneven shock. The collapse in police favorability was concentrated among the groups already most skeptical &mdash; and it was those same groups whose numbers had climbed back the least a year later. Democrats and Black Americans lived the sharpest version of both the drop and, for everyone else, the rebound.</p>
+    <p>Among Democrats, favorability toward the police fell from <strong>70.1%</strong> before Floyd to <strong>48.1%</strong> in June, a <strong>22.0</strong>-point plunge, before recovering to <strong>64.8%</strong>. Among Black respondents the drop was nearly as steep, <strong>21.8</strong> points &mdash; from <strong>55.5%</strong> to a remarkable June low of <strong>33.7%</strong> &mdash; and their recovery was the most incomplete of any racial group, with only <strong>7.8%</strong> of the move retrieved by 2021. Republicans, starting at <strong>87.5%</strong>, had the least room and the smallest fall.</p>
+  </div>
+
+  <div class="wrap-wide">
+    <figure>
+      <div class="fig">
+        <div class="figtitle">The drop and the snap-back: police favorability</div>
+        <div class="figsub">Three points for each group &mdash; the pre-Floyd level (Jan&ndash;May 18, 2020), the June trough, and early 2021 &mdash; show how far favorability fell and how much came back. The June drop is labeled for each group.</div>
+        <div class="controls" role="group" aria-label="Trajectory controls">
+          <div class="ctrlgroup">
+            <span class="ctrllab" id="traj-lab">Break out by</span>
+            <div class="segbtns" role="group" aria-labelledby="traj-lab" id="traj-ctrl"></div>
+          </div>
+        </div>
+        <div class="legend" id="traj-legend"></div>
+        <div class="chart" id="traj-chart"></div>
+        <figcaption>Pre = weighted mean Jan 1&ndash;May 18, 2020; June = June 1&ndash;30, 2020; 2021 = Jan 1&ndash;Apr 15, 2021. Weighted to U.S. adult population targets.</figcaption>
+      </div>
+    </figure>
+  </div>
+
+  <div class="wrap">
+    <h2>What moved, and what snapped back</h2>
+    <p>Police favorability and perceived discrimination were not the only attitudes to twitch in June 2020 &mdash; but they moved the most, and they also reverted the most. Set every measure side by side and a pattern emerges: the two attitudes most directly about policing and anti-Black discrimination show the largest June shifts and, by 2021, the smallest residue. The slower-moving beliefs &mdash; whether Americans feel warmly toward Black people, and whether they endorse a racial-resentment talking point &mdash; barely budged in June and, where they did, held a larger fraction of that small move.</p>
+    <p>Belief that &ldquo;generations of slavery and discrimination&rdquo; hold Black Americans back rose <strong>5.6</strong> points to a June peak, then surrendered most of it: only <strong>12.5%</strong> remained by 2021. Racial resentment &mdash; the view that Black people should advance &ldquo;without special favors&rdquo; like other minorities &mdash; fell <strong>3.9</strong> points in June and had fully returned, and then some, a year on. The reckoning showed up across the board; it lasted nowhere.</p>
+  </div>
+
+  <div class="wrap-wide">
+    <figure>
+      <div class="fig">
+        <div class="figtitle">Six attitudes: the June jump, and the snap-back</div>
+        <div class="figsub">Each attitude at three moments &mdash; before Floyd, its June 2020 peak, and early 2021 &mdash; as a share of U.S. adults. The solid colored segment is the June shock; the grey dashes trace the return toward where opinion started. Rows are ordered by how far the attitude moved in June.</div>
+        <div class="legend" id="panel-legend"></div>
+        <div class="chart" id="panel-chart"></div>
+        <figcaption>June shift = June 2020 mean minus pre-Floyd (Jan 1&ndash;May 18, 2020) mean. Retained = (2021 minus pre) &divide; (June minus pre). Weighted to U.S. adult population targets. White-discrimination perception, whose June shift rounds to zero, is shown for contrast without a retention figure.</figcaption>
+      </div>
+    </figure>
+  </div>
+
+  <div class="wrap">
+    <h2>What this shows &mdash; and what it does not</h2>
+    <p>This is a description of what a large, repeatedly-sampled cross-section of Americans told an interviewer, week by week, weighted to look like the adult population. It is not an experiment. The survey cannot prove that Floyd&rsquo;s killing <em>caused</em> the swing, only that opinion moved sharply in its immediate aftermath and along the lines the protests were drawing; the timing is tight and the move is enormous, but a parade of other 2020 events &mdash; the pandemic, lockdowns, a bitter election &mdash; ran alongside it. Each weekly point is an independent sample of different people, not the same respondents tracked over time, so these are shifts in the national mix of opinion, not documented changes of heart inside individual minds.</p>
+    <p>The recovery is the most robust finding here, and it squares with what other researchers using Nationscape and the Democracy Fund&rsquo;s Voter Study Group reported as the &ldquo;racial reckoning&rdquo; cooled: a real spike in support for Black Lives Matter and in concern about discrimination over the summer of 2020, followed by a steady fade back toward where opinion had started, with some groups settling slightly off their old baselines. Subgroup retention figures for the smaller racial categories swing wildly &mdash; when a June shift is tiny, the share &ldquo;retained&rdquo; can balloon past 100% or flip negative on ordinary sampling noise &mdash; so this piece leans on the groups with the largest, cleanest moves and treats the rest as texture. The headline is not that nothing changed. It is that the country changed a great deal, very fast, and then most of it changed back.</p>
+  </div>
+
+  <div class="wrap">
+    <div class="notes">
+      <h2>Notes &amp; data</h2>
+      <ul>
+        <li><b>Source.</b> Nationscape, a project of UCLA and the Democracy Fund + UCLA Nationscape / Democracy Fund Voter Study Group. 85 weekly waves, July 15, 2019 to April 12, 2021; 494,532 respondents across the series, several thousand per week.</li>
+        <li><b>Weighting.</b> Every estimate uses the survey&rsquo;s <code>weight</code> variable, post-stratified to U.S. adult population targets. Figures are described as &ldquo;weighted to U.S. adult population targets.&rdquo; These are weighted point estimates; survey-design standard errors are not reported.</li>
+        <li><b>Event.</b> George Floyd was killed on Monday, May 25, 2020. Weeks are labeled by their Monday start, so the wave beginning 2020-05-25 is the &ldquo;Floyd week.&rdquo;</li>
+        <li><b>Windows.</b> Pre = Jan 1&ndash;May 18, 2020; June peak = June 1&ndash;30, 2020; 2021 = Jan 1&ndash;Apr 15, 2021. The June shift is the June mean minus the pre mean; retention is (2021 &minus; pre) &divide; (June &minus; pre).</li>
+        <li><b>Suppression.</b> Weekly points with effective N below 100 are dropped (this removes a handful of degenerate end-of-series waves with one or two respondents). Subgroup-by-week cells below that threshold are likewise suppressed.</li>
+        <li><b>Measures.</b> All five attitudes are 0/1 indicators whose weighted mean is a share: favorable toward the police; perceives &ldquo;a great deal / a lot&rdquo; of discrimination against Black people (and, for contrast, against White people); favorable toward Black people; agrees generations of slavery and discrimination make it harder for Black people to advance (structural-racism belief); agrees Black people should advance without special favors as other minorities did (racial resentment).</li>
+        <li><b>Subgroups.</b> Party is self-reported three-way (Democrat / Independent / Republican); race is five-way (White / Black / Hispanic / Asian / Other). Party colors &mdash; Democratic <span style="color:var(--dem)">&#9632;</span>, Republican <span style="color:var(--rep)">&#9632;</span>, Independent grey &mdash; are used only where party is the subject; racial groups use a colorblind-safe categorical palette.</li>
+        <li><b>What it is.</b> A weighted descriptive time series of repeated cross-sections &mdash; association and timing, not causation; shifts in the population mix of opinion, not within-person change.</li>
+        <li><b>Prior art.</b> Consistent with reporting from the Nationscape / Democracy Fund Voter Study Group and from researchers (e.g., analyses of Black Lives Matter support in 2020) documenting a sharp summer-2020 shift in racial attitudes that substantially reverted afterward.</li>
+      </ul>
+    </div>
+  </div>
+</main>
+
+<script type="module">
+import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+
+const DATA = {"meta":{"dataset":"Nationscape (UCLA / Democracy Fund), weekly, 2019-2021","event_date":"2020-05-25","n_total":494532,"n_weeks":85,"week_start":"2019-07-15","week_end":"2021-04-12","kish_min_eff_n":100,"metrics":{"favorable_police":"Favorable toward the police","disc_blacks_alot":"Perceives a great deal / lot of discrimination against Black people","favorable_blacks":"Favorable toward Black people","agree_racial_generations":"Structural-racism belief (generations of slavery / discrimination)","agree_racial_tryhard":"Racial resentment (other minorities overcame prejudice; no special favors)","disc_whites_alot":"Perceives a great deal / lot of discrimination against White people"},"windows":{"baseline_2019":["2019-07-15","2019-12-31"],"pre":["2020-01-01","2020-05-18"],"floyd_week":["2020-05-25","2020-05-25"],"peak":["2020-06-01","2020-06-30"],"summer":["2020-06-01","2020-08-31"],"fall":["2020-09-01","2020-12-31"],"late":["2021-01-01","2021-04-15"]}},"overall":{"favorable_police":[{"w":"2019-07-15","p":74.5,"n":4471},{"w":"2019-07-22","p":72.0,"n":5681},{"w":"2019-07-29","p":72.3,"n":5914},{"w":"2019-08-05","p":73.5,"n":5196},{"w":"2019-08-12","p":75.8,"n":5101},{"w":"2019-08-19","p":73.7,"n":7040},{"w":"2019-08-26","p":74.9,"n":5079},{"w":"2019-09-02","p":74.7,"n":5370},{"w":"2019-09-09","p":73.4,"n":5126},{"w":"2019-09-16","p":74.7,"n":5532},{"w":"2019-09-23","p":75.6,"n":5395},{"w":"2019-09-30","p":75.3,"n":8129},{"w":"2019-10-07","p":73.2,"n":4329},{"w":"2019-10-14","p":71.8,"n":3627},{"w":"2019-10-21","p":72.3,"n":6120},{"w":"2019-10-28","p":69.8,"n":6537},{"w":"2019-11-04","p":71.4,"n":5279},{"w":"2019-11-11","p":73.5,"n":6714},{"w":"2019-11-18","p":74.7,"n":3287},{"w":"2019-11-25","p":72.8,"n":7090},{"w":"2019-12-02","p":73.8,"n":4372},{"w":"2019-12-09","p":72.0,"n":7157},{"w":"2019-12-16","p":74.2,"n":6045},{"w":"2019-12-23","p":73.6,"n":4786},{"w":"2019-12-30","p":76.3,"n":8470},{"w":"2020-01-06","p":75.8,"n":4089},{"w":"2020-01-13","p":74.8,"n":5664},{"w":"2020-01-20","p":75.8,"n":5862},{"w":"2020-01-27","p":75.4,"n":4359},{"w":"2020-02-03","p":75.6,"n":5730},{"w":"2020-02-10","p":77.2,"n":5093},{"w":"2020-02-17","p":74.0,"n":5931},{"w":"2020-02-24","p":76.1,"n":4686},{"w":"2020-03-02","p":74.8,"n":5562},{"w":"2020-03-09","p":76.1,"n":5269},{"w":"2020-03-16","p":76.0,"n":5605},{"w":"2020-03-23","p":77.2,"n":5391},{"w":"2020-03-30","p":77.4,"n":5597},{"w":"2020-04-06","p":78.9,"n":5874},{"w":"2020-04-13","p":78.3,"n":4676},{"w":"2020-04-20","p":77.6,"n":4578},{"w":"2020-04-27","p":77.0,"n":4762},{"w":"2020-05-04","p":76.5,"n":6163},{"w":"2020-05-11","p":74.8,"n":4385},{"w":"2020-05-18","p":73.4,"n":7067},{"w":"2020-05-25","p":64.8,"n":4470},{"w":"2020-06-01","p":60.4,"n":5283},{"w":"2020-06-08","p":60.4,"n":5933},{"w":"2020-06-15","p":59.4,"n":5695},{"w":"2020-06-22","p":62.8,"n":6118},{"w":"2020-06-29","p":63.4,"n":5364},{"w":"2020-07-06","p":67.1,"n":4446},{"w":"2020-07-13","p":64.4,"n":10383},{"w":"2020-07-20","p":68.3,"n":9636},{"w":"2020-07-27","p":66.4,"n":6939},{"w":"2020-08-03","p":66.6,"n":4452},{"w":"2020-08-10","p":68.3,"n":4843},{"w":"2020-08-17","p":68.7,"n":6307},{"w":"2020-08-24","p":65.2,"n":4643},{"w":"2020-08-31","p":70.1,"n":5118},{"w":"2020-09-07","p":64.8,"n":5075},{"w":"2020-09-14","p":70.0,"n":6238},{"w":"2020-09-21","p":69.5,"n":4764},{"w":"2020-09-28","p":72.3,"n":4614},{"w":"2020-10-05","p":73.8,"n":5801},{"w":"2020-10-12","p":69.0,"n":5558},{"w":"2020-10-19","p":67.5,"n":4861},{"w":"2020-10-26","p":72.2,"n":6561},{"w":"2020-11-02","p":69.6,"n":5369},{"w":"2020-11-09","p":71.3,"n":5526},{"w":"2020-11-16","p":69.1,"n":4789},{"w":"2020-11-23","p":69.9,"n":6326},{"w":"2020-11-30","p":71.0,"n":6700},{"w":"2020-12-07","p":66.4,"n":3751},{"w":"2020-12-14","p":71.8,"n":6472},{"w":"2020-12-21","p":72.2,"n":5979},{"w":"2020-12-28","p":69.5,"n":3069},{"w":"2021-01-11","p":72.2,"n":3802},{"w":"2021-01-18","p":72.9,"n":4328},{"w":"2021-01-25","p":73.6,"n":3395},{"w":"2021-02-01","p":69.9,"n":1524}],"disc_blacks_alot":[{"w":"2019-07-15","p":51.0,"n":4890},{"w":"2019-07-22","p":54.6,"n":6173},{"w":"2019-07-29","p":54.6,"n":6380},{"w":"2019-08-05","p":56.0,"n":5612},{"w":"2019-08-12","p":56.6,"n":5504},{"w":"2019-08-19","p":55.2,"n":7558},{"w":"2019-08-26","p":55.7,"n":5447},{"w":"2019-09-02","p":55.2,"n":5776},{"w":"2019-09-09","p":55.0,"n":5503},{"w":"2019-09-16","p":55.6,"n":5963},{"w":"2019-09-23","p":54.9,"n":5861},{"w":"2019-09-30","p":54.5,"n":8883},{"w":"2019-10-07","p":53.4,"n":4727},{"w":"2019-10-14","p":52.3,"n":3936},{"w":"2019-10-21","p":55.0,"n":6651},{"w":"2019-10-28","p":54.9,"n":7109},{"w":"2019-11-04","p":56.0,"n":5685},{"w":"2019-11-11","p":54.6,"n":7267},{"w":"2019-11-18","p":52.0,"n":3569},{"w":"2019-11-25","p":53.5,"n":7673},{"w":"2019-12-02","p":53.3,"n":4819},{"w":"2019-12-09","p":55.0,"n":7836},{"w":"2019-12-16","p":53.6,"n":6742},{"w":"2019-12-23","p":55.0,"n":5253},{"w":"2019-12-30","p":50.9,"n":9223},{"w":"2020-01-06","p":50.8,"n":4457},{"w":"2020-01-13","p":54.5,"n":6229},{"w":"2020-01-20","p":52.4,"n":6482},{"w":"2020-01-27","p":52.7,"n":4768},{"w":"2020-02-03","p":55.2,"n":6263},{"w":"2020-02-10","p":52.5,"n":5561},{"w":"2020-02-17","p":55.3,"n":6492},{"w":"2020-02-24","p":52.8,"n":5146},{"w":"2020-03-02","p":52.5,"n":6166},{"w":"2020-03-09","p":50.6,"n":5873},{"w":"2020-03-16","p":50.9,"n":6173},{"w":"2020-03-23","p":50.5,"n":5934},{"w":"2020-03-30","p":52.3,"n":9776},{"w":"2020-04-06","p":54.1,"n":12507},{"w":"2020-04-13","p":51.2,"n":5180},{"w":"2020-04-20","p":51.2,"n":5050},{"w":"2020-04-27","p":50.4,"n":5265},{"w":"2020-05-04","p":53.6,"n":6722},{"w":"2020-05-11","p":56.4,"n":4860},{"w":"2020-05-18","p":54.9,"n":7814},{"w":"2020-05-25","p":59.1,"n":4893},{"w":"2020-06-01","p":62.1,"n":5742},{"w":"2020-06-08","p":62.8,"n":6403},{"w":"2020-06-15","p":62.6,"n":6102},{"w":"2020-06-22","p":60.1,"n":6575},{"w":"2020-06-29","p":61.4,"n":5762},{"w":"2020-07-06","p":58.3,"n":4736},{"w":"2020-07-13","p":60.3,"n":11158},{"w":"2020-07-20","p":57.4,"n":10258},{"w":"2020-07-27","p":58.4,"n":7431},{"w":"2020-08-03","p":58.2,"n":4748},{"w":"2020-08-10","p":58.9,"n":5160},{"w":"2020-08-17","p":57.4,"n":6823},{"w":"2020-08-24","p":60.9,"n":4976},{"w":"2020-08-31","p":58.1,"n":5547},{"w":"2020-09-07","p":58.4,"n":5506},{"w":"2020-09-14","p":59.2,"n":6704},{"w":"2020-09-21","p":58.5,"n":5161},{"w":"2020-09-28","p":56.1,"n":4968},{"w":"2020-10-05","p":53.6,"n":6240},{"w":"2020-10-12","p":58.2,"n":5967},{"w":"2020-10-19","p":59.4,"n":5277},{"w":"2020-10-26","p":56.9,"n":7046},{"w":"2020-11-02","p":58.6,"n":5787},{"w":"2020-11-09","p":57.2,"n":5959},{"w":"2020-11-16","p":58.4,"n":5188},{"w":"2020-11-23","p":55.9,"n":6803},{"w":"2020-11-30","p":57.5,"n":7227},{"w":"2020-12-07","p":59.9,"n":4104},{"w":"2020-12-14","p":54.8,"n":7033},{"w":"2020-12-21","p":53.7,"n":6391},{"w":"2020-12-28","p":58.1,"n":3348},{"w":"2021-01-11","p":52.8,"n":4110},{"w":"2021-01-18","p":54.4,"n":4666},{"w":"2021-01-25","p":52.4,"n":3713},{"w":"2021-02-01","p":54.1,"n":1663}],"favorable_blacks":[{"w":"2019-07-15","p":83.0,"n":4322},{"w":"2019-07-22","p":81.5,"n":5415},{"w":"2019-07-29","p":83.3,"n":5634},{"w":"2019-08-05","p":82.9,"n":4956},{"w":"2019-08-12","p":83.4,"n":4849},{"w":"2019-08-19","p":81.6,"n":6730},{"w":"2019-08-26","p":82.6,"n":4823},{"w":"2019-09-02","p":82.7,"n":5129},{"w":"2019-09-09","p":83.9,"n":4855},{"w":"2019-09-16","p":82.5,"n":5212},{"w":"2019-09-23","p":83.1,"n":5134},{"w":"2019-09-30","p":83.6,"n":7677},{"w":"2019-10-07","p":80.8,"n":4105},{"w":"2019-10-14","p":82.7,"n":3427},{"w":"2019-10-21","p":82.4,"n":5751},{"w":"2019-10-28","p":81.0,"n":6181},{"w":"2019-11-04","p":82.2,"n":4939},{"w":"2019-11-11","p":83.8,"n":6316},{"w":"2019-11-18","p":81.0,"n":3119},{"w":"2019-11-25","p":82.3,"n":6728},{"w":"2019-12-02","p":83.0,"n":4070},{"w":"2019-12-09","p":83.7,"n":6697},{"w":"2019-12-16","p":83.5,"n":5685},{"w":"2019-12-23","p":82.0,"n":4535},{"w":"2019-12-30","p":83.4,"n":7997},{"w":"2020-01-06","p":84.2,"n":3868},{"w":"2020-01-13","p":83.7,"n":5375},{"w":"2020-01-20","p":83.1,"n":5524},{"w":"2020-01-27","p":83.0,"n":4124},{"w":"2020-02-03","p":83.2,"n":5424},{"w":"2020-02-10","p":86.2,"n":4803},{"w":"2020-02-17","p":85.1,"n":5631},{"w":"2020-02-24","p":83.6,"n":4439},{"w":"2020-03-02","p":85.1,"n":5257},{"w":"2020-03-09","p":83.0,"n":4983},{"w":"2020-03-16","p":83.3,"n":5369},{"w":"2020-03-23","p":84.9,"n":5103},{"w":"2020-03-30","p":82.9,"n":8439},{"w":"2020-04-06","p":83.5,"n":10651},{"w":"2020-04-13","p":82.5,"n":4445},{"w":"2020-04-20","p":83.7,"n":4385},{"w":"2020-04-27","p":83.8,"n":4469},{"w":"2020-05-04","p":83.6,"n":5830},{"w":"2020-05-11","p":82.4,"n":4125},{"w":"2020-05-18","p":80.8,"n":6764},{"w":"2020-05-25","p":81.6,"n":4267},{"w":"2020-06-01","p":82.5,"n":5099},{"w":"2020-06-08","p":82.3,"n":5801},{"w":"2020-06-15","p":81.0,"n":5566},{"w":"2020-06-22","p":80.0,"n":5957},{"w":"2020-06-29","p":80.9,"n":5276},{"w":"2020-07-06","p":81.2,"n":4281},{"w":"2020-07-13","p":80.8,"n":10108},{"w":"2020-07-20","p":81.3,"n":9411},{"w":"2020-07-27","p":81.1,"n":6757},{"w":"2020-08-03","p":81.7,"n":4351},{"w":"2020-08-10","p":80.8,"n":4689},{"w":"2020-08-17","p":82.5,"n":6182},{"w":"2020-08-24","p":83.3,"n":4553},{"w":"2020-08-31","p":83.0,"n":4991},{"w":"2020-09-07","p":81.2,"n":4936},{"w":"2020-09-14","p":81.3,"n":6049},{"w":"2020-09-21","p":81.9,"n":4654},{"w":"2020-09-28","p":81.5,"n":4467},{"w":"2020-10-05","p":82.2,"n":5618},{"w":"2020-10-12","p":81.8,"n":5422},{"w":"2020-10-19","p":81.5,"n":4753},{"w":"2020-10-26","p":82.8,"n":6384},{"w":"2020-11-02","p":84.4,"n":5189},{"w":"2020-11-09","p":84.2,"n":5363},{"w":"2020-11-16","p":81.9,"n":4623},{"w":"2020-11-23","p":82.2,"n":6087},{"w":"2020-11-30","p":83.4,"n":6459},{"w":"2020-12-07","p":81.6,"n":3652},{"w":"2020-12-14","p":82.4,"n":6275},{"w":"2020-12-21","p":81.4,"n":5778},{"w":"2020-12-28","p":82.6,"n":2944},{"w":"2021-01-11","p":81.6,"n":3674},{"w":"2021-01-18","p":82.5,"n":4187},{"w":"2021-01-25","p":82.1,"n":3282},{"w":"2021-02-01","p":84.2,"n":1475}],"agree_racial_generations":[{"w":"2019-07-15","p":43.0,"n":4898},{"w":"2019-07-22","p":45.1,"n":6194},{"w":"2019-07-29","p":44.9,"n":6414},{"w":"2019-08-05","p":42.3,"n":5641},{"w":"2019-08-12","p":46.5,"n":5521},{"w":"2019-08-19","p":46.4,"n":7620},{"w":"2019-08-26","p":46.0,"n":5491},{"w":"2019-09-02","p":43.6,"n":5812},{"w":"2019-09-09","p":43.9,"n":5531},{"w":"2019-09-16","p":45.6,"n":6008},{"w":"2019-09-23","p":46.0,"n":5902},{"w":"2019-09-30","p":46.0,"n":8939},{"w":"2019-10-07","p":45.0,"n":4765},{"w":"2019-10-14","p":46.8,"n":3970},{"w":"2019-10-21","p":43.8,"n":6728},{"w":"2019-10-28","p":45.2,"n":7158},{"w":"2019-11-04","p":47.2,"n":5733},{"w":"2019-11-11","p":43.6,"n":7326},{"w":"2019-11-18","p":44.8,"n":3589},{"w":"2019-11-25","p":45.4,"n":7738},{"w":"2019-12-02","p":42.2,"n":4861},{"w":"2019-12-09","p":46.3,"n":7881},{"w":"2019-12-16","p":45.0,"n":6752},{"w":"2019-12-23","p":46.9,"n":5275},{"w":"2019-12-30","p":43.5,"n":9243},{"w":"2020-01-06","p":44.1,"n":4480},{"w":"2020-01-13","p":45.6,"n":6249},{"w":"2020-01-20","p":44.7,"n":6498},{"w":"2020-01-27","p":44.7,"n":4783},{"w":"2020-02-03","p":47.0,"n":6289},{"w":"2020-02-10","p":45.9,"n":5575},{"w":"2020-02-17","p":45.5,"n":6519},{"w":"2020-02-24","p":46.7,"n":5140},{"w":"2020-03-02","p":47.1,"n":6161},{"w":"2020-03-09","p":47.1,"n":5871},{"w":"2020-03-16","p":45.1,"n":6166},{"w":"2020-03-23","p":45.2,"n":5926},{"w":"2020-03-30","p":47.4,"n":9779},{"w":"2020-04-06","p":46.0,"n":12500},{"w":"2020-04-13","p":44.8,"n":5178},{"w":"2020-04-20","p":45.0,"n":5047},{"w":"2020-04-27","p":44.9,"n":5259},{"w":"2020-05-04","p":46.6,"n":6721},{"w":"2020-05-11","p":48.7,"n":4864},{"w":"2020-05-18","p":47.8,"n":7816},{"w":"2020-05-25","p":47.7,"n":4892},{"w":"2020-06-01","p":52.3,"n":5739},{"w":"2020-06-08","p":51.8,"n":6406},{"w":"2020-06-15","p":52.3,"n":6105},{"w":"2020-06-22","p":50.6,"n":6579},{"w":"2020-06-29","p":51.4,"n":5764},{"w":"2020-07-06","p":47.9,"n":4745},{"w":"2020-07-13","p":51.0,"n":11157},{"w":"2020-07-20","p":48.3,"n":10273},{"w":"2020-07-27","p":49.3,"n":7431},{"w":"2020-08-03","p":49.8,"n":4758},{"w":"2020-08-10","p":49.1,"n":5170},{"w":"2020-08-17","p":49.1,"n":6823},{"w":"2020-08-24","p":49.8,"n":4985},{"w":"2020-08-31","p":47.6,"n":5554},{"w":"2020-09-07","p":47.7,"n":5503},{"w":"2020-09-14","p":50.0,"n":6706},{"w":"2020-09-21","p":48.4,"n":5158},{"w":"2020-09-28","p":48.5,"n":4981},{"w":"2020-10-05","p":45.5,"n":6256},{"w":"2020-10-12","p":49.9,"n":5977},{"w":"2020-10-19","p":51.2,"n":5281},{"w":"2020-10-26","p":49.4,"n":7054},{"w":"2020-11-02","p":49.6,"n":5786},{"w":"2020-11-09","p":50.0,"n":5958},{"w":"2020-11-16","p":51.1,"n":5184},{"w":"2020-11-23","p":50.2,"n":6792},{"w":"2020-11-30","p":48.8,"n":7238},{"w":"2020-12-07","p":52.7,"n":4097},{"w":"2020-12-14","p":47.7,"n":7028},{"w":"2020-12-21","p":48.6,"n":6382},{"w":"2020-12-28","p":48.1,"n":3352},{"w":"2021-01-11","p":47.5,"n":4102},{"w":"2021-01-18","p":47.3,"n":4664},{"w":"2021-01-25","p":44.9,"n":3715},{"w":"2021-02-01","p":48.1,"n":1662}],"agree_racial_tryhard":[{"w":"2019-07-15","p":54.3,"n":4907},{"w":"2019-07-22","p":52.2,"n":6203},{"w":"2019-07-29","p":51.2,"n":6426},{"w":"2019-08-05","p":51.4,"n":5649},{"w":"2019-08-12","p":51.4,"n":5535},{"w":"2019-08-19","p":51.6,"n":7636},{"w":"2019-08-26","p":52.2,"n":5494},{"w":"2019-09-02","p":53.3,"n":5830},{"w":"2019-09-09","p":50.7,"n":5550},{"w":"2019-09-16","p":51.8,"n":6020},{"w":"2019-09-23","p":52.6,"n":5913},{"w":"2019-09-30","p":52.5,"n":8953},{"w":"2019-10-07","p":53.0,"n":4767},{"w":"2019-10-14","p":53.6,"n":3978},{"w":"2019-10-21","p":53.0,"n":6739},{"w":"2019-10-28","p":50.6,"n":7170},{"w":"2019-11-04","p":49.5,"n":5743},{"w":"2019-11-11","p":50.5,"n":7333},{"w":"2019-11-18","p":56.1,"n":3598},{"w":"2019-11-25","p":51.5,"n":7743},{"w":"2019-12-02","p":52.4,"n":4869},{"w":"2019-12-09","p":49.2,"n":7908},{"w":"2019-12-16","p":51.2,"n":6769},{"w":"2019-12-23","p":55.1,"n":5281},{"w":"2019-12-30","p":52.7,"n":9269},{"w":"2020-01-06","p":51.6,"n":4488},{"w":"2020-01-13","p":49.5,"n":6257},{"w":"2020-01-20","p":50.5,"n":6511},{"w":"2020-01-27","p":50.0,"n":4793},{"w":"2020-02-03","p":53.3,"n":6293},{"w":"2020-02-10","p":48.6,"n":5600},{"w":"2020-02-17","p":51.3,"n":6532},{"w":"2020-02-24","p":51.8,"n":5152},{"w":"2020-03-02","p":50.6,"n":6179},{"w":"2020-03-09","p":50.6,"n":5876},{"w":"2020-03-16","p":48.9,"n":6175},{"w":"2020-03-23","p":52.3,"n":5938},{"w":"2020-03-30","p":52.4,"n":9799},{"w":"2020-04-06","p":48.3,"n":12512},{"w":"2020-04-13","p":51.8,"n":5180},{"w":"2020-04-20","p":49.3,"n":5058},{"w":"2020-04-27","p":48.7,"n":5270},{"w":"2020-05-04","p":48.9,"n":6722},{"w":"2020-05-11","p":49.3,"n":4878},{"w":"2020-05-18","p":48.3,"n":7825},{"w":"2020-05-25","p":47.3,"n":4904},{"w":"2020-06-01","p":45.3,"n":5757},{"w":"2020-06-08","p":44.2,"n":6410},{"w":"2020-06-15","p":45.8,"n":6117},{"w":"2020-06-22","p":48.9,"n":6592},{"w":"2020-06-29","p":47.3,"n":5774},{"w":"2020-07-06","p":49.3,"n":4751},{"w":"2020-07-13","p":48.6,"n":11184},{"w":"2020-07-20","p":51.5,"n":10285},{"w":"2020-07-27","p":48.3,"n":7450},{"w":"2020-08-03","p":47.8,"n":4766},{"w":"2020-08-10","p":50.1,"n":5178},{"w":"2020-08-17","p":48.8,"n":6844},{"w":"2020-08-24","p":47.5,"n":4991},{"w":"2020-08-31","p":50.3,"n":5561},{"w":"2020-09-07","p":48.2,"n":5512},{"w":"2020-09-14","p":50.6,"n":6720},{"w":"2020-09-21","p":50.2,"n":5172},{"w":"2020-09-28","p":49.6,"n":4987},{"w":"2020-10-05","p":49.8,"n":6273},{"w":"2020-10-12","p":49.0,"n":5989},{"w":"2020-10-19","p":47.8,"n":5298},{"w":"2020-10-26","p":49.6,"n":7071},{"w":"2020-11-02","p":49.8,"n":5799},{"w":"2020-11-09","p":48.8,"n":5969},{"w":"2020-11-16","p":47.4,"n":5191},{"w":"2020-11-23","p":48.9,"n":6791},{"w":"2020-11-30","p":50.2,"n":7239},{"w":"2020-12-07","p":47.0,"n":4105},{"w":"2020-12-14","p":50.4,"n":7047},{"w":"2020-12-21","p":51.3,"n":6397},{"w":"2020-12-28","p":47.2,"n":3351},{"w":"2021-01-11","p":52.2,"n":4108},{"w":"2021-01-18","p":49.5,"n":4669},{"w":"2021-01-25","p":50.8,"n":3714},{"w":"2021-02-01","p":48.8,"n":1667}],"disc_whites_alot":[{"w":"2019-07-15","p":17.8,"n":4884},{"w":"2019-07-22","p":19.1,"n":6155},{"w":"2019-07-29","p":18.6,"n":6366},{"w":"2019-08-05","p":20.4,"n":5589},{"w":"2019-08-12","p":18.7,"n":5482},{"w":"2019-08-19","p":19.2,"n":7536},{"w":"2019-08-26","p":19.8,"n":5432},{"w":"2019-09-02","p":19.9,"n":5755},{"w":"2019-09-09","p":17.2,"n":5493},{"w":"2019-09-16","p":18.3,"n":5936},{"w":"2019-09-23","p":20.4,"n":5850},{"w":"2019-09-30","p":19.8,"n":8846},{"w":"2019-10-07","p":20.4,"n":4704},{"w":"2019-10-14","p":21.9,"n":3922},{"w":"2019-10-21","p":19.5,"n":6631},{"w":"2019-10-28","p":20.4,"n":7080},{"w":"2019-11-04","p":19.7,"n":5672},{"w":"2019-11-11","p":19.9,"n":7251},{"w":"2019-11-18","p":22.2,"n":3560},{"w":"2019-11-25","p":18.8,"n":7653},{"w":"2019-12-02","p":20.5,"n":4794},{"w":"2019-12-09","p":18.7,"n":7809},{"w":"2019-12-16","p":20.1,"n":6720},{"w":"2019-12-23","p":21.2,"n":5227},{"w":"2019-12-30","p":18.2,"n":9190},{"w":"2020-01-06","p":18.8,"n":4454},{"w":"2020-01-13","p":19.6,"n":6214},{"w":"2020-01-20","p":18.1,"n":6455},{"w":"2020-01-27","p":18.2,"n":4760},{"w":"2020-02-03","p":18.5,"n":6238},{"w":"2020-02-10","p":19.0,"n":5540},{"w":"2020-02-17","p":19.2,"n":6468},{"w":"2020-02-24","p":19.3,"n":5128},{"w":"2020-03-02","p":18.2,"n":6149},{"w":"2020-03-09","p":20.1,"n":5858},{"w":"2020-03-16","p":17.5,"n":6155},{"w":"2020-03-23","p":18.0,"n":5909},{"w":"2020-03-30","p":19.6,"n":9766},{"w":"2020-04-06","p":17.9,"n":12483},{"w":"2020-04-13","p":18.7,"n":5159},{"w":"2020-04-20","p":16.3,"n":5038},{"w":"2020-04-27","p":18.7,"n":5249},{"w":"2020-05-04","p":16.5,"n":6708},{"w":"2020-05-11","p":17.8,"n":4843},{"w":"2020-05-18","p":17.7,"n":7786},{"w":"2020-05-25","p":16.3,"n":4883},{"w":"2020-06-01","p":17.5,"n":5723},{"w":"2020-06-08","p":17.6,"n":6383},{"w":"2020-06-15","p":18.7,"n":6084},{"w":"2020-06-22","p":18.6,"n":6562},{"w":"2020-06-29","p":19.5,"n":5747},{"w":"2020-07-06","p":20.7,"n":4723},{"w":"2020-07-13","p":20.3,"n":11101},{"w":"2020-07-20","p":19.6,"n":10234},{"w":"2020-07-27","p":19.1,"n":7409},{"w":"2020-08-03","p":17.4,"n":4736},{"w":"2020-08-10","p":20.4,"n":5150},{"w":"2020-08-17","p":20.1,"n":6806},{"w":"2020-08-24","p":18.8,"n":4958},{"w":"2020-08-31","p":19.6,"n":5539},{"w":"2020-09-07","p":20.4,"n":5488},{"w":"2020-09-14","p":21.4,"n":6684},{"w":"2020-09-21","p":23.4,"n":5146},{"w":"2020-09-28","p":21.7,"n":4964},{"w":"2020-10-05","p":19.1,"n":6229},{"w":"2020-10-12","p":20.3,"n":5940},{"w":"2020-10-19","p":20.5,"n":5265},{"w":"2020-10-26","p":20.0,"n":7025},{"w":"2020-11-02","p":20.1,"n":5774},{"w":"2020-11-09","p":20.8,"n":5938},{"w":"2020-11-16","p":21.1,"n":5170},{"w":"2020-11-23","p":19.9,"n":6790},{"w":"2020-11-30","p":21.1,"n":7210},{"w":"2020-12-07","p":23.2,"n":4084},{"w":"2020-12-14","p":19.8,"n":7011},{"w":"2020-12-21","p":20.6,"n":6365},{"w":"2020-12-28","p":20.5,"n":3341},{"w":"2021-01-11","p":21.1,"n":4104},{"w":"2021-01-18","p":17.8,"n":4659},{"w":"2021-01-25","p":21.4,"n":3709},{"w":"2021-02-01","p":20.7,"n":1656}]},"by_party":{"favorable_police":{"Democrat":[{"w":"2019-07-15","p":65.3,"n":1614},{"w":"2019-07-22","p":64.8,"n":2097},{"w":"2019-07-29","p":64.4,"n":2211},{"w":"2019-08-05","p":64.6,"n":1842},{"w":"2019-08-12","p":70.4,"n":1866},{"w":"2019-08-19","p":64.4,"n":2541},{"w":"2019-08-26","p":67.9,"n":1878},{"w":"2019-09-02","p":67.5,"n":2001},{"w":"2019-09-09","p":67.7,"n":1865},{"w":"2019-09-16","p":67.9,"n":2023},{"w":"2019-09-23","p":70.2,"n":1916},{"w":"2019-09-30","p":67.5,"n":3036},{"w":"2019-10-07","p":67.4,"n":1623},{"w":"2019-10-14","p":61.7,"n":1297},{"w":"2019-10-21","p":64.8,"n":2166},{"w":"2019-10-28","p":61.0,"n":2253},{"w":"2019-11-04","p":65.5,"n":1830},{"w":"2019-11-11","p":67.0,"n":2384},{"w":"2019-11-18","p":67.5,"n":1095},{"w":"2019-11-25","p":65.9,"n":2438},{"w":"2019-12-02","p":65.1,"n":1447},{"w":"2019-12-09","p":64.2,"n":2508},{"w":"2019-12-16","p":69.0,"n":2103},{"w":"2019-12-23","p":68.7,"n":1776},{"w":"2019-12-30","p":68.6,"n":2916},{"w":"2020-01-06","p":69.6,"n":1465},{"w":"2020-01-13","p":68.8,"n":2021},{"w":"2020-01-20","p":69.0,"n":2175},{"w":"2020-01-27","p":70.0,"n":1601},{"w":"2020-02-03","p":67.8,"n":1984},{"w":"2020-02-10","p":72.4,"n":1792},{"w":"2020-02-17","p":66.5,"n":2202},{"w":"2020-02-24","p":69.8,"n":1641},{"w":"2020-03-02","p":68.5,"n":2087},{"w":"2020-03-09","p":70.5,"n":1881},{"w":"2020-03-16","p":72.1,"n":2151},{"w":"2020-03-23","p":70.5,"n":1941},{"w":"2020-03-30","p":70.6,"n":2042},{"w":"2020-04-06","p":73.8,"n":2183},{"w":"2020-04-13","p":73.1,"n":1705},{"w":"2020-04-20","p":71.7,"n":1701},{"w":"2020-04-27","p":71.3,"n":1642},{"w":"2020-05-04","p":70.9,"n":2404},{"w":"2020-05-11","p":67.3,"n":1607},{"w":"2020-05-18","p":68.1,"n":2585},{"w":"2020-05-25","p":55.2,"n":1679},{"w":"2020-06-01","p":50.6,"n":1925},{"w":"2020-06-08","p":46.8,"n":2091},{"w":"2020-06-15","p":44.2,"n":2110},{"w":"2020-06-22","p":49.8,"n":2210},{"w":"2020-06-29","p":49.3,"n":1868},{"w":"2020-07-06","p":54.8,"n":1597},{"w":"2020-07-13","p":54.5,"n":3972},{"w":"2020-07-20","p":55.5,"n":3416},{"w":"2020-07-27","p":54.0,"n":2512},{"w":"2020-08-03","p":52.9,"n":1640},{"w":"2020-08-10","p":56.6,"n":1754},{"w":"2020-08-17","p":57.5,"n":2186},{"w":"2020-08-24","p":50.8,"n":1783},{"w":"2020-08-31","p":59.5,"n":1780},{"w":"2020-09-07","p":52.8,"n":1865},{"w":"2020-09-14","p":59.6,"n":2307},{"w":"2020-09-21","p":60.1,"n":1725},{"w":"2020-09-28","p":60.6,"n":1594},{"w":"2020-10-05","p":64.9,"n":2100},{"w":"2020-10-12","p":59.3,"n":2009},{"w":"2020-10-19","p":55.0,"n":1787},{"w":"2020-10-26","p":62.0,"n":2309},{"w":"2020-11-02","p":61.7,"n":1931},{"w":"2020-11-09","p":61.2,"n":2048},{"w":"2020-11-16","p":59.2,"n":1835},{"w":"2020-11-23","p":61.7,"n":2375},{"w":"2020-11-30","p":61.9,"n":2501},{"w":"2020-12-07","p":55.8,"n":1526},{"w":"2020-12-14","p":63.0,"n":2548},{"w":"2020-12-21","p":63.1,"n":2261},{"w":"2020-12-28","p":58.5,"n":1265},{"w":"2021-01-11","p":66.5,"n":1552},{"w":"2021-01-18","p":63.6,"n":1692},{"w":"2021-01-25","p":64.0,"n":1276},{"w":"2021-02-01","p":65.8,"n":566}],"Independent":[{"w":"2019-07-15","p":72.6,"n":1263},{"w":"2019-07-22","p":69.4,"n":1638},{"w":"2019-07-29","p":70.1,"n":1661},{"w":"2019-08-05","p":70.4,"n":1503},{"w":"2019-08-12","p":72.0,"n":1469},{"w":"2019-08-19","p":73.4,"n":2073},{"w":"2019-08-26","p":74.1,"n":1420},{"w":"2019-09-02","p":73.6,"n":1506},{"w":"2019-09-09","p":68.8,"n":1414},{"w":"2019-09-16","p":72.3,"n":1581},{"w":"2019-09-23","p":73.1,"n":1548},{"w":"2019-09-30","p":73.4,"n":2287},{"w":"2019-10-07","p":73.1,"n":1193},{"w":"2019-10-14","p":66.3,"n":967},{"w":"2019-10-21","p":70.8,"n":1768},{"w":"2019-10-28","p":69.0,"n":1960},{"w":"2019-11-04","p":66.9,"n":1486},{"w":"2019-11-11","p":71.0,"n":1889},{"w":"2019-11-18","p":70.6,"n":928},{"w":"2019-11-25","p":69.9,"n":2098},{"w":"2019-12-02","p":70.3,"n":1267},{"w":"2019-12-09","p":70.1,"n":2085},{"w":"2019-12-16","p":69.5,"n":1746},{"w":"2019-12-23","p":70.2,"n":1360},{"w":"2019-12-30","p":73.7,"n":2481},{"w":"2020-01-06","p":74.6,"n":1111},{"w":"2020-01-13","p":70.8,"n":1625},{"w":"2020-01-20","p":76.0,"n":1576},{"w":"2020-01-27","p":72.1,"n":1213},{"w":"2020-02-03","p":74.2,"n":1657},{"w":"2020-02-10","p":74.4,"n":1364},{"w":"2020-02-17","p":72.7,"n":1593},{"w":"2020-02-24","p":74.2,"n":1208},{"w":"2020-03-02","p":71.6,"n":1539},{"w":"2020-03-09","p":72.5,"n":1468},{"w":"2020-03-16","p":72.6,"n":1476},{"w":"2020-03-23","p":75.0,"n":1412},{"w":"2020-03-30","p":76.7,"n":1435},{"w":"2020-04-06","p":76.3,"n":1589},{"w":"2020-04-13","p":74.6,"n":1245},{"w":"2020-04-20","p":76.1,"n":1250},{"w":"2020-04-27","p":74.5,"n":1321},{"w":"2020-05-04","p":74.5,"n":1506},{"w":"2020-05-11","p":71.8,"n":1107},{"w":"2020-05-18","p":70.8,"n":1836},{"w":"2020-05-25","p":63.3,"n":1163},{"w":"2020-06-01","p":55.4,"n":1449},{"w":"2020-06-08","p":58.4,"n":1647},{"w":"2020-06-15","p":57.2,"n":1518},{"w":"2020-06-22","p":58.2,"n":1727},{"w":"2020-06-29","p":61.2,"n":1518},{"w":"2020-07-06","p":65.3,"n":1212},{"w":"2020-07-13","p":62.0,"n":2696},{"w":"2020-07-20","p":65.8,"n":2546},{"w":"2020-07-27","p":63.7,"n":1774},{"w":"2020-08-03","p":64.4,"n":1147},{"w":"2020-08-10","p":67.8,"n":1258},{"w":"2020-08-17","p":66.2,"n":1693},{"w":"2020-08-24","p":67.2,"n":1206},{"w":"2020-08-31","p":65.0,"n":1322},{"w":"2020-09-07","p":61.9,"n":1349},{"w":"2020-09-14","p":67.9,"n":1602},{"w":"2020-09-21","p":67.7,"n":1241},{"w":"2020-09-28","p":69.9,"n":1200},{"w":"2020-10-05","p":72.8,"n":1477},{"w":"2020-10-12","p":64.8,"n":1495},{"w":"2020-10-19","p":65.9,"n":1256},{"w":"2020-10-26","p":69.5,"n":1668},{"w":"2020-11-02","p":67.3,"n":1422},{"w":"2020-11-09","p":70.7,"n":1453},{"w":"2020-11-16","p":67.8,"n":1206},{"w":"2020-11-23","p":67.0,"n":1612},{"w":"2020-11-30","p":70.7,"n":1734},{"w":"2020-12-07","p":67.2,"n":929},{"w":"2020-12-14","p":70.5,"n":1597},{"w":"2020-12-21","p":72.2,"n":1554},{"w":"2020-12-28","p":67.9,"n":788},{"w":"2021-01-11","p":68.4,"n":966},{"w":"2021-01-18","p":72.1,"n":1126},{"w":"2021-01-25","p":72.2,"n":869},{"w":"2021-02-01","p":67.3,"n":434}],"Republican":[{"w":"2019-07-15","p":88.5,"n":1350},{"w":"2019-07-22","p":85.3,"n":1628},{"w":"2019-07-29","p":87.2,"n":1695},{"w":"2019-08-05","p":89.8,"n":1545},{"w":"2019-08-12","p":87.0,"n":1473},{"w":"2019-08-19","p":87.5,"n":2014},{"w":"2019-08-26","p":85.4,"n":1471},{"w":"2019-09-02","p":87.5,"n":1573},{"w":"2019-09-09","p":85.9,"n":1550},{"w":"2019-09-16","p":87.4,"n":1617},{"w":"2019-09-23","p":86.1,"n":1611},{"w":"2019-09-30","p":88.5,"n":2402},{"w":"2019-10-07","p":84.4,"n":1271},{"w":"2019-10-14","p":88.1,"n":1163},{"w":"2019-10-21","p":87.3,"n":1782},{"w":"2019-10-28","p":85.1,"n":1884},{"w":"2019-11-04","p":84.0,"n":1644},{"w":"2019-11-11","p":85.9,"n":2053},{"w":"2019-11-18","p":86.4,"n":1082},{"w":"2019-11-25","p":86.0,"n":2165},{"w":"2019-12-02","p":88.2,"n":1370},{"w":"2019-12-09","p":86.1,"n":2142},{"w":"2019-12-16","p":87.7,"n":1825},{"w":"2019-12-23","p":86.4,"n":1411},{"w":"2019-12-30","p":88.2,"n":2613},{"w":"2020-01-06","p":87.5,"n":1312},{"w":"2020-01-13","p":88.5,"n":1712},{"w":"2020-01-20","p":85.9,"n":1827},{"w":"2020-01-27","p":86.5,"n":1314},{"w":"2020-02-03","p":88.6,"n":1761},{"w":"2020-02-10","p":87.8,"n":1674},{"w":"2020-02-17","p":85.4,"n":1819},{"w":"2020-02-24","p":86.7,"n":1554},{"w":"2020-03-02","p":86.9,"n":1623},{"w":"2020-03-09","p":88.6,"n":1652},{"w":"2020-03-16","p":88.1,"n":1695},{"w":"2020-03-23","p":87.2,"n":1789},{"w":"2020-03-30","p":89.4,"n":1854},{"w":"2020-04-06","p":89.3,"n":1825},{"w":"2020-04-13","p":89.8,"n":1517},{"w":"2020-04-20","p":89.4,"n":1449},{"w":"2020-04-27","p":88.1,"n":1559},{"w":"2020-05-04","p":86.1,"n":1991},{"w":"2020-05-11","p":87.3,"n":1454},{"w":"2020-05-18","p":84.0,"n":2323},{"w":"2020-05-25","p":79.4,"n":1447},{"w":"2020-06-01","p":76.7,"n":1639},{"w":"2020-06-08","p":79.9,"n":1878},{"w":"2020-06-15","p":79.9,"n":1799},{"w":"2020-06-22","p":84.2,"n":1870},{"w":"2020-06-29","p":84.0,"n":1683},{"w":"2020-07-06","p":83.9,"n":1387},{"w":"2020-07-13","p":81.3,"n":3193},{"w":"2020-07-20","p":86.4,"n":3207},{"w":"2020-07-27","p":84.6,"n":2297},{"w":"2020-08-03","p":86.1,"n":1449},{"w":"2020-08-10","p":84.4,"n":1580},{"w":"2020-08-17","p":84.6,"n":2104},{"w":"2020-08-24","p":83.9,"n":1422},{"w":"2020-08-31","p":86.9,"n":1784},{"w":"2020-09-07","p":85.8,"n":1567},{"w":"2020-09-14","p":86.2,"n":1965},{"w":"2020-09-21","p":83.5,"n":1526},{"w":"2020-09-28","p":88.1,"n":1575},{"w":"2020-10-05","p":88.0,"n":1938},{"w":"2020-10-12","p":86.6,"n":1766},{"w":"2020-10-19","p":86.6,"n":1570},{"w":"2020-10-26","p":88.3,"n":2247},{"w":"2020-11-02","p":84.1,"n":1700},{"w":"2020-11-09","p":87.2,"n":1691},{"w":"2020-11-16","p":84.5,"n":1422},{"w":"2020-11-23","p":84.7,"n":1971},{"w":"2020-11-30","p":86.5,"n":2078},{"w":"2020-12-07","p":84.0,"n":1065},{"w":"2020-12-14","p":87.3,"n":2005},{"w":"2020-12-21","p":86.3,"n":1878},{"w":"2020-12-28","p":86.4,"n":852},{"w":"2021-01-11","p":84.5,"n":1145},{"w":"2021-01-18","p":87.4,"n":1335},{"w":"2021-01-25","p":88.5,"n":1075},{"w":"2021-02-01","p":84.8,"n":446}]},"disc_blacks_alot":{"Democrat":[{"w":"2019-07-15","p":74.9,"n":1730},{"w":"2019-07-22","p":76.3,"n":2235},{"w":"2019-07-29","p":74.0,"n":2335},{"w":"2019-08-05","p":78.8,"n":1940},{"w":"2019-08-12","p":78.8,"n":1955},{"w":"2019-08-19","p":78.3,"n":2673},{"w":"2019-08-26","p":78.4,"n":1969},{"w":"2019-09-02","p":75.1,"n":2097},{"w":"2019-09-09","p":76.4,"n":1979},{"w":"2019-09-16","p":79.2,"n":2147},{"w":"2019-09-23","p":75.6,"n":2025},{"w":"2019-09-30","p":77.2,"n":3232},{"w":"2019-10-07","p":73.8,"n":1709},{"w":"2019-10-14","p":74.1,"n":1379},{"w":"2019-10-21","p":74.6,"n":2322},{"w":"2019-10-28","p":75.6,"n":2410},{"w":"2019-11-04","p":79.8,"n":1911},{"w":"2019-11-11","p":76.1,"n":2529},{"w":"2019-11-18","p":72.9,"n":1150},{"w":"2019-11-25","p":70.9,"n":2568},{"w":"2019-12-02","p":76.1,"n":1543},{"w":"2019-12-09","p":75.0,"n":2679},{"w":"2019-12-16","p":74.5,"n":2277},{"w":"2019-12-23","p":75.5,"n":1897},{"w":"2019-12-30","p":72.4,"n":3110},{"w":"2020-01-06","p":69.2,"n":1560},{"w":"2020-01-13","p":75.9,"n":2180},{"w":"2020-01-20","p":71.4,"n":2357},{"w":"2020-01-27","p":69.9,"n":1706},{"w":"2020-02-03","p":73.3,"n":2127},{"w":"2020-02-10","p":72.2,"n":1920},{"w":"2020-02-17","p":73.2,"n":2338},{"w":"2020-02-24","p":73.4,"n":1770},{"w":"2020-03-02","p":74.5,"n":2251},{"w":"2020-03-09","p":70.2,"n":2041},{"w":"2020-03-16","p":69.6,"n":2305},{"w":"2020-03-23","p":69.8,"n":2092},{"w":"2020-03-30","p":71.2,"n":3651},{"w":"2020-04-06","p":73.4,"n":4584},{"w":"2020-04-13","p":72.2,"n":1848},{"w":"2020-04-20","p":71.1,"n":1838},{"w":"2020-04-27","p":71.2,"n":1775},{"w":"2020-05-04","p":73.8,"n":2557},{"w":"2020-05-11","p":78.4,"n":1727},{"w":"2020-05-18","p":73.9,"n":2796},{"w":"2020-05-25","p":76.8,"n":1790},{"w":"2020-06-01","p":80.0,"n":2026},{"w":"2020-06-08","p":82.2,"n":2194},{"w":"2020-06-15","p":84.7,"n":2206},{"w":"2020-06-22","p":81.6,"n":2325},{"w":"2020-06-29","p":82.2,"n":1957},{"w":"2020-07-06","p":80.7,"n":1666},{"w":"2020-07-13","p":79.8,"n":4152},{"w":"2020-07-20","p":80.3,"n":3542},{"w":"2020-07-27","p":79.8,"n":2627},{"w":"2020-08-03","p":79.1,"n":1732},{"w":"2020-08-10","p":79.3,"n":1845},{"w":"2020-08-17","p":79.7,"n":2315},{"w":"2020-08-24","p":83.2,"n":1854},{"w":"2020-08-31","p":81.0,"n":1869},{"w":"2020-09-07","p":80.6,"n":1965},{"w":"2020-09-14","p":81.0,"n":2424},{"w":"2020-09-21","p":77.8,"n":1801},{"w":"2020-09-28","p":79.6,"n":1657},{"w":"2020-10-05","p":74.9,"n":2198},{"w":"2020-10-12","p":79.7,"n":2114},{"w":"2020-10-19","p":80.3,"n":1887},{"w":"2020-10-26","p":78.2,"n":2420},{"w":"2020-11-02","p":79.7,"n":2037},{"w":"2020-11-09","p":79.3,"n":2154},{"w":"2020-11-16","p":78.8,"n":1925},{"w":"2020-11-23","p":78.1,"n":2516},{"w":"2020-11-30","p":77.1,"n":2631},{"w":"2020-12-07","p":81.6,"n":1625},{"w":"2020-12-14","p":75.9,"n":2705},{"w":"2020-12-21","p":75.4,"n":2380},{"w":"2020-12-28","p":81.5,"n":1334},{"w":"2021-01-11","p":75.6,"n":1645},{"w":"2021-01-18","p":77.0,"n":1787},{"w":"2021-01-25","p":75.9,"n":1353},{"w":"2021-02-01","p":74.7,"n":597}],"Independent":[{"w":"2019-07-15","p":47.3,"n":1416},{"w":"2019-07-22","p":54.4,"n":1807},{"w":"2019-07-29","p":54.2,"n":1841},{"w":"2019-08-05","p":53.5,"n":1654},{"w":"2019-08-12","p":55.6,"n":1618},{"w":"2019-08-19","p":54.2,"n":2273},{"w":"2019-08-26","p":53.0,"n":1555},{"w":"2019-09-02","p":52.8,"n":1658},{"w":"2019-09-09","p":55.3,"n":1545},{"w":"2019-09-16","p":52.4,"n":1739},{"w":"2019-09-23","p":53.1,"n":1736},{"w":"2019-09-30","p":51.6,"n":2569},{"w":"2019-10-07","p":52.4,"n":1349},{"w":"2019-10-14","p":51.9,"n":1082},{"w":"2019-10-21","p":55.6,"n":1943},{"w":"2019-10-28","p":53.6,"n":2147},{"w":"2019-11-04","p":52.7,"n":1631},{"w":"2019-11-11","p":51.6,"n":2087},{"w":"2019-11-18","p":52.2,"n":1040},{"w":"2019-11-25","p":53.2,"n":2335},{"w":"2019-12-02","p":50.8,"n":1438},{"w":"2019-12-09","p":51.7,"n":2329},{"w":"2019-12-16","p":53.3,"n":1985},{"w":"2019-12-23","p":52.4,"n":1526},{"w":"2019-12-30","p":48.0,"n":2743},{"w":"2020-01-06","p":50.5,"n":1247},{"w":"2020-01-13","p":51.9,"n":1829},{"w":"2020-01-20","p":52.0,"n":1788},{"w":"2020-01-27","p":53.5,"n":1364},{"w":"2020-02-03","p":54.0,"n":1862},{"w":"2020-02-10","p":49.5,"n":1499},{"w":"2020-02-17","p":55.1,"n":1809},{"w":"2020-02-24","p":48.1,"n":1367},{"w":"2020-03-02","p":49.0,"n":1755},{"w":"2020-03-09","p":48.7,"n":1681},{"w":"2020-03-16","p":51.8,"n":1674},{"w":"2020-03-23","p":47.3,"n":1594},{"w":"2020-03-30","p":46.8,"n":2542},{"w":"2020-04-06","p":52.9,"n":3387},{"w":"2020-04-13","p":49.0,"n":1419},{"w":"2020-04-20","p":45.6,"n":1419},{"w":"2020-04-27","p":46.8,"n":1496},{"w":"2020-05-04","p":50.8,"n":1694},{"w":"2020-05-11","p":53.4,"n":1260},{"w":"2020-05-18","p":51.3,"n":2093},{"w":"2020-05-25","p":56.2,"n":1290},{"w":"2020-06-01","p":60.8,"n":1612},{"w":"2020-06-08","p":61.6,"n":1827},{"w":"2020-06-15","p":59.4,"n":1679},{"w":"2020-06-22","p":58.3,"n":1888},{"w":"2020-06-29","p":58.3,"n":1662},{"w":"2020-07-06","p":57.3,"n":1313},{"w":"2020-07-13","p":57.6,"n":2989},{"w":"2020-07-20","p":55.5,"n":2781},{"w":"2020-07-27","p":58.2,"n":1950},{"w":"2020-08-03","p":59.9,"n":1249},{"w":"2020-08-10","p":56.0,"n":1360},{"w":"2020-08-17","p":55.5,"n":1866},{"w":"2020-08-24","p":55.9,"n":1323},{"w":"2020-08-31","p":55.8,"n":1475},{"w":"2020-09-07","p":56.3,"n":1501},{"w":"2020-09-14","p":54.2,"n":1777},{"w":"2020-09-21","p":56.4,"n":1389},{"w":"2020-09-28","p":51.2,"n":1339},{"w":"2020-10-05","p":50.9,"n":1645},{"w":"2020-10-12","p":54.2,"n":1644},{"w":"2020-10-19","p":55.7,"n":1417},{"w":"2020-10-26","p":54.4,"n":1837},{"w":"2020-11-02","p":56.6,"n":1566},{"w":"2020-11-09","p":55.6,"n":1604},{"w":"2020-11-16","p":58.5,"n":1340},{"w":"2020-11-23","p":51.7,"n":1766},{"w":"2020-11-30","p":56.3,"n":1903},{"w":"2020-12-07","p":56.8,"n":1047},{"w":"2020-12-14","p":51.8,"n":1778},{"w":"2020-12-21","p":48.1,"n":1680},{"w":"2020-12-28","p":56.7,"n":877},{"w":"2021-01-11","p":45.3,"n":1066},{"w":"2021-01-18","p":49.1,"n":1242},{"w":"2021-01-25","p":47.7,"n":973},{"w":"2021-02-01","p":49.0,"n":485}],"Republican":[{"w":"2019-07-15","p":27.3,"n":1436},{"w":"2019-07-22","p":27.8,"n":1744},{"w":"2019-07-29","p":32.2,"n":1792},{"w":"2019-08-05","p":31.5,"n":1637},{"w":"2019-08-12","p":33.8,"n":1553},{"w":"2019-08-19","p":30.1,"n":2129},{"w":"2019-08-26","p":33.6,"n":1553},{"w":"2019-09-02","p":32.9,"n":1668},{"w":"2019-09-09","p":29.7,"n":1612},{"w":"2019-09-16","p":30.7,"n":1693},{"w":"2019-09-23","p":34.8,"n":1723},{"w":"2019-09-30","p":31.3,"n":2550},{"w":"2019-10-07","p":29.5,"n":1361},{"w":"2019-10-14","p":29.0,"n":1236},{"w":"2019-10-21","p":31.5,"n":1870},{"w":"2019-10-28","p":31.2,"n":2001},{"w":"2019-11-04","p":34.1,"n":1738},{"w":"2019-11-11","p":32.8,"n":2150},{"w":"2019-11-18","p":31.7,"n":1143},{"w":"2019-11-25","p":33.2,"n":2277},{"w":"2019-12-02","p":32.1,"n":1470},{"w":"2019-12-09","p":34.1,"n":2288},{"w":"2019-12-16","p":30.9,"n":1982},{"w":"2019-12-23","p":31.4,"n":1511},{"w":"2019-12-30","p":30.5,"n":2781},{"w":"2020-01-06","p":27.4,"n":1388},{"w":"2020-01-13","p":32.6,"n":1833},{"w":"2020-01-20","p":30.8,"n":1962},{"w":"2020-01-27","p":32.2,"n":1407},{"w":"2020-02-03","p":35.4,"n":1880},{"w":"2020-02-10","p":32.5,"n":1807},{"w":"2020-02-17","p":34.8,"n":1948},{"w":"2020-02-24","p":33.2,"n":1673},{"w":"2020-03-02","p":30.0,"n":1752},{"w":"2020-03-09","p":31.3,"n":1788},{"w":"2020-03-16","p":27.8,"n":1828},{"w":"2020-03-23","p":31.8,"n":1910},{"w":"2020-03-30","p":33.4,"n":3093},{"w":"2020-04-06","p":34.0,"n":3889},{"w":"2020-04-13","p":30.7,"n":1647},{"w":"2020-04-20","p":32.0,"n":1558},{"w":"2020-04-27","p":30.5,"n":1680},{"w":"2020-05-04","p":33.5,"n":2131},{"w":"2020-05-11","p":35.1,"n":1571},{"w":"2020-05-18","p":36.6,"n":2496},{"w":"2020-05-25","p":41.2,"n":1580},{"w":"2020-06-01","p":44.0,"n":1750},{"w":"2020-06-08","p":42.6,"n":1988},{"w":"2020-06-15","p":39.9,"n":1885},{"w":"2020-06-22","p":37.4,"n":1982},{"w":"2020-06-29","p":43.2,"n":1780},{"w":"2020-07-06","p":35.6,"n":1453},{"w":"2020-07-13","p":39.2,"n":3361},{"w":"2020-07-20","p":33.8,"n":3373},{"w":"2020-07-27","p":34.7,"n":2415},{"w":"2020-08-03","p":34.0,"n":1497},{"w":"2020-08-10","p":39.0,"n":1643},{"w":"2020-08-17","p":36.8,"n":2222},{"w":"2020-08-24","p":38.6,"n":1503},{"w":"2020-08-31","p":37.1,"n":1890},{"w":"2020-09-07","p":35.8,"n":1661},{"w":"2020-09-14","p":38.0,"n":2059},{"w":"2020-09-21","p":39.0,"n":1629},{"w":"2020-09-28","p":36.9,"n":1659},{"w":"2020-10-05","p":29.8,"n":2048},{"w":"2020-10-12","p":36.5,"n":1858},{"w":"2020-10-19","p":37.8,"n":1657},{"w":"2020-10-26","p":34.5,"n":2367},{"w":"2020-11-02","p":36.6,"n":1797},{"w":"2020-11-09","p":32.0,"n":1782},{"w":"2020-11-16","p":35.0,"n":1494},{"w":"2020-11-23","p":31.3,"n":2075},{"w":"2020-11-30","p":33.5,"n":2200},{"w":"2020-12-07","p":33.8,"n":1130},{"w":"2020-12-14","p":31.6,"n":2115},{"w":"2020-12-21","p":31.1,"n":1973},{"w":"2020-12-28","p":30.2,"n":921},{"w":"2021-01-11","p":33.2,"n":1216},{"w":"2021-01-18","p":29.4,"n":1401},{"w":"2021-01-25","p":31.8,"n":1149},{"w":"2021-02-01","p":33.8,"n":483}]}},"by_race":{"favorable_police":{"White":[{"w":"2019-07-15","p":81.3,"n":3058},{"w":"2019-07-22","p":78.0,"n":3789},{"w":"2019-07-29","p":79.4,"n":3929},{"w":"2019-08-05","p":79.2,"n":3489},{"w":"2019-08-12","p":81.5,"n":3377},{"w":"2019-08-19","p":79.9,"n":4773},{"w":"2019-08-26","p":81.0,"n":3493},{"w":"2019-09-02","p":80.7,"n":3549},{"w":"2019-09-09","p":79.4,"n":3551},{"w":"2019-09-16","p":80.6,"n":3714},{"w":"2019-09-23","p":80.5,"n":3852},{"w":"2019-09-30","p":79.4,"n":5553},{"w":"2019-10-07","p":79.4,"n":2948},{"w":"2019-10-14","p":76.6,"n":2570},{"w":"2019-10-21","p":78.3,"n":4201},{"w":"2019-10-28","p":77.3,"n":4471},{"w":"2019-11-04","p":76.2,"n":3731},{"w":"2019-11-11","p":79.7,"n":4498},{"w":"2019-11-18","p":80.5,"n":2443},{"w":"2019-11-25","p":78.4,"n":4806},{"w":"2019-12-02","p":78.5,"n":3027},{"w":"2019-12-09","p":78.5,"n":5041},{"w":"2019-12-16","p":79.6,"n":4083},{"w":"2019-12-23","p":78.3,"n":3131},{"w":"2019-12-30","p":81.3,"n":5674},{"w":"2020-01-06","p":79.7,"n":2701},{"w":"2020-01-13","p":80.3,"n":3781},{"w":"2020-01-20","p":81.9,"n":4082},{"w":"2020-01-27","p":80.3,"n":2978},{"w":"2020-02-03","p":82.1,"n":3919},{"w":"2020-02-10","p":82.2,"n":3380},{"w":"2020-02-17","p":79.6,"n":4088},{"w":"2020-02-24","p":81.4,"n":3212},{"w":"2020-03-02","p":81.6,"n":3383},{"w":"2020-03-09","p":81.0,"n":3701},{"w":"2020-03-16","p":82.2,"n":3577},{"w":"2020-03-23","p":81.1,"n":3592},{"w":"2020-03-30","p":82.9,"n":3670},{"w":"2020-04-06","p":84.1,"n":3756},{"w":"2020-04-13","p":83.4,"n":3049},{"w":"2020-04-20","p":81.8,"n":2808},{"w":"2020-04-27","p":82.6,"n":3275},{"w":"2020-05-04","p":82.3,"n":3983},{"w":"2020-05-11","p":80.3,"n":2972},{"w":"2020-05-18","p":79.5,"n":4741},{"w":"2020-05-25","p":70.9,"n":2946},{"w":"2020-06-01","p":66.7,"n":3658},{"w":"2020-06-08","p":67.9,"n":4120},{"w":"2020-06-15","p":67.1,"n":3841},{"w":"2020-06-22","p":68.6,"n":4185},{"w":"2020-06-29","p":70.3,"n":3457},{"w":"2020-07-06","p":73.3,"n":2928},{"w":"2020-07-13","p":72.0,"n":6276},{"w":"2020-07-20","p":75.6,"n":7115},{"w":"2020-07-27","p":74.6,"n":4730},{"w":"2020-08-03","p":74.6,"n":2981},{"w":"2020-08-10","p":73.5,"n":3493},{"w":"2020-08-17","p":74.3,"n":4402},{"w":"2020-08-24","p":73.3,"n":2814},{"w":"2020-08-31","p":74.9,"n":3839},{"w":"2020-09-07","p":71.9,"n":3283},{"w":"2020-09-14","p":77.6,"n":4495},{"w":"2020-09-21","p":76.3,"n":3205},{"w":"2020-09-28","p":78.4,"n":3405},{"w":"2020-10-05","p":80.4,"n":4144},{"w":"2020-10-12","p":76.2,"n":3799},{"w":"2020-10-19","p":75.6,"n":3195},{"w":"2020-10-26","p":79.1,"n":4929},{"w":"2020-11-02","p":75.7,"n":3651},{"w":"2020-11-09","p":79.2,"n":3651},{"w":"2020-11-16","p":74.7,"n":3295},{"w":"2020-11-23","p":76.8,"n":4463},{"w":"2020-11-30","p":78.2,"n":5023},{"w":"2020-12-07","p":73.1,"n":2398},{"w":"2020-12-14","p":78.8,"n":4484},{"w":"2020-12-21","p":77.1,"n":4359},{"w":"2020-12-28","p":75.3,"n":2104},{"w":"2021-01-11","p":77.1,"n":2681},{"w":"2021-01-18","p":80.2,"n":2832},{"w":"2021-01-25","p":80.8,"n":2436},{"w":"2021-02-01","p":73.5,"n":1062}],"Black":[{"w":"2019-07-15","p":49.9,"n":471},{"w":"2019-07-22","p":49.0,"n":677},{"w":"2019-07-29","p":43.5,"n":765},{"w":"2019-08-05","p":54.9,"n":627},{"w":"2019-08-12","p":54.3,"n":599},{"w":"2019-08-19","p":45.9,"n":885},{"w":"2019-08-26","p":52.7,"n":553},{"w":"2019-09-02","p":63.0,"n":600},{"w":"2019-09-09","p":51.5,"n":609},{"w":"2019-09-16","p":47.7,"n":702},{"w":"2019-09-23","p":45.2,"n":630},{"w":"2019-09-30","p":55.0,"n":926},{"w":"2019-10-07","p":46.2,"n":492},{"w":"2019-10-14","p":46.2,"n":394},{"w":"2019-10-21","p":48.1,"n":677},{"w":"2019-10-28","p":43.3,"n":758},{"w":"2019-11-04","p":47.5,"n":559},{"w":"2019-11-11","p":49.8,"n":696},{"w":"2019-11-18","p":45.1,"n":330},{"w":"2019-11-25","p":47.2,"n":818},{"w":"2019-12-02","p":50.2,"n":404},{"w":"2019-12-09","p":45.2,"n":844},{"w":"2019-12-16","p":54.6,"n":654},{"w":"2019-12-23","p":55.9,"n":573},{"w":"2019-12-30","p":55.3,"n":782},{"w":"2020-01-06","p":58.1,"n":406},{"w":"2020-01-13","p":53.3,"n":723},{"w":"2020-01-20","p":53.3,"n":588},{"w":"2020-01-27","p":57.4,"n":365},{"w":"2020-02-03","p":55.6,"n":591},{"w":"2020-02-10","p":56.7,"n":571},{"w":"2020-02-17","p":53.9,"n":701},{"w":"2020-02-24","p":51.9,"n":528},{"w":"2020-03-02","p":51.8,"n":782},{"w":"2020-03-09","p":55.3,"n":610},{"w":"2020-03-16","p":53.9,"n":781},{"w":"2020-03-23","p":54.5,"n":521},{"w":"2020-03-30","p":60.3,"n":484},{"w":"2020-04-06","p":57.7,"n":703},{"w":"2020-04-13","p":61.2,"n":462},{"w":"2020-04-20","p":60.9,"n":534},{"w":"2020-04-27","p":56.6,"n":420},{"w":"2020-05-04","p":58.4,"n":667},{"w":"2020-05-11","p":55.3,"n":420},{"w":"2020-05-18","p":49.9,"n":733},{"w":"2020-05-25","p":44.4,"n":426},{"w":"2020-06-01","p":35.6,"n":507},{"w":"2020-06-08","p":31.3,"n":558},{"w":"2020-06-15","p":30.2,"n":605},{"w":"2020-06-22","p":36.6,"n":617},{"w":"2020-06-29","p":34.8,"n":554},{"w":"2020-07-06","p":39.8,"n":416},{"w":"2020-07-13","p":40.9,"n":1201},{"w":"2020-07-20","p":37.2,"n":933},{"w":"2020-07-27","p":37.2,"n":724},{"w":"2020-08-03","p":42.3,"n":496},{"w":"2020-08-10","p":42.2,"n":425},{"w":"2020-08-17","p":45.7,"n":645},{"w":"2020-08-24","p":37.2,"n":550},{"w":"2020-08-31","p":51.0,"n":445},{"w":"2020-09-07","p":41.1,"n":576},{"w":"2020-09-14","p":45.5,"n":693},{"w":"2020-09-21","p":52.6,"n":546},{"w":"2020-09-28","p":43.0,"n":398},{"w":"2020-10-05","p":44.5,"n":556},{"w":"2020-10-12","p":43.5,"n":650},{"w":"2020-10-19","p":45.5,"n":557},{"w":"2020-10-26","p":40.3,"n":542},{"w":"2020-11-02","p":41.2,"n":549},{"w":"2020-11-09","p":43.7,"n":638},{"w":"2020-11-16","p":50.7,"n":433},{"w":"2020-11-23","p":46.9,"n":674},{"w":"2020-11-30","p":44.9,"n":522},{"w":"2020-12-07","p":49.4,"n":524},{"w":"2020-12-14","p":51.0,"n":594},{"w":"2020-12-21","p":52.0,"n":544},{"w":"2020-12-28","p":49.4,"n":316},{"w":"2021-01-11","p":55.6,"n":400},{"w":"2021-01-18","p":51.4,"n":531},{"w":"2021-01-25","p":56.0,"n":296}],"Hispanic":[{"w":"2019-07-15","p":65.5,"n":616},{"w":"2019-07-22","p":67.0,"n":816},{"w":"2019-07-29","p":67.1,"n":796},{"w":"2019-08-05","p":65.3,"n":662},{"w":"2019-08-12","p":70.7,"n":809},{"w":"2019-08-19","p":70.7,"n":875},{"w":"2019-08-26","p":68.7,"n":634},{"w":"2019-09-02","p":64.7,"n":842},{"w":"2019-09-09","p":64.2,"n":646},{"w":"2019-09-16","p":72.6,"n":740},{"w":"2019-09-23","p":76.0,"n":655},{"w":"2019-09-30","p":73.2,"n":1137},{"w":"2019-10-07","p":67.3,"n":578},{"w":"2019-10-14","p":71.1,"n":446},{"w":"2019-10-21","p":68.3,"n":922},{"w":"2019-10-28","p":65.4,"n":922},{"w":"2019-11-04","p":68.7,"n":686},{"w":"2019-11-11","p":67.1,"n":1136},{"w":"2019-11-25","p":69.1,"n":987},{"w":"2019-12-02","p":72.0,"n":664},{"w":"2019-12-09","p":66.3,"n":853},{"w":"2019-12-16","p":67.1,"n":893},{"w":"2019-12-23","p":69.9,"n":803},{"w":"2019-12-30","p":72.4,"n":1444},{"w":"2020-01-06","p":72.1,"n":676},{"w":"2020-01-13","p":73.6,"n":735},{"w":"2020-01-20","p":65.8,"n":846},{"w":"2020-01-27","p":69.2,"n":696},{"w":"2020-02-03","p":65.1,"n":844},{"w":"2020-02-10","p":72.0,"n":785},{"w":"2020-02-17","p":69.3,"n":730},{"w":"2020-02-24","p":72.5,"n":594},{"w":"2020-03-02","p":69.2,"n":926},{"w":"2020-03-09","p":64.8,"n":625},{"w":"2020-03-16","p":72.1,"n":846},{"w":"2020-03-23","p":73.7,"n":883},{"w":"2020-03-30","p":67.9,"n":995},{"w":"2020-04-06","p":79.5,"n":816},{"w":"2020-04-13","p":71.2,"n":669},{"w":"2020-04-20","p":75.6,"n":798},{"w":"2020-04-27","p":68.4,"n":696},{"w":"2020-05-04","p":68.2,"n":1047},{"w":"2020-05-11","p":67.8,"n":662},{"w":"2020-05-18","p":67.6,"n":1106},{"w":"2020-05-25","p":62.1,"n":739},{"w":"2020-06-01","p":54.7,"n":734},{"w":"2020-06-08","p":55.0,"n":858},{"w":"2020-06-15","p":55.9,"n":804},{"w":"2020-06-22","p":56.7,"n":866},{"w":"2020-06-29","p":58.5,"n":891},{"w":"2020-07-06","p":65.0,"n":746},{"w":"2020-07-13","p":58.6,"n":2051},{"w":"2020-07-20","p":59.4,"n":829},{"w":"2020-07-27","p":57.8,"n":1017},{"w":"2020-08-03","p":59.2,"n":635},{"w":"2020-08-10","p":63.3,"n":627},{"w":"2020-08-17","p":65.8,"n":856},{"w":"2020-08-24","p":60.6,"n":916},{"w":"2020-08-31","p":67.1,"n":492},{"w":"2020-09-07","p":59.5,"n":799},{"w":"2020-09-14","p":59.6,"n":579},{"w":"2020-09-21","p":62.3,"n":695},{"w":"2020-09-28","p":66.7,"n":424},{"w":"2020-10-05","p":66.8,"n":714},{"w":"2020-10-12","p":63.3,"n":727},{"w":"2020-10-19","p":57.9,"n":740},{"w":"2020-10-26","p":62.6,"n":692},{"w":"2020-11-02","p":64.8,"n":799},{"w":"2020-11-09","p":62.8,"n":810},{"w":"2020-11-16","p":60.9,"n":729},{"w":"2020-11-23","p":65.5,"n":808},{"w":"2020-11-30","p":62.6,"n":744},{"w":"2020-12-07","p":58.4,"n":556},{"w":"2020-12-14","p":63.6,"n":987},{"w":"2020-12-21","p":67.1,"n":674},{"w":"2020-12-28","p":65.8,"n":443},{"w":"2021-01-11","p":70.8,"n":466},{"w":"2021-01-18","p":64.5,"n":584},{"w":"2021-01-25","p":62.4,"n":448}],"Asian":[{"w":"2019-08-19","p":69.4,"n":291},{"w":"2019-09-30","p":79.6,"n":287},{"w":"2019-11-25","p":82.8,"n":292},{"w":"2019-12-09","p":74.1,"n":224},{"w":"2019-12-16","p":77.1,"n":214},{"w":"2019-12-30","p":73.7,"n":307},{"w":"2020-03-02","p":78.0,"n":287},{"w":"2020-03-16","p":78.7,"n":230},{"w":"2020-03-30","p":77.7,"n":274},{"w":"2020-04-06","p":72.7,"n":387},{"w":"2020-04-13","p":73.4,"n":313},{"w":"2020-05-04","p":73.7,"n":273},{"w":"2020-05-18","p":79.6,"n":287},{"w":"2020-05-25","p":57.8,"n":212},{"w":"2020-06-01","p":55.7,"n":226},{"w":"2020-06-08","p":50.3,"n":243},{"w":"2020-06-15","p":49.0,"n":268},{"w":"2020-06-22","p":64.6,"n":272},{"w":"2020-06-29","p":59.8,"n":246},{"w":"2020-07-13","p":65.6,"n":514},{"w":"2020-07-20","p":60.2,"n":435},{"w":"2020-07-27","p":67.9,"n":281},{"w":"2020-08-17","p":64.6,"n":245},{"w":"2020-09-14","p":65.4,"n":276},{"w":"2020-10-26","p":73.9,"n":232},{"w":"2020-11-30","p":59.3,"n":234},{"w":"2020-12-14","p":74.7,"n":234},{"w":"2020-12-21","p":67.2,"n":240},{"w":"2021-01-18","p":67.8,"n":223}],"Other":[{"w":"2020-07-13","p":49.6,"n":341},{"w":"2020-07-20","p":59.3,"n":324}]},"disc_blacks_alot":{"White":[{"w":"2019-07-15","p":41.2,"n":3313},{"w":"2019-07-22","p":47.2,"n":4097},{"w":"2019-07-29","p":45.9,"n":4219},{"w":"2019-08-05","p":47.1,"n":3763},{"w":"2019-08-12","p":48.9,"n":3615},{"w":"2019-08-19","p":47.8,"n":5098},{"w":"2019-08-26","p":46.7,"n":3725},{"w":"2019-09-02","p":45.8,"n":3789},{"w":"2019-09-09","p":45.4,"n":3782},{"w":"2019-09-16","p":46.4,"n":3982},{"w":"2019-09-23","p":46.3,"n":4169},{"w":"2019-09-30","p":47.2,"n":6010},{"w":"2019-10-07","p":44.2,"n":3201},{"w":"2019-10-14","p":45.8,"n":2757},{"w":"2019-10-21","p":47.2,"n":4545},{"w":"2019-10-28","p":46.3,"n":4816},{"w":"2019-11-04","p":49.6,"n":4004},{"w":"2019-11-11","p":45.8,"n":4812},{"w":"2019-11-18","p":45.4,"n":2640},{"w":"2019-11-25","p":46.6,"n":5172},{"w":"2019-12-02","p":44.3,"n":3331},{"w":"2019-12-09","p":46.6,"n":5505},{"w":"2019-12-16","p":46.6,"n":4518},{"w":"2019-12-23","p":47.8,"n":3393},{"w":"2019-12-30","p":43.8,"n":6145},{"w":"2020-01-06","p":44.5,"n":2914},{"w":"2020-01-13","p":47.4,"n":4108},{"w":"2020-01-20","p":44.8,"n":4483},{"w":"2020-01-27","p":46.5,"n":3247},{"w":"2020-02-03","p":46.9,"n":4241},{"w":"2020-02-10","p":45.1,"n":3674},{"w":"2020-02-17","p":47.2,"n":4434},{"w":"2020-02-24","p":44.7,"n":3512},{"w":"2020-03-02","p":42.9,"n":3694},{"w":"2020-03-09","p":44.3,"n":4117},{"w":"2020-03-16","p":42.4,"n":3887},{"w":"2020-03-23","p":42.8,"n":3923},{"w":"2020-03-30","p":44.4,"n":5906},{"w":"2020-04-06","p":46.6,"n":8348},{"w":"2020-04-13","p":44.4,"n":3362},{"w":"2020-04-20","p":44.1,"n":3056},{"w":"2020-04-27","p":42.6,"n":3592},{"w":"2020-05-04","p":47.7,"n":4296},{"w":"2020-05-11","p":49.4,"n":3283},{"w":"2020-05-18","p":48.2,"n":5169},{"w":"2020-05-25","p":52.0,"n":3214},{"w":"2020-06-01","p":56.8,"n":3960},{"w":"2020-06-08","p":57.4,"n":4416},{"w":"2020-06-15","p":55.9,"n":4108},{"w":"2020-06-22","p":53.1,"n":4470},{"w":"2020-06-29","p":55.2,"n":3645},{"w":"2020-07-06","p":52.5,"n":3087},{"w":"2020-07-13","p":53.1,"n":6688},{"w":"2020-07-20","p":50.2,"n":7536},{"w":"2020-07-27","p":50.4,"n":5022},{"w":"2020-08-03","p":50.3,"n":3154},{"w":"2020-08-10","p":53.1,"n":3681},{"w":"2020-08-17","p":51.0,"n":4736},{"w":"2020-08-24","p":53.3,"n":2981},{"w":"2020-08-31","p":54.2,"n":4135},{"w":"2020-09-07","p":51.6,"n":3522},{"w":"2020-09-14","p":53.3,"n":4799},{"w":"2020-09-21","p":50.8,"n":3437},{"w":"2020-09-28","p":49.5,"n":3651},{"w":"2020-10-05","p":47.1,"n":4430},{"w":"2020-10-12","p":50.2,"n":4033},{"w":"2020-10-19","p":51.8,"n":3432},{"w":"2020-10-26","p":51.6,"n":5262},{"w":"2020-11-02","p":52.5,"n":3899},{"w":"2020-11-09","p":50.4,"n":3889},{"w":"2020-11-16","p":53.6,"n":3545},{"w":"2020-11-23","p":48.9,"n":4772},{"w":"2020-11-30","p":52.4,"n":5375},{"w":"2020-12-07","p":54.6,"n":2583},{"w":"2020-12-14","p":47.3,"n":4812},{"w":"2020-12-21","p":47.3,"n":4623},{"w":"2020-12-28","p":50.8,"n":2288},{"w":"2021-01-11","p":45.7,"n":2882},{"w":"2021-01-18","p":47.3,"n":3024},{"w":"2021-01-25","p":45.3,"n":2654},{"w":"2021-02-01","p":48.4,"n":1158}],"Black":[{"w":"2019-07-15","p":78.9,"n":529},{"w":"2019-07-22","p":87.1,"n":740},{"w":"2019-07-29","p":88.3,"n":840},{"w":"2019-08-05","p":85.4,"n":685},{"w":"2019-08-12","p":85.8,"n":650},{"w":"2019-08-19","p":84.5,"n":960},{"w":"2019-08-26","p":84.2,"n":594},{"w":"2019-09-02","p":86.1,"n":642},{"w":"2019-09-09","p":87.5,"n":661},{"w":"2019-09-16","p":89.1,"n":770},{"w":"2019-09-23","p":85.8,"n":685},{"w":"2019-09-30","p":83.9,"n":1015},{"w":"2019-10-07","p":84.7,"n":538},{"w":"2019-10-14","p":83.1,"n":433},{"w":"2019-10-21","p":82.2,"n":748},{"w":"2019-10-28","p":82.3,"n":839},{"w":"2019-11-04","p":83.5,"n":601},{"w":"2019-11-11","p":82.4,"n":764},{"w":"2019-11-18","p":86.6,"n":373},{"w":"2019-11-25","p":83.8,"n":895},{"w":"2019-12-02","p":91.4,"n":447},{"w":"2019-12-09","p":89.8,"n":940},{"w":"2019-12-16","p":82.8,"n":755},{"w":"2019-12-23","p":82.8,"n":636},{"w":"2019-12-30","p":84.7,"n":869},{"w":"2020-01-06","p":83.8,"n":450},{"w":"2020-01-13","p":82.0,"n":824},{"w":"2020-01-20","p":84.6,"n":657},{"w":"2020-01-27","p":82.1,"n":393},{"w":"2020-02-03","p":80.0,"n":648},{"w":"2020-02-10","p":83.2,"n":622},{"w":"2020-02-17","p":87.2,"n":780},{"w":"2020-02-24","p":85.5,"n":585},{"w":"2020-03-02","p":82.4,"n":892},{"w":"2020-03-09","p":85.7,"n":673},{"w":"2020-03-16","p":79.2,"n":882},{"w":"2020-03-23","p":82.4,"n":576},{"w":"2020-03-30","p":77.9,"n":988},{"w":"2020-04-06","p":82.8,"n":1548},{"w":"2020-04-13","p":80.5,"n":524},{"w":"2020-04-20","p":84.1,"n":610},{"w":"2020-04-27","p":79.2,"n":483},{"w":"2020-05-04","p":79.6,"n":746},{"w":"2020-05-11","p":84.5,"n":470},{"w":"2020-05-18","p":83.4,"n":819},{"w":"2020-05-25","p":85.0,"n":460},{"w":"2020-06-01","p":86.2,"n":549},{"w":"2020-06-08","p":89.8,"n":605},{"w":"2020-06-15","p":88.0,"n":651},{"w":"2020-06-22","p":85.0,"n":674},{"w":"2020-06-29","p":87.5,"n":600},{"w":"2020-07-06","p":86.1,"n":449},{"w":"2020-07-13","p":86.5,"n":1326},{"w":"2020-07-20","p":86.7,"n":1004},{"w":"2020-07-27","p":82.7,"n":786},{"w":"2020-08-03","p":86.3,"n":543},{"w":"2020-08-10","p":82.8,"n":467},{"w":"2020-08-17","p":83.3,"n":710},{"w":"2020-08-24","p":88.3,"n":605},{"w":"2020-08-31","p":79.8,"n":493},{"w":"2020-09-07","p":86.9,"n":622},{"w":"2020-09-14","p":87.3,"n":756},{"w":"2020-09-21","p":77.6,"n":608},{"w":"2020-09-28","p":82.9,"n":436},{"w":"2020-10-05","p":88.3,"n":598},{"w":"2020-10-12","p":87.4,"n":715},{"w":"2020-10-19","p":86.4,"n":617},{"w":"2020-10-26","p":81.4,"n":599},{"w":"2020-11-02","p":80.1,"n":618},{"w":"2020-11-09","p":82.2,"n":709},{"w":"2020-11-16","p":83.9,"n":483},{"w":"2020-11-23","p":83.5,"n":744},{"w":"2020-11-30","p":81.6,"n":573},{"w":"2020-12-07","p":86.7,"n":596},{"w":"2020-12-14","p":80.6,"n":669},{"w":"2020-12-21","p":78.2,"n":603},{"w":"2020-12-28","p":86.4,"n":348},{"w":"2021-01-11","p":73.3,"n":442},{"w":"2021-01-18","p":79.3,"n":582},{"w":"2021-01-25","p":75.6,"n":330}],"Hispanic":[{"w":"2019-07-15","p":68.3,"n":682},{"w":"2019-07-22","p":58.0,"n":887},{"w":"2019-07-29","p":60.7,"n":845},{"w":"2019-08-05","p":66.8,"n":714},{"w":"2019-08-12","p":66.3,"n":878},{"w":"2019-08-19","p":62.3,"n":947},{"w":"2019-08-26","p":67.2,"n":689},{"w":"2019-09-02","p":67.2,"n":927},{"w":"2019-09-09","p":68.8,"n":716},{"w":"2019-09-16","p":63.7,"n":799},{"w":"2019-09-23","p":65.2,"n":715},{"w":"2019-09-30","p":66.0,"n":1274},{"w":"2019-10-07","p":65.6,"n":637},{"w":"2019-10-14","p":58.7,"n":497},{"w":"2019-10-21","p":68.3,"n":997},{"w":"2019-10-28","p":66.3,"n":1030},{"w":"2019-11-04","p":60.1,"n":751},{"w":"2019-11-11","p":64.9,"n":1259},{"w":"2019-11-25","p":56.0,"n":1068},{"w":"2019-12-02","p":67.2,"n":729},{"w":"2019-12-09","p":65.0,"n":920},{"w":"2019-12-16","p":60.3,"n":1010},{"w":"2019-12-23","p":60.6,"n":903},{"w":"2019-12-30","p":55.8,"n":1575},{"w":"2020-01-06","p":57.7,"n":750},{"w":"2020-01-13","p":62.5,"n":814},{"w":"2020-01-20","p":64.0,"n":945},{"w":"2020-01-27","p":56.9,"n":758},{"w":"2020-02-03","p":65.8,"n":938},{"w":"2020-02-10","p":56.5,"n":857},{"w":"2020-02-17","p":64.6,"n":807},{"w":"2020-02-24","p":63.6,"n":649},{"w":"2020-03-02","p":61.5,"n":1040},{"w":"2020-03-09","p":57.6,"n":701},{"w":"2020-03-16","p":58.2,"n":955},{"w":"2020-03-23","p":61.0,"n":996},{"w":"2020-03-30","p":62.8,"n":1978},{"w":"2020-04-06","p":62.2,"n":1521},{"w":"2020-04-13","p":60.2,"n":742},{"w":"2020-04-20","p":55.0,"n":891},{"w":"2020-04-27","p":62.1,"n":774},{"w":"2020-05-04","p":58.3,"n":1156},{"w":"2020-05-11","p":67.5,"n":746},{"w":"2020-05-18","p":60.5,"n":1265},{"w":"2020-05-25","p":68.1,"n":830},{"w":"2020-06-01","p":68.6,"n":800},{"w":"2020-06-08","p":68.2,"n":939},{"w":"2020-06-15","p":69.2,"n":855},{"w":"2020-06-22","p":70.9,"n":938},{"w":"2020-06-29","p":67.7,"n":996},{"w":"2020-07-06","p":63.0,"n":817},{"w":"2020-07-13","p":64.5,"n":2231},{"w":"2020-07-20","p":70.6,"n":901},{"w":"2020-07-27","p":69.5,"n":1109},{"w":"2020-08-03","p":63.7,"n":684},{"w":"2020-08-10","p":71.2,"n":685},{"w":"2020-08-17","p":66.8,"n":929},{"w":"2020-08-24","p":64.7,"n":1001},{"w":"2020-08-31","p":66.5,"n":548},{"w":"2020-09-07","p":62.4,"n":899},{"w":"2020-09-14","p":65.5,"n":622},{"w":"2020-09-21","p":68.7,"n":762},{"w":"2020-09-28","p":67.7,"n":469},{"w":"2020-10-05","p":57.6,"n":785},{"w":"2020-10-12","p":67.4,"n":806},{"w":"2020-10-19","p":64.2,"n":818},{"w":"2020-10-26","p":66.8,"n":753},{"w":"2020-11-02","p":66.5,"n":868},{"w":"2020-11-09","p":61.2,"n":888},{"w":"2020-11-16","p":64.7,"n":794},{"w":"2020-11-23","p":62.9,"n":868},{"w":"2020-11-30","p":63.6,"n":827},{"w":"2020-12-07","p":58.1,"n":615},{"w":"2020-12-14","p":62.9,"n":1099},{"w":"2020-12-21","p":68.5,"n":734},{"w":"2020-12-28","p":63.3,"n":484},{"w":"2021-01-11","p":66.1,"n":506},{"w":"2021-01-18","p":60.6,"n":631},{"w":"2021-01-25","p":66.6,"n":489}],"Asian":[{"w":"2019-07-29","p":55.3,"n":283},{"w":"2019-08-19","p":62.3,"n":312},{"w":"2019-09-30","p":42.9,"n":328},{"w":"2019-11-11","p":57.2,"n":219},{"w":"2019-11-25","p":52.7,"n":328},{"w":"2019-12-09","p":50.5,"n":251},{"w":"2019-12-16","p":46.4,"n":237},{"w":"2019-12-30","p":52.1,"n":343},{"w":"2020-01-13","p":52.3,"n":258},{"w":"2020-01-20","p":43.7,"n":233},{"w":"2020-02-10","p":57.9,"n":238},{"w":"2020-03-02","p":46.8,"n":332},{"w":"2020-03-16","p":45.4,"n":256},{"w":"2020-03-23","p":49.7,"n":247},{"w":"2020-03-30","p":50.7,"n":549},{"w":"2020-04-06","p":55.3,"n":639},{"w":"2020-04-13","p":48.1,"n":354},{"w":"2020-04-20","p":43.5,"n":307},{"w":"2020-05-04","p":52.5,"n":311},{"w":"2020-05-18","p":51.0,"n":335},{"w":"2020-05-25","p":60.7,"n":232},{"w":"2020-06-01","p":56.5,"n":254},{"w":"2020-06-08","p":59.1,"n":267},{"w":"2020-06-15","p":63.3,"n":290},{"w":"2020-06-22","p":58.6,"n":299},{"w":"2020-06-29","p":58.4,"n":279},{"w":"2020-07-13","p":61.5,"n":541},{"w":"2020-07-20","p":60.0,"n":461},{"w":"2020-07-27","p":56.7,"n":308},{"w":"2020-08-03","p":66.1,"n":221},{"w":"2020-08-17","p":56.8,"n":269},{"w":"2020-09-14","p":52.2,"n":304},{"w":"2020-09-28","p":59.0,"n":257},{"w":"2020-10-26","p":52.8,"n":253},{"w":"2020-11-09","p":58.8,"n":218},{"w":"2020-11-30","p":56.1,"n":255},{"w":"2020-12-14","p":54.2,"n":258},{"w":"2020-12-21","p":51.4,"n":257},{"w":"2021-01-18","p":53.3,"n":249}],"Other":[{"w":"2019-12-30","p":58.9,"n":291},{"w":"2020-03-30","p":58.6,"n":355},{"w":"2020-04-06","p":64.1,"n":451},{"w":"2020-07-13","p":62.6,"n":372},{"w":"2020-07-20","p":62.5,"n":356}]}},"shifts":{"favorable_police":{"overall":{"delta_pp":-14.8,"retention_pct":23.6,"pre":76.1,"peak":61.3,"late":72.6},"by_party":{"Democrat":{"delta_pp":-22.0,"retention_pct":24.1,"pre":70.1,"peak":48.1,"late":64.8},"Independent":{"delta_pp":-15.6,"retention_pct":20.5,"pre":73.7,"peak":58.1,"late":70.5},"Republican":{"delta_pp":-6.5,"retention_pct":13.8,"pre":87.5,"peak":81.0,"late":86.6}},"by_race":{"White":{"delta_pp":-13.4,"retention_pct":20.9,"pre":81.5,"peak":68.1,"late":78.7},"Black":{"delta_pp":-21.8,"retention_pct":7.8,"pre":55.5,"peak":33.7,"late":53.8},"Hispanic":{"delta_pp":-14.1,"retention_pct":31.9,"pre":70.3,"peak":56.2,"late":65.8},"Asian":{"delta_pp":-20.3,"retention_pct":37.4,"pre":76.2,"peak":55.9,"late":68.6},"Other":{"delta_pp":-13.9,"retention_pct":91.4,"pre":65.2,"peak":51.3,"late":52.5}}},"disc_blacks_alot":{"overall":{"delta_pp":8.9,"retention_pct":5.6,"pre":52.9,"peak":61.8,"late":53.4},"by_party":{"Democrat":{"delta_pp":9.8,"retention_pct":36.7,"pre":72.4,"peak":82.2,"late":76.0},"Independent":{"delta_pp":9.2,"retention_pct":-31.5,"pre":50.5,"peak":59.7,"late":47.6},"Republican":{"delta_pp":8.8,"retention_pct":-10.2,"pre":32.5,"peak":41.3,"late":31.6}},"by_race":{"White":{"delta_pp":10.3,"retention_pct":9.7,"pre":45.4,"peak":55.7,"late":46.4},"Black":{"delta_pp":4.9,"retention_pct":-110.2,"pre":82.3,"peak":87.2,"late":76.9},"Hispanic":{"delta_pp":7.9,"retention_pct":38.0,"pre":61.0,"peak":68.9,"late":64.0},"Asian":{"delta_pp":8.3,"retention_pct":-20.5,"pre":51.0,"peak":59.3,"late":49.3},"Other":{"delta_pp":6.7,"retention_pct":77.6,"pre":59.8,"peak":66.5,"late":65.0}}},"favorable_blacks":{"overall":{"delta_pp":-2.2,"retention_pct":54.5,"pre":83.5,"peak":81.3,"late":82.3},"by_party":{"Democrat":{"delta_pp":1.2,"retention_pct":-33.3,"pre":87.4,"peak":88.6,"late":87.0},"Independent":{"delta_pp":-1.5,"retention_pct":6.7,"pre":82.7,"peak":81.2,"late":82.6},"Republican":{"delta_pp":-6.1,"retention_pct":59.0,"pre":79.8,"peak":73.7,"late":76.2}},"by_race":{"White":{"delta_pp":-3.5,"retention_pct":60.0,"pre":84.5,"peak":81.0,"late":82.4},"Black":{"delta_pp":0.7,"retention_pct":-85.7,"pre":88.1,"peak":88.8,"late":87.5},"Hispanic":{"delta_pp":0.7,"retention_pct":142.9,"pre":79.6,"peak":80.3,"late":80.6},"Asian":{"delta_pp":-2.6,"retention_pct":15.4,"pre":75.6,"peak":73.0,"late":75.2},"Other":{"delta_pp":-0.9,"retention_pct":-288.9,"pre":82.4,"peak":81.5,"late":85.0}}},"agree_racial_generations":{"overall":{"delta_pp":5.6,"retention_pct":12.5,"pre":46.1,"peak":51.7,"late":46.8},"by_party":{"Democrat":{"delta_pp":8.3,"retention_pct":59.0,"pre":63.4,"peak":71.7,"late":68.3},"Independent":{"delta_pp":5.0,"retention_pct":-48.0,"pre":44.0,"peak":49.0,"late":41.6},"Republican":{"delta_pp":4.0,"retention_pct":-87.5,"pre":29.6,"peak":33.6,"late":26.1}},"by_race":{"White":{"delta_pp":5.9,"retention_pct":10.2,"pre":40.8,"peak":46.7,"late":41.4},"Black":{"delta_pp":5.4,"retention_pct":-46.3,"pre":69.1,"peak":74.5,"late":66.6},"Hispanic":{"delta_pp":6.1,"retention_pct":18.0,"pre":49.5,"peak":55.6,"late":50.6},"Asian":{"delta_pp":3.0,"retention_pct":76.7,"pre":47.1,"peak":50.1,"late":49.4},"Other":{"delta_pp":3.9,"retention_pct":284.6,"pre":52.4,"peak":56.3,"late":63.5}}},"agree_racial_tryhard":{"overall":{"delta_pp":-3.9,"retention_pct":-10.3,"pre":50.2,"peak":46.3,"late":50.6},"by_party":{"Democrat":{"delta_pp":-6.6,"retention_pct":-24.2,"pre":38.5,"peak":31.9,"late":40.1},"Independent":{"delta_pp":-4.2,"retention_pct":-7.1,"pre":47.3,"peak":43.1,"late":47.6},"Republican":{"delta_pp":-1.2,"retention_pct":16.7,"pre":70.5,"peak":69.3,"late":70.3}},"by_race":{"White":{"delta_pp":-4.6,"retention_pct":-0.0,"pre":54.5,"peak":49.9,"late":54.5},"Black":{"delta_pp":-3.2,"retention_pct":-196.9,"pre":30.5,"peak":27.3,"late":36.8},"Hispanic":{"delta_pp":-2.7,"retention_pct":11.1,"pre":48.3,"peak":45.6,"late":48.0},"Asian":{"delta_pp":-3.2,"retention_pct":109.4,"pre":51.6,"peak":48.4,"late":48.1},"Other":{"delta_pp":-2.3,"retention_pct":221.7,"pre":42.9,"peak":40.6,"late":37.8}}},"disc_whites_alot":{"overall":{"delta_pp":0.0,"retention_pct":null,"pre":18.4,"peak":18.4,"late":20.0},"by_party":{"Democrat":{"delta_pp":-1.6,"retention_pct":-250.0,"pre":12.6,"peak":11.0,"late":16.6},"Independent":{"delta_pp":1.1,"retention_pct":81.8,"pre":15.9,"peak":17.0,"late":16.8},"Republican":{"delta_pp":1.0,"retention_pct":30.0,"pre":27.6,"peak":28.6,"late":27.9}},"by_race":{"White":{"delta_pp":-0.4,"retention_pct":-425.0,"pre":20.7,"peak":20.3,"late":22.4},"Black":{"delta_pp":-0.2,"retention_pct":-2450.0,"pre":11.8,"peak":11.6,"late":16.7},"Hispanic":{"delta_pp":1.4,"retention_pct":28.6,"pre":17.3,"peak":18.7,"late":17.7},"Asian":{"delta_pp":-1.2,"retention_pct":141.7,"pre":9.9,"peak":8.7,"late":8.2},"Other":{"delta_pp":3.4,"retention_pct":50.0,"pre":18.0,"peak":21.4,"late":19.7}}}},"window_means":{"favorable_police":{"baseline_2019":{"overall":{"pct":73.6,"n":141847},"by_party":{"Democrat":{"pct":66.4,"n":50726},"Independent":{"pct":71.1,"n":40591},"Republican":{"pct":86.8,"n":42334}},"by_race":{"White":{"pct":79.4,"n":96751},"Black":{"pct":49.9,"n":16025},"Hispanic":{"pct":68.7,"n":19869},"Asian":{"pct":74.2,"n":5026},"Other":{"pct":63.6,"n":4176}}},"pre":{"overall":{"pct":76.1,"n":106343},"by_party":{"Democrat":{"pct":70.1,"n":38810},"Independent":{"pct":73.7,"n":28531},"Republican":{"pct":87.5,"n":33704}},"by_race":{"White":{"pct":81.5,"n":70648},"Black":{"pct":55.5,"n":11590},"Hispanic":{"pct":70.3,"n":15975},"Asian":{"pct":76.2,"n":4713},"Other":{"pct":65.2,"n":3417}}},"floyd_week":{"overall":{"pct":64.8,"n":4470},"by_party":{"Democrat":{"pct":55.2,"n":1679},"Independent":{"pct":63.3,"n":1163},"Republican":{"pct":79.4,"n":1447}},"by_race":{"White":{"pct":70.9,"n":2946},"Black":{"pct":44.4,"n":426},"Hispanic":{"pct":62.1,"n":739},"Asian":{"pct":57.8,"n":212},"Other":{"pct":50.0,"n":147}}},"peak":{"overall":{"pct":61.3,"n":28393},"by_party":{"Democrat":{"pct":48.1,"n":10204},"Independent":{"pct":58.1,"n":7859},"Republican":{"pct":81.0,"n":8869}},"by_race":{"White":{"pct":68.1,"n":19261},"Black":{"pct":33.7,"n":2841},"Hispanic":{"pct":56.2,"n":4153},"Asian":{"pct":55.9,"n":1255},"Other":{"pct":51.3,"n":883}}},"summer":{"overall":{"pct":65.1,"n":85160},"by_party":{"Democrat":{"pct":52.7,"n":30844},"Independent":{"pct":62.6,"n":22713},"Republican":{"pct":83.4,"n":27292}},"by_race":{"White":{"pct":72.1,"n":57839},"Black":{"pct":38.5,"n":8676},"Hispanic":{"pct":59.4,"n":12322},"Asian":{"pct":60.0,"n":3702},"Other":{"pct":53.6,"n":2621}}},"fall":{"overall":{"pct":70.2,"n":91453},"by_party":{"Democrat":{"pct":60.3,"n":33986},"Independent":{"pct":68.5,"n":23583},"Republican":{"pct":86.2,"n":28816}},"by_race":{"White":{"pct":77.0,"n":63883},"Black":{"pct":46.1,"n":9312},"Hispanic":{"pct":62.9,"n":11920},"Asian":{"pct":67.2,"n":3478},"Other":{"pct":57.2,"n":2860}}},"late":{"overall":{"pct":72.6,"n":13053},"by_party":{"Democrat":{"pct":64.8,"n":5087},"Independent":{"pct":70.5,"n":3395},"Republican":{"pct":86.6,"n":4004}},"by_race":{"White":{"pct":78.7,"n":9014},"Black":{"pct":53.8,"n":1378},"Hispanic":{"pct":65.8,"n":1711},"Asian":{"pct":68.6,"n":570},"Other":{"pct":52.5,"n":380}}}},"disc_blacks_alot":{"baseline_2019":{"overall":{"pct":54.4,"n":154040},"by_party":{"Democrat":{"pct":75.8,"n":53801},"Independent":{"pct":52.6,"n":45046},"Republican":{"pct":31.6,"n":44898}},"by_race":{"White":{"pct":46.3,"n":104401},"Black":{"pct":85.0,"n":17609},"Hispanic":{"pct":63.4,"n":21776},"Asian":{"pct":54.2,"n":5601},"Other":{"pct":61.6,"n":4653}}},"pre":{"overall":{"pct":52.9,"n":126718},"by_party":{"Democrat":{"pct":72.4,"n":45423},"Independent":{"pct":50.5,"n":34779},"Republican":{"pct":32.5,"n":39241}},"by_race":{"White":{"pct":45.4,"n":83246},"Black":{"pct":82.3,"n":14170},"Hispanic":{"pct":61.0,"n":19283},"Asian":{"pct":51.0,"n":5799},"Other":{"pct":59.8,"n":4220}}},"floyd_week":{"overall":{"pct":59.1,"n":4893},"by_party":{"Democrat":{"pct":76.8,"n":1790},"Independent":{"pct":56.2,"n":1290},"Republican":{"pct":41.2,"n":1580}},"by_race":{"White":{"pct":52.0,"n":3214},"Black":{"pct":85.0,"n":460},"Hispanic":{"pct":68.1,"n":830},"Asian":{"pct":60.7,"n":232},"Other":{"pct":52.7,"n":157}}},"peak":{"overall":{"pct":61.8,"n":30584},"by_party":{"Democrat":{"pct":82.2,"n":10708},"Independent":{"pct":59.7,"n":8668},"Republican":{"pct":41.3,"n":9385}},"by_race":{"White":{"pct":55.7,"n":20599},"Black":{"pct":87.2,"n":3079},"Hispanic":{"pct":68.9,"n":4528},"Asian":{"pct":59.3,"n":1389},"Other":{"pct":66.5,"n":989}}},"summer":{"overall":{"pct":59.7,"n":91421},"by_party":{"Democrat":{"pct":80.9,"n":32310},"Independent":{"pct":57.8,"n":24974},"Republican":{"pct":38.1,"n":28742}},"by_race":{"White":{"pct":53.1,"n":61619},"Black":{"pct":85.8,"n":9462},"Hispanic":{"pct":67.3,"n":13433},"Asian":{"pct":59.3,"n":4013},"Other":{"pct":63.5,"n":2894}}},"fall":{"overall":{"pct":57.2,"n":98709},"by_party":{"Democrat":{"pct":78.6,"n":35773},"Independent":{"pct":54.2,"n":26110},"Republican":{"pct":34.3,"n":30425}},"by_race":{"White":{"pct":50.7,"n":68352},"Black":{"pct":83.5,"n":10294},"Hispanic":{"pct":64.1,"n":13091},"Asian":{"pct":56.8,"n":3800},"Other":{"pct":59.7,"n":3172}}},"late":{"overall":{"pct":53.4,"n":14156},"by_party":{"Democrat":{"pct":76.0,"n":5383},"Independent":{"pct":47.6,"n":3766},"Republican":{"pct":31.6,"n":4252}},"by_race":{"White":{"pct":46.4,"n":9721},"Black":{"pct":76.9,"n":1515},"Hispanic":{"pct":64.0,"n":1855},"Asian":{"pct":49.3,"n":640},"Other":{"pct":65.0,"n":425}}}},"favorable_blacks":{"baseline_2019":{"overall":{"pct":82.7,"n":134286},"by_party":{"Democrat":{"pct":87.9,"n":49143},"Independent":{"pct":81.8,"n":38088},"Republican":{"pct":78.1,"n":39694}},"by_race":{"White":{"pct":82.8,"n":90746},"Black":{"pct":88.0,"n":15878},"Hispanic":{"pct":81.4,"n":18946},"Asian":{"pct":74.3,"n":4777},"Other":{"pct":83.1,"n":3939}}},"pre":{"overall":{"pct":83.5,"n":109008},"by_party":{"Democrat":{"pct":87.4,"n":40983},"Independent":{"pct":82.7,"n":28748},"Republican":{"pct":79.8,"n":34201}},"by_race":{"White":{"pct":84.5,"n":71499},"Black":{"pct":88.1,"n":12628},"Hispanic":{"pct":79.6,"n":16493},"Asian":{"pct":75.6,"n":4901},"Other":{"pct":82.4,"n":3487}}},"floyd_week":{"overall":{"pct":81.6,"n":4267},"by_party":{"Democrat":{"pct":86.1,"n":1624},"Independent":{"pct":81.9,"n":1079},"Republican":{"pct":76.1,"n":1395}},"by_race":{"White":{"pct":81.8,"n":2796},"Black":{"pct":87.1,"n":426},"Hispanic":{"pct":79.8,"n":719},"Asian":{"pct":74.7,"n":200},"Other":{"pct":82.3,"n":126}}},"peak":{"overall":{"pct":81.3,"n":27699},"by_party":{"Democrat":{"pct":88.6,"n":10046},"Independent":{"pct":81.2,"n":7601},"Republican":{"pct":73.7,"n":8651}},"by_race":{"White":{"pct":81.0,"n":18630},"Black":{"pct":88.8,"n":2869},"Hispanic":{"pct":80.3,"n":4113},"Asian":{"pct":73.0,"n":1240},"Other":{"pct":81.5,"n":847}}},"summer":{"overall":{"pct":81.5,"n":83022},"by_party":{"Democrat":{"pct":88.5,"n":30366},"Independent":{"pct":81.6,"n":21957},"Republican":{"pct":73.9,"n":26548}},"by_race":{"White":{"pct":81.3,"n":55989},"Black":{"pct":88.6,"n":8728},"Hispanic":{"pct":79.5,"n":12147},"Asian":{"pct":75.7,"n":3615},"Other":{"pct":81.6,"n":2543}}},"fall":{"overall":{"pct":82.3,"n":88653},"by_party":{"Democrat":{"pct":87.9,"n":33519},"Independent":{"pct":82.7,"n":22659},"Republican":{"pct":75.7,"n":27694}},"by_race":{"White":{"pct":82.5,"n":61437},"Black":{"pct":87.7,"n":9403},"Hispanic":{"pct":79.0,"n":11701},"Asian":{"pct":78.5,"n":3354},"Other":{"pct":83.2,"n":2758}}},"late":{"overall":{"pct":82.3,"n":12622},"by_party":{"Democrat":{"pct":87.0,"n":5024},"Independent":{"pct":82.6,"n":3227},"Republican":{"pct":76.2,"n":3824}},"by_race":{"White":{"pct":82.4,"n":8641},"Black":{"pct":87.5,"n":1395},"Hispanic":{"pct":80.6,"n":1675},"Asian":{"pct":75.2,"n":540},"Other":{"pct":85.0,"n":371}}}},"agree_racial_generations":{"baseline_2019":{"overall":{"pct":45.0,"n":154990},"by_party":{"Democrat":{"pct":64.3,"n":54080},"Independent":{"pct":43.5,"n":45312},"Republican":{"pct":26.1,"n":45202}},"by_race":{"White":{"pct":38.6,"n":105090},"Black":{"pct":70.7,"n":17701},"Hispanic":{"pct":49.6,"n":21881},"Asian":{"pct":49.3,"n":5636},"Other":{"pct":50.6,"n":4682}}},"pre":{"overall":{"pct":46.1,"n":126821},"by_party":{"Democrat":{"pct":63.4,"n":45441},"Independent":{"pct":44.0,"n":34794},"Republican":{"pct":29.6,"n":39311}},"by_race":{"White":{"pct":40.8,"n":83387},"Black":{"pct":69.1,"n":14164},"Hispanic":{"pct":49.5,"n":19252},"Asian":{"pct":47.1,"n":5802},"Other":{"pct":52.4,"n":4216}}},"floyd_week":{"overall":{"pct":47.7,"n":4892},"by_party":{"Democrat":{"pct":64.9,"n":1787},"Independent":{"pct":45.3,"n":1297},"Republican":{"pct":30.6,"n":1576}},"by_race":{"White":{"pct":40.7,"n":3217},"Black":{"pct":71.0,"n":461},"Hispanic":{"pct":53.0,"n":825},"Asian":{"pct":57.3,"n":230},"Other":{"pct":50.9,"n":159}}},"peak":{"overall":{"pct":51.7,"n":30593},"by_party":{"Democrat":{"pct":71.7,"n":10707},"Independent":{"pct":49.0,"n":8669},"Republican":{"pct":33.6,"n":9390}},"by_race":{"White":{"pct":46.7,"n":20603},"Black":{"pct":74.5,"n":3083},"Hispanic":{"pct":55.6,"n":4522},"Asian":{"pct":50.1,"n":1395},"Other":{"pct":56.3,"n":990}}},"summer":{"overall":{"pct":50.0,"n":91489},"by_party":{"Democrat":{"pct":70.1,"n":32313},"Independent":{"pct":47.6,"n":24988},"Republican":{"pct":31.7,"n":28780}},"by_race":{"White":{"pct":45.0,"n":61710},"Black":{"pct":72.0,"n":9452},"Hispanic":{"pct":53.9,"n":13414},"Asian":{"pct":51.0,"n":4026},"Other":{"pct":53.2,"n":2887}}},"fall":{"overall":{"pct":49.2,"n":98733},"by_party":{"Democrat":{"pct":68.5,"n":35767},"Independent":{"pct":46.0,"n":26101},"Republican":{"pct":30.8,"n":30441}},"by_race":{"White":{"pct":44.7,"n":68416},"Black":{"pct":69.8,"n":10278},"Hispanic":{"pct":51.1,"n":13076},"Asian":{"pct":50.7,"n":3800},"Other":{"pct":52.8,"n":3163}}},"late":{"overall":{"pct":46.8,"n":14147},"by_party":{"Democrat":{"pct":68.3,"n":5372},"Independent":{"pct":41.6,"n":3769},"Republican":{"pct":26.1,"n":4253}},"by_race":{"White":{"pct":41.4,"n":9715},"Black":{"pct":66.6,"n":1509},"Hispanic":{"pct":50.6,"n":1856},"Asian":{"pct":49.4,"n":640},"Other":{"pct":63.5,"n":427}}}},"agree_racial_tryhard":{"baseline_2019":{"overall":{"pct":52.0,"n":155283},"by_party":{"Democrat":{"pct":38.7,"n":54181},"Independent":{"pct":50.5,"n":45390},"Republican":{"pct":72.7,"n":45276}},"by_race":{"White":{"pct":56.5,"n":105207},"Black":{"pct":29.8,"n":17785},"Hispanic":{"pct":50.5,"n":21959},"Asian":{"pct":53.7,"n":5637},"Other":{"pct":44.6,"n":4695}}},"pre":{"overall":{"pct":50.2,"n":127038},"by_party":{"Democrat":{"pct":38.5,"n":45527},"Independent":{"pct":47.3,"n":34861},"Republican":{"pct":70.5,"n":39349}},"by_race":{"White":{"pct":54.5,"n":83442},"Black":{"pct":30.5,"n":14229},"Hispanic":{"pct":48.3,"n":19335},"Asian":{"pct":51.6,"n":5809},"Other":{"pct":42.9,"n":4223}}},"floyd_week":{"overall":{"pct":47.3,"n":4904},"by_party":{"Democrat":{"pct":36.6,"n":1793},"Independent":{"pct":45.0,"n":1297},"Republican":{"pct":67.0,"n":1581}},"by_race":{"White":{"pct":51.8,"n":3219},"Black":{"pct":28.2,"n":463},"Hispanic":{"pct":46.9,"n":832},"Asian":{"pct":43.2,"n":232},"Other":{"pct":37.4,"n":158}}},"peak":{"overall":{"pct":46.3,"n":30650},"by_party":{"Democrat":{"pct":31.9,"n":10727},"Independent":{"pct":43.1,"n":8686},"Republican":{"pct":69.3,"n":9409}},"by_race":{"White":{"pct":49.9,"n":20637},"Black":{"pct":27.3,"n":3092},"Hispanic":{"pct":45.6,"n":4542},"Asian":{"pct":48.4,"n":1393},"Other":{"pct":40.6,"n":986}}},"summer":{"overall":{"pct":48.3,"n":91660},"by_party":{"Democrat":{"pct":33.1,"n":32380},"Independent":{"pct":45.3,"n":25039},"Republican":{"pct":71.6,"n":28820}},"by_race":{"White":{"pct":52.6,"n":61777},"Black":{"pct":26.7,"n":9485},"Hispanic":{"pct":46.9,"n":13479},"Asian":{"pct":48.7,"n":4029},"Other":{"pct":42.6,"n":2890}}},"fall":{"overall":{"pct":49.3,"n":98911},"by_party":{"Democrat":{"pct":36.4,"n":35829},"Independent":{"pct":45.2,"n":26155},"Republican":{"pct":72.2,"n":30469}},"by_race":{"White":{"pct":53.5,"n":68464},"Black":{"pct":29.2,"n":10313},"Hispanic":{"pct":49.1,"n":13147},"Asian":{"pct":47.3,"n":3808},"Other":{"pct":41.4,"n":3179}}},"late":{"overall":{"pct":50.6,"n":14162},"by_party":{"Democrat":{"pct":40.1,"n":5381},"Independent":{"pct":47.6,"n":3773},"Republican":{"pct":70.3,"n":4254}},"by_race":{"White":{"pct":54.5,"n":9720},"Black":{"pct":36.8,"n":1512},"Hispanic":{"pct":48.0,"n":1863},"Asian":{"pct":48.1,"n":641},"Other":{"pct":37.8,"n":426}}}},"disc_whites_alot":{"baseline_2019":{"overall":{"pct":19.5,"n":153537},"by_party":{"Democrat":{"pct":12.0,"n":53617},"Independent":{"pct":18.3,"n":44875},"Republican":{"pct":29.0,"n":44809}},"by_race":{"White":{"pct":22.3,"n":104149},"Black":{"pct":11.1,"n":17506},"Hispanic":{"pct":17.7,"n":21676},"Asian":{"pct":10.1,"n":5580},"Other":{"pct":20.8,"n":4626}}},"pre":{"overall":{"pct":18.4,"n":126360},"by_party":{"Democrat":{"pct":12.6,"n":45275},"Independent":{"pct":15.9,"n":34687},"Republican":{"pct":27.6,"n":39165}},"by_race":{"White":{"pct":20.7,"n":83103},"Black":{"pct":11.8,"n":14086},"Hispanic":{"pct":17.3,"n":19188},"Asian":{"pct":9.9,"n":5782},"Other":{"pct":18.0,"n":4201}}},"floyd_week":{"overall":{"pct":16.3,"n":4883},"by_party":{"Democrat":{"pct":12.2,"n":1784},"Independent":{"pct":14.3,"n":1289},"Republican":{"pct":23.6,"n":1578}},"by_race":{"White":{"pct":18.3,"n":3210},"Black":{"pct":12.6,"n":460},"Hispanic":{"pct":15.0,"n":824},"Asian":{"pct":6.0,"n":231},"Other":{"pct":19.7,"n":158}}},"peak":{"overall":{"pct":18.4,"n":30499},"by_party":{"Democrat":{"pct":11.0,"n":10672},"Independent":{"pct":17.0,"n":8640},"Republican":{"pct":28.6,"n":9372}},"by_race":{"White":{"pct":20.3,"n":20558},"Black":{"pct":11.6,"n":3062},"Hispanic":{"pct":18.7,"n":4510},"Asian":{"pct":8.7,"n":1384},"Other":{"pct":21.4,"n":985}}},"summer":{"overall":{"pct":19.2,"n":91155},"by_party":{"Democrat":{"pct":12.3,"n":32206},"Independent":{"pct":17.0,"n":24891},"Republican":{"pct":29.2,"n":28708}},"by_race":{"White":{"pct":21.5,"n":61531},"Black":{"pct":12.1,"n":9393},"Hispanic":{"pct":18.8,"n":13351},"Asian":{"pct":9.0,"n":4002},"Other":{"pct":19.6,"n":2878}}},"fall":{"overall":{"pct":20.7,"n":98424},"by_party":{"Democrat":{"pct":15.7,"n":35660},"Independent":{"pct":17.2,"n":26020},"Republican":{"pct":30.0,"n":30367}},"by_race":{"White":{"pct":23.0,"n":68249},"Black":{"pct":13.8,"n":10211},"Hispanic":{"pct":20.6,"n":13027},"Asian":{"pct":10.5,"n":3790},"Other":{"pct":20.7,"n":3147}}},"late":{"overall":{"pct":20.0,"n":14132},"by_party":{"Democrat":{"pct":16.6,"n":5378},"Independent":{"pct":16.8,"n":3758},"Republican":{"pct":27.9,"n":4244}},"by_race":{"White":{"pct":22.4,"n":9708},"Black":{"pct":16.7,"n":1513},"Hispanic":{"pct":17.7,"n":1850},"Asian":{"pct":8.2,"n":637},"Other":{"pct":19.7,"n":424}}}}}};
+
+/* ============ palette pulled from CSS ============ */
+const css = getComputedStyle(document.documentElement);
+const C = (n)=>css.getPropertyValue(n).trim();
+const PAPER=C('--paper'), PAPER2=C('--paper2'), PANEL=C('--panel'),
+      INK=C('--ink'), INK_DIM=C('--ink-dim'), INK_FAINT=C('--ink-faint'),
+      HAIR=C('--hairline'), ACCENT=C('--accent'), ACCENT_DEEP=C('--accent-deep'),
+      COOL=C('--cool'), DEM=C('--dem'), REP=C('--rep'), IND=C('--ind');
+
+const PARTY_COLOR = { Democrat:DEM, Independent:IND, Republican:REP };
+const PARTY_ORDER = ["Democrat","Independent","Republican"];
+// colorblind-safe categorical (Okabe-Ito derived)
+const RACE_COLOR = { White:"#56b4e9", Black:"#e69f00", Hispanic:"#009e73", Asian:"#cc79a7", Other:"#9aa6b2" };
+const RACE_ORDER = ["White","Black","Hispanic","Asian","Other"];
+
+const METRICS = ["favorable_police","disc_blacks_alot","agree_racial_generations","agree_racial_tryhard"];
+const METRIC_SHORT = {
+  favorable_police:"Police favorability",
+  disc_blacks_alot:"Anti-Black discrimination",
+  agree_racial_generations:"Structural-racism belief",
+  agree_racial_tryhard:"Racial resentment"
+};
+const METRIC_SUB = {
+  favorable_police:"Weighted share of U.S. adults expressing a favorable view, each weekly wave from July 2019 to February 2021. The dashed line marks the week George Floyd was killed.",
+  disc_blacks_alot:"Weighted share saying Black people face “a great deal” or “a lot” of discrimination, each weekly wave. The dashed line marks the week George Floyd was killed.",
+  agree_racial_generations:"Weighted share agreeing that generations of slavery and discrimination make it harder for Black people to advance, each weekly wave. The dashed line marks the week George Floyd was killed.",
+  agree_racial_tryhard:"Weighted share agreeing Black people should advance “without special favors” as other minorities did, each weekly wave. The dashed line marks the week George Floyd was killed."
+};
+const SUBGROUP_OK = new Set(["favorable_police","disc_blacks_alot"]); // metrics with party/race weekly series
+
+const EVENT = new Date(DATA.meta.event_date + "T00:00:00");
+const parseW = (s)=> new Date(s + "T00:00:00");
+const fmtPct = (v)=> v.toFixed(1) + "%";
+const fmtMonth = d3.timeFormat("%b %Y");
+const fmtShort = d3.timeFormat("%b %-d, %Y");
+
+/* attach parsed dates to every series once */
+function withDates(arr){ return arr.map(d=>({date:parseW(d.w), w:d.w, p:d.p, n:d.n})); }
+const SERIES = { overall:{}, by_party:{}, by_race:{} };
+for (const m of Object.keys(DATA.overall)) SERIES.overall[m] = withDates(DATA.overall[m]);
+for (const m of Object.keys(DATA.by_party)){ SERIES.by_party[m]={}; for (const g of Object.keys(DATA.by_party[m])) SERIES.by_party[m][g]=withDates(DATA.by_party[m][g]); }
+for (const m of Object.keys(DATA.by_race)){ SERIES.by_race[m]={}; for (const g of Object.keys(DATA.by_race[m])) SERIES.by_race[m][g]=withDates(DATA.by_race[m][g]); }
+
+/* ---------- tooltip helper ---------- */
+function makeTip(box){ const t=document.createElement("div"); t.className="tip"; box.appendChild(t); return t; }
+function showTip(tip, box, x, y, html){
+  tip.innerHTML=html; tip.style.display="block";
+  const bw=box.clientWidth, tw=tip.offsetWidth, th=tip.offsetHeight;
+  let lx=x+14; if (lx+tw>bw-4) lx=x-tw-14; if (lx<4) lx=4;
+  let ly=y-th-12; if (ly<2) ly=y+18;
+  tip.style.left=lx+"px"; tip.style.top=ly+"px";
+}
+
+/* ====================================================================
+   HEADER decorative wave (aria-hidden): the police-favorability arc
+   ==================================================================== */
+(function headerWave(){
+  const svg=d3.select(".hwave"); const W=1040,H=300;
+  const s=SERIES.overall.favorable_police;
+  const x=d3.scaleTime().domain(d3.extent(s,d=>d.date)).range([0,W]);
+  const y=d3.scaleLinear().domain([55,80]).range([H-26,46]);
+  const area=d3.area().x(d=>x(d.date)).y0(H).y1(d=>y(d.p)).curve(d3.curveCatmullRom);
+  const line=d3.line().x(d=>x(d.date)).y(d=>y(d.p)).curve(d3.curveCatmullRom);
+  const defs=svg.append("defs");
+  const g=defs.append("linearGradient").attr("id","hg").attr("x1",0).attr("x2",0).attr("y1",0).attr("y2",1);
+  g.append("stop").attr("offset","0%").attr("stop-color",ACCENT).attr("stop-opacity",.22);
+  g.append("stop").attr("offset","100%").attr("stop-color",ACCENT).attr("stop-opacity",0);
+  svg.append("path").datum(s).attr("d",area).attr("fill","url(#hg)");
+  svg.append("path").datum(s).attr("d",line).attr("fill","none").attr("stroke",ACCENT).attr("stroke-width",2).attr("opacity",.55);
+  svg.append("line").attr("x1",x(EVENT)).attr("x2",x(EVENT)).attr("y1",30).attr("y2",H).attr("stroke",ACCENT).attr("stroke-width",1.2).attr("stroke-dasharray","4,4").attr("opacity",.6);
+})();
+
+/* ====================================================================
+   FIGURE 1 — HERO event-study line chart
+   ==================================================================== */
+const heroBox=document.getElementById("hero-chart");
+const heroTip=makeTip(heroBox);
+let heroMetric="favorable_police", heroGroup="overall";
+
+// metric buttons
+const mc=d3.select("#metric-ctrl");
+METRICS.forEach(m=>{
+  mc.append("button").attr("class","seg").attr("type","button")
+    .attr("aria-pressed", m===heroMetric?"true":"false")
+    .text(METRIC_SHORT[m])
+    .on("click",function(){
+      heroMetric=m;
+      mc.selectAll("button").attr("aria-pressed",function(){return d3.select(this).text()===METRIC_SHORT[m]?"true":"false";});
+      // if this metric has no subgroup series, force overall
+      if(!SUBGROUP_OK.has(m) && heroGroup!=="overall"){ heroGroup="overall"; syncGroupBtns(); }
+      updateGroupAvailability();
+      drawHero(true);
+    });
+});
+
+// group buttons
+const GROUPS=[["overall","Overall"],["by_party","By party"],["by_race","By race"]];
+const gc=d3.select("#group-ctrl");
+GROUPS.forEach(([k,lab])=>{
+  gc.append("button").attr("class","seg").attr("type","button").attr("data-g",k)
+    .attr("aria-pressed", k===heroGroup?"true":"false")
+    .text(lab)
+    .on("click",function(){
+      if(d3.select(this).attr("disabled")!==null && k!=="overall") return;
+      heroGroup=k; syncGroupBtns(); drawHero(true);
+    });
+});
+function syncGroupBtns(){ gc.selectAll("button").attr("aria-pressed",function(){return d3.select(this).attr("data-g")===heroGroup?"true":"false";}); }
+function updateGroupAvailability(){
+  const ok=SUBGROUP_OK.has(heroMetric);
+  gc.selectAll("button").each(function(){
+    const k=d3.select(this).attr("data-g");
+    if(k==="overall"){ this.removeAttribute("disabled"); d3.select(this).style("opacity",1).style("cursor","pointer"); return; }
+    if(ok){ this.removeAttribute("disabled"); d3.select(this).style("opacity",1).style("cursor","pointer"); }
+    else { this.setAttribute("disabled",""); d3.select(this).style("opacity",.35).style("cursor","not-allowed"); }
+  });
+}
+updateGroupAvailability();
+
+function heroSeriesSet(){
+  if(heroGroup==="overall") return [["Overall", SERIES.overall[heroMetric], ACCENT]];
+  if(heroGroup==="by_party") return PARTY_ORDER.map(g=>[g, SERIES.by_party[heroMetric][g], PARTY_COLOR[g]]);
+  return RACE_ORDER.map(g=>[g, SERIES.by_race[heroMetric][g], RACE_COLOR[g]]);
+}
+
+function buildHeroLegend(){
+  const lg=d3.select("#hero-legend").html("");
+  if(heroGroup==="overall"){
+    lg.append("span").attr("class","item").html(`<span class="sw" style="background:${ACCENT}"></span>${METRIC_SHORT[heroMetric]} &middot; all adults`);
+    return;
+  }
+  const set = heroGroup==="by_party"?PARTY_ORDER.map(g=>[g,PARTY_COLOR[g]]):RACE_ORDER.map(g=>[g,RACE_COLOR[g]]);
+  set.forEach(([g,c])=> lg.append("span").attr("class","item").html(`<span class="sw round" style="background:${c}"></span>${g}`));
+}
+
+function drawHero(animate){
+  // sync title + sub
+  document.getElementById("hero-title").textContent =
+    METRIC_SHORT[heroMetric] + (heroGroup==="overall"?", week by week":(heroGroup==="by_party"?", by party":", by race"));
+  document.getElementById("hero-sub").textContent = METRIC_SUB[heroMetric];
+  buildHeroLegend();
+
+  const W=Math.max(330, heroBox.clientWidth);
+  const narrow=W<560;
+  const H=narrow?420:480;
+  const mg={top:30,right:narrow?16:96,bottom:42,left:narrow?40:48};
+
+  let svg=d3.select(heroBox).select("svg");
+  if(svg.empty()) svg=d3.select(heroBox).append("svg");
+  svg.attr("viewBox",`0 0 ${W} ${H}`).attr("width","100%").attr("role","img");
+
+  const sets=heroSeriesSet();
+  const allPts=sets.flatMap(s=>s[1]);
+  const x=d3.scaleTime().domain(d3.extent(SERIES.overall[heroMetric],d=>d.date)).range([mg.left,W-mg.right]);
+  // y domain: pad around data, fixed-ish per metric for readability
+  const lo=d3.min(allPts,d=>d.p), hi=d3.max(allPts,d=>d.p);
+  const pad=Math.max(4,(hi-lo)*0.12);
+  const y=d3.scaleLinear().domain([Math.max(0,Math.floor((lo-pad)/5)*5), Math.min(100,Math.ceil((hi+pad)/5)*5)]).range([H-mg.bottom,mg.top]);
+
+  // aria description
+  const sh=DATA.shifts[heroMetric].overall;
+  svg.attr("aria-label",`Weekly line chart of ${METRIC_SHORT[heroMetric].toLowerCase()} from July 2019 to February 2021, weighted to U.S. adult population targets, ${heroGroup==='overall'?'overall':(heroGroup==='by_party'?'split by party':'split by race')}. A vertical dashed line marks George Floyd's death on May 25, 2020. Overall, the measure moved from ${sh.pre}% before to ${sh.peak}% in June 2020, then to ${sh.late}% in early 2021.`);
+
+  // ---- static layers (rebuilt each draw) ----
+  svg.selectAll(".static").remove();
+  const stat=svg.append("g").attr("class","static");
+
+  // summer 2020 band
+  const bandX0=x(new Date("2020-06-01T00:00:00")), bandX1=x(new Date("2020-08-31T00:00:00"));
+  stat.append("rect").attr("x",bandX0).attr("y",mg.top).attr("width",Math.max(0,bandX1-bandX0)).attr("height",H-mg.bottom-mg.top)
+    .attr("fill",ACCENT).attr("opacity",.05);
+  stat.append("text").attr("x",(bandX0+bandX1)/2).attr("y",mg.top+12).attr("text-anchor","middle")
+    .attr("font-family","var(--sans)").attr("font-size",9.5).attr("font-weight",700).attr("letter-spacing",".08em")
+    .attr("fill",ACCENT).attr("opacity",.85).text("SUMMER 2020");
+
+  // gridlines + y labels
+  y.ticks(narrow?5:6).forEach(t=>{
+    stat.append("line").attr("x1",mg.left).attr("x2",W-mg.right).attr("y1",y(t)).attr("y2",y(t)).attr("stroke",HAIR).attr("stroke-width",1);
+    stat.append("text").attr("x",mg.left-7).attr("y",y(t)+3.5).attr("text-anchor","end")
+      .attr("font-family","var(--sans)").attr("font-size",10).attr("fill",INK_FAINT).attr("font-variant-numeric","tabular-nums").text(t+"%");
+  });
+
+  // x axis ticks (quarterly-ish)
+  const xt=narrow?[new Date("2019-10-01"),new Date("2020-04-01"),new Date("2020-10-01")]:
+    [new Date("2019-09-01"),new Date("2019-12-01"),new Date("2020-03-01"),new Date("2020-06-01"),new Date("2020-09-01"),new Date("2020-12-01"),new Date("2021-03-01")].map(d=>d);
+  xt.forEach(t=>{
+    stat.append("text").attr("x",x(t)).attr("y",H-mg.bottom+18).attr("text-anchor","middle")
+      .attr("font-family","var(--sans)").attr("font-size",10).attr("fill",INK_FAINT).text(fmtMonth(t));
+  });
+
+  // George Floyd marker
+  stat.append("line").attr("x1",x(EVENT)).attr("x2",x(EVENT)).attr("y1",mg.top-2).attr("y2",H-mg.bottom)
+    .attr("stroke",ACCENT).attr("stroke-width",1.8).attr("stroke-dasharray","5,4");
+  stat.append("text").attr("x",x(EVENT)-6).attr("y",mg.top+10).attr("text-anchor","end")
+    .attr("font-family","var(--sans)").attr("font-size",10.5).attr("font-weight",800).attr("fill",ACCENT)
+    .text("George Floyd");
+  stat.append("text").attr("x",x(EVENT)-6).attr("y",mg.top+23).attr("text-anchor","end")
+    .attr("font-family","var(--sans)").attr("font-size",9.5).attr("fill",INK_FAINT)
+    .text("May 25, 2020");
+
+  // ---- annotation callouts for overall view: pre / June / 2021 ----
+  if(heroGroup==="overall"){
+    const ann=[
+      {date:new Date("2020-03-15"), v:sh.pre, lab:`pre ${sh.pre}%`, anchor:"middle"},
+      {date:new Date("2020-06-15"), v:sh.peak, lab:`June ${sh.peak}%`, anchor:"middle"},
+      {date:new Date("2021-01-15"), v:sh.late, lab:`2021 ${sh.late}%`, anchor:"middle"},
+    ];
+    const up = sh.peak>sh.pre; // direction of June move
+    ann.forEach(a=>{
+      const yy=y(a.v);
+      const off = (a.lab.startsWith("June")? (up?-14:18) : -12);
+      stat.append("circle").attr("cx",x(a.date)).attr("cy",yy).attr("r",3.4).attr("fill","none").attr("stroke",a.lab.startsWith("June")?ACCENT:INK_DIM).attr("stroke-width",1.6).attr("opacity",.7);
+      stat.append("text").attr("x",x(a.date)).attr("y",yy+off).attr("text-anchor",a.anchor)
+        .attr("font-family","var(--sans)").attr("font-size",10.5).attr("font-weight",800)
+        .attr("fill",a.lab.startsWith("June")?ACCENT:INK_DIM).attr("font-variant-numeric","tabular-nums").text(a.lab);
+    });
+  }
+
+  // ---- line layers (keyed groups for smooth transitions) ----
+  const line=d3.line().defined(d=>d.p!=null).x(d=>x(d.date)).y(d=>y(d.p)).curve(d3.curveMonotoneX);
+  let glines=svg.selectAll(".lineg").data(sets,d=>d[0]);
+  glines.exit().remove();
+  const gEnter=glines.enter().append("g").attr("class","lineg");
+  gEnter.append("path").attr("class","ln").attr("fill","none").attr("stroke-width",2.6).attr("stroke-linecap","round").attr("stroke-linejoin","round");
+  glines=gEnter.merge(glines);
+
+  glines.select("path.ln")
+    .attr("stroke",d=>d[2])
+    .attr("opacity",d=> heroGroup==="overall"?1:0.95)
+    .transition().duration(animate?650:0)
+    .attr("d",d=>line(d[1]));
+
+  // end labels (wide only, subgroup views)
+  svg.selectAll(".endlab").remove();
+  if(!narrow && heroGroup!=="overall"){
+    const endpts = sets.map(s=>{ const valid=s[1].filter(d=>d.p!=null); return [s[0], valid[valid.length-1], s[2]]; });
+    // dodge overlaps
+    endpts.sort((a,b)=>a[1].p-b[1].p);
+    let lastY=-1e9;
+    endpts.forEach(e=>{
+      let ly=y(e[1].p); if(ly-lastY<12) ly=lastY+12; lastY=ly;
+      svg.append("text").attr("class","endlab").attr("x",W-mg.right+6).attr("y",ly+3.5).attr("text-anchor","start")
+        .attr("font-family","var(--sans)").attr("font-size",10.5).attr("font-weight",700).attr("fill",e[2]).text(e[0]);
+    });
+  }
+
+  // ---- crosshair / hover ----
+  svg.selectAll(".focus").remove();
+  const focus=svg.append("g").attr("class","focus").style("display","none");
+  focus.append("line").attr("class","fl").attr("y1",mg.top).attr("y2",H-mg.bottom).attr("stroke",INK_DIM).attr("stroke-width",1).attr("opacity",.6);
+  const fdots=focus.append("g");
+
+  const overlay=svg.selectAll(".overlay").data([0]);
+  const ov=overlay.enter().append("rect").attr("class","overlay").merge(overlay)
+    .attr("x",mg.left).attr("y",mg.top).attr("width",Math.max(0,W-mg.right-mg.left)).attr("height",Math.max(0,H-mg.bottom-mg.top))
+    .attr("fill","transparent").style("cursor","crosshair");
+  ov.raise();
+
+  const ref=SERIES.overall[heroMetric];
+  ov.on("mousemove",function(ev){
+      const [mx]=d3.pointer(ev);
+      const t0=x.invert(mx);
+      let best=ref[0],bd=Infinity;
+      ref.forEach(d=>{const dd=Math.abs(d.date-t0); if(dd<bd){bd=dd;best=d;}});
+      focus.style("display",null).select(".fl").attr("x1",x(best.date)).attr("x2",x(best.date));
+      const rows=[];
+      fdots.selectAll("circle").remove();
+      sets.forEach(s=>{
+        const pt=s[1].find(d=>d.w===best.w);
+        if(pt&&pt.p!=null){
+          fdots.append("circle").attr("cx",x(pt.date)).attr("cy",y(pt.p)).attr("r",4.2).attr("fill",s[2]).attr("stroke",PAPER2).attr("stroke-width",1.5);
+          rows.push(`<div class="row"><span style="color:${s[2]}">${s[0]==="Overall"?"All adults":s[0]}</span><span class="num">${fmtPct(pt.p)} <span style="color:${INK_FAINT}">n=${pt.n.toLocaleString()}</span></span></div>`);
+        }
+      });
+      showTip(heroTip,heroBox,x(best.date),y(best.p ?? 60),
+        `<b>${fmtShort(best.date)}</b> <span class="trg">weekly wave</span>${rows.join("")}`);
+    })
+    .on("mouseleave",function(){ focus.style("display","none"); heroTip.style.display="none"; });
+}
+
+/* ====================================================================
+   FIGURE 2 — Trajectory (slope) chart: pre -> June -> 2021
+   ==================================================================== */
+const trajBox=document.getElementById("traj-chart");
+const trajTip=makeTip(trajBox);
+let trajGroup="by_party";
+const tc=d3.select("#traj-ctrl");
+[["by_party","By party"],["by_race","By race"]].forEach(([k,lab])=>{
+  tc.append("button").attr("class","seg").attr("type","button").attr("data-g",k)
+    .attr("aria-pressed",k===trajGroup?"true":"false").text(lab)
+    .on("click",function(){ trajGroup=k; tc.selectAll("button").attr("aria-pressed",function(){return d3.select(this).attr("data-g")===trajGroup?"true":"false";}); buildTrajLegend(); drawTraj(true); });
+});
+
+function trajGroupsList(){
+  const sh=DATA.shifts.favorable_police[trajGroup];
+  const order = trajGroup==="by_party"?PARTY_ORDER:RACE_ORDER;
+  const color = trajGroup==="by_party"?PARTY_COLOR:RACE_COLOR;
+  return order.map(g=>({g, color:color[g], pre:sh[g].pre, peak:sh[g].peak, late:sh[g].late, delta:sh[g].delta_pp}));
+}
+function buildTrajLegend(){
+  const lg=d3.select("#traj-legend").html("");
+  trajGroupsList().forEach(d=> lg.append("span").attr("class","item").html(`<span class="sw round" style="background:${d.color}"></span>${d.g}`));
+}
+buildTrajLegend();
+
+function drawTraj(animate){
+  const W=Math.max(330,trajBox.clientWidth);
+  const narrow=W<560;
+  const H=narrow?420:460;
+  const mg={top:34,right:narrow?54:120,bottom:40,left:narrow?54:120};
+  let svg=d3.select(trajBox).select("svg");
+  if(svg.empty()) svg=d3.select(trajBox).append("svg");
+  svg.attr("viewBox",`0 0 ${W} ${H}`).attr("width","100%").attr("role","img");
+
+  const rows=trajGroupsList();
+  const stops=[["pre","Pre-Floyd"],["peak","June 2020"],["late","Early 2021"]];
+  const x=d3.scalePoint().domain(stops.map(s=>s[0])).range([mg.left,W-mg.right]).padding(0.0);
+  const allv=rows.flatMap(r=>[r.pre,r.peak,r.late]);
+  const lo=d3.min(allv),hi=d3.max(allv);
+  const y=d3.scaleLinear().domain([Math.max(0,Math.floor((lo-6)/5)*5),Math.min(100,Math.ceil((hi+6)/5)*5)]).range([H-mg.bottom,mg.top]);
+
+  svg.attr("aria-label",`Slope chart of police favorability for each ${trajGroup==='by_party'?'party':'racial group'} at three points: before George Floyd's death, the June 2020 trough, and early 2021, weighted to U.S. adult population targets. Every group drops sharply in June and recovers most of the way by 2021. Democrats fell 22 points and Black respondents 21.8 points.`);
+
+  svg.selectAll("*").remove();
+
+  // column headers + verticals
+  stops.forEach(s=>{
+    svg.append("line").attr("x1",x(s[0])).attr("x2",x(s[0])).attr("y1",mg.top).attr("y2",H-mg.bottom).attr("stroke",HAIR).attr("stroke-width",1);
+    svg.append("text").attr("x",x(s[0])).attr("y",mg.top-12).attr("text-anchor","middle")
+      .attr("font-family","var(--sans)").attr("font-size",11.5).attr("font-weight",800).attr("letter-spacing",".04em").attr("fill",INK_DIM).text(s[1]);
+  });
+
+  const line=d3.line().x(d=>x(d.k)).y(d=>y(d.v)).curve(d3.curveMonotoneX);
+
+  rows.forEach(r=>{
+    const pts=[{k:"pre",v:r.pre},{k:"peak",v:r.peak},{k:"late",v:r.late}];
+    const g=svg.append("g");
+    g.append("path").datum(pts).attr("fill","none").attr("stroke",r.color).attr("stroke-width",2.6).attr("stroke-linecap","round")
+      .attr("opacity",.92).attr("d",line);
+    pts.forEach(p=>{
+      g.append("circle").attr("cx",x(p.k)).attr("cy",y(p.v)).attr("r",4.4).attr("fill",r.color).attr("stroke",PAPER2).attr("stroke-width",1.6);
+    });
+    // left labels = group name + pre value
+    g.append("text").attr("x",x("pre")-12).attr("y",y(r.pre)+3.5).attr("text-anchor","end")
+      .attr("font-family","var(--sans)").attr("font-size",narrow?10.5:12).attr("font-weight",700).attr("fill",r.color).text(r.g);
+    // right labels = 2021 value
+    g.append("text").attr("x",x("late")+10).attr("y",y(r.late)+3.5).attr("text-anchor","start")
+      .attr("font-family","var(--sans)").attr("font-size",narrow?10:11).attr("font-weight",700).attr("fill",r.color).attr("font-variant-numeric","tabular-nums").text(fmtPct(r.late));
+    // June drop label at the trough
+    const dlab=(r.delta>=0?"+":"−")+Math.abs(r.delta).toFixed(1);
+    g.append("text").attr("x",x("peak")).attr("y",y(r.peak)+(r.g==="Republican"||r.g==="White"?-12:18)).attr("text-anchor","middle")
+      .attr("font-family","var(--sans)").attr("font-size",10.5).attr("font-weight",800).attr("fill",r.color).attr("font-variant-numeric","tabular-nums")
+      .text(dlab);
+  });
+
+  // emphasize the steepest (Democrat / Black)
+  const star = trajGroup==="by_party"?"Democrat":"Black";
+  const sr=rows.find(r=>r.g===star);
+  if(sr){
+    svg.append("circle").attr("cx",x("peak")).attr("cy",y(sr.peak)).attr("r",8).attr("fill","none").attr("stroke",sr.color).attr("stroke-width",1.6).attr("opacity",.55);
+  }
+}
+
+/* ====================================================================
+   FIGURE 3 — "What moved, and what snapped back" panel
+   ==================================================================== */
+const panelBox=document.getElementById("panel-chart");
+const panelTip=makeTip(panelBox);
+const PANEL_METRICS=["favorable_police","disc_blacks_alot","agree_racial_generations","agree_racial_tryhard","favorable_blacks","disc_whites_alot"];
+const PANEL_LABEL={
+  favorable_police:"Police favorability",
+  disc_blacks_alot:"Anti-Black discrimination",
+  agree_racial_generations:"Structural-racism belief",
+  agree_racial_tryhard:"Racial resentment",
+  favorable_blacks:"Favorable toward Black people",
+  disc_whites_alot:"Anti-White discrimination"
+};
+
+function buildPanelLegend(){
+  const lg=d3.select("#panel-legend").html("");
+  lg.append("span").attr("class","item").html(`<span class="sw round" style="background:${PANEL};border:2px solid ${INK_DIM}"></span>Before Floyd`);
+  lg.append("span").attr("class","item").html(`<span class="sw round" style="background:${ACCENT}"></span>June 2020 peak`);
+  lg.append("span").attr("class","item").html(`<span class="sw round" style="background:${INK_DIM}"></span>Early 2021`);
+  lg.append("span").attr("class","item").html(`<span class="sw" style="background:${ACCENT};height:3px;border-radius:2px"></span>June shock <span style="color:${INK_FAINT};margin-left:8px;border-top:2px dashed ${INK_FAINT};width:14px;display:inline-block"></span> snap-back`);
+}
+buildPanelLegend();
+
+function showPanelTip(ev,r){
+  const b=panelBox.getBoundingClientRect();
+  const c = r.delta_pp>0?ACCENT : (r.delta_pp<0?COOL:INK_FAINT);
+  panelTip.style.display="block";
+  panelTip.innerHTML=`<b>${PANEL_LABEL[r.m]}</b>`
+    +`<br><span style="color:${INK_FAINT}">Before Floyd</span> <b>${r.pre.toFixed(1)}%</b>`
+    +`<br><span style="color:${c}">June 2020</span> <b>${r.peak.toFixed(1)}%</b> (${r.delta_pp>0?"+":""}${r.delta_pp.toFixed(1)} pp)`
+    +`<br><span style="color:${INK_FAINT}">Early 2021</span> <b>${r.late.toFixed(1)}%</b>`
+    + (r.retention_pct!=null?`<br>kept ${Math.round(r.retention_pct)}% of the June move`:` &middot; essentially flat`);
+  let xx=ev.clientX-b.left+14, yy=ev.clientY-b.top+14;
+  if(xx>b.width-196) xx=ev.clientX-b.left-196;
+  panelTip.style.left=xx+"px"; panelTip.style.top=yy+"px";
+}
+
+// Each attitude as a Before -> June -> 2021 trajectory on a shared share-of-adults axis.
+function drawPanel(){
+  const W=Math.max(330,panelBox.clientWidth);
+  const narrow=W<560;
+  const rowH=narrow?66:52;
+  const labW=narrow?0:204;
+  const mg={top:48,right:narrow?22:70,bottom:38,left:labW+(narrow?14:20)};
+  const H=mg.top+PANEL_METRICS.length*rowH+mg.bottom;
+
+  let svg=d3.select(panelBox).select("svg");
+  if(svg.empty()) svg=d3.select(panelBox).append("svg");
+  svg.attr("viewBox",`0 0 ${W} ${H}`).attr("width","100%").attr("role","img");
+  svg.selectAll("*").remove();
+
+  // sort by the size of the June move, largest first
+  const rows=PANEL_METRICS.map(m=>({m,...DATA.shifts[m].overall})).sort((a,b)=>Math.abs(b.delta_pp)-Math.abs(a.delta_pp));
+  const vals=rows.flatMap(r=>[r.pre,r.peak,r.late]);
+  const lo=Math.max(0,Math.floor((d3.min(vals)-7)/10)*10), hi=Math.min(100,Math.ceil((d3.max(vals)+7)/10)*10);
+  const x=d3.scaleLinear().domain([lo,hi]).range([mg.left,W-mg.right]);
+
+  svg.attr("aria-label",`For each of six attitudes, three connected points show the share of U.S. adults before George Floyd was killed, at the June 2020 peak, and in early 2021, weighted to population. Police favorability fell 14.8 points to a June low near 61 percent then returned to 73; perceived anti-Black discrimination rose 8.9 points then fell back; every attitude that moved in June had largely reverted by 2021.`);
+
+  // gridlines + axis (share of adults)
+  const ticks=x.ticks(narrow?4:6);
+  svg.append("g").selectAll("line").data(ticks).join("line")
+    .attr("x1",d=>x(d)).attr("x2",d=>x(d)).attr("y1",mg.top-12).attr("y2",H-mg.bottom)
+    .attr("stroke",HAIR).attr("stroke-width",1).attr("opacity",.45);
+  svg.append("g").selectAll("text").data(ticks).join("text")
+    .attr("x",d=>x(d)).attr("y",mg.top-18).attr("text-anchor","middle")
+    .attr("font-family","var(--sans)").attr("font-size",10).attr("fill",INK_FAINT).text(d=>d+"%");
+  svg.append("text").attr("x",mg.left).attr("y",H-mg.bottom+24).attr("text-anchor","start")
+    .attr("font-family","var(--sans)").attr("font-size",10).attr("fill",INK_FAINT).text("share of U.S. adults agreeing / favorable (weighted)");
+
+  rows.forEach((r,i)=>{
+    const cy=mg.top+i*rowH+rowH/2;
+    const rose=r.delta_pp>0, fell=r.delta_pp<0;
+    const moveCol = rose?ACCENT : (fell?COOL:INK_FAINT);
+    const xp=x(r.pre), xj=x(r.peak), xl=x(r.late);
+
+    // attitude label + signed June shift
+    if(!narrow){
+      svg.append("text").attr("x",mg.left-16).attr("y",cy-2).attr("text-anchor","end")
+        .attr("font-family","var(--sans)").attr("font-size",12.5).attr("font-weight",700).attr("fill",INK).text(PANEL_LABEL[r.m]);
+      const dl=(rose?"+":(fell?"−":"±"))+Math.abs(r.delta_pp).toFixed(1)+" pp in June";
+      svg.append("text").attr("x",mg.left-16).attr("y",cy+14).attr("text-anchor","end")
+        .attr("font-family","var(--sans)").attr("font-size",10.5).attr("font-weight",600).attr("fill",moveCol).attr("font-variant-numeric","tabular-nums").text(dl);
+    } else {
+      svg.append("text").attr("x",mg.left).attr("y",cy-rowH/2+16).attr("text-anchor","start")
+        .attr("font-family","var(--sans)").attr("font-size",11.5).attr("font-weight",700).attr("fill",INK).text(PANEL_LABEL[r.m]);
+    }
+
+    // snap-back segment (June -> 2021): dashed grey
+    svg.append("line").attr("x1",xj).attr("x2",xl).attr("y1",cy).attr("y2",cy)
+      .attr("stroke",INK_FAINT).attr("stroke-width",2).attr("stroke-dasharray","2,3").attr("opacity",.85);
+    // shock segment (pre -> June): solid colored
+    svg.append("line").attr("x1",xp).attr("x2",xj).attr("y1",cy).attr("y2",cy)
+      .attr("stroke",moveCol).attr("stroke-width",3.4).attr("opacity",.95);
+
+    // dots: pre (hollow), 2021 (grey), June (colored, largest, on top)
+    svg.append("circle").attr("cx",xl).attr("cy",cy).attr("r",4.5).attr("fill",INK_DIM);
+    svg.append("circle").attr("cx",xp).attr("cy",cy).attr("r",5).attr("fill",PANEL).attr("stroke",INK_DIM).attr("stroke-width",2);
+    svg.append("circle").attr("cx",xj).attr("cy",cy).attr("r",6.5).attr("fill",moveCol).attr("stroke",PAPER).attr("stroke-width",1.5);
+
+    // June level above the June dot
+    svg.append("text").attr("x",xj).attr("y",cy-13).attr("text-anchor","middle")
+      .attr("font-family","var(--sans)").attr("font-size",11).attr("font-weight",800).attr("fill",moveCol).attr("font-variant-numeric","tabular-nums").text(Math.round(r.peak)+"%");
+    // pre level, placed on the far side of the pre dot from the June dot
+    const preAnchor=(xp<=xj)?"end":"start", preDx=(xp<=xj)?-9:9;
+    svg.append("text").attr("x",xp+preDx).attr("y",cy+4).attr("text-anchor",preAnchor)
+      .attr("font-family","var(--sans)").attr("font-size",10).attr("fill",INK_FAINT).attr("font-variant-numeric","tabular-nums").text(Math.round(r.pre)+"%");
+    // retained note under the 2021 dot
+    if(r.retention_pct!=null && Math.abs(r.delta_pp)>=1){
+      svg.append("text").attr("x",xl).attr("y",cy+18).attr("text-anchor","middle")
+        .attr("font-family","var(--sans)").attr("font-size",9.5).attr("fill",INK_FAINT).attr("font-variant-numeric","tabular-nums").text(`kept ${Math.round(r.retention_pct)}%`);
+    }
+
+    // row hover
+    svg.append("rect").attr("x",mg.left).attr("y",cy-rowH/2+2).attr("width",W-mg.left-mg.right).attr("height",rowH-4)
+      .attr("fill","transparent").style("cursor","pointer")
+      .on("mousemove",(ev)=>showPanelTip(ev,r)).on("mouseleave",()=>{panelTip.style.display="none";});
+  });
+}
+
+/* ---------- render all + responsive ---------- */
+function renderAll(){ drawHero(false); drawTraj(false); drawPanel(); }
+renderAll();
+let rt; window.addEventListener("resize",()=>{ clearTimeout(rt); rt=setTimeout(renderAll,160); });
+</script>
+</body>
+</html>

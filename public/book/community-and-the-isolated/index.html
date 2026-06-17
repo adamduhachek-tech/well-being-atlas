@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Does Community Substitute for Connection? — The Social-Capital Compensation Test</title>
+<meta name="description" content="In 921,639 Gallup interviews across 2,984 counties, the well-being gap between America's most isolated and most connected people is essentially the same in high-social-capital counties as in low ones. Neither the compensation story nor the accumulation story survives.">
+<style>
+  :root{
+    --paper:#f4f6f2;
+    --paper-deep:#e9efe7;
+    --panel:#fcfdfb;
+    --ink:#1f2d28;
+    --soft:#4e6058;
+    --faint:#79877f;
+    --rule:#d5ddd4;
+    /* teal + orange + amber: colorblind-safe, deliberately neither red nor blue */
+    --con:#0d6b5f;   --con-dk:#0a5249;
+    --iso:#c06a12;   --iso-dk:#8d4e0c;
+    --band:#c9a85c;  --band-dk:#8a6f2f;
+    --neutral:#6f7d76;
+    --display:"Palatino Linotype","Book Antiqua",Palatino,Georgia,serif;
+    --sans:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+    --maxw:740px; --widew:1000px;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:var(--sans);font-size:17.5px;line-height:1.62;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--con-dk)}
+  a:focus-visible,button:focus-visible{outline:3px solid var(--band-dk);outline-offset:2px;border-radius:3px}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+  .wide{max-width:var(--widew);margin:0 auto;padding:0 20px}
+
+  header.hero{
+    padding:3.4rem 0 2.4rem;border-bottom:1px solid var(--rule);
+    background:linear-gradient(180deg,var(--paper-deep) 0%,var(--paper) 92%);
+  }
+  .kicker{
+    font-size:.74rem;letter-spacing:.24em;text-transform:uppercase;
+    color:var(--faint);margin:0 0 1.1rem;font-weight:600;
+  }
+  .kicker b{color:var(--band-dk)}
+  h1{
+    font-family:var(--display);font-size:clamp(2.05rem,5.6vw,3.45rem);
+    line-height:1.05;margin:0 0 1.05rem;font-weight:700;letter-spacing:-.012em;
+  }
+  h1 .w-com{color:var(--con-dk)} h1 .w-iso{color:var(--iso-dk)}
+  .dek{
+    font-family:var(--display);font-size:clamp(1.06rem,2.7vw,1.32rem);
+    line-height:1.5;color:var(--soft);max-width:56ch;margin:0 0 1.35rem;
+  }
+  .byline{font-size:.8rem;color:var(--faint);display:flex;flex-wrap:wrap;gap:.3rem .85rem}
+  .byline span+span::before{content:"·";margin-right:.85rem;color:var(--rule)}
+
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:2rem auto 0}
+  .stat{
+    background:var(--panel);border:1px solid var(--rule);border-radius:10px;
+    padding:.8rem .9rem;position:relative;overflow:hidden;
+  }
+  .stat::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--accent,var(--rule))}
+  .stat .num{
+    font-family:var(--display);font-weight:700;display:block;
+    font-size:clamp(1.25rem,2.8vw,1.7rem);letter-spacing:-.02em;color:var(--accent-dk,var(--ink));
+  }
+  .stat .lbl{font-size:.71rem;line-height:1.35;color:var(--soft);display:block;margin-top:.18rem}
+  @media (max-width:680px){.stats{grid-template-columns:repeat(2,1fr)}}
+
+  main{padding:2.4rem 0 1rem}
+  h2{
+    font-family:var(--display);font-size:clamp(1.34rem,3.4vw,1.72rem);
+    line-height:1.18;margin:2.7rem 0 .9rem;letter-spacing:-.01em;
+  }
+  p{margin:0 0 1.12rem}
+  .drop::first-letter{
+    float:left;font-family:var(--display);font-size:3.45em;line-height:.84;
+    padding:.05em .09em 0 0;font-weight:700;color:var(--band-dk);
+  }
+  .t-con{color:var(--con-dk);font-weight:700}
+  .t-iso{color:var(--iso-dk);font-weight:700}
+  .t-band{color:var(--band-dk);font-weight:700}
+
+  .markers{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:1.5rem 0 1.7rem}
+  @media (max-width:640px){.markers{grid-template-columns:1fr}}
+  .marker{
+    background:var(--panel);border:1px solid var(--rule);border-radius:10px;
+    padding:.9rem 1rem;font-size:.86rem;line-height:1.5;
+  }
+  .marker h3{margin:0 0 .3rem;font-size:.92rem;font-family:var(--display);color:var(--iso-dk)}
+  .marker .src{display:block;margin-top:.4rem;font-size:.72rem;color:var(--faint)}
+
+  figure{margin:2.2rem auto}
+  .fig-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:.5rem 1.2rem;margin-bottom:.5rem}
+  .fig-title{font-family:var(--display);font-weight:700;font-size:1.12rem;margin:0}
+  .fig-sub{font-size:.82rem;color:var(--soft);margin:.15rem 0 0}
+  figcaption{font-size:.78rem;color:var(--faint);line-height:1.5;margin-top:.6rem;max-width:78ch}
+  .chart-card{
+    background:var(--panel);border:1px solid var(--rule);border-radius:12px;
+    padding:14px 14px 8px;
+  }
+  svg{display:block;width:100%;height:auto}
+
+  .seg{display:inline-flex;border:1px solid var(--rule);border-radius:999px;background:var(--paper);overflow:hidden;margin-left:auto}
+  .seg button{
+    appearance:none;border:0;background:transparent;cursor:pointer;
+    font-family:var(--sans);font-size:.78rem;font-weight:600;color:var(--soft);
+    padding:.42rem .85rem;border-radius:999px;
+  }
+  .seg button[aria-pressed="true"]{background:var(--iso);color:#fff}
+  .seg-lbl{font-size:.72rem;color:var(--faint);align-self:center;margin-right:.5rem}
+
+  .panels{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
+  .panel{background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:10px 10px 4px}
+  .panel h4{margin:0 0 .15rem;font-family:var(--display);font-size:.95rem}
+  .panel .tag{font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);font-weight:600}
+  .panel .tag.placebo{color:var(--iso-dk)}
+
+  .tip{
+    position:fixed;pointer-events:none;z-index:10;background:var(--ink);color:#f4f6f2;
+    font-size:.74rem;line-height:1.4;padding:.45rem .6rem;border-radius:6px;
+    max-width:240px;opacity:0;transition:opacity .12s;
+  }
+
+  .caveat{
+    background:var(--panel);border:1px solid var(--rule);border-left:5px solid var(--band);
+    border-radius:8px;padding:1rem 1.2rem;font-size:.9rem;margin:1.6rem 0;
+  }
+  footer.notes{
+    border-top:1px solid var(--rule);margin-top:3rem;padding:2rem 0 3rem;
+    background:var(--paper-deep);
+  }
+  footer.notes h2{margin-top:0}
+  footer.notes ul{padding-left:1.1rem;font-size:.82rem;color:var(--soft)}
+  footer.notes li{margin-bottom:.55rem}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="kicker">The social-capital compensation test · <b>Gallup US Daily 2008–2012</b> · unweighted</p>
+    <h1>Does <span class="w-com">Community</span> Substitute for <span class="w-iso">Connection</span>?</h1>
+    <p class="dek">Fifty years of social-capital theory promised that civic-rich places would matter most for people with the thinnest personal ties — or, in the rival telling, least. In 921,639 Gallup interviews, the answer is sharper than either story: the gap barely moves at all.</p>
+    <div class="byline">
+      <span>Gallup US Daily tracking, 2008–2012</span><span>2,984 counties</span><span>JEC county social-capital index</span><span>unweighted sample estimates</span>
+    </div>
+  </div>
+  <div class="wide">
+    <div class="stats" role="list">
+      <div class="stat" role="listitem" style="--accent:var(--band);--accent-dk:var(--band-dk)"><span class="num">0.76</span><span class="lbl">ladder gap, connected vs. isolated, in the <em>lowest</em> social-capital decile of counties</span></div>
+      <div class="stat" role="listitem" style="--accent:var(--band);--accent-dk:var(--band-dk)"><span class="num">0.75</span><span class="lbl">the same gap in the <em>highest</em> decile — virtually unchanged</span></div>
+      <div class="stat" role="listitem" style="--accent:var(--iso);--accent-dk:var(--iso-dk)"><span class="num">≈ 0.00</span><span class="lbl">isolated × social-capital interaction per SD of the index, with controls (p = 0.98)</span></div>
+      <div class="stat" role="listitem" style="--accent:var(--con);--accent-dk:var(--con-dk)"><span class="num">921,639</span><span class="lbl">interviews, 2008–2012, with all three isolation markers and a county index</span></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="wrap">
+    <p class="drop">Since Robert Putnam's <em>Bowling Alone</em>, the strongest claim of the social-capital literature has been about places: counties thick with congregations, clubs, volunteers and trusted neighbors are supposed to be better to live in. But better for <em>whom</em>? Take a person with no spouse or partner, an empty apartment, and no congregation. One hypothesis — call it <strong>compensation</strong>, the spirit of Eric Klinenberg's "social infrastructure" — says community fabric substitutes for missing personal ties, so the well-being gap between the isolated and the connected should <em>narrow</em> where social capital is high. The rival — <strong>accumulation</strong> — notes that the connected are the ones actually inside the clubs and churches, so they capture the benefits and the gap should <em>widen</em>. The two stories make opposite predictions about one measurable object: the width of a ribbon.</p>
+    <p>We measured that ribbon in nearly a million Gallup interviews joined to the Joint Economic Committee's county social-capital index. People with none of the three isolation markers below rate their lives at <span class="t-con">7.32</span> on the 0–10 Cantril ladder in the lowest-capital tenth of counties and <span class="t-con">7.39</span> in the highest. People with all three markers go from <span class="t-iso">6.56</span> to <span class="t-iso">6.64</span>. The gap: <span class="t-band">0.76 rungs</span> at one end, <span class="t-band">0.75</span> at the other. Across the entire American gradient of civic fabric — from St. Louis city at one extreme to Milwaukee's church-dense suburbs at the other — the penalty attached to being unattached is, to two decimal places, a constant.</p>
+    <div class="markers" aria-label="The three isolation markers">
+      <div class="marker"><h3>Lives alone</h3>Household of one — 33 percent of the sample.<span class="src">hhsize3 = "1"</span></div>
+      <div class="marker"><h3>Unpartnered</h3>Never married, or separated, divorced or widowed; "partnered" includes domestic partners.<span class="src">marital3 ≠ "Married"</span></div>
+      <div class="marker"><h3>Rarely attends</h3>Never or seldom attends religious services — the one regular civic institution Gallup asks everyone about.<span class="src">attend3 = "Rarely"</span></div>
+    </div>
+    <p>Score the three markers 0–3. <span class="t-con">Connected</span> means none of them (33 percent of the sample); <span class="t-iso">isolated</span>, in the strictest reading, means all three (13 percent). The toggle on the chart relaxes that definition — any one marker, or two of three — and lets you watch whether the ribbon's behavior is an artifact of where we drew the line. It isn't.</p>
+  </section>
+
+  <figure class="wide" id="fig-hero">
+    <div class="chart-card">
+      <div class="fig-head">
+        <div>
+          <p class="fig-title">The ribbon that refused to taper</p>
+          <p class="fig-sub">Mean Cantril ladder (0–10, evaluative) by decile of county social capital — <span style="color:var(--con-dk);font-weight:700">connected</span> vs. <span style="color:var(--iso-dk);font-weight:700">isolated</span>, the gap shaded</p>
+        </div>
+        <div class="seg" role="group" aria-label="Definition of isolated">
+          <span class="seg-lbl" id="seg-lbl">"Isolated" =</span>
+          <button type="button" data-def="ge1" aria-pressed="false">any 1 of 3 markers</button>
+          <button type="button" data-def="ge2" aria-pressed="false">2 of 3</button>
+          <button type="button" data-def="eq3" aria-pressed="true">all 3</button>
+        </div>
+      </div>
+      <div id="hero-chart"></div>
+    </div>
+    <figcaption>Respondent-weighted deciles of the JEC county social-capital index over the 2008–2012 analysis sample; connected = no markers throughout. Gap under the current definition: <span id="cap-g1">0.76</span> rungs in decile 1, <span id="cap-g10">0.75</span> in decile 10. Vertical axis trimmed to the data; the ladder runs 0 to 10. Unweighted; smallest plotted cell holds 10,240 interviews (suppression rule: n &lt; 250, never triggered).</figcaption>
+  </figure>
+
+  <section class="wrap">
+    <h2>A tide that lifts both boats by about an inch</h2>
+    <p>Read the chart the way the two hypotheses ask you to. Compensation predicts the amber band tapers to the right; accumulation predicts it flares. What it does is neither — it runs nearly parallel, wobbling within a tenth of a rung around three-quarters of a rung wide. Both lines drift up slightly in high-capital counties, by less than a tenth of a rung from decile 1 to decile 10. Where you live on America's civic gradient is associated with far less of your life evaluation than whether you are partnered, accompanied and affiliated: the place gradient is about a tenth of a rung; the isolation gap is three-quarters of a rung, everywhere.</p>
+    <p>The toggle is the robustness check. Define isolated as <em>any one</em> marker and the gap runs 0.42 to 0.43, end to end. Define it as <em>two of three</em> and it runs 0.51 to 0.57 — the only definition under which anything moves, and the direction is <em>widening</em>: the formal interaction is −0.022 rungs per standard deviation of the index (p = 0.0005). That is the accumulation direction, but mind the size: roughly six-hundredths of a rung across the whole national gradient, against a gap of half a rung. A whisper, not a verdict — and it disappears entirely under the strict definition.</p>
+    <p>The regression formalizes what the picture shows. We fit OLS on the individual interviews — ladder on isolated, the standardized index, and their product, with standard errors clustered by county — first raw, then adding age group, sex, race, education, income bracket, interview year, county urbanicity (RUCC) and county median income. Raw, the all-three isolation penalty is 0.77 rungs; with controls it attenuates to 0.54, because the isolated are also older, poorer and less educated than the connected — composition, openly shown. The interaction, the number this article exists to estimate, is −0.013 raw (p = 0.25) and −0.0002 with controls (p = 0.98). With 328,706 interviews in the controlled model, that is not an underpowered shrug; it is a precisely estimated zero.</p>
+  </section>
+
+  <figure class="wide" id="fig-swarm">
+    <div class="chart-card">
+      <div class="fig-head">
+        <div>
+          <p class="fig-title">The places behind the axis</p>
+          <p class="fig-sub">Counties along the JEC social-capital index — circle area = interviews in the analysis sample; hover for names</p>
+        </div>
+      </div>
+      <div id="swarm-chart"></div>
+    </div>
+    <figcaption>A readable subset: the 100 most-interviewed counties plus the 12 highest- and 12 lowest-index counties with at least 200 interviews. Dashed ticks mark the respondent-weighted decile boundaries. The index (~2018 vintage) is a time-invariant county attribute joined on ZIP-derived FIPS.</figcaption>
+  </figure>
+
+  <section class="wrap">
+    <p>The beeswarm is a reminder of what the axis actually ranks. The high end is suburban and exurban upper-Midwest and mountain-West counties — Ozaukee and Waukesha outside Milwaukee (index 2.1 and 1.9), Carver outside Minneapolis (2.1), Douglas between Denver and Colorado Springs (1.7). The low end is urban cores and the rural South: St. Louis city (−3.7), Baltimore city (−3.5), New Orleans (−3.1), Memphis's Shelby County (−3.0). Civic density in America co-travels with marriage, money, whiteness and suburbia — which is exactly why the model controls for urbanicity and county income, and why even the controlled comparison stays descriptive.</p>
+    <h2>The feelings agree with the judgment — and so does the placebo</h2>
+    <p>Life evaluation is a judgment; feelings are a different construct. So we repeated the design on Gallup's experiential "yesterday" items — did you feel sadness, worry, physical pain a lot of the day yesterday — all inside the same 2008–2012 window (these items change survey regime in 2013 and never co-occur with the isolation markers afterward). The isolated report more of everything: sadness 24 percent versus 14 in the lowest-capital decile, with a gap of about 10 points that is still about 10 points in the highest decile. Worry behaves the same with a gap near 7 points.</p>
+    <p>Physical pain is the falsification panel. Pain is real, but no theory of bowling leagues says community fabric should specifically close the <em>pain</em> gap between the isolated and the connected; if our design were picking up genuine social moderation, the social feelings should move more than pain does. They don't, because nothing moves: with controls, the interaction is −0.002 for sadness, −0.002 for worry, and +0.002 for pain — identical in size, all indistinguishable from zero. The one nominally significant affect interaction anywhere is raw pain (+0.006, p = 0.008), and it dies the moment controls enter — a tidy demonstration that what little movement exists in these ribbons is composition, not community.</p>
+  </section>
+
+  <figure class="wide" id="fig-outcomes">
+    <div class="panels" id="outcome-panels"></div>
+    <figcaption>Same design, four outcomes, all-3 definition, 2008–2012. Ladder is evaluative (mean, 0–10, axis trimmed); sadness, worry and pain are experiential (share reporting the feeling a lot of yesterday). Pain is the placebo: no social theory predicts community should close it. Unweighted.</figcaption>
+  </figure>
+
+  <section class="wrap">
+    <h2>Even the sub-indices can't agree</h2>
+    <p>The JEC index is a composite, and the brief version of the compensation story really concerns its civic ingredients. Re-running the controlled model on each sub-index splits the signs: <em>institutional health</em> (civic participation and confidence) leans toward narrowing the gap (+0.024 per SD, p = 0.016); <em>collective efficacy</em> (low violent crime) leans toward widening it (−0.026, p = 0.002); family unity and community health are nulls. Two "significant" interactions with opposite signs, each worth a hundredth or two of a rung per standard deviation, are better read as fragility than as dueling mechanisms — with 328,706 interviews in the model, tiny accidents of composition clear p &lt; 0.05 easily. The honest summary across all four ingredients is the same as the composite: no robust moderation in either direction.</p>
+  </section>
+
+  <figure class="wide" id="fig-subidx">
+    <div class="panels" id="subidx-panels"></div>
+    <figcaption>Connected vs. isolated (all-3 definition) mean ladder across respondent-weighted deciles of each JEC sub-index, 2008–2012, unweighted. β is the isolated × sub-index interaction per 1 SD from the controlled OLS, SEs clustered by county.</figcaption>
+  </figure>
+
+  <section class="wrap">
+    <h2>What this does — and does not — show</h2>
+    <p>It does not show that community is worthless to the isolated. These are cross-sections of people, not experiments on them: isolated people who live in Ozaukee County differ from isolated people in St. Louis in ways no regression fully removes, and our controls demonstrably matter (they cut the raw penalty by nearly a third). Composition versus context is the whole battle here, and observational data can referee it only partially. The county index is also a single ~2018-vintage snapshot joined to 2008–2012 interviews through approximate ZIP-to-county mapping, the sample is unweighted, and "rarely attends" folds the contentedly secular in with the disconnected.</p>
+    <p>What it does show is descriptive, but unusually well-powered: across nearly a million interviews, the association between social isolation and lower well-being is <em>flat</em> in county social capital — every definition, every outcome, both constructs, and the placebo behaves exactly like the treatment outcomes. That is evidence against strong versions of <em>both</em> canonical stories. Helliwell and Putnam showed that community context and personal ties each predict well-being; this test asks whether the first substitutes for the second, and the data answer: they simply add. If loneliness is, as Cacioppo argued, an individual-level risk, the resolution to it that shows up in this file is individual too. A county can be a palace for the people — and the ladder still cares most about who is standing next to you on it.</p>
+  </section>
+
+  <footer class="notes">
+    <div class="wrap">
+      <h2>Notes &amp; data</h2>
+      <ul>
+        <li><strong>Source.</strong> Gallup US Daily tracking ("Motherlode" extract), repeated cross-section. This analysis uses <strong>2008–2012 only</strong>: 921,639 interviews in 2,984 counties with all three isolation markers, the county index and the ladder jointly observed. The window is forced twice over — the three markers are co-asked almost exclusively before 2013, and the experiential items (worry, sadness, physical pain) shift survey regime discontinuously at 2013 (sample halves, endorsement rates jump; sadness is absent in 2017), so every outcome, evaluative and experiential, is computed inside the single pre-2013 regime.</li>
+        <li><strong>Unweighted.</strong> This extract contains no survey weight; every figure is an unweighted sample estimate. Levels may differ from published (weighted) Gallup figures; the contrasts between groups are the object here.</li>
+        <li><strong>Constructs.</strong> Cantril ladder (0–10) is <em>evaluative</em> — a judgment of life as a whole. Sadness, worry and physical pain are <em>experiential</em> — binary reports of feeling each "a lot of the day yesterday." They are labeled per panel and never conflated.</li>
+        <li><strong>Isolation.</strong> Markers: lives alone (household size 1); unpartnered (not married nor in a domestic partnership); rarely/never attends religious services. Connected = none (33 percent of sample); strict isolated = all three (13 percent). Alternative definitions (any 1; 2 of 3) are precomputed and switchable on the main chart.</li>
+        <li><strong>County context.</strong> <a href="https://www.jec.senate.gov/public/index.cfm/republicans/socialcapitalproject">JEC Social Capital Project</a> county index and sub-indices, ~2018 vintage, joined on ZIP-derived FIPS (approximate for multi-county ZIPs) and attached to all interview years as a time-invariant place attribute. County covariates (median income, RUCC urbanicity) share this vintage caveat.</li>
+        <li><strong>Deciles.</strong> Respondent-weighted: cut at deciles of the index over the analysis sample, so each decile holds about a tenth of <em>respondents</em>, not of counties; all respondents in a county share one index value, so decile sizes vary slightly.</li>
+        <li><strong>Suppression.</strong> Any decile cell under n = 250 would be suppressed; the smallest plotted cell holds 10,240 interviews, so none were.</li>
+        <li><strong>Model.</strong> statsmodels OLS on individual interviews: outcome ~ isolated + index (standardized at respondent level) + isolated × index, raw and then with age group, sex, race, education, income bracket, year, RUCC and county median income; linear probability models for binary outcomes; standard errors clustered by county. All coefficients, gaps and decile series quoted in the text are in this article's data and claims files.</li>
+        <li><strong>Language.</strong> Everything here is association in a repeated cross-section. "Buffering," where the literature uses it, is descriptive moderation — no causal claim is made or licensed.</li>
+        <li><strong>Reading.</strong> Putnam, <em>Bowling Alone</em> (2000) · <a href="https://royalsocietypublishing.org/doi/10.1098/rstb.2004.1522">Helliwell &amp; Putnam, "The social context of well-being" (2004)</a> · Klinenberg, <em>Palaces for the People</em> (2018) · Cacioppo &amp; Patrick, <em>Loneliness</em> (2008) · <a href="https://www.census.gov/library/reference/code-lists/ansi.html">Census ANSI county codes</a> for county names.</li>
+      </ul>
+    </div>
+  </footer>
+</main>
+
+<div class="tip" id="tip" role="status" aria-live="polite"></div>
+
+<script type="module">
+import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+
+const DATA = {"meta":{"title":"Does Community Substitute for Connection?","slug":"community-and-the-isolated","dataset":"Gallup US Daily ('Motherlode' extract)","years":"2008-2012","weight":"unweighted (this Gallup extract has no survey weight)","window_note":"2008-2012 only: the three isolation markers are co-asked almost exclusively pre-2013, and the affect items (worry/sadness/pain) change regime at 2013","constructs":{"ladder":"evaluative (Cantril ladder, 0-10)","sadness":"experiential (felt a lot of the day yesterday, binary)","worry":"experiential (binary)","physical_pain":"experiential (binary; placebo outcome)"},"isolation":{"markers":["lives alone (household size 1)","unpartnered (not married nor domestic partner)","rarely/never attends religious services"],"defs":{"ge1":"any 1 of 3 markers","ge2":"2 or 3 of 3","eq3":"all 3"},"connected":"none of the 3 markers (score 0)","default":"eq3"},"decile_basis":"respondent-weighted deciles of the county index over the 2008-2012 analysis sample; all respondents in a county share one index value, so decile sizes vary slightly","index_source":"JEC Social Capital Project county index (~2018 vintage), joined on ZIP-derived FIPS; time-invariant context","suppression":"decile cells below n=250 suppressed; smallest cell here n=10240 (none suppressed)","suppression_min_n":250,"min_cell_n":10240,"beeswarm_rule":{"min_n":200,"top_by_n":100,"extremes_each":12},"model":"statsmodels OLS, outcome ~ isolated + index_z + isolated x index_z (+ age group, sex, race, education, income bracket, year, RUCC urbanicity, county median income), SEs clustered by county; index_z standardized at respondent level (mean -0.3115, sd 0.923)","z_stats":{"composite":[-0.3115,0.923],"family_unity":[-0.0075,0.8221],"community_health":[-0.5251,0.6639],"institutional_health":[0.082,0.9151],"collective_efficacy":[-0.519,1.1597]}},"national":{"n":921639,"n_county":2984,"ladder_mean":7.026,"score_dist":{"0":302204,"1":280942,"2":214849,"3":123644},"share_eq3":0.1342,"share_alone":0.3268},"decile_cuts":{"composite":[-1.454,-1.1204,-0.865,-0.5318,-0.2807,-0.0339,0.2097,0.5077,0.8668],"family_unity":[-0.98,-0.6148,-0.3987,-0.231,-0.0344,0.2046,0.4475,0.718,1.0097],"community_health":[-1.294,-1.0756,-0.9122,-0.778,-0.6013,-0.4692,-0.3012,-0.0362,0.2484],"institutional_health":[-1.0343,-0.6663,-0.3662,-0.139,0.0629,0.2399,0.4652,0.7917,1.314],"collective_efficacy":[-1.9402,-1.2766,-0.9213,-0.6053,-0.2959,0.0041,0.2169,0.4415,0.7059]},"ribbons":{"composite":{"ladder":{"ge1":{"iso":[6.899,6.889,6.88,6.82,6.849,6.825,6.853,6.879,6.928,6.956],"con":[7.317,7.333,7.316,7.306,7.312,7.293,7.327,7.334,7.371,7.39],"n_iso":[63348,62016,65475,61222,62497,61731,61087,61496,61974,58589],"n_con":[28451,28417,28245,31408,29406,30579,29941,31922,30224,33611],"gap":[0.418,0.444,0.436,0.486,0.463,0.468,0.474,0.455,0.443,0.434]},"ge2":{"iso":[6.808,6.793,6.769,6.703,6.715,6.705,6.713,6.735,6.765,6.819],"con":[7.317,7.333,7.316,7.306,7.312,7.293,7.327,7.334,7.371,7.39],"n_iso":[36408,35309,36829,34463,34762,33670,32090,32415,32060,30487],"n_con":[28451,28417,28245,31408,29406,30579,29941,31922,30224,33611],"gap":[0.509,0.54,0.547,0.603,0.597,0.588,0.614,0.599,0.606,0.571]},"eq3":{"iso":[6.559,6.62,6.609,6.439,6.525,6.501,6.535,6.518,6.625,6.637],"con":[7.317,7.333,7.316,7.306,7.312,7.293,7.327,7.334,7.371,7.39],"n_iso":[12177,12908,14073,11717,12804,12246,12015,12048,12561,11095],"n_con":[28451,28417,28245,31408,29406,30579,29941,31922,30224,33611],"gap":[0.758,0.713,0.707,0.867,0.787,0.792,0.792,0.816,0.746,0.753]}},"sadness":{"ge1":{"iso":[0.202,0.202,0.2,0.204,0.199,0.198,0.189,0.186,0.177,0.17],"con":[0.141,0.138,0.143,0.136,0.132,0.131,0.127,0.128,0.123,0.115],"n_iso":[63243,61932,65368,61128,62390,61658,60995,61401,61895,58525],"n_con":[28423,28400,28209,31377,29378,30558,29924,31890,30206,33591],"gap":[-0.061,-0.064,-0.057,-0.068,-0.067,-0.067,-0.062,-0.058,-0.054,-0.055]},"ge2":{"iso":[0.225,0.227,0.225,0.231,0.226,0.226,0.221,0.217,0.209,0.199],"con":[0.141,0.138,0.143,0.136,0.132,0.131,0.127,0.128,0.123,0.115],"n_iso":[36332,35249,36763,34393,34687,33612,32028,32350,32001,30446],"n_con":[28423,28400,28209,31377,29378,30558,29924,31890,30206,33591],"gap":[-0.084,-0.089,-0.082,-0.095,-0.094,-0.095,-0.094,-0.089,-0.086,-0.084]},"eq3":{"iso":[0.242,0.236,0.238,0.253,0.239,0.244,0.237,0.233,0.223,0.214],"con":[0.141,0.138,0.143,0.136,0.132,0.131,0.127,0.128,0.123,0.115],"n_iso":[12156,12884,14050,11698,12770,12229,11988,12022,12543,11076],"n_con":[28423,28400,28209,31377,29378,30558,29924,31890,30206,33591],"gap":[-0.101,-0.098,-0.095,-0.117,-0.107,-0.113,-0.11,-0.105,-0.1,-0.099]}},"worry":{"ge1":{"iso":[0.309,0.309,0.311,0.309,0.311,0.307,0.302,0.297,0.295,0.28],"con":[0.262,0.265,0.26,0.251,0.256,0.253,0.252,0.263,0.255,0.244],"n_iso":[63251,61912,65395,61147,62416,61645,61016,61417,61905,58519],"n_con":[28414,28376,28218,31380,29380,30539,29913,31892,30189,33583],"gap":[-0.047,-0.044,-0.051,-0.058,-0.055,-0.054,-0.05,-0.034,-0.04,-0.036]},"ge2":{"iso":[0.31,0.306,0.309,0.311,0.31,0.307,0.302,0.296,0.298,0.281],"con":[0.262,0.265,0.26,0.251,0.256,0.253,0.252,0.263,0.255,0.244],"n_iso":[36344,35240,36779,34411,34711,33610,32039,32363,32017,30444],"n_con":[28414,28376,28218,31380,29380,30539,29913,31892,30189,33583],"gap":[-0.048,-0.041,-0.049,-0.06,-0.054,-0.054,-0.05,-0.033,-0.043,-0.037]},"eq3":{"iso":[0.334,0.326,0.329,0.345,0.33,0.333,0.319,0.322,0.319,0.314],"con":[0.262,0.265,0.26,0.251,0.256,0.253,0.252,0.263,0.255,0.244],"n_iso":[12146,12887,14053,11701,12784,12232,12001,12023,12541,11078],"n_con":[28414,28376,28218,31380,29380,30539,29913,31892,30189,33583],"gap":[-0.072,-0.061,-0.069,-0.094,-0.074,-0.08,-0.067,-0.059,-0.064,-0.07]}},"physical_pain":{"ge1":{"iso":[0.269,0.27,0.266,0.289,0.276,0.277,0.27,0.262,0.249,0.236],"con":[0.211,0.215,0.219,0.221,0.216,0.216,0.214,0.208,0.192,0.179],"n_iso":[63250,61921,65373,61104,62392,61643,61007,61388,61898,58504],"n_con":[28413,28369,28211,31377,29376,30533,29913,31879,30194,33581],"gap":[-0.058,-0.055,-0.047,-0.068,-0.06,-0.061,-0.056,-0.054,-0.057,-0.057]},"ge2":{"iso":[0.288,0.287,0.286,0.311,0.298,0.297,0.294,0.283,0.276,0.261],"con":[0.211,0.215,0.219,0.221,0.216,0.216,0.214,0.208,0.192,0.179],"n_iso":[36339,35239,36757,34384,34686,33611,32041,32349,32004,30433],"n_con":[28413,28369,28211,31377,29376,30533,29913,31879,30194,33581],"gap":[-0.077,-0.072,-0.067,-0.09,-0.082,-0.081,-0.08,-0.075,-0.084,-0.082]},"eq3":{"iso":[0.312,0.297,0.306,0.349,0.319,0.327,0.318,0.306,0.3,0.288],"con":[0.211,0.215,0.219,0.221,0.216,0.216,0.214,0.208,0.192,0.179],"n_iso":[12155,12884,14040,11688,12775,12225,11994,12024,12539,11073],"n_con":[28413,28369,28211,31377,29376,30533,29913,31879,30194,33581],"gap":[-0.101,-0.082,-0.087,-0.128,-0.103,-0.111,-0.104,-0.098,-0.108,-0.109]}}},"family_unity":{"ladder":{"ge1":{"iso":[6.891,6.844,6.847,6.843,6.868,6.815,6.847,6.894,6.945,6.99],"con":[7.335,7.316,7.308,7.273,7.339,7.313,7.312,7.34,7.351,7.402],"n_iso":[62579,63310,63975,61014,63923,61796,61196,62053,61782,57807],"n_con":[29497,28871,28109,27175,31360,31173,30730,30326,30163,34800],"gap":[0.444,0.472,0.461,0.43,0.471,0.498,0.465,0.446,0.406,0.412]},"ge2":{"iso":[6.821,6.738,6.728,6.732,6.737,6.691,6.705,6.75,6.798,6.841],"con":[7.335,7.316,7.308,7.273,7.339,7.313,7.312,7.34,7.351,7.402],"n_iso":[37345,36327,35863,34025,35079,34217,33148,32568,31235,28686],"n_con":[29497,28871,28109,27175,31360,31173,30730,30326,30163,34800],"gap":[0.514,0.578,0.58,0.541,0.602,0.622,0.607,0.59,0.553,0.561]},"eq3":{"iso":[6.525,6.518,6.527,6.552,6.545,6.49,6.518,6.59,6.65,6.687],"con":[7.335,7.316,7.308,7.273,7.339,7.313,7.312,7.34,7.351,7.402],"n_iso":[11524,13126,13365,12938,12947,12410,12225,12618,12063,10428],"n_con":[29497,28871,28109,27175,31360,31173,30730,30326,30163,34800],"gap":[0.81,0.798,0.781,0.721,0.794,0.823,0.794,0.75,0.701,0.715]}}},"community_health":{"ladder":{"ge1":{"iso":[6.89,6.879,6.899,6.887,6.839,6.875,6.862,6.854,6.891,6.896],"con":[7.32,7.299,7.29,7.322,7.312,7.349,7.361,7.338,7.352,7.365],"n_iso":[62149,55483,69665,61435,61223,59289,63114,60831,61384,64862],"n_con":[28814,28597,31772,30596,30332,32156,30459,30559,28844,30075],"gap":[0.43,0.42,0.391,0.435,0.473,0.474,0.499,0.484,0.461,0.469]},"ge2":{"iso":[6.773,6.762,6.764,6.757,6.723,6.769,6.731,6.733,6.752,6.764],"con":[7.32,7.299,7.29,7.322,7.312,7.349,7.361,7.338,7.352,7.365],"n_iso":[33354,29208,37433,33629,33956,32574,34888,33706,33655,36090],"n_con":[28814,28597,31772,30596,30332,32156,30459,30559,28844,30075],"gap":[0.547,0.537,0.526,0.565,0.589,0.58,0.63,0.605,0.6,0.601]},"eq3":{"iso":[6.617,6.579,6.613,6.578,6.489,6.518,6.536,6.499,6.567,6.566],"con":[7.32,7.299,7.29,7.322,7.312,7.349,7.361,7.338,7.352,7.365],"n_iso":[12385,10633,14040,11775,11773,11043,12879,11855,12872,14389],"n_con":[28814,28597,31772,30596,30332,32156,30459,30559,28844,30075],"gap":[0.703,0.72,0.677,0.744,0.823,0.831,0.825,0.839,0.785,0.799]}}},"institutional_health":{"ladder":{"ge1":{"iso":[6.819,6.848,6.859,6.883,6.858,6.855,6.894,6.888,6.927,6.944],"con":[7.274,7.339,7.291,7.338,7.311,7.316,7.341,7.346,7.371,7.382],"n_iso":[62390,52287,72325,62231,61448,61943,61850,61631,61592,61738],"n_con":[29708,27351,32385,29619,31028,29945,30632,29770,29082,32684],"gap":[0.455,0.491,0.432,0.455,0.453,0.461,0.447,0.458,0.444,0.438]},"ge2":{"iso":[6.69,6.749,6.738,6.761,6.744,6.732,6.787,6.748,6.774,6.808],"con":[7.274,7.339,7.291,7.338,7.311,7.316,7.341,7.346,7.371,7.382],"n_iso":[34147,29758,40182,34046,33771,33802,34752,32644,32450,32941],"n_con":[29708,27351,32385,29619,31028,29945,30632,29770,29082,32684],"gap":[0.584,0.59,0.553,0.577,0.567,0.584,0.554,0.598,0.597,0.574]},"eq3":{"iso":[6.504,6.484,6.561,6.552,6.557,6.536,6.571,6.586,6.599,6.616],"con":[7.274,7.339,7.291,7.338,7.311,7.316,7.341,7.346,7.371,7.382],"n_iso":[12739,10240,15063,12577,11861,12045,12390,12190,12466,12073],"n_con":[29708,27351,32385,29619,31028,29945,30632,29770,29082,32684],"gap":[0.77,0.855,0.73,0.786,0.754,0.78,0.77,0.76,0.772,0.766]}}},"collective_efficacy":{"ladder":{"ge1":{"iso":[6.917,6.881,6.903,6.875,6.892,6.861,6.87,6.872,6.848,6.863],"con":[7.358,7.32,7.357,7.299,7.34,7.322,7.344,7.32,7.316,7.338],"n_iso":[62152,65204,58393,66016,62612,61767,62299,59481,59923,57519],"n_con":[27360,28361,26690,30038,29852,30203,29807,31336,31958,34425],"gap":[0.441,0.439,0.454,0.424,0.448,0.461,0.474,0.448,0.468,0.475]},"ge2":{"iso":[6.827,6.781,6.782,6.753,6.746,6.732,6.719,6.735,6.701,6.742],"con":[7.358,7.32,7.357,7.299,7.34,7.322,7.344,7.32,7.316,7.338],"n_iso":[35929,37513,32809,36071,34244,33546,32976,31354,31485,30339],"n_con":[27360,28361,26690,30038,29852,30203,29807,31336,31958,34425],"gap":[0.531,0.539,0.575,0.546,0.594,0.59,0.625,0.585,0.615,0.596]},"eq3":{"iso":[6.608,6.586,6.585,6.576,6.575,6.552,6.565,6.516,6.473,6.524],"con":[7.358,7.32,7.357,7.299,7.34,7.322,7.344,7.32,7.316,7.338],"n_iso":[12462,13618,12147,13615,13060,12337,12560,11235,11406,10498],"n_con":[27360,28361,26690,30038,29852,30203,29807,31336,31958,34425],"gap":[0.75,0.734,0.772,0.723,0.765,0.77,0.779,0.804,0.843,0.814]}}}},"headlines":{"ge1":{"gap_d1":0.418,"gap_d10":0.434,"delta":0.016,"iso_d1":6.899,"iso_d10":6.956,"con_d1":7.317,"con_d10":7.39},"ge2":{"gap_d1":0.509,"gap_d10":0.571,"delta":0.062,"iso_d1":6.808,"iso_d10":6.819,"con_d1":7.317,"con_d10":7.39},"eq3":{"gap_d1":0.758,"gap_d10":0.753,"delta":-0.005,"iso_d1":6.559,"iso_d10":6.637,"con_d1":7.317,"con_d10":7.39}},"models":[{"outcome":"ladder","index":"composite","def":"ge1","spec":"raw","b_iso":-0.4519,"b_idx":0.0189,"b_int":-0.006,"se_int":0.0063,"p_int":0.34205,"n":921639,"n_county":2984},{"outcome":"ladder","index":"composite","def":"ge1","spec":"controlled","b_iso":-0.3224,"b_idx":0.0178,"b_int":-0.0082,"se_int":0.0055,"p_int":0.13418,"n":710040,"n_county":2965},{"outcome":"ladder","index":"composite","def":"ge2","spec":"raw","b_iso":-0.5775,"b_idx":0.0189,"b_int":-0.0255,"se_int":0.0066,"p_int":0.00011,"n":640697,"n_county":2982},{"outcome":"ladder","index":"composite","def":"ge2","spec":"controlled","b_iso":-0.446,"b_idx":0.0239,"b_int":-0.0218,"se_int":0.0063,"p_int":0.00052,"n":491252,"n_county":2964},{"outcome":"ladder","index":"composite","def":"eq3","spec":"raw","b_iso":-0.7719,"b_idx":0.0189,"b_int":-0.0132,"se_int":0.0115,"p_int":0.25206,"n":425848,"n_county":2982},{"outcome":"ladder","index":"composite","def":"eq3","spec":"controlled","b_iso":-0.5386,"b_idx":0.0156,"b_int":-0.0002,"se_int":0.0095,"p_int":0.98297,"n":328706,"n_county":2961},{"outcome":"sadness","index":"composite","def":"eq3","spec":"raw","b_iso":0.1043,"b_idx":-0.0078,"b_int":0.0011,"se_int":0.0019,"p_int":0.54691,"n":425372,"n_county":2982},{"outcome":"sadness","index":"composite","def":"eq3","spec":"controlled","b_iso":0.0716,"b_idx":-0.0069,"b_int":-0.0021,"se_int":0.0017,"p_int":0.22276,"n":328427,"n_county":2961},{"outcome":"worry","index":"composite","def":"eq3","spec":"raw","b_iso":0.0709,"b_idx":-0.0042,"b_int":-0.0014,"se_int":0.0024,"p_int":0.55116,"n":425330,"n_county":2982},{"outcome":"worry","index":"composite","def":"eq3","spec":"controlled","b_iso":0.0507,"b_idx":-0.0086,"b_int":-0.0023,"se_int":0.0022,"p_int":0.29938,"n":328418,"n_county":2961},{"outcome":"physical_pain","index":"composite","def":"eq3","spec":"raw","b_iso":0.1027,"b_idx":-0.0098,"b_int":0.0063,"se_int":0.0024,"p_int":0.00808,"n":425243,"n_county":2982},{"outcome":"physical_pain","index":"composite","def":"eq3","spec":"controlled","b_iso":0.0465,"b_idx":-0.0046,"b_int":0.0021,"se_int":0.0021,"p_int":0.32808,"n":328344,"n_county":2961},{"outcome":"ladder","index":"family_unity","def":"eq3","spec":"controlled","b_iso":-0.5381,"b_idx":0.0129,"b_int":0.0133,"se_int":0.0096,"p_int":0.16734,"n":328706,"n_county":2961},{"outcome":"ladder","index":"community_health","def":"eq3","spec":"controlled","b_iso":-0.5428,"b_idx":0.0359,"b_int":-0.0084,"se_int":0.0087,"p_int":0.33356,"n":328706,"n_county":2961},{"outcome":"ladder","index":"institutional_health","def":"eq3","spec":"controlled","b_iso":-0.5399,"b_idx":-0.0018,"b_int":0.0236,"se_int":0.0098,"p_int":0.01624,"n":328706,"n_county":2961},{"outcome":"ladder","index":"collective_efficacy","def":"eq3","spec":"controlled","b_iso":-0.5418,"b_idx":0.0021,"b_int":-0.0259,"se_int":0.0085,"p_int":0.00239,"n":326873,"n_county":2878}],"beeswarm_cols":["fips","name","st","sc","n"],"beeswarm":[["29510","St. Louis","MO",-3.732,799],["24510","Baltimore","MD",-3.505,1415],["22071","Orleans","LA",-3.063,632],["47157","Shelby","TN",-2.953,2191],["42101","Philadelphia","PA",-2.82,3440],["36005","Bronx","NY",-2.718,1265],["13095","Dougherty","GA",-2.553,259],["47037","Davidson","TN",-2.529,1838],["35061","Valencia","NM",-2.505,224],["22105","Tangipahoa","LA",-2.429,367],["47113","Madison","TN",-2.416,341],["22073","Ouachita","LA",-2.342,483],["18097","Marion","IN",-2.329,2451],["35001","Bernalillo","NM",-2.193,2284],["32003","Clark","NV",-2.16,4157],["26163","Wayne","WV",-2.063,3264],["36047","Kings","NY",-1.888,3013],["36081","Queens","NY",-1.726,3079],["48201","Harris","TX",-1.645,6514],["12086","Miami-Dade","FL",-1.562,2493],["12095","Orange","FL",-1.552,1878],["13121","Fulton","GA",-1.55,2161],["01073","Jefferson","AL",-1.477,2184],["34013","Essex","NJ",-1.476,1745],["04019","Pima","AZ",-1.473,3818],["06029","Kern","NY",-1.47,2126],["06019","Fresno","CA",-1.469,2218],["12031","Duval","FL",-1.407,2017],["48029","Bexar","TX",-1.387,2982],["04013","Maricopa","ND",-1.287,12156],["40109","Oklahoma","OK",-1.271,2586],["55079","Milwaukee","WI",-1.247,2895],["29095","Jackson","MO",-1.24,2027],["17031","Cook","IL",-1.239,9271],["06071","San Bernardino","CA",-1.217,4379],["40143","Tulsa","OK",-1.193,2160],["12103","Pinellas","FL",-1.191,2625],["39035","Cuyahoga","OH",-1.188,3432],["21111","Jefferson","KY",-1.155,2602],["36061","New York","NY",-1.126,3891],["48113","Dallas","TX",-1.12,4131],["06067","Sacramento","CA",-1.106,3613],["06037","Los Angeles","CA",-1.045,17660],["06001","Alameda","CA",-0.991,3509],["12071","Lee","MI",-0.981,1863],["12011","Broward","VA",-0.962,3196],["24033","Prince George's","MD",-0.96,1809],["36029","Erie","NY",-0.938,3593],["12099","Palm Beach","FL",-0.893,3315],["12009","Brevard","FL",-0.893,1868],["48439","Tarrant","TX",-0.887,3692],["37119","Mecklenburg","NC",-0.865,2350],["36055","Monroe","NY",-0.815,2557],["06065","Riverside","KY",-0.794,5212],["12057","Hillsborough","FL",-0.75,2602],["39113","Montgomery","OH",-0.743,1736],["39061","Hamilton","OH",-0.714,2339],["39049","Franklin","OH",-0.667,2947],["24005","Baltimore","MD",-0.531,2483],["06073","San Diego","CA",-0.521,7323],["44007","Providence","RI",-0.487,1878],["48453","Travis","TX",-0.48,2134],["42045","Delaware","PA",-0.427,1942],["08031","Denver","CO",-0.4,1831],["09009","New Haven","CT",-0.352,2793],["41051","Multnomah","OR",-0.303,2414],["06097","Sonoma","CA",-0.283,1879],["06013","Contra Costa","CA",-0.258,2834],["53053","Pierce","WA",-0.232,2795],["42133","York","PA",-0.162,1828],["42003","Allegheny","PA",-0.117,5678],["36119","Westchester","NY",-0.102,2372],["13067","Cobb","GA",-0.092,1811],["06059","Orange","IL",-0.077,6756],["09003","Hartford","CT",-0.041,3203],["06111","Ventura","CA",-0.026,2266],["25027","Worcester","MA",-0.014,2830],["25009","Essex","NH",0.016,2349],["36103","Suffolk","NY",0.039,3669],["06085","Santa Clara","CA",0.084,3485],["53063","Spokane","WA",0.114,2156],["08041","El Paso","CO",0.188,2298],["29189","St. Louis","MO",0.21,3563],["49035","Salt Lake","CO",0.245,3428],["37183","Wake","NC",0.263,2811],["42129","Westmoreland","PA",0.272,1957],["36059","Nassau","NY",0.276,3353],["34023","Middlesex","NJ",0.295,1850],["34029","Ocean","NJ",0.3,2230],["08005","Arapahoe","CO",0.333,1860],["48085","Collin","TX",0.334,1807],["42071","Lancaster","PA",0.405,2063],["34003","Bergen","NJ",0.484,2369],["09001","Fairfield","CT",0.515,2397],["34025","Monmouth","NJ",0.515,2037],["53061","Snohomish","WA",0.54,2435],["53033","King","CA",0.544,6492],["17043","DuPage","IL",0.675,2246],["42017","Bucks","PA",0.676,2320],["24031","Montgomery","MD",0.723,3024],["42091","Montgomery","PA",0.742,3254],["26125","Oakland","MI",0.743,2954],["27053","Hennepin","MN",0.774,4081],["42029","Chester","PA",0.828,2103],["08059","Jefferson","CO",0.841,2378],["25017","Middlesex","MA",0.943,4852],["25021","Norfolk","MA",1.099,2271],["51059","Fairfax","VA",1.267,3299],["55025","Dane","WI",1.428,1829],["27111","Otter Tail","MN",1.464,293],["51107","Loudoun","VA",1.489,816],["55109","St. Croix","WI",1.555,289],["08014","Broomfield","CO",1.561,212],["27139","Scott","MN",1.611,369],["55131","Washington","WI",1.614,496],["27163","Washington","MN",1.643,750],["27171","Wright","MN",1.668,367],["08035","Douglas","CO",1.679,980],["55133","Waukesha","WI",1.933,1664],["27019","Carver","MN",2.084,280],["55089","Ozaukee","WI",2.12,359]]};
+
+const C = getComputedStyle(document.documentElement);
+const COL = {
+  con: C.getPropertyValue("--con").trim(), conDk: C.getPropertyValue("--con-dk").trim(),
+  iso: C.getPropertyValue("--iso").trim(), isoDk: C.getPropertyValue("--iso-dk").trim(),
+  band: C.getPropertyValue("--band").trim(), bandDk: C.getPropertyValue("--band-dk").trim(),
+  faint: C.getPropertyValue("--faint").trim(), rule: C.getPropertyValue("--rule").trim(),
+  soft: C.getPropertyValue("--soft").trim(), ink: C.getPropertyValue("--ink").trim(),
+};
+const DEF_LABEL = { ge1: "any 1 of 3 markers", ge2: "2 of 3 markers", eq3: "all 3 markers" };
+const f2 = d3.format(".2f");
+
+/* ---------------- hero ribbon ---------------- */
+const HW = 920, HH = 470, HM = { t: 46, r: 118, b: 56, l: 56 };
+const hx = d3.scaleLinear().domain([1, 10]).range([HM.l, HW - HM.r]);
+const hy = d3.scaleLinear().domain([6.3, 7.5]).range([HH - HM.b, HM.t]);
+
+const heroSvg = d3.select("#hero-chart").append("svg")
+  .attr("viewBox", `0 0 ${HW} ${HH}`)
+  .attr("role", "img")
+  .attr("aria-label", "Two nearly parallel lines: mean ladder for connected and isolated Americans across ten deciles of county social capital. The shaded gap between them stays close to three quarters of a rung at every decile.");
+
+const gGrid = heroSvg.append("g");
+hy.ticks(6).forEach(t => {
+  gGrid.append("line").attr("x1", HM.l).attr("x2", HW - HM.r).attr("y1", hy(t)).attr("y2", hy(t))
+    .attr("stroke", COL.rule).attr("stroke-width", t === 7 ? 1.2 : 0.7);
+  gGrid.append("text").attr("x", HM.l + 4).attr("y", hy(t) - 5)
+    .attr("text-anchor", "start").attr("font-size", 10.5).attr("fill", COL.faint)
+    .attr("stroke", "#fcfdfb").attr("stroke-width", 3).attr("paint-order", "stroke").text(f2(t));
+});
+gGrid.append("text").attr("x", HM.l + 4).attr("y", HM.t - 18).attr("text-anchor", "start")
+  .attr("font-size", 11).attr("fill", COL.faint).text("Cantril ladder, mean (axis trimmed; full scale 0–10)");
+d3.range(1, 11).forEach(d => {
+  gGrid.append("text").attr("x", hx(d)).attr("y", HH - HM.b + 20).attr("text-anchor", "middle")
+    .attr("font-size", 11.5).attr("fill", COL.soft).text(d);
+});
+gGrid.append("text").attr("x", HM.l).attr("y", HH - 14).attr("text-anchor", "start")
+  .attr("font-size", 12).attr("fill", COL.faint).text("← thinnest civic fabric");
+gGrid.append("text").attr("x", (HM.l + HW - HM.r) / 2).attr("y", HH - 14).attr("text-anchor", "middle")
+  .attr("font-size", 12).attr("fill", COL.soft).attr("font-weight", 600)
+  .text("county social-capital decile (respondent-weighted)");
+gGrid.append("text").attr("x", HW - HM.r).attr("y", HH - 14).attr("text-anchor", "end")
+  .attr("font-size", 12).attr("fill", COL.faint).text("thickest civic fabric →");
+
+const areaGen = d3.area().x((d, i) => hx(i + 1)).y0(d => hy(d[0])).y1(d => hy(d[1])).curve(d3.curveMonotoneX);
+const lineGen = d3.line().x((d, i) => hx(i + 1)).y(d => hy(d)).curve(d3.curveMonotoneX);
+
+const gBand = heroSvg.append("path").attr("fill", COL.band).attr("fill-opacity", 0.30);
+const gCon = heroSvg.append("path").attr("fill", "none").attr("stroke", COL.con).attr("stroke-width", 4).attr("stroke-linecap", "round");
+const gIso = heroSvg.append("path").attr("fill", "none").attr("stroke", COL.iso).attr("stroke-width", 4).attr("stroke-linecap", "round");
+const dotsCon = heroSvg.append("g"), dotsIso = heroSvg.append("g");
+const bandLbl = heroSvg.append("text").attr("text-anchor", "middle").attr("font-size", 13)
+  .attr("font-style", "italic").attr("fill", COL.bandDk).text("the gap — does it narrow or widen?");
+
+const lblCon = heroSvg.append("text").attr("font-size", 12.5).attr("font-weight", 700).attr("fill", COL.conDk);
+const lblIso = heroSvg.append("text").attr("font-size", 12.5).attr("font-weight", 700).attr("fill", COL.isoDk);
+
+function bracket(side) {
+  const g = heroSvg.append("g");
+  g.append("line").attr("class", "stem").attr("stroke", COL.bandDk).attr("stroke-width", 1.6);
+  g.append("line").attr("class", "capT").attr("stroke", COL.bandDk).attr("stroke-width", 1.6);
+  g.append("line").attr("class", "capB").attr("stroke", COL.bandDk).attr("stroke-width", 1.6);
+  g.append("text").attr("class", "v").attr("font-size", 15).attr("font-weight", 700).attr("fill", COL.bandDk)
+    .attr("text-anchor", side === "L" ? "end" : "start");
+  g.append("text").attr("class", "u").attr("font-size", 10).attr("fill", COL.faint)
+    .attr("text-anchor", side === "L" ? "end" : "start");
+  return g;
+}
+const brL = bracket("L"), brR = bracket("R");
+
+function placeBracket(g, side, xPix, yTop, yBot, value, t) {
+  const off = side === "L" ? -12 : 12, tx = xPix + off + (side === "L" ? -6 : 6);
+  g.select(".stem").transition(t).attr("x1", xPix + off).attr("x2", xPix + off).attr("y1", yTop).attr("y2", yBot);
+  g.select(".capT").transition(t).attr("x1", xPix + off - 4).attr("x2", xPix + off + 4).attr("y1", yTop).attr("y2", yTop);
+  g.select(".capB").transition(t).attr("x1", xPix + off - 4).attr("x2", xPix + off + 4).attr("y1", yBot).attr("y2", yBot);
+  g.select(".v").transition(t).attr("x", tx).attr("y", (yTop + yBot) / 2 - 2).text(f2(value));
+  g.select(".u").transition(t).attr("x", tx).attr("y", (yTop + yBot) / 2 + 13).text("rungs");
+}
+
+function drawHero(defKey, animate) {
+  const r = DATA.ribbons.composite.ladder[defKey];
+  const pair = r.iso.map((v, i) => [v, r.con[i]]);
+  const t = animate ? d3.transition().duration(650).ease(d3.easeCubicOut) : d3.transition().duration(0);
+  gBand.datum(pair).transition(t).attr("d", areaGen);
+  gCon.datum(r.con).transition(t).attr("d", lineGen);
+  gIso.datum(r.iso).transition(t).attr("d", lineGen);
+  for (const [g, vals, col] of [[dotsCon, r.con, COL.con], [dotsIso, r.iso, COL.iso]]) {
+    g.selectAll("circle").data(vals).join("circle")
+      .attr("r", 4.4).attr("fill", col).attr("stroke", "#fff").attr("stroke-width", 1.4)
+      .attr("cx", (d, i) => hx(i + 1)).transition(t).attr("cy", d => hy(d));
+  }
+  dotsCon.selectAll("circle").data(r.con).join("circle").selectAll("title").remove();
+  dotsCon.selectAll("circle").each(function (d, i) {
+    d3.select(this).selectAll("title").data([0]).join("title")
+      .text(`Decile ${i + 1} · connected: ${f2(d)} (n=${r.n_con[i].toLocaleString()})`);
+  });
+  dotsIso.selectAll("circle").each(function (d, i) {
+    d3.select(this).selectAll("title").data([0]).join("title")
+      .text(`Decile ${i + 1} · isolated: ${f2(d)} (n=${r.n_iso[i].toLocaleString()})`);
+  });
+  bandLbl.transition(t)
+    .attr("x", hx(5.5)).attr("y", (hy(r.con[4]) + hy(r.iso[4])) / 2 + 4);
+  lblCon.transition(t).attr("x", hx(10) + 12).attr("y", hy(r.con[9]) - 16).text("Connected");
+  lblIso.transition(t).attr("x", hx(10) + 12).attr("y", hy(r.iso[9]) + 26).text("Isolated");
+  placeBracket(brL, "L", hx(1), hy(r.con[0]), hy(r.iso[0]), r.gap[0], t);
+  placeBracket(brR, "R", hx(10), hy(r.con[9]), hy(r.iso[9]), r.gap[9], t);
+  d3.select("#cap-g1").text(f2(r.gap[0]));
+  d3.select("#cap-g10").text(f2(r.gap[9]));
+  lblIso.append("title");
+}
+// keep "Connected / Isolated" labels clear of the right gap bracket
+lblCon.attr("text-anchor", "start"); lblIso.attr("text-anchor", "start");
+
+let curDef = "eq3";
+drawHero(curDef, false);
+d3.selectAll(".seg button").on("click", function () {
+  curDef = this.dataset.def;
+  d3.selectAll(".seg button").attr("aria-pressed", d => "false");
+  d3.selectAll(".seg button").each(function () { this.setAttribute("aria-pressed", this.dataset.def === curDef ? "true" : "false"); });
+  drawHero(curDef, true);
+});
+
+/* ---------------- beeswarm ---------------- */
+const SW = 920, SH = 240, SM = { t: 18, r: 24, b: 44, l: 24 };
+const cols = DATA.beeswarm_cols;
+const bees = DATA.beeswarm.map(row => Object.fromEntries(cols.map((c, i) => [c, row[i]])));
+const sx = d3.scaleLinear().domain([-4.0, 2.4]).range([SM.l, SW - SM.r]);
+const sr = d3.scaleSqrt().domain([200, d3.max(bees, d => d.n)]).range([3, 16]);
+
+const swarmSvg = d3.select("#swarm-chart").append("svg")
+  .attr("viewBox", `0 0 ${SW} ${SH}`)
+  .attr("role", "img")
+  .attr("aria-label", "Beeswarm of counties along the social-capital index, sized by interview count. Urban cores like St. Louis and Baltimore sit far left; Midwestern suburban counties like Ozaukee, Wisconsin sit far right.");
+
+const ax = swarmSvg.append("g");
+ax.append("line").attr("x1", SM.l).attr("x2", SW - SM.r).attr("y1", SH - SM.b).attr("y2", SH - SM.b)
+  .attr("stroke", COL.rule).attr("stroke-width", 1);
+sx.ticks(7).forEach(tk => {
+  ax.append("line").attr("x1", sx(tk)).attr("x2", sx(tk)).attr("y1", SH - SM.b).attr("y2", SH - SM.b + 5)
+    .attr("stroke", COL.faint);
+  ax.append("text").attr("x", sx(tk)).attr("y", SH - SM.b + 19).attr("text-anchor", "middle")
+    .attr("font-size", 10.5).attr("fill", COL.faint).text(d3.format("+.0f")(tk));
+});
+ax.append("text").attr("x", (SM.l + SW - SM.r) / 2).attr("y", SH - 6).attr("text-anchor", "middle")
+  .attr("font-size", 11.5).attr("fill", COL.faint).text("JEC county social-capital index (z-style; higher = thicker civic fabric)");
+DATA.decile_cuts.composite.forEach(c => {
+  ax.append("line").attr("x1", sx(c)).attr("x2", sx(c)).attr("y1", SM.t).attr("y2", SH - SM.b)
+    .attr("stroke", COL.band).attr("stroke-width", 1).attr("stroke-dasharray", "2 5").attr("opacity", 0.7);
+});
+ax.append("text").attr("x", sx(DATA.decile_cuts.composite[0]) - 8).attr("y", SM.t - 4)
+  .attr("text-anchor", "end").attr("font-size", 9.5).attr("fill", COL.bandDk)
+  .attr("stroke", "#fcfdfb").attr("stroke-width", 3).attr("paint-order", "stroke").text("decile cuts");
+
+const sim = d3.forceSimulation(bees)
+  .force("x", d3.forceX(d => sx(d.sc)).strength(1))
+  .force("y", d3.forceY((SM.t + SH - SM.b) / 2).strength(0.07))
+  .force("collide", d3.forceCollide(d => sr(d.n) + 1).iterations(2))
+  .stop();
+for (let i = 0; i < 160; i++) sim.tick();
+bees.forEach(d => { d.y = Math.max(SM.t + sr(d.n), Math.min(SH - SM.b - sr(d.n) - 1, d.y)); });
+
+const tip = d3.select("#tip");
+swarmSvg.append("g").selectAll("circle").data(bees).join("circle")
+  .attr("cx", d => d.x).attr("cy", d => d.y).attr("r", d => sr(d.n))
+  .attr("fill", COL.con).attr("fill-opacity", 0.38).attr("stroke", COL.conDk).attr("stroke-opacity", 0.5)
+  .on("mousemove", (ev, d) => {
+    tip.style("opacity", 1)
+      .style("left", Math.min(window.innerWidth - 250, ev.clientX + 14) + "px")
+      .style("top", (ev.clientY + 14) + "px")
+      .html(`<strong>${d.name}, ${d.st}</strong><br>index ${d3.format("+.2f")(d.sc)} · ${d.n.toLocaleString()} interviews`);
+  })
+  .on("mouseleave", () => tip.style("opacity", 0))
+  .each(function (d) {
+    d3.select(this).append("title").text(`${d.name}, ${d.st} — index ${d3.format("+.2f")(d.sc)}, ${d.n.toLocaleString()} interviews`);
+  });
+
+const callouts = { "29510": [0, -1], "24510": [0, 1], "22071": [0, -1], "55089": [0, 1], "08035": [0, -1] };
+swarmSvg.append("g").selectAll("text").data(bees.filter(d => callouts[d.fips])).join("text")
+  .attr("x", d => d.x + callouts[d.fips][0])
+  .attr("y", d => d.y + (callouts[d.fips][1] < 0 ? -(sr(d.n) + 5) : sr(d.n) + 12))
+  .attr("text-anchor", "middle").attr("font-size", 9.5).attr("fill", COL.soft)
+  .attr("stroke", "#fcfdfb").attr("stroke-width", 3).attr("paint-order", "stroke")
+  .text(d => `${d.name}, ${d.st}`);
+
+/* ---------------- small-multiple panels ---------------- */
+function panel(holder, opts) {
+  const { title, tag, tagClass, series, yDom, yFmt, note, ariaLabel } = opts;
+  const div = holder.append("div").attr("class", "panel");
+  div.append("h4").text(title);
+  div.append("span").attr("class", "tag" + (tagClass ? " " + tagClass : "")).text(tag);
+  const W = 300, H = 232, M = { t: 16, r: 36, b: 30, l: 38 };
+  const x = d3.scaleLinear().domain([1, 10]).range([M.l, W - M.r]);
+  const y = d3.scaleLinear().domain(yDom).range([H - M.b, M.t]);
+  const svg = div.append("svg").attr("viewBox", `0 0 ${W} ${H}`).attr("role", "img").attr("aria-label", ariaLabel);
+  y.ticks(4).forEach(tk => {
+    svg.append("line").attr("x1", M.l).attr("x2", W - M.r).attr("y1", y(tk)).attr("y2", y(tk))
+      .attr("stroke", COL.rule).attr("stroke-width", 0.6);
+    svg.append("text").attr("x", M.l - 5).attr("y", y(tk)).attr("dy", "0.32em").attr("text-anchor", "end")
+      .attr("font-size", 9.5).attr("fill", COL.faint).text(yFmt(tk));
+  });
+  [1, 10].forEach(d => svg.append("text").attr("x", x(d)).attr("y", H - M.b + 16).attr("text-anchor", "middle")
+    .attr("font-size", 9.5).attr("fill", COL.faint).text("d" + d));
+  svg.append("text").attr("x", (M.l + W - M.r) / 2).attr("y", H - M.b + 16).attr("text-anchor", "middle")
+    .attr("font-size", 9).attr("fill", COL.faint).text(opts.xLabel || "social-capital decile →");
+  const a = d3.area().x((d, i) => x(i + 1)).y0(d => y(d[0])).y1(d => y(d[1])).curve(d3.curveMonotoneX);
+  const l = d3.line().x((d, i) => x(i + 1)).y(d => y(d)).curve(d3.curveMonotoneX);
+  svg.append("path").datum(series.iso.map((v, i) => [v, series.con[i]]))
+    .attr("d", a).attr("fill", COL.band).attr("fill-opacity", 0.28);
+  svg.append("path").datum(series.con).attr("d", l).attr("fill", "none").attr("stroke", COL.con).attr("stroke-width", 2.6);
+  svg.append("path").datum(series.iso).attr("d", l).attr("fill", "none").attr("stroke", COL.iso).attr("stroke-width", 2.6);
+  for (const [i, anchor, dx] of [[0, "start", 4], [9, "end", -4]]) {
+    const gv = Math.abs(series.con[i] - series.iso[i]);
+    const mid = (y(series.con[i]) + y(series.iso[i])) / 2;
+    svg.append("text").attr("x", x(i + 1) + dx).attr("y", mid + 3).attr("text-anchor", anchor)
+      .attr("font-size", 10).attr("font-weight", 700).attr("fill", COL.bandDk)
+      .attr("stroke", "#fcfdfb").attr("stroke-width", 3).attr("paint-order", "stroke")
+      .text(opts.gapPct ? Math.round(gv * 100) + "pp" : f2(gv));
+  }
+  if (note) svg.append("text").attr("x", M.l).attr("y", M.t - 4).attr("font-size", 9.5)
+    .attr("fill", COL.soft).attr("font-style", "italic").text(note);
+  return div;
+}
+
+const models = {};
+DATA.models.forEach(m => { models[`${m.outcome}|${m.index}|${m.def}|${m.spec}`] = m; });
+
+const oHolder = d3.select("#outcome-panels");
+panel(oHolder, {
+  title: "Ladder", tag: "evaluative · 0–10",
+  series: DATA.ribbons.composite.ladder.eq3, yDom: [6.3, 7.5], yFmt: f2,
+  ariaLabel: "Small panel: ladder gap between connected and isolated stays near 0.75 rungs across deciles."
+});
+for (const [k, label] of [["sadness", "Sadness yesterday"], ["worry", "Worry yesterday"]]) {
+  panel(oHolder, {
+    title: label, tag: "experiential · share",
+    series: DATA.ribbons.composite[k].eq3, yDom: [0.08, 0.38], yFmt: d3.format(".0%"), gapPct: true,
+    ariaLabel: `Small panel: ${label} for isolated stays above connected by a near-constant margin across deciles.`
+  });
+}
+panel(oHolder, {
+  title: "Physical pain yest.", tag: "placebo · experiential", tagClass: "placebo",
+  series: DATA.ribbons.composite.physical_pain.eq3, yDom: [0.08, 0.38], yFmt: d3.format(".0%"), gapPct: true,
+  ariaLabel: "Placebo panel: the physical-pain gap is also flat across deciles, like the social outcomes."
+});
+
+const sHolder = d3.select("#subidx-panels");
+for (const [k, label] of [["family_unity", "Family unity"], ["community_health", "Community health"],
+                          ["institutional_health", "Institutional health"], ["collective_efficacy", "Collective efficacy"]]) {
+  const m = models[`ladder|${k}|eq3|controlled`];
+  const sig = m.p_int < 0.05 ? `p ${m.p_int < 0.01 ? "< 0.01" : "< 0.05"}` : "n.s.";
+  panel(sHolder, {
+    title: label, tag: "ladder · sub-index deciles", xLabel: "sub-index decile →",
+    series: DATA.ribbons[k].ladder.eq3, yDom: [6.3, 7.5], yFmt: f2,
+    note: `β ${d3.format("+.3f")(m.b_int)}/SD (${sig})`,
+    ariaLabel: `Small panel: ladder gap across deciles of the ${label} sub-index; interaction ${d3.format("+.3f")(m.b_int)} per SD, ${sig}.`
+  });
+}
+</script>
+<!--SL_BOOKNAV_START-->
+<style>
+.slbn{font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;background:#0f1417;border-top:1px solid #27313a;color:#9fb0ba;padding:24px 20px 40px;margin:48px 0 0}
+.slbn-in{max-width:1080px;margin:0 auto;display:flex;align-items:stretch;gap:12px}
+.slbn a{flex:1 1 0;min-width:0;text-decoration:none;color:inherit;border:1px solid #27313a;border-radius:10px;padding:13px 15px;display:flex;flex-direction:column;gap:4px;background:#161d22;transition:border-color .15s,transform .15s}
+.slbn a:hover{border-color:#3fa9a0;transform:translateY(-2px)}
+.slbn a:focus-visible{outline:2px solid #3fa9a0;outline-offset:2px}
+.slbn a.slbn-next{text-align:right;align-items:flex-end}
+.slbn a.slbn-toc{flex:0 0 auto;min-width:120px;justify-content:center;align-items:center;text-align:center}
+.slbn .slbn-dir{font:700 10px/1 inherit;letter-spacing:.13em;text-transform:uppercase;color:#6b7c87}
+.slbn .slbn-ttl{font:700 14px/1.3 inherit;color:#eef2f4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.slbn a.slbn-disabled{opacity:.38;pointer-events:none}
+@media(max-width:640px){.slbn-in{flex-wrap:wrap}.slbn a{flex:1 1 100%}.slbn a.slbn-next{text-align:left;align-items:flex-start}.slbn a.slbn-toc{order:-1}}
+</style>
+<nav class="slbn" aria-label="Book navigation"><div class="slbn-in"><a class="slbn-prev" href="../read.html?ch=closing-the-scissors" target="_top"><span class="slbn-dir">‹ Previous</span><span class="slbn-ttl">Closing the Scissors</span></a><a class="slbn-toc" href="../index.html#book" target="_top"><span class="slbn-dir">The Scissors</span><span class="slbn-ttl">Appendix</span></a><a class="slbn-next" href="../read.html?ch=female-happiness-paradox" target="_top"><span class="slbn-dir">Next ›</span><span class="slbn-ttl">The Paradox That Didn't Hold</span></a></div></nav>
+<!--SL_BOOKNAV_END-->
+</body>
+</html>

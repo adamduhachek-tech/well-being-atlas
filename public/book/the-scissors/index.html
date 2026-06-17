@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Scissors</title>
+<meta name="description" content="Across three global survey backbones, the way people rate their lives has held steady or risen while their daily emotional and social lives have worsened. The gap between the two blades is the story of this book.">
+<style>
+  :root{
+    --paper:#0f1216;
+    --paper-2:#141921;
+    --panel:#171c25;
+    --panel-edge:#2a323f;
+    --ink:#eef1f4;
+    --ink-dim:#aab3c0;
+    --ink-faint:#7a8696;
+    --hairline:#262d39;
+    --eval:#4cc9c0;       /* evaluative - bright teal (upper blade) */
+    --eval-soft:#1d3a3a;
+    --exp:#e8743b;        /* experiential - amber-rust (lower blade) */
+    --exp-soft:#3a2418;
+    --gap:#6f5bd0;        /* the widening gap */
+    --maxw:720px;
+    --figw:1000px;
+    --sans:"Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --serif:Charter, "Bitstream Charter", "Sitka Text", Cambria, Georgia, serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font:18px/1.66 var(--serif);
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  .skip{position:absolute; left:-9999px; top:0; background:var(--ink); color:var(--paper); padding:.5em 1em; z-index:40; font-family:var(--sans)}
+  .skip:focus{left:8px; top:8px}
+  a{color:var(--eval); text-decoration-color:rgba(76,201,192,.4); text-underline-offset:3px}
+  a:focus-visible, button:focus-visible{outline:2.5px solid var(--gap); outline-offset:2px}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 20px}
+  .wrap-wide{max-width:var(--figw); margin:0 auto; padding:0 20px}
+
+  header{position:relative; padding:96px 0 12px; overflow:hidden}
+  .blades{
+    position:absolute; inset:0; pointer-events:none; z-index:0; opacity:.5;
+  }
+  .kicker{font:700 12px/1.5 var(--sans); letter-spacing:.28em; text-transform:uppercase; color:var(--exp)}
+  h1{
+    font:900 clamp(46px,9vw,92px)/0.98 var(--sans); letter-spacing:-.035em;
+    margin:.18em 0 .26em; text-wrap:balance; position:relative; z-index:1;
+  }
+  .dek{font-size:clamp(19px,2.7vw,23px); line-height:1.5; color:var(--ink-dim); margin:0 0 24px; max-width:40em; position:relative; z-index:1}
+  .byline{
+    font:400 13px/1.7 var(--sans); color:var(--ink-faint);
+    border-top:2px solid var(--panel-edge); padding-top:13px; display:flex; gap:20px; flex-wrap:wrap; position:relative; z-index:1;
+  }
+  .byline b{color:var(--ink-dim); font-weight:600}
+
+  main{position:relative; z-index:1}
+  h2{font:800 clamp(26px,4vw,36px)/1.16 var(--sans); letter-spacing:-.02em; margin:2.1em 0 .55em}
+  p{margin:0 0 1.15em}
+  strong{color:#fff}
+  em{color:var(--ink)}
+  .lead-cap::first-letter{
+    font:900 3.1em/.72 var(--sans); float:left; margin:.06em .12em 0 0; color:var(--exp);
+  }
+  .tagline{font:700 11px/1 var(--sans); letter-spacing:.16em; text-transform:uppercase; padding:4px 8px; border-radius:3px; white-space:nowrap}
+  .tag-eval{background:var(--eval-soft); color:var(--eval)}
+  .tag-exp{background:var(--exp-soft); color:var(--exp)}
+
+  .statrow{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:32px 0 8px}
+  .stat{background:var(--panel); border:1px solid var(--panel-edge); border-top:3px solid var(--ink-faint); padding:14px 15px 12px; border-radius:4px}
+  .stat.exp{border-top-color:var(--exp)}
+  .stat.eval{border-top-color:var(--eval)}
+  .stat .lab{font:700 10.5px/1.4 var(--sans); letter-spacing:.11em; text-transform:uppercase; color:var(--ink-faint)}
+  .stat .val{font:800 clamp(20px,2.7vw,28px)/1.12 var(--sans); margin-top:7px; font-variant-numeric:tabular-nums; color:var(--ink)}
+  .stat.exp .val{color:var(--exp)} .stat.eval .val{color:var(--eval)}
+  .stat .sub{font:400 12px/1.45 var(--sans); color:var(--ink-dim); margin-top:5px}
+  @media(max-width:680px){ .statrow{grid-template-columns:1fr 1fr} }
+  @media(max-width:420px){ .statrow{grid-template-columns:1fr} }
+
+  figure{margin:40px 0}
+  .fig{
+    background:var(--panel); border:1px solid var(--panel-edge); border-radius:6px;
+    padding:22px 22px 16px; position:relative;
+    box-shadow:0 30px 60px -40px rgba(0,0,0,.8);
+  }
+  .figtitle{font:800 19px/1.3 var(--sans); margin:0 0 4px; color:var(--ink)}
+  .figsub{font:400 13.5px/1.55 var(--sans); color:var(--ink-dim); margin:0 0 12px; max-width:56em}
+  figcaption{font:400 12.5px/1.6 var(--sans); color:var(--ink-faint); margin-top:12px}
+  .chart{position:relative}
+  .chart svg{display:block; width:100%; height:auto}
+
+  .controls{display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin:6px 0 10px; font-family:var(--sans)}
+  button.mbtn{
+    font:700 12.5px/1.2 var(--sans); letter-spacing:.02em; cursor:pointer;
+    background:var(--paper-2); color:var(--ink-dim); border:1.5px solid var(--panel-edge);
+    border-radius:999px; padding:8px 14px; transition:all .15s;
+  }
+  button.mbtn:hover{border-color:var(--ink-faint)}
+  button.mbtn[aria-pressed="true"]{background:var(--ink); border-color:var(--ink); color:var(--paper)}
+  button.mbtn .cdot{display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:6px; vertical-align:1px}
+
+  .legend{display:flex; gap:8px 16px; flex-wrap:wrap; margin:2px 0 8px; font:600 12.5px/1.6 var(--sans); color:var(--ink-dim)}
+  .legend .item{display:inline-flex; align-items:center; gap:7px}
+  .legend .sw{width:14px; height:4px; border-radius:2px; flex:none}
+  .legend .sw.dot{width:11px; height:11px; border-radius:50%}
+
+  .modecall{
+    display:flex; gap:10px; align-items:flex-start;
+    background:#241f12; border:1px solid #5a4a22; border-left:4px solid #c79023;
+    padding:11px 15px; margin:8px 0 6px; font:400 13px/1.55 var(--sans); color:#d9c79a; border-radius:4px;
+  }
+  .modecall b{color:#f2dfa8}
+  .modecall .ex{font:900 15px/1.2 var(--sans); color:#c79023; flex:none}
+
+  .readout{
+    font:400 13px/1.6 var(--sans); color:var(--ink-dim);
+    border-top:1px dashed var(--hairline); padding-top:9px; margin-top:8px; min-height:2.6em;
+  }
+  .readout b{color:var(--ink); font-variant-numeric:tabular-nums}
+
+  .tip{
+    position:absolute; pointer-events:none; z-index:20; display:none;
+    background:#05080c; color:#eef1f4; border:1px solid #313a48; border-radius:6px; padding:9px 11px;
+    font:400 12.5px/1.5 var(--sans); max-width:250px; box-shadow:0 10px 30px rgba(0,0,0,.6);
+  }
+  .tip b{color:#fff} .tip .trg{color:#9aa6b5; font-size:11px; letter-spacing:.07em; text-transform:uppercase}
+  .tip .num{font-variant-numeric:tabular-nums}
+
+  .echo-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+  @media(max-width:720px){ .echo-grid{grid-template-columns:1fr} }
+
+  .notes{
+    margin-top:70px; border-top:2px solid var(--panel-edge); padding:28px 0 80px;
+    font:400 14px/1.7 var(--sans); color:var(--ink-dim);
+  }
+  .notes h2{font-size:20px; margin:0 0 16px}
+  .notes ul{padding-left:1.2em; margin:0}
+  .notes li{margin-bottom:10px}
+  .smallcaps{font-variant:small-caps; letter-spacing:.04em; color:var(--ink)}
+  code{font:12.5px/1 ui-monospace,"SF Mono",Consolas,monospace; background:var(--paper-2); padding:1px 5px; border-radius:3px; color:var(--ink-dim)}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to article</a>
+<header>
+  <svg class="blades" viewBox="0 0 1200 360" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <path d="M0 250 C 300 245, 600 232, 1200 150" fill="none" stroke="#4cc9c0" stroke-width="3"/>
+    <path d="M0 250 C 300 258, 600 286, 1200 350" fill="none" stroke="#e8743b" stroke-width="3"/>
+    <circle cx="0" cy="250" r="6" fill="#6f5bd0"/>
+  </svg>
+  <div class="wrap">
+    <p class="kicker">The Ladder and the Day &middot; Prologue</p>
+    <h1>The Scissors</h1>
+    <p class="dek">Ask people to rate their lives and the answer has held firm, even risen. Ask them how yesterday felt, and how often they see the people they love, and the answer has been sliding for years. Two blades, one hinge. The gap between them is what this book is about.</p>
+    <div class="byline">
+      <span><b>Datasets</b> Gallup World Poll &middot; U.S. General Social Survey &middot; Integrated EVS&ndash;WVS</span>
+      <span><b>Span</b> 1974&ndash;2025</span>
+      <span><b>Construct</b> evaluative vs. experiential / relational</span>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <div class="wrap">
+    <p class="lead-cap">There are two questions you can ask someone about their well-being, and they are not the same question. The first asks for a verdict: <em>all things considered, how does your life measure up?</em> The second asks for a report: <em>how did yesterday actually feel &mdash; and when did you last spend an evening with a friend?</em> For most of survey history these two answers moved together closely enough that researchers could be sloppy about which one they meant. They have stopped moving together. The verdict is holding. The report is not.</p>
+
+    <p>That divergence is the spine of this book, and it shows up in every major source we have for tracking how humanity feels about itself. We will call the verdict the <span class="tagline tag-eval">Evaluative</span> upper blade &mdash; the considered rating of a life as a whole &mdash; and the report the <span class="tagline tag-exp">Experiential</span> lower blade: the texture of daily emotion and the frequency of human contact. Across the Gallup World Poll, the U.S. General Social Survey, and the World Values Survey, the upper blade is resilient and the lower blade is falling. Drawn together, the two lines open like a pair of scissors.</p>
+
+    <div class="statrow" role="list" aria-label="Headline numbers">
+      <div class="stat eval" role="listitem"><div class="lab">World life rating &middot; evaluative</div><div class="val">+0.26</div><div class="sub">Cantril ladder, 2006&rarr;2025 (0&ndash;10 scale)</div></div>
+      <div class="stat exp" role="listitem"><div class="lab">World negative affect &middot; experiential</div><div class="val">+0.073</div><div class="sub">daily-emotion index, 2006&rarr;2025, peaking 2022</div></div>
+      <div class="stat eval" role="listitem"><div class="lab">U.S. &ldquo;very happy&rdquo; &middot; evaluative</div><div class="val">~33%</div><div class="sub">broadly flat across decades, 1974&ndash;2018</div></div>
+      <div class="stat exp" role="listitem"><div class="lab">U.S. social evenings &middot; relational</div><div class="val">&minus;0.351</div><div class="sub">composite of four GSS items, 1974&ndash;2024</div></div>
+    </div>
+  </div>
+
+  <div class="wrap-wide">
+    <figure>
+      <div class="fig">
+        <p class="figtitle">The scissors, on one ruler</p>
+        <p class="figsub">The Gallup World Poll&rsquo;s two well-being measures since 2006, each standardized against its own 2006&ndash;2025 spread so an evaluative ladder and an experiential affect share can share a panel honestly. The upper blade is the population-weighted world life rating; the lower blade is daily negative emotion, drawn inverted so that <em>down means worse</em> for both. The widening violet wedge between them is the gap this book measures.</p>
+        <div class="legend" aria-hidden="true">
+          <span class="item"><span class="sw" style="background:var(--eval)"></span>Life rating &middot; evaluative (upper blade)</span>
+          <span class="item"><span class="sw" style="background:var(--exp)"></span>Daily negative emotion, inverted &middot; experiential (lower blade)</span>
+          <span class="item"><span class="sw" style="background:var(--gap);opacity:.6"></span>the gap</span>
+        </div>
+        <div class="chart" id="scissors-chart"></div>
+        <div class="readout" id="scissors-readout">Hover or focus a year to read both blades in their original units.</div>
+        <figcaption>Both series are z-scored across 2006&ndash;2025: the value shown is standard deviations from each measure&rsquo;s own 20-year mean. Negative affect is multiplied by &minus;1 so a falling line means a worse year for both constructs. Raw units &mdash; ladder points and affect share &mdash; appear on hover and in the panel below. Population-weighted across 96&ndash;146 countries per wave; 2020 carries a face-to-face&rarr;phone mode change.</figcaption>
+      </div>
+    </figure>
+  </div>
+
+  <div class="wrap">
+    <p>Read the upper blade in its own units and it is a story of remarkable steadiness. The world&rsquo;s population-weighted rating of its own life sat at <strong>5.31</strong> on the 0&ndash;10 ladder in 2006 and <strong>5.57</strong> in 2025 &mdash; a gain of <strong>+0.26</strong> points across two decades that included a financial crisis, a pandemic, and a global inflation shock. The ladder dipped here and there but never broke. By 2025 it stood at its highest point in the series.</p>
+    <p>The lower blade tells the opposite story. The share of people worldwide reporting a lot of worry, sadness, stress, anger, or physical pain &ldquo;yesterday&rdquo; &mdash; the negative-affect index &mdash; climbed from <strong>0.242</strong> in 2006 to a peak of <strong>0.341</strong> in <strong>2022</strong> before easing slightly to <strong>0.315</strong> in 2025, a net rise of <strong>+0.073</strong>. These are different constructs measured on different scales: the ladder is a considered judgment scored 0 to 10; negative affect is a share of people recalling specific bad feelings from a single day. They are never plotted on a shared raw axis here. But standardize each against its own variation, as the figure above does, and the shape is unmistakable &mdash; one blade lifting, one blade sinking, the wedge between them widening through the 2010s and never closing after 2020.</p>
+
+    <h2>The same shape, in one country, across fifty years</h2>
+    <p>Skeptics of global indices have a fair objection: maybe the divergence is an artifact of which countries enter the sample, or of comparing a Western 2006 to a more global 2025. So turn to the longest continuous well-being record in the world &mdash; the U.S. General Social Survey, running since 1972 with the same core questions &mdash; and look for the same scissors in a single, stable population.</p>
+    <p>It is there. The upper blade barely moves. The share of Americans calling themselves &ldquo;very happy&rdquo; held in the low thirties for decades: <strong>34.1%</strong> in the 1970s, <strong>33.4%</strong> in the 1980s, <strong>32.3%</strong> in the 1990s, <strong>32.5%</strong> in the 2000s, <strong>30.7%</strong> in the 2010s. A drift, not a drop. The lower blade is another matter. A composite of how often people spend a social evening with friends, with relatives, with neighbors, and at a bar or tavern fell from <strong>3.79</strong> in 1974 to <strong>3.44</strong> in 2024 &mdash; a decline of <strong>&minus;0.351</strong> on its roughly 1-to-7 frequency scale, the slow thinning of in-person life that Robert Putnam first traced in <em>Bowling Alone</em>.</p>
+
+    <div class="modecall"><span class="ex" aria-hidden="true">!</span><span><b>A caution on the 2020s.</b> The GSS switched to web interviewing in 2021&ndash;22, and that mode change pushed measured happiness down on its own. The clean evaluative comparison runs <b>1974&ndash;2018</b>, where &ldquo;very happy&rdquo; is genuinely flat; the post-2020 dip is shown but should not be read as a pure attitude change. The relational decline, by contrast, is a steady fifty-year secular trend that long predates the mode switch.</span></div>
+  </div>
+
+  <div class="wrap-wide">
+    <figure>
+      <div class="fig">
+        <p class="figtitle">The American echo: flat verdict, falling connection</p>
+        <p class="figsub">Two GSS series since 1974, each on its own axis because they are different things. <span class="tagline tag-eval">Evaluative</span>&nbsp;the share calling themselves &ldquo;very happy&rdquo; (teal, left axis). <span class="tagline tag-exp">Relational</span>&nbsp;the social-evenings composite (amber, right axis). The shaded band marks the 2021&ndash;22 web-mode switch.</p>
+        <div class="chart" id="echo-chart"></div>
+        <div class="readout" id="echo-readout">Hover or focus a year for both series.</div>
+        <figcaption>Left axis: weighted share <code>happy == 3</code> (very happy), evaluative. Right axis: weighted mean of four social-evening items (<code>socfrend</code>, <code>socrel</code>, <code>socommun</code>, <code>socbar</code>), relational. GSS post-stratified weight <code>wtssps</code>; the two axes are deliberately independent so the constructs are never conflated. The right (relational) axis is zoomed and does not start at zero; tick labels show the true levels. Years 2021&ndash;22 (shaded) cross the push-to-web mode change.</figcaption>
+      </div>
+    </figure>
+  </div>
+
+  <div class="wrap">
+    <h2>It lands hardest on the young</h2>
+    <p>Aggregate flatness can hide a generational split, and here it does. Among Americans under 30, the share saying they are &ldquo;not too happy&rdquo; &mdash; the bottom rung &mdash; sat at just <strong>9.1%</strong> in the 1987&ndash;91 window. By 2022&ndash;24 it had reached <strong>25.6%</strong>, nearly tripling. The young, who once reported the least unhappiness of any age group, now report the most. The lower blade is not falling evenly across the population; it is falling fastest where the experiential and relational life is lived most intensely.</p>
+  </div>
+
+  <div class="wrap-wide">
+    <figure>
+      <div class="fig">
+        <p class="figtitle">Under-30s saying they are &ldquo;not too happy&rdquo;</p>
+        <p class="figsub">Share of GSS respondents under 30 on the bottom rung of the three-point happiness scale, pooled in five-year bins to keep cells stable. Evaluative measure &mdash; but among the young it has come unmoored from the national flatness.</p>
+        <div class="chart" id="youth-chart"></div>
+        <div class="readout" id="youth-readout">Hover or focus a bar for its bin.</div>
+        <figcaption>Five-year pooled bins, weighted <code>wtssps</code>, effective N suppressed below 50. Bins from 2017 onward (lighter, hatched) cross the 2021&ndash;22 mode change; the rise begins in the 2017&ndash;21 bin and holds in 2022&ndash;24. &ldquo;Not too happy&rdquo; is <code>happy == 1</code>, the bottom of the three-point scale.</figcaption>
+      </div>
+    </figure>
+  </div>
+
+  <div class="wrap">
+    <h2>And the verdict holds worldwide</h2>
+    <p>One more witness, to make sure the resilient upper blade is not a quirk of two surveys. The Integrated EVS&ndash;WVS asks a tenth-point question &mdash; <em>all things considered, how satisfied are you with your life these days, 1 to 10?</em> &mdash; in dozens of countries across seven waves since 1981. On a fixed set of <strong>86</strong> countries with repeated coverage, the equal-country average of life satisfaction was <strong>7.25</strong> in the earliest wave and <strong>7.11</strong> in the most recent &mdash; a change of just <strong>&minus;0.141</strong> over four decades. More to the point, across the recent, more globally representative waves the evaluative measure is flat-to-rising: <strong>6.85</strong> in wave 5, <strong>6.86</strong> in wave 6, <strong>7.11</strong> in wave 7. People&rsquo;s considered verdict on their lives is, if anything, edging up.</p>
+    <p>The WVS deserves a caveat that earns its place in the argument. Its early waves were heavily Western &mdash; 19 countries in wave 1 against 80 in wave 7 &mdash; so the small four-decade dip partly reflects a changing roster, not a changing world. That is exactly why we lean on the WVS only as <em>recent-wave evaluative-resilience support</em>, not as a clean 40-year level trend. On that narrower, fairer claim it agrees with the other two sources: the upper blade does not fall.</p>
+
+    <div class="wrap-wide" style="padding:0">
+    <figure>
+      <div class="fig">
+        <p class="figtitle">World life satisfaction, by WVS wave</p>
+        <p class="figsub">Equal-country average of life satisfaction (1&ndash;10) across the seven Integrated EVS&ndash;WVS waves, on a fixed set of 86 countries. Read the recent waves (5&ndash;7, brighter) as the evaluative-resilience signal; the early waves (1&ndash;4, dimmed) carry a Western country-set bias and a different, expanding roster.</p>
+        <div class="chart" id="wvs-chart"></div>
+        <div class="readout" id="wvs-readout">Hover or focus a wave for its value and coverage.</div>
+        <figcaption>Within-country weighted means, then averaged across countries with equal weight (no population variable available; read as &ldquo;average national experience&rdquo;). Fixed set of 86 countries present in at least two waves with at least 50 observations. Evaluative construct (<code>satis_your_life</code>, 1&ndash;10). The y-axis is zoomed (it does not start at zero) to resolve the small wave-to-wave movement; tick labels show the true levels.</figcaption>
+      </div>
+    </figure>
+    </div>
+
+    <h2>What the scissors does and doesn&rsquo;t show</h2>
+    <p><strong>It is two constructs, never one.</strong> Every figure in this prologue keeps the evaluative and the experiential apart &mdash; on separate axes, or standardized and labeled &mdash; because the whole finding is that they have come apart. A ladder point and an affect share are different units and are never averaged together. Where the scissors figure puts them on a shared standardized ruler, that ruler measures each line against its own history, not against the other&rsquo;s.</p>
+    <p><strong>The mode change is real and bounded.</strong> The GSS push-to-web in 2021&ndash;22 and the Gallup face-to-face&rarr;phone shift in 2020 can move measured levels on their own. So the cleanest evaluative comparisons here stop at 2018, and the relational and global-affect declines that carry the argument are long secular trends that began decades before any mode switch. The divergence does not depend on the pandemic-era data points.</p>
+    <p><strong>This is description, not diagnosis.</strong> The scissors says nothing yet about <em>why</em> the daily and relational life is thinning while the considered verdict holds &mdash; whether people are recalibrating their expectations, narrating resilience they don&rsquo;t feel, or genuinely valuing lives that are emotionally harder than they used to be. That question is the rest of the book. The prologue only establishes the shape: an upper blade that endures, a lower blade that falls, and a gap that has not closed. Everything after this is an attempt to explain it.</p>
+  </div>
+
+  <div class="wrap notes">
+    <h2 id="notes">Notes &amp; data</h2>
+    <ul>
+      <li><span class="smallcaps">Sources.</span> Gallup World Poll cleaned well-being extract, 2006&ndash;2025; U.S. General Social Survey cumulative file, 1972&ndash;2024; Integrated EVS&ndash;WVS, 1981&ndash;2022 (waves 1&ndash;7). Every figure in the text is recomputed and traced in <code>analysis/the-scissors/claims.json</code>.</li>
+      <li><span class="smallcaps">Gallup World (the blades).</span> Within-country weighted means (<code>wgt</code>) per wave, then population-weighted across countries by <code>ctry_pop_millions</code> &mdash; never a plain average of country means. A country enters a wave only with a substantial interview count (several hundred); a wave enters at &ge;&nbsp;20 countries with population data. 2005 is excluded (only 27 countries). Coverage runs 96&ndash;146 countries per wave.</li>
+      <li><span class="smallcaps">GSS (the echo).</span> Post-stratified weight <code>wtssps</code> (full 1972&ndash;2024 coverage). Upper blade: weighted share with <code>happy == 3</code> (very happy), direction-fixed higher&nbsp;=&nbsp;happier. Lower blade: mean of four social-evening items (<code>socfrend</code>, <code>socrel</code>, <code>socommun</code>, <code>socbar</code>), direction-fixed higher&nbsp;=&nbsp;more frequent, items suppressed below n&nbsp;=&nbsp;50. Under-30 series pooled in five-year bins, effective N&nbsp;&lt;&nbsp;50 suppressed.</li>
+      <li><span class="smallcaps">WVS (the corroboration).</span> <code>satis_your_life</code> (1&ndash;10), within-country weighted means averaged across countries with equal weight (no population variable in the extract). Fixed set of 86 countries present in &ge;&nbsp;2 waves with &ge;&nbsp;50 observations. Early waves are Western-biased by an expanding roster; used as recent-wave evaluative-resilience support, not a 40-year level trend.</li>
+      <li><span class="smallcaps">Constructs.</span> Evaluative&nbsp;= Cantril ladder, &ldquo;very happy&rdquo;, and WVS life satisfaction (a considered rating). Experiential / relational&nbsp;= Gallup&rsquo;s &ldquo;yesterday&rdquo; negative-affect index and the GSS social-evenings composite. They are labeled everywhere and never plotted on a shared raw axis.</li>
+      <li><span class="smallcaps">Known limits.</span> GSS 2021&ndash;22 push-to-web and Gallup 2020 face-to-face&rarr;phone mode changes can shift levels; the carrying trends predate them and the clean evaluative window runs to 2018. Cross-country ladder gaps under 0.2 points are not definitive. Population weighting in the Gallup blades uses a static ~2018-vintage population figure.</li>
+      <li><span class="smallcaps">Prior art.</span> Robert Putnam, <a href="https://www.simonandschuster.com/books/Bowling-Alone/Robert-D-Putnam/9780743203043">Bowling Alone</a> (the long thinning of American social life); the <a href="https://worldhappiness.report/">World Happiness Report</a> series (Cantril-ladder resilience alongside rising negative affect); Ed Diener and colleagues on the evaluative&ndash;experiential distinction. This prologue re-derives the divergence across three independent backbones and sets the book&rsquo;s visual grammar.</li>
+    </ul>
+  </div>
+</main>
+
+<script type="module">
+import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+
+const DATA = /*DATA*/{"meta":{"title":"The Scissors (Prologue)","slug":"the-scissors","description":"Two blades of human experience diverge over recent decades. The evaluative blade — how people rate their lives when asked — has held roughly steady or risen. The experiential blade — daily negative emotion and social connection — has worsened. This is the prologue figure for 'The Ladder and the Day'.","construct_note":"EVALUATIVE (upper blade): Cantril ladder (GWP), % very happy (GSS), mean satis_your_life (WVS). EXPERIENTIAL / BEHAVIORAL (lower blade): neg_affect index (GWP), social-evenings composite socfrend+socbar+socrel+socommun (GSS). These are distinct constructs; conflating them is the error this article corrects.","panels":{"A":{"dataset":"Gallup World Poll 2006-2025","weight":"wgt (within-country) -> population-weighted by ctry_pop_millions","suppress_rule":"country included per wave if n >= 300 interviews and iso3 len=3; wave included if >= 20 countries with pop weight","note":"2005 excluded (only 27 countries). Wave 2020 includes mode change (phone vs face-to-face in many countries)."},"B":{"dataset":"General Social Survey 1972-2024","weight":"wtssps (full-series post-stratified weight)","upper_blade":"% very happy (happy == 3, direction-fixed higher = happier)","lower_blade":"Composite of 4 social-evenings items (socfrend, socbar, socrel, socommun), direction-fixed higher = more frequent; mean of available items per year. Coverage 1974-2024. Items suppressed if n < 50.","mode_flag_years":[2021,2022],"mode_note":"2021-22 push-to-web mode change; level shifts vs 2018 may partly reflect mode effects.","suppress_rule":"annual N < 50 suppressed; under-30 series pooled in 5-year bins"},"C":{"dataset":"Integrated EVS-WVS 1981-2022","weight":"weight (within-country); countries weighted equally across waves","variable":"satis_your_life (1-10 evaluative)","country_set":"Fixed: 86 countries present in >= 2 waves with >= 50 obs","note":"Equal-country weighting because no population variable available; labeled 'average national experience'.","available":true}}},"gwp_series":[{"year":2006,"ladder":5.3142,"neg_affect":0.2423,"k_ladder":120,"k_neg":119,"k_total":120},{"year":2007,"ladder":5.405,"neg_affect":0.2372,"k_ladder":96,"k_neg":96,"k_total":96},{"year":2008,"ladder":5.3413,"neg_affect":0.2433,"k_ladder":113,"k_neg":113,"k_total":119},{"year":2009,"ladder":5.1668,"neg_affect":0.2495,"k_ladder":113,"k_neg":112,"k_total":113},{"year":2010,"ladder":5.3371,"neg_affect":0.244,"k_ladder":121,"k_neg":117,"k_total":121},{"year":2011,"ladder":5.3378,"neg_affect":0.2481,"k_ladder":143,"k_neg":145,"k_total":145},{"year":2012,"ladder":5.3023,"neg_affect":0.2647,"k_ladder":139,"k_neg":139,"k_total":139},{"year":2013,"ladder":5.2739,"neg_affect":0.2745,"k_ladder":133,"k_neg":134,"k_total":134},{"year":2014,"ladder":5.2941,"neg_affect":0.2577,"k_ladder":144,"k_neg":144,"k_total":145},{"year":2015,"ladder":5.2112,"neg_affect":0.2868,"k_ladder":139,"k_neg":139,"k_total":139},{"year":2016,"ladder":5.208,"neg_affect":0.2926,"k_ladder":139,"k_neg":139,"k_total":139},{"year":2017,"ladder":5.1446,"neg_affect":0.306,"k_ladder":146,"k_neg":144,"k_total":146},{"year":2018,"ladder":5.1341,"neg_affect":0.3059,"k_ladder":140,"k_neg":139,"k_total":140},{"year":2019,"ladder":5.0275,"neg_affect":0.3143,"k_ladder":142,"k_neg":141,"k_total":142},{"year":2020,"ladder":5.3649,"neg_affect":0.328,"k_ladder":114,"k_neg":113,"k_total":114},{"year":2021,"ladder":5.1884,"neg_affect":0.3317,"k_ladder":120,"k_neg":120,"k_total":120},{"year":2022,"ladder":5.1216,"neg_affect":0.3406,"k_ladder":138,"k_neg":138,"k_total":138},{"year":2023,"ladder":5.4843,"neg_affect":0.3163,"k_ladder":139,"k_neg":139,"k_total":139},{"year":2024,"ladder":5.3761,"neg_affect":0.3133,"k_ladder":140,"k_neg":141,"k_total":141},{"year":2025,"ladder":5.5745,"neg_affect":0.315,"k_ladder":135,"k_neg":135,"k_total":135}],"gss_series":[{"year":1974,"mode_flag":false,"pct_very_happy":0.3643,"soc_comp":3.7912},{"year":1975,"mode_flag":false,"pct_very_happy":0.3252,"soc_comp":3.6385},{"year":1977,"mode_flag":false,"pct_very_happy":0.3555,"soc_comp":3.7448},{"year":1978,"mode_flag":false,"pct_very_happy":0.3364,"soc_comp":3.6547},{"year":1982,"mode_flag":false,"pct_very_happy":0.3388,"soc_comp":3.7065},{"year":1983,"mode_flag":false,"pct_very_happy":0.314,"soc_comp":3.6534},{"year":1985,"mode_flag":false,"pct_very_happy":0.2907,"soc_comp":3.7452},{"year":1986,"mode_flag":false,"pct_very_happy":0.3281,"soc_comp":3.6569},{"year":1988,"mode_flag":false,"pct_very_happy":0.3606,"soc_comp":3.6246},{"year":1989,"mode_flag":false,"pct_very_happy":0.3422,"soc_comp":3.5069},{"year":1990,"mode_flag":false,"pct_very_happy":0.3505,"soc_comp":3.5743},{"year":1991,"mode_flag":false,"pct_very_happy":0.3173,"soc_comp":3.623},{"year":1993,"mode_flag":false,"pct_very_happy":0.3136,"soc_comp":3.6109},{"year":1994,"mode_flag":false,"pct_very_happy":0.3,"soc_comp":3.6054},{"year":1996,"mode_flag":false,"pct_very_happy":0.3223,"soc_comp":3.607},{"year":1998,"mode_flag":false,"pct_very_happy":0.3335,"soc_comp":3.5814},{"year":2000,"mode_flag":false,"pct_very_happy":0.3474,"soc_comp":3.6004},{"year":2002,"mode_flag":false,"pct_very_happy":0.3263,"soc_comp":3.7094},{"year":2004,"mode_flag":false,"pct_very_happy":0.3221,"soc_comp":3.6423},{"year":2006,"mode_flag":false,"pct_very_happy":0.3222,"soc_comp":3.6263},{"year":2008,"mode_flag":false,"pct_very_happy":0.309,"soc_comp":3.607},{"year":2010,"mode_flag":false,"pct_very_happy":0.2801,"soc_comp":3.7086},{"year":2012,"mode_flag":false,"pct_very_happy":0.3175,"soc_comp":3.6003},{"year":2014,"mode_flag":false,"pct_very_happy":0.3192,"soc_comp":3.6036},{"year":2016,"mode_flag":false,"pct_very_happy":0.3043,"soc_comp":3.622},{"year":2018,"mode_flag":false,"pct_very_happy":0.315,"soc_comp":3.6201},{"year":2021,"mode_flag":true,"pct_very_happy":0.1937,"soc_comp":3.1599},{"year":2022,"mode_flag":true,"pct_very_happy":0.2475,"soc_comp":3.4862},{"year":2024,"mode_flag":false,"pct_very_happy":0.234,"soc_comp":3.4404}],"gss_u30_bins":[{"bin_label":"1972-76","mid_year":1974,"pct_not_happy_u30":0.1502,"eff_n":1952,"mode_flag":false},{"bin_label":"1977-81","mid_year":1979,"pct_not_happy_u30":0.1138,"eff_n":1126,"mode_flag":false},{"bin_label":"1982-86","mid_year":1984,"pct_not_happy_u30":0.1165,"eff_n":1957,"mode_flag":false},{"bin_label":"1987-91","mid_year":1989,"pct_not_happy_u30":0.0907,"eff_n":1668,"mode_flag":false},{"bin_label":"1992-96","mid_year":1994,"pct_not_happy_u30":0.1046,"eff_n":1408,"mode_flag":false},{"bin_label":"1997-01","mid_year":1999,"pct_not_happy_u30":0.1178,"eff_n":1055,"mode_flag":false},{"bin_label":"2002-06","mid_year":2004,"pct_not_happy_u30":0.1312,"eff_n":1051,"mode_flag":false},{"bin_label":"2007-11","mid_year":2009,"pct_not_happy_u30":0.1377,"eff_n":733,"mode_flag":false},{"bin_label":"2012-16","mid_year":2014,"pct_not_happy_u30":0.1179,"eff_n":1197,"mode_flag":false},{"bin_label":"2017-21","mid_year":2019,"pct_not_happy_u30":0.2512,"eff_n":803,"mode_flag":true},{"bin_label":"2022-24","mid_year":2024,"pct_not_happy_u30":0.2555,"eff_n":1006,"mode_flag":true}],"wvs_series":[{"wave":1,"satlife_equal_country":7.2516,"k_countries":19,"n_interviews":24450},{"wave":2,"satlife_equal_country":6.8489,"k_countries":36,"n_interviews":53679},{"wave":3,"satlife_equal_country":6.2582,"k_countries":51,"n_interviews":73423},{"wave":4,"satlife_equal_country":6.2978,"k_countries":59,"n_interviews":84647},{"wave":5,"satlife_equal_country":6.8509,"k_countries":69,"n_interviews":131301},{"wave":6,"satlife_equal_country":6.8623,"k_countries":55,"n_interviews":82689},{"wave":7,"satlife_equal_country":7.1101,"k_countries":80,"n_interviews":137384}],"scalars":{"gwp_ladder_first":5.3142,"gwp_ladder_last":5.5745,"gwp_neg_first":0.2423,"gwp_neg_last":0.315,"gwp_neg_peak_year":2022,"gwp_neg_peak_value":0.3406,"gss_pct_very_happy_1970s":0.3412,"gss_pct_very_happy_1980s":0.3337,"gss_pct_very_happy_1990s":0.3229,"gss_pct_very_happy_2000s":0.3254,"gss_pct_very_happy_2010s":0.3072,"gss_pct_very_happy_2020s":0.2251,"gss_soc_first_value":3.7912,"gss_soc_last_value":3.4404,"wvs_fixed_country_n":86}}/*/DATA*/;
+
+const EVAL = getCSS("--eval"), EXP = getCSS("--exp"), GAP = getCSS("--gap");
+const INK = getCSS("--ink"), DIM = getCSS("--ink-dim"), FAINT = getCSS("--ink-faint"), HAIR = getCSS("--hairline");
+function getCSS(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+
+/* ---------- shared helpers ---------- */
+function mean(a){ return a.reduce((s,x)=>s+x,0)/a.length; }
+function sd(a){ const m=mean(a); return Math.sqrt(mean(a.map(x=>(x-m)**2))); }
+function makeTip(container){
+  const tip = document.createElement("div");
+  tip.className = "tip";
+  container.appendChild(tip);
+  return tip;
+}
+function showTip(tip, container, x, y, html){
+  tip.innerHTML = html;
+  tip.style.display = "block";
+  const cw = container.clientWidth, tw = tip.offsetWidth;
+  let lx = x + 14;
+  if (lx + tw > cw - 4) lx = x - tw - 14;
+  tip.style.left = Math.max(2, lx) + "px";
+  tip.style.top = Math.max(0, y - 14) + "px";
+}
+function hideTip(tip){ tip.style.display = "none"; }
+
+/* ===================================================================
+   FIG 1 — The scissors: standardized dual line, GWP ladder vs neg affect
+   =================================================================== */
+const scBox = document.getElementById("scissors-chart");
+const scTip = makeTip(scBox);
+const scReadout = d3.select("#scissors-readout");
+(function buildScissors(){
+  const s = DATA.gwp_series;
+  const ladVals = s.map(d=>d.ladder), negVals = s.map(d=>d.neg_affect);
+  const ladM = mean(ladVals), ladS = sd(ladVals), negM = mean(negVals), negS = sd(negVals);
+  const rows = s.map(d => ({
+    year: d.year,
+    ladder: d.ladder, neg: d.neg_affect,
+    zEval: (d.ladder - ladM)/ladS,              // upper blade
+    zExp: -((d.neg_affect - negM)/negS)         // lower blade, inverted: down = worse
+  }));
+
+  function draw(){
+    const W = Math.max(330, scBox.clientWidth);
+    const narrow = W < 560;
+    const H = Math.round(W * (narrow ? 0.74 : 0.5));
+    const mg = {top:24, right:narrow?16:30, bottom:38, left:narrow?34:46};
+    d3.select(scBox).select("svg").remove();
+    const svg = d3.select(scBox).append("svg")
+      .attr("viewBox",`0 0 ${W} ${H}`).attr("width","100%")
+      .attr("role","img")
+      .attr("aria-label","Standardized line chart: the world life rating (evaluative, upper blade) rises while daily negative emotion (experiential, lower blade, inverted) falls from 2006 to 2025, with the gap between them shaded.");
+
+    const x = d3.scaleLinear().domain([2006,2025]).range([mg.left, W-mg.right]);
+    const ext = d3.extent([...rows.map(d=>d.zEval), ...rows.map(d=>d.zExp)]);
+    const y = d3.scaleLinear().domain([Math.min(ext[0],-1.6), Math.max(ext[1],1.6)]).nice().range([H-mg.bottom, mg.top]);
+
+    // zero baseline
+    svg.append("line").attr("x1",mg.left).attr("x2",W-mg.right).attr("y1",y(0)).attr("y2",y(0))
+      .attr("stroke",HAIR).attr("stroke-width",1).attr("stroke-dasharray","2 3");
+
+    // x grid + labels
+    const xticks = narrow ? [2006,2012,2018,2025] : [2006,2010,2015,2020,2025];
+    svg.append("g").selectAll("text").data(xticks).join("text")
+      .attr("x",d=>x(d)).attr("y",H-mg.bottom+18).attr("text-anchor","middle")
+      .attr("font-family","var(--sans)").attr("font-size",11).attr("fill",FAINT).text(d=>d);
+
+    // gap area (between the two blades)
+    const gapArea = d3.area().x(d=>x(d.year)).y0(d=>y(d.zEval)).y1(d=>y(d.zExp)).curve(d3.curveMonotoneX);
+    svg.append("path").datum(rows).attr("d",gapArea).attr("fill",GAP).attr("opacity",0.22);
+
+    // the two blades
+    const lineE = d3.line().x(d=>x(d.year)).y(d=>y(d.zEval)).curve(d3.curveMonotoneX);
+    const lineX = d3.line().x(d=>x(d.year)).y(d=>y(d.zExp)).curve(d3.curveMonotoneX);
+    svg.append("path").datum(rows).attr("d",lineX).attr("fill","none").attr("stroke",EXP).attr("stroke-width",3);
+    svg.append("path").datum(rows).attr("d",lineE).attr("fill","none").attr("stroke",EVAL).attr("stroke-width",3);
+
+    // 2020 mode-change marker
+    svg.append("line").attr("x1",x(2020)).attr("x2",x(2020)).attr("y1",mg.top).attr("y2",H-mg.bottom)
+      .attr("stroke","#c79023").attr("stroke-width",1).attr("stroke-dasharray","3 3").attr("opacity",.55);
+    svg.append("text").attr("x",x(2020)).attr("y",mg.top+2).attr("text-anchor","middle")
+      .attr("font-family","var(--sans)").attr("font-size",9.5).attr("fill","#c79023").text("2020 mode shift");
+
+    // endpoint dots + labels
+    rows.forEach(d=>{
+      svg.append("circle").attr("cx",x(d.year)).attr("cy",y(d.zEval)).attr("r",2.6).attr("fill",EVAL);
+      svg.append("circle").attr("cx",x(d.year)).attr("cy",y(d.zExp)).attr("r",2.6).attr("fill",EXP);
+    });
+    if(!narrow){
+      svg.append("text").attr("x",x(2025)-4).attr("y",y(rows[rows.length-1].zEval)-9).attr("text-anchor","end")
+        .attr("font-family","var(--sans)").attr("font-size",11).attr("font-weight",800).attr("fill",EVAL).text("life rating");
+      svg.append("text").attr("x",x(2025)-4).attr("y",y(rows[rows.length-1].zExp)+16).attr("text-anchor","end")
+        .attr("font-family","var(--sans)").attr("font-size",11).attr("font-weight",800).attr("fill",EXP).text("daily emotion");
+    }
+
+    // y label
+    svg.append("text").attr("x",mg.left).attr("y",mg.top-8).attr("text-anchor","start")
+      .attr("font-family","var(--sans)").attr("font-size",10).attr("fill",FAINT).text("standard deviations (each vs its own 2006–2025 history)");
+
+    // hover layer
+    const focus = svg.append("g").style("display","none");
+    focus.append("line").attr("y1",mg.top).attr("y2",H-mg.bottom).attr("stroke",INK).attr("stroke-width",1).attr("opacity",.4);
+    svg.append("rect").attr("x",mg.left).attr("y",mg.top).attr("width",W-mg.right-mg.left).attr("height",H-mg.bottom-mg.top)
+      .attr("fill","transparent")
+      .on("pointermove", function(ev){
+        const [px,py] = d3.pointer(ev, this);
+        const yr = Math.round(x.invert(px));
+        const d = rows.find(r=>r.year===yr) || rows.reduce((a,b)=>Math.abs(b.year-x.invert(px))<Math.abs(a.year-x.invert(px))?b:a);
+        focus.style("display",null).select("line").attr("x1",x(d.year)).attr("x2",x(d.year));
+        const [cx,cy] = d3.pointer(ev, scBox);
+        showTip(scTip, scBox, cx, cy,
+          `<b>${d.year}</b><br>
+           <span class="num" style="color:${EVAL}">Life rating ${d.ladder.toFixed(2)} <span class="trg">evaluative</span></span><br>
+           <span class="num" style="color:${EXP}">Neg. affect ${d.neg.toFixed(3)} <span class="trg">experiential</span></span>`);
+        scReadout.html(`<b>${d.year}</b> &middot; world life rating <b style="color:${EVAL}">${d.ladder.toFixed(2)}</b> on the 0–10 ladder; daily negative-emotion index <b style="color:${EXP}">${d.neg.toFixed(3)}</b>.`);
+      })
+      .on("pointerleave", function(){ focus.style("display","none"); hideTip(scTip); scReadout.html("Hover or focus a year to read both blades in their original units."); });
+  }
+  draw();
+  window.addEventListener("resize", debounce(draw,160));
+})();
+
+/* ===================================================================
+   FIG 2 — American echo: dual-axis, % very happy vs social-evenings
+   =================================================================== */
+const ecBox = document.getElementById("echo-chart");
+const ecTip = makeTip(ecBox);
+const ecReadout = d3.select("#echo-readout");
+(function buildEcho(){
+  const s = DATA.gss_series;
+  function draw(){
+    const W = Math.max(330, ecBox.clientWidth);
+    const narrow = W < 560;
+    const H = Math.round(W * (narrow ? 0.72 : 0.48));
+    const mg = {top:24, right:narrow?44:56, bottom:36, left:narrow?44:56};
+    d3.select(ecBox).select("svg").remove();
+    const svg = d3.select(ecBox).append("svg")
+      .attr("viewBox",`0 0 ${W} ${H}`).attr("width","100%")
+      .attr("role","img")
+      .attr("aria-label","Dual-axis line chart: the U.S. share calling themselves very happy stays roughly flat from 1974 to 2018 while the social-evenings composite declines steadily; the 2021 to 2022 mode-change window is shaded.");
+
+    const x = d3.scaleLinear().domain([1974,2024]).range([mg.left, W-mg.right]);
+    const yL = d3.scaleLinear().domain([0.15,0.40]).range([H-mg.bottom, mg.top]); // very happy share
+    const yR = d3.scaleLinear().domain([3.0,3.9]).range([H-mg.bottom, mg.top]);   // soc composite
+
+    // mode-change band 2021-22
+    svg.append("rect").attr("x",x(2020.5)).attr("width",x(2022.5)-x(2020.5)).attr("y",mg.top).attr("height",H-mg.bottom-mg.top)
+      .attr("fill","#c79023").attr("opacity",.12);
+    svg.append("text").attr("x",x(2021.5)).attr("y",mg.top+12).attr("text-anchor","middle")
+      .attr("font-family","var(--sans)").attr("font-size",9).attr("fill","#c79023").text("web");
+
+    // x labels
+    const xticks = narrow ? [1974,1990,2006,2024] : [1974,1984,1994,2004,2014,2024];
+    svg.append("g").selectAll("text").data(xticks).join("text")
+      .attr("x",d=>x(d)).attr("y",H-mg.bottom+18).attr("text-anchor","middle")
+      .attr("font-family","var(--sans)").attr("font-size",11).attr("fill",FAINT).text(d=>d);
+
+    // left axis ticks (eval)
+    yL.ticks(4).forEach(t=>{
+      svg.append("line").attr("x1",mg.left).attr("x2",W-mg.right).attr("y1",yL(t)).attr("y2",yL(t)).attr("stroke",HAIR).attr("stroke-width",.7);
+      svg.append("text").attr("x",mg.left-6).attr("y",yL(t)+3.5).attr("text-anchor","end")
+        .attr("font-family","var(--sans)").attr("font-size",10).attr("fill",EVAL).text((t*100).toFixed(0)+"%");
+    });
+    // right axis ticks (relational)
+    yR.ticks(4).forEach(t=>{
+      svg.append("text").attr("x",W-mg.right+6).attr("y",yR(t)+3.5).attr("text-anchor","start")
+        .attr("font-family","var(--sans)").attr("font-size",10).attr("fill",EXP).text(t.toFixed(1));
+    });
+
+    // lines (split at mode change so the dashed post-2018 reads as caveated)
+    const clean = s.filter(d=>d.year<=2018);
+    const post = s.filter(d=>d.year>=2018);
+    const lineVH = (acc)=>d3.line().x(d=>x(d.year)).y(d=>yL(d.pct_very_happy)).curve(d3.curveMonotoneX)(acc);
+    const lineSC = (acc)=>d3.line().x(d=>x(d.year)).y(d=>yR(d.soc_comp)).curve(d3.curveMonotoneX)(acc);
+
+    svg.append("path").attr("d",lineSC(clean)).attr("fill","none").attr("stroke",EXP).attr("stroke-width",3);
+    svg.append("path").attr("d",lineSC(post)).attr("fill","none").attr("stroke",EXP).attr("stroke-width",3).attr("stroke-dasharray","4 3").attr("opacity",.85);
+    svg.append("path").attr("d",lineVH(clean)).attr("fill","none").attr("stroke",EVAL).attr("stroke-width",3);
+    svg.append("path").attr("d",lineVH(post)).attr("fill","none").attr("stroke",EVAL).attr("stroke-width",3).attr("stroke-dasharray","4 3").attr("opacity",.85);
+
+    s.forEach(d=>{
+      svg.append("circle").attr("cx",x(d.year)).attr("cy",yL(d.pct_very_happy)).attr("r",2.4).attr("fill",EVAL);
+      svg.append("circle").attr("cx",x(d.year)).attr("cy",yR(d.soc_comp)).attr("r",2.4).attr("fill",EXP);
+    });
+
+    // axis captions
+    svg.append("text").attr("x",mg.left).attr("y",mg.top-9).attr("text-anchor","start")
+      .attr("font-family","var(--sans)").attr("font-size",10).attr("font-weight",700).attr("fill",EVAL).text("% very happy — evaluative");
+    svg.append("text").attr("x",W-mg.right).attr("y",mg.top-9).attr("text-anchor","end")
+      .attr("font-family","var(--sans)").attr("font-size",10).attr("font-weight",700).attr("fill",EXP).text("social evenings — relational");
+
+    const focus = svg.append("g").style("display","none");
+    focus.append("line").attr("y1",mg.top).attr("y2",H-mg.bottom).attr("stroke",INK).attr("stroke-width",1).attr("opacity",.4);
+    svg.append("rect").attr("x",mg.left).attr("y",mg.top).attr("width",W-mg.right-mg.left).attr("height",H-mg.bottom-mg.top)
+      .attr("fill","transparent")
+      .on("pointermove", function(ev){
+        const px = d3.pointer(ev,this)[0];
+        const d = s.reduce((a,b)=>Math.abs(b.year-x.invert(px))<Math.abs(a.year-x.invert(px))?b:a);
+        focus.style("display",null).select("line").attr("x1",x(d.year)).attr("x2",x(d.year));
+        const [cx,cy]=d3.pointer(ev,ecBox);
+        showTip(ecTip, ecBox, cx, cy,
+          `<b>${d.year}</b>${d.mode_flag?' <span class="trg" style="color:#c79023">web mode</span>':''}<br>
+           <span class="num" style="color:${EVAL}">Very happy ${(d.pct_very_happy*100).toFixed(1)}%</span><br>
+           <span class="num" style="color:${EXP}">Social evenings ${d.soc_comp.toFixed(2)}</span>`);
+        ecReadout.html(`<b>${d.year}</b> &middot; <b style="color:${EVAL}">${(d.pct_very_happy*100).toFixed(1)}%</b> very happy; social-evenings composite <b style="color:${EXP}">${d.soc_comp.toFixed(2)}</b>.${d.mode_flag?' Web-mode year — read with care.':''}`);
+      })
+      .on("pointerleave", function(){ focus.style("display","none"); hideTip(ecTip); ecReadout.html("Hover or focus a year for both series."); });
+  }
+  draw();
+  window.addEventListener("resize", debounce(draw,160));
+})();
+
+/* ===================================================================
+   FIG 3 — Under-30 "not too happy", 5-year bins (bar)
+   =================================================================== */
+const yoBox = document.getElementById("youth-chart");
+const yoTip = makeTip(yoBox);
+const yoReadout = d3.select("#youth-readout");
+(function buildYouth(){
+  const bins = DATA.gss_u30_bins;
+  function draw(){
+    const W = Math.max(330, yoBox.clientWidth);
+    const narrow = W < 560;
+    const H = Math.round(W * (narrow ? 0.62 : 0.42));
+    const mg = {top:22, right:16, bottom:54, left:narrow?38:46};
+    d3.select(yoBox).select("svg").remove();
+    const svg = d3.select(yoBox).append("svg")
+      .attr("viewBox",`0 0 ${W} ${H}`).attr("width","100%")
+      .attr("role","img")
+      .attr("aria-label","Bar chart: the share of U.S. under-30s saying they are not too happy stays around ten percent for decades then jumps above twenty-five percent in the most recent bins.");
+
+    const x = d3.scaleBand().domain(bins.map(d=>d.bin_label)).range([mg.left, W-mg.right]).padding(0.22);
+    const y = d3.scaleLinear().domain([0,0.30]).range([H-mg.bottom, mg.top]);
+
+    y.ticks(5).forEach(t=>{
+      svg.append("line").attr("x1",mg.left).attr("x2",W-mg.right).attr("y1",y(t)).attr("y2",y(t)).attr("stroke",HAIR).attr("stroke-width",.7);
+      svg.append("text").attr("x",mg.left-6).attr("y",y(t)+3.5).attr("text-anchor","end")
+        .attr("font-family","var(--sans)").attr("font-size",10).attr("fill",FAINT).text((t*100).toFixed(0)+"%");
+    });
+
+    // hatch pattern for mode-flagged bins
+    const defs = svg.append("defs");
+    const pat = defs.append("pattern").attr("id","hatch").attr("width",6).attr("height",6).attr("patternTransform","rotate(45)").attr("patternUnits","userSpaceOnUse");
+    pat.append("rect").attr("width",6).attr("height",6).attr("fill",EXP).attr("opacity",.55);
+    pat.append("line").attr("x1",0).attr("y1",0).attr("x2",0).attr("y2",6).attr("stroke","#171c25").attr("stroke-width",2);
+
+    svg.selectAll("rect.bar").data(bins).join("rect").attr("class","bar")
+      .attr("x",d=>x(d.bin_label)).attr("width",x.bandwidth())
+      .attr("y",d=>y(d.pct_not_happy_u30)).attr("height",d=>y(0)-y(d.pct_not_happy_u30))
+      .attr("fill",d=>d.mode_flag?"url(#hatch)":EXP)
+      .attr("tabindex",0).attr("role","img")
+      .attr("aria-label",d=>`${d.bin_label}: ${(d.pct_not_happy_u30*100).toFixed(1)} percent not too happy`)
+      .on("pointermove", function(ev,d){ const [cx,cy]=d3.pointer(ev,yoBox); barTip(d,cx,cy); })
+      .on("focus", function(ev,d){ const bb=this.getBBox(); barTip(d, bb.x+bb.width/2, bb.y); })
+      .on("pointerleave blur", function(){ hideTip(yoTip); yoReadout.html("Hover or focus a bar for its bin."); });
+
+    function barTip(d,cx,cy){
+      showTip(yoTip,yoBox,cx,cy,`<b>${d.bin_label}</b>${d.mode_flag?' <span class="trg" style="color:#c79023">crosses web mode</span>':''}<br><span class="num">${(d.pct_not_happy_u30*100).toFixed(1)}% not too happy &middot; eff. N ${d.eff_n.toLocaleString("en-US")}</span>`);
+      yoReadout.html(`<b>${d.bin_label}</b> &middot; <b style="color:${EXP}">${(d.pct_not_happy_u30*100).toFixed(1)}%</b> of under-30s "not too happy"${d.mode_flag?' (bin crosses the 2021–22 mode change)':''}.`);
+    }
+
+    // value labels on first/last
+    [bins[3], bins[bins.length-1]].forEach(d=>{
+      svg.append("text").attr("x",x(d.bin_label)+x.bandwidth()/2).attr("y",y(d.pct_not_happy_u30)-6).attr("text-anchor","middle")
+        .attr("font-family","var(--sans)").attr("font-size",11).attr("font-weight",800).attr("fill",EXP)
+        .text((d.pct_not_happy_u30*100).toFixed(1)+"%");
+    });
+
+    // x labels (rotated when narrow)
+    svg.append("g").selectAll("text").data(bins).join("text")
+      .attr("transform",d=>narrow?`translate(${x(d.bin_label)+x.bandwidth()/2},${H-mg.bottom+14}) rotate(45)`:`translate(${x(d.bin_label)+x.bandwidth()/2},${H-mg.bottom+16})`)
+      .attr("text-anchor",narrow?"start":"middle")
+      .attr("font-family","var(--sans)").attr("font-size",narrow?9:10).attr("fill",FAINT).text(d=>d.bin_label);
+  }
+  draw();
+  window.addEventListener("resize", debounce(draw,160));
+})();
+
+/* ===================================================================
+   FIG 4 — WVS life satisfaction by wave (line + dots)
+   =================================================================== */
+const wvBox = document.getElementById("wvs-chart");
+const wvTip = makeTip(wvBox);
+const wvReadout = d3.select("#wvs-readout");
+(function buildWvs(){
+  const s = DATA.wvs_series;
+  function draw(){
+    const W = Math.max(330, wvBox.clientWidth);
+    const narrow = W < 560;
+    const H = Math.round(W * (narrow ? 0.58 : 0.40));
+    const mg = {top:24, right:24, bottom:42, left:narrow?40:48};
+    d3.select(wvBox).select("svg").remove();
+    const svg = d3.select(wvBox).append("svg")
+      .attr("viewBox",`0 0 ${W} ${H}`).attr("width","100%")
+      .attr("role","img")
+      .attr("aria-label","Line chart: average life satisfaction across seven World Values Survey waves dips in the early Western-biased waves then recovers to its starting level by wave seven.");
+
+    const x = d3.scalePoint().domain(s.map(d=>d.wave)).range([mg.left, W-mg.right]).padding(0.5);
+    const y = d3.scaleLinear().domain([6.0,7.5]).range([H-mg.bottom, mg.top]);
+
+    y.ticks(4).forEach(t=>{
+      svg.append("line").attr("x1",mg.left).attr("x2",W-mg.right).attr("y1",y(t)).attr("y2",y(t)).attr("stroke",HAIR).attr("stroke-width",.7);
+      svg.append("text").attr("x",mg.left-6).attr("y",y(t)+3.5).attr("text-anchor","end")
+        .attr("font-family","var(--sans)").attr("font-size",10).attr("fill",FAINT).text(t.toFixed(1));
+    });
+
+    // dim early waves (1-4), bright recent (5-7)
+    const early = s.filter(d=>d.wave<=4), recent = s.filter(d=>d.wave>=4);
+    const line = (acc)=>d3.line().x(d=>x(d.wave)).y(d=>y(d.satlife_equal_country)).curve(d3.curveMonotoneX)(acc);
+    svg.append("path").attr("d",line(early)).attr("fill","none").attr("stroke",EVAL).attr("stroke-width",2.4).attr("opacity",.35);
+    svg.append("path").attr("d",line(recent)).attr("fill","none").attr("stroke",EVAL).attr("stroke-width",3.2);
+
+    svg.append("text").attr("x",x(2)).attr("y",mg.top+4).attr("text-anchor","middle")
+      .attr("font-family","var(--sans)").attr("font-size",9.5).attr("fill",FAINT).text("waves 1–4 · Western-biased roster");
+    svg.append("text").attr("x",x(6)).attr("y",mg.top+4).attr("text-anchor","middle")
+      .attr("font-family","var(--sans)").attr("font-size",9.5).attr("fill",EVAL).attr("font-weight",700).text("waves 5–7 · resilience signal");
+
+    s.forEach(d=>{
+      const recentDot = d.wave>=5;
+      svg.append("circle").attr("cx",x(d.wave)).attr("cy",y(d.satlife_equal_country)).attr("r",recentDot?5:3.6)
+        .attr("fill",EVAL).attr("opacity",recentDot?1:.4)
+        .attr("tabindex",0).attr("role","img")
+        .attr("aria-label",`Wave ${d.wave}: life satisfaction ${d.satlife_equal_country.toFixed(2)} across ${d.k_countries} countries`)
+        .on("pointermove", function(ev){ const [cx,cy]=d3.pointer(ev,wvBox); wTip(d,cx,cy); })
+        .on("focus", function(){ wTip(d, x(d.wave), y(d.satlife_equal_country)); })
+        .on("pointerleave blur", function(){ hideTip(wvTip); wvReadout.html("Hover or focus a wave for its value and coverage."); });
+      svg.append("text").attr("x",x(d.wave)).attr("y",y(d.satlife_equal_country)-(recentDot?12:9)).attr("text-anchor","middle")
+        .attr("font-family","var(--sans)").attr("font-size",recentDot?11:9.5).attr("font-weight",recentDot?800:600)
+        .attr("fill",EVAL).attr("opacity",recentDot?1:.55).text(d.satlife_equal_country.toFixed(2));
+    });
+
+    function wTip(d,cx,cy){
+      showTip(wvTip,wvBox,cx,cy,`<b>Wave ${d.wave}</b><br><span class="num">Life satisfaction ${d.satlife_equal_country.toFixed(2)} <span class="trg">evaluative</span></span><br><span class="num" style="color:${DIM}">${d.k_countries} countries &middot; ${d.n_interviews.toLocaleString("en-US")} interviews</span>`);
+      wvReadout.html(`<b>Wave ${d.wave}</b> &middot; life satisfaction <b style="color:${EVAL}">${d.satlife_equal_country.toFixed(2)}</b> on the 1–10 scale, across ${d.k_countries} countries.`);
+    }
+
+    svg.append("g").selectAll("text").data(s).join("text")
+      .attr("x",d=>x(d.wave)).attr("y",H-mg.bottom+18).attr("text-anchor","middle")
+      .attr("font-family","var(--sans)").attr("font-size",11).attr("fill",FAINT).text(d=>"W"+d.wave);
+  }
+  draw();
+  window.addEventListener("resize", debounce(draw,160));
+})();
+
+function debounce(fn, ms){ let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a),ms); }; }
+</script>
+<!--SL_BOOKNAV_START-->
+<style>
+.slbn{font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;background:#0f1417;border-top:1px solid #27313a;color:#9fb0ba;padding:24px 20px 40px;margin:48px 0 0}
+.slbn-in{max-width:1080px;margin:0 auto;display:flex;align-items:stretch;gap:12px}
+.slbn a{flex:1 1 0;min-width:0;text-decoration:none;color:inherit;border:1px solid #27313a;border-radius:10px;padding:13px 15px;display:flex;flex-direction:column;gap:4px;background:#161d22;transition:border-color .15s,transform .15s}
+.slbn a:hover{border-color:#3fa9a0;transform:translateY(-2px)}
+.slbn a:focus-visible{outline:2px solid #3fa9a0;outline-offset:2px}
+.slbn a.slbn-next{text-align:right;align-items:flex-end}
+.slbn a.slbn-toc{flex:0 0 auto;min-width:120px;justify-content:center;align-items:center;text-align:center}
+.slbn .slbn-dir{font:700 10px/1 inherit;letter-spacing:.13em;text-transform:uppercase;color:#6b7c87}
+.slbn .slbn-ttl{font:700 14px/1.3 inherit;color:#eef2f4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.slbn a.slbn-disabled{opacity:.38;pointer-events:none}
+@media(max-width:640px){.slbn-in{flex-wrap:wrap}.slbn a{flex:1 1 100%}.slbn a.slbn-next{text-align:left;align-items:flex-start}.slbn a.slbn-toc{order:-1}}
+</style>
+<nav class="slbn" aria-label="Book navigation"><div class="slbn-in"><span class="slbn-prev slbn-disabled"><span class="slbn-dir">‹ Previous</span><span class="slbn-ttl">The beginning</span></span><a class="slbn-toc" href="../index.html#book" target="_top"><span class="slbn-dir">The Scissors</span><span class="slbn-ttl">Chapter 1 / 36</span></a><a class="slbn-next" href="../read.html?ch=plateau-in-the-tail" target="_top"><span class="slbn-dir">Next ›</span><span class="slbn-ttl">The Plateau Is in the Tail, Not the Mean</span></a></div></nav>
+<!--SL_BOOKNAV_END-->
+</body>
+</html>
