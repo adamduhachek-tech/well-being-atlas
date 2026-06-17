@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Two Blades: How a Life Is Rated and How It Is Felt — a reading</title>
+<style>
+ :root{--bg:#0f1417;--panel:#161d22;--panel2:#1b242b;--edge:#27313a;--edge2:#33414c;--ink:#eef2f4;
+   --dim:#9fb0ba;--faint:#6b7c87;--eval:#3fa9a0;--exp:#e0794a;--gap:#8d7bd8;
+   --sans:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;--serif:Charter,Georgia,"Times New Roman",serif;}
+ *{box-sizing:border-box} html{scroll-behavior:smooth}
+ body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+ a{color:inherit}
+ .nav{position:sticky;top:0;z-index:30;background:rgba(15,20,23,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--edge)}
+ .nav-in{max-width:780px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:11px 22px}
+ .brand{display:flex;align-items:center;gap:9px;text-decoration:none;font-weight:800;font-size:15px}
+ .nav a.back{color:var(--dim);font:600 13px/1 var(--sans);text-decoration:none}
+ .nav a.back:hover{color:var(--ink)}
+ .wrap{max-width:780px;margin:0 auto;padding:0 22px}
+ .hero{padding:62px 0 14px}
+ .kick{font:700 12px/1 var(--sans);letter-spacing:.26em;text-transform:uppercase;color:var(--exp);margin:0 0 16px}
+ h1{font:800 clamp(40px,7vw,72px)/1.02 var(--sans);letter-spacing:-.03em;margin:0 0 4px}
+ .blades{display:block;width:100%;max-width:430px;height:72px;margin:14px 0 18px}
+ .throughline{font:400 22px/1.5 var(--serif);color:var(--ink);max-width:40ch;margin:0 0 18px}
+ .principle{font:400 16px/1.6 var(--serif);color:var(--dim);max-width:62ch;margin:0 0 22px}
+ .cta-row{display:flex;flex-wrap:wrap;gap:13px;align-items:center}
+ .cta{display:inline-flex;align-items:center;gap:9px;text-decoration:none;font:700 15px/1 var(--sans);
+   background:var(--eval);color:#06201d;padding:13px 20px;border-radius:10px;transition:transform .15s,box-shadow .15s}
+ .cta:hover{transform:translateY(-2px);box-shadow:0 8px 24px -10px var(--eval)}
+ .meta{font:13px/1.6 var(--sans);color:var(--faint)}
+ .overture{font:400 19px/1.66 var(--serif);color:var(--dim);border-top:1px solid var(--edge);
+   border-bottom:1px solid var(--edge);padding:26px 0;margin:30px 0 8px;max-width:64ch}
+ .overture b,.overture strong{color:var(--ink)}
+ /* the chain */
+ .chain{position:relative;padding:14px 0 30px 0}
+ .chain::before{content:"";position:absolute;left:15px;top:0;bottom:90px;width:2px;
+   background:linear-gradient(var(--exp),var(--eval));opacity:.35}
+ .step{position:relative;padding:18px 0 18px 52px}
+ .bridge{margin:0 0 16px}
+ .bridge p{font:400 19px/1.62 var(--serif);color:var(--dim);margin:0;max-width:60ch}
+ .bridge p::first-letter{}
+ .chap{position:relative;display:flex;gap:16px;align-items:flex-start;text-decoration:none;color:inherit;
+   background:var(--panel);border:1px solid var(--edge);border-radius:12px;padding:16px 18px;transition:border-color .15s,transform .15s}
+ .chap:hover{border-color:var(--eval);transform:translateY(-2px)}
+ .chap:focus-visible{outline:2px solid var(--eval);outline-offset:2px}
+ .cn{position:absolute;left:-52px;top:8px;width:34px;height:34px;border-radius:50%;background:var(--bg);
+   border:2px solid var(--edge2);color:var(--dim);font:700 14px/30px var(--serif);text-align:center;
+   font-variant-numeric:tabular-nums}
+ .chap:hover .cn{border-color:var(--eval);color:var(--eval)}
+ .cbody{display:flex;flex-direction:column;gap:7px}
+ .ct{font:700 19px/1.25 var(--sans);letter-spacing:-.01em}
+ .cd{font:14.5px/1.55 var(--serif);color:var(--dim)}
+ .cread{font:700 12px/1 var(--sans);letter-spacing:.04em;text-transform:uppercase;color:var(--eval)}
+ .coda{border-top:1px solid var(--edge);padding:30px 0 90px;font:400 22px/1.55 var(--serif);color:var(--ink);max-width:52ch}
+ @media(max-width:560px){
+   .chain::before{left:11px} .step{padding-left:40px} .cn{left:-40px;width:28px;height:28px;font-size:12px;line-height:24px}
+ }
+</style></head>
+<body>
+<div class="nav"><div class="nav-in">
+  <a class="brand" href="index.html#book">
+    <svg width="28" height="18" viewBox="0 0 60 40" aria-hidden="true">
+      <circle cx="8" cy="20" r="3.2" fill="none" stroke="var(--gap)" stroke-width="2"/>
+      <path d="M8,20 C24,19 42,12 58,5" fill="none" stroke="var(--eval)" stroke-width="2.6" stroke-linecap="round"/>
+      <path d="M8,20 C24,21 42,28 58,35" fill="none" stroke="var(--exp)" stroke-width="2.6" stroke-linecap="round"/>
+    </svg><span>The Scissors</span></a>
+  <a class="back" href="index.html#book">&larr; All chapters</a>
+</div></div>
+<main class="wrap">
+  <div class="hero">
+    <p class="kick">A reading &middot; 11 chapters, each built on the last</p>
+    <h1>The Two Blades: How a Life Is Rated and How It Is Felt</h1>
+    <svg class="blades" viewBox="0 0 540 90" aria-label="Two diverging lines from a shared pivot.">
+      <circle cx="16" cy="45" r="5.5" fill="none" stroke="var(--gap)" stroke-width="2.4"/>
+      <path d="M16,45 C170,42 380,26 532,10" fill="none" stroke="var(--eval)" stroke-width="3.2" stroke-linecap="round"/>
+      <path d="M16,45 C170,49 380,66 532,82" fill="none" stroke="var(--exp)" stroke-width="3.2" stroke-linecap="round"/>
+    </svg>
+    <p class="throughline">Once you see well-being as two separate measures — the rating people give their lives and the way their days actually feel — every hard question splits cleanly in two, and the answers are not the same: money and freedom move the rating far more than the day, the fall in the day traces to a foreclosed future that turns fatal and lands first on the young, and the same lens that opened the gap names, at the close, exactly what feeds each blade.</p>
+    <div class="cta-row">
+      <a class="cta" href="read.html?ch=the-scissors">Begin the reading
+        <svg width="16" height="14" viewBox="0 0 16 14" aria-hidden="true"><path d="M1,7 H14 M9,2 L14,7 L9,12" fill="none" stroke="#06201d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <span class="meta">Or follow the thread below &mdash; each chapter answers the question the one before it raises.</span>
+    </div>
+  </div>
+  <div class="overture">Ask people how their lives are going and you are really asking two different questions, though almost no one notices the seam. One asks them to rate the whole — to stand back, take the measure of a life, and place it on a ladder. The other asks how the days actually feel — the worry, the enjoyment, the stress of yesterday. We average the two into a single word, happiness, and assume they rise and fall together. They do not. Once you pry the rating apart from the feeling, every hard question about well-being splits cleanly in two, and the two halves give different answers. Money, freedom, and connection move the rating far more than the day. The fall in the day traces to something deeper than any pandemic. And the same lens that opens the gap will, at the close, name exactly what feeds each side. This book is built from one tool. Here is the first time it cuts.</div>
+  <div class="chain">
+  
+    <section class="step">
+      <div class="bridge"><p>We begin with the seam itself. If a life can be rated high and felt low at the same time, the two measures must be coming apart somewhere — and if they are, the single word &#x27;happiness&#x27; has been hiding it. So: across the three great surveys of human well-being, do the two blades actually diverge, or is this a distinction without a difference?</p></div>
+      <a class="chap" href="read.html?ch=the-scissors">
+        <span class="cn">01</span>
+        <span class="cbody">
+          <span class="ct">The Scissors</span>
+          <span class="cd">Two ways of measuring a life are coming apart: the rating people give it holds or climbs while the daily feel of it sinks. Across the Gallup World Poll, the GSS, and the Values Surveys, the gap between the evaluative and experiential blades keeps widening.</span>
+          <span class="cread">Read this chapter <span aria-hidden="true">&rarr;</span></span>
+        </span>
+      </a>
+    </section>
+
+    <section class="step">
+      <div class="bridge"><p>The scissors are open: the rating holds or climbs while the daily feel of life sinks, and the gap keeps widening across Gallup World, the GSS, and the Values Surveys. If the two blades move apart, something must drive each one differently — so we point the new lens at the force everyone assumes drives happiness. Does money lift the rating and the day together, or does it cut them apart too?</p></div>
+      <a class="chap" href="read.html?ch=money-buys-calm-not-joy">
+        <span class="cn">02</span>
+        <span class="cbody">
+          <span class="ct">Money Buys Calm, Not Joy</span>
+          <span class="cd">Across the income ladder, how people rate their lives climbs steeply while daily enjoyment plateaus above poverty and stress barely moves — what money most clearly buys is freedom from worry.</span>
+          <span class="cread">Read this chapter <span aria-hidden="true">&rarr;</span></span>
+        </span>
+      </a>
+    </section>
+
+    <section class="step">
+      <div class="bridge"><p>In America the blades split on money exactly as the lens predicted: across income the life-rating climbs steeply while daily enjoyment plateaus above poverty and stress barely moves — what money most clearly buys is freedom from worry, not joy. But one country could be a quirk. Is &#x27;money lifts the rating far more than the mood&#x27; an American curiosity, or a law that holds for the whole species?</p></div>
+      <a class="chap" href="read.html?ch=income-life-vs-mood">
+        <span class="cn">03</span>
+        <span class="cbody">
+          <span class="ct">Money Moves Your Life Rating More Than Your Mood</span>
+          <span class="cd">Inside almost every country, richer people both rate their lives higher and feel better day to day — but the life-rating slope is steeper than the mood slope in 96% of countries, and the gap widens with development.</span>
+          <span class="cread">Read this chapter <span aria-hidden="true">&rarr;</span></span>
+        </span>
+      </a>
+    </section>
+
+    <section class="step">
+      <div class="bridge"><p>It is a law: in 96% of 155 countries the life-rating slope is steeper than the mood slope, and the premium widens with development — and in proving it we quietly installed the income control the book&#x27;s climax will reactivate. Money, then, rules the rating more than the day. But does it rule the rating? Once income is set aside, what moves the evaluative blade — what actually beats money on the rating people give their lives?</p></div>
+      <a class="chap" href="read.html?ch=the-freedom-to-be-happy">
+        <span class="cn">04</span>
+        <span class="cbody">
+          <span class="ct">The Freedom to Be Happy</span>
+          <span class="cd">Across 100+ countries and 40 years of the Values Surveys, the sense of freedom and control over one’s life predicts life satisfaction better than income or health — a within-country coefficient of 0.30, and r=0.77 across 107 national averages.</span>
+          <span class="cread">Read this chapter <span aria-hidden="true">&rarr;</span></span>
+        </span>
+      </a>
+    </section>
+
+    <section class="step">
+      <div class="bridge"><p>Freedom beats money: across 100-plus countries and 40 years, the sense of control over one&#x27;s own life predicts life satisfaction better than income or health (0.30 within countries, r=0.77 across national averages). The evaluative blade has a stronger master than the obvious one. But freedom is an internal sense of agency, and humans are social animals. Does connection move a blade too — and if so, how heavily, and can a generous state make it matter less?</p></div>
+      <a class="chap" href="read.html?ch=someone-to-count-on">
+        <span class="cn">05</span>
+        <span class="cbody">
+          <span class="ct">Someone to Count On</span>
+          <span class="cd">Having someone to count on is worth about 1.5 ladder points — one of the largest gaps in well-being — and a generous welfare state, far from substituting for it, makes that private safety net matter more, not less.</span>
+          <span class="cread">Read this chapter <span aria-hidden="true">&rarr;</span></span>
+        </span>
+      </a>
+    </section>
+
+    <section class="step">
+      <div class="bridge"><p>Connection is enormous and irreplaceable: having someone to count on is worth about 1.5 ladder points — among the largest gaps in all of well-being — and a generous welfare state makes that private tie matter more, not less. The cast of the rating&#x27;s drivers is now complete: income, freedom, connection. But the book opened on a falling day, and we have only explained the rising rating. What ordinary, decades-long belief feeds the experiential blade — and has been quietly draining out of it?</p></div>
+      <a class="chap" href="read.html?ch=out-of-reach">
+        <span class="cn">06</span>
+        <span class="cbody">
+          <span class="ct">Out of Reach</span>
+          <span class="cd">The belief that the system gives you a fair shot has quietly collapsed — agreement fell from 78% in 2000 to 45% in 2024 — and that belief is worth real happiness.</span>
+          <span class="cread">Read this chapter <span aria-hidden="true">&rarr;</span></span>
+        </span>
+      </a>
+    </section>
+
+    <section class="step">
+      <div class="bridge"><p>The eroding input is hope: belief that the system gives you a fair shot fell from 78% in 2000 to 45% in 2024, and that belief carries real happiness — a quarter-century drain, not a pandemic blip, pulling the day down even with money set aside. A foreclosed future, then, costs happiness. But how far does that cost run? Does the same collapsed-future signal show up not just where people feel worse, but where they die?</p></div>
+      <a class="chap" href="read.html?ch=despair-felt-and-fatal">
+        <span class="cn">07</span>
+        <span class="cbody">
+          <span class="ct">Despair, Felt and Fatal</span>
+          <span class="cd">Deaths of despair gave America a mortality map. Buried in 1,769,079 Gallup interviews is the question that map raises: which feeling lives in the places where people die? Not sadness. Not worry. Pain — and a future that looks shorter than the present.</span>
+          <span class="cread">Read this chapter <span aria-hidden="true">&rarr;</span></span>
+        </span>
+      </a>
+    </section>
+
+    <section class="step">
+      <div class="bridge"><p>It does, and it runs to the grave. Joining 1.77 million Gallup interviews to the deaths-of-despair map, the feeling that lives where people die is not sadness or worry but pain — and a future that looks shorter than the present (the future ladder, at −0.43, beats even the current ladder&#x27;s −0.36). The fatal signal is the empirical echo of the hope chapter, the very same foreclosed future. If a draining future is fatal at the extreme, it should wound someone first. Which group, of all of them, is taking the hit ahead of everyone else?</p></div>
+      <a class="chap" href="read.html?ch=young-and-less-happy">
+        <span class="cn">08</span>
+        <span class="cbody">
+          <span class="ct">Young and Less Happy</span>
+          <span class="cd">In the GSS, happiness has always risen gently with age. Over the past decade the youngest adults fell to a 50-year low — 1.80 in 2021, 1.91 in 2024 — pulling away from everyone else.</span>
+          <span class="cread">Read this chapter <span aria-hidden="true">&rarr;</span></span>
+        </span>
+      </a>
+    </section>
+
+    <section class="step">
+      <div class="bridge"><p>The leading edge is the young. In the GSS happiness always rose gently with age; over the past decade the youngest adults — the cohort just entering the foreclosed-future world the last two chapters described — fell to a 50-year low (1.80 in 2021, 1.91 in 2024), pulling away from everyone else. The chapter cannot prove the foreclosed future is the cause — it names housing precarity, isolation, and loneliness as co-suspects — but the timing aligns: the leading edge broke exactly as the horizon closed. Here the lens turned from forces to people, and for the young one blade visibly fell. But what happens when, for the same group, the two blades disagree — when the rating says one thing and the day says the opposite?</p></div>
+      <a class="chap" href="read.html?ch=gender-gap-two-ways">
+        <span class="cn">09</span>
+        <span class="cbody">
+          <span class="ct">The Gender Well-Being Paradox, Measured Two Ways</span>
+          <span class="cd">Across 155 countries, women rate their lives at least as high as men in nine of every ten places — yet report more daily worry, sadness, and stress. Two gender gaps, pointing opposite ways.</span>
+          <span class="cread">Read this chapter <span aria-hidden="true">&rarr;</span></span>
+        </span>
+      </a>
+    </section>
+
+    <section class="step">
+      <div class="bridge"><p>For women the blades point opposite ways: across 155 countries they rate their lives at least as high as men in nine places of ten, yet report more daily worry, sadness, and stress — two gaps in opposite directions that only the two-blade lens can hold at once. If sex splits the two measures, does another deep American divide do the same? And the harder test: does that split survive the very income controls the money chapters installed?</p></div>
+      <a class="chap" href="read.html?ch=black-white-two-measures">
+        <span class="cn">10</span>
+        <span class="cbody">
+          <span class="ct">Lower on the Ladder, Lighter in the Day</span>
+          <span class="cd">Ask whether Black or white Americans are happier and the honest answer is: by which measure? They rate their current lives slightly lower, yet report calmer days — less worry and less stress — at every income level, and most among the affluent.</span>
+          <span class="cread">Read this chapter <span aria-hidden="true">&rarr;</span></span>
+        </span>
+      </a>
+    </section>
+
+    <section class="step">
+      <div class="bridge"><p>It survives — this is the hardest case and the climax of the people-block. Black versus white Americans rate their lives slightly lower yet report calmer days, less worry and stress, at every income level, most among the affluent; the opposite-blade split holds with income fixed, paying back the debt the money chapters incurred. Across every driver and every case the same three actors keep recurring — income, freedom, connection. The only thing left is to run them head to head: which one actually feeds each blade?</p></div>
+      <a class="chap" href="read.html?ch=closing-the-scissors">
+        <span class="cn">11</span>
+        <span class="cbody">
+          <span class="ct">Closing the Scissors</span>
+          <span class="cd">What actually lifts a life? Run the horse race across the GSS, Gallup World, and the Values Surveys and the same answer recurs: perceived freedom, health, and connection rival or beat income — and income barely touches the daily-emotion blade at all.</span>
+          <span class="cread">Read this chapter <span aria-hidden="true">&rarr;</span></span>
+        </span>
+      </a>
+    </section>
+  </div>
+  <div class="coda">The horse race delivers the verdict the opening paradox demanded: on the rating, perceived freedom (+0.79 alone, +0.48 net) and connection (+0.37, +0.34 net) rival or beat income, whose net pull is a bare +0.06 — and on the daily feeling income musters only +0.035, about a tenth of its grip on the ladder. The scissors that opened the book close on a single, durable instruction: any claim about happiness can be split into the life you rate and the day you feel, and once you make the cut, you will rarely find the same answer on both blades.</div>
+</main>
+</body></html>
