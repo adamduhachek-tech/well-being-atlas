@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Never Enough — why getting richer delivers so little</title>
+<meta name="description" content="Real incomes rose; satisfaction didn't. A data essay on why money buys position, not a better day — across the GSS, Gallup, and the World Values Survey.">
+<style>
+ :root{
+   --bg:#12120e;--panel:#1b1a15;--panel2:#211f19;--edge:#2f2c24;--edge2:#403c31;
+   --ink:#f1ece1;--dim:#aba491;--faint:#776f5e;
+   --money:#d8a657;--rank:#5cab9d;--warn:#cd6b54;--ink2:#d9d3c6;
+   --sans:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+   --serif:Charter,"Iowan Old Style",Georgia,"Times New Roman",serif;
+   --w:720px;
+ }
+ *{box-sizing:border-box} html{scroll-behavior:smooth}
+ body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--serif);-webkit-font-smoothing:antialiased;line-height:1.65}
+ a{color:var(--money)}
+ .wrap{max-width:var(--w);margin:0 auto;padding:0 22px}
+ .kick{font:700 12px/1 var(--sans);letter-spacing:.26em;text-transform:uppercase;color:var(--money);margin:0 0 18px}
+ h1{font:800 clamp(46px,9vw,86px)/0.98 var(--sans);letter-spacing:-.035em;margin:0 0 14px;color:var(--ink)}
+ .sub{font:400 21px/1.45 var(--serif);color:var(--dim);max-width:30ch;margin:0 0 26px}
+ .hero{padding:74px 0 26px}
+ .lede{font:400 21px/1.6 var(--serif);color:var(--ink2);margin:0 0 8px}
+ .lede .m{color:var(--money);font-weight:600}.lede .r{color:var(--rank);font-weight:600}
+ .meta{font:13px/1.6 var(--sans);color:var(--faint);border-top:1px solid var(--edge);padding-top:14px;margin-top:26px}
+ .act{padding:52px 0 8px;border-top:1px solid var(--edge);margin-top:40px}
+ .actnum{font:800 13px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--money);margin:0 0 10px}
+ h2{font:800 clamp(28px,5vw,42px)/1.08 var(--sans);letter-spacing:-.02em;margin:0 0 18px;color:var(--ink)}
+ p{font:400 19px/1.66 var(--serif);color:var(--ink2);margin:0 0 20px}
+ p .m{color:var(--money);font-weight:600}p .r{color:var(--rank);font-weight:600}p b{color:#fff;font-weight:700}
+ .fig{margin:26px 0 30px;background:var(--panel);border:1px solid var(--edge);border-radius:14px;padding:20px 20px 16px}
+ .fig h3{font:700 15px/1.3 var(--sans);margin:0 0 3px;color:var(--ink)}
+ .fig .cap{font:13px/1.5 var(--sans);color:var(--faint);margin:0 0 14px}
+ .fig figcaption{font:13px/1.55 var(--sans);color:var(--faint);margin:12px 0 0;border-top:1px solid var(--edge);padding-top:10px}
+ svg{display:block;width:100%;height:auto;overflow:visible}
+ .pull{font:600 22px/1.4 var(--serif);color:var(--ink);border-left:3px solid var(--money);padding:4px 0 4px 18px;margin:30px 0}
+ .tick text,.axis text{font:11px/1 var(--sans);fill:var(--faint)}
+ .tick line,.domain{stroke:var(--edge2)}
+ .lab{font:11.5px/1 var(--sans);}
+ footer{border-top:1px solid var(--edge);margin-top:54px;padding:26px 0 80px}
+ footer h4{font:700 12px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--faint);margin:0 0 12px}
+ footer p{font:13.5px/1.65 var(--sans);color:var(--dim);margin:0 0 12px}
+ .home{display:inline-block;font:600 13px/1 var(--sans);color:var(--faint);text-decoration:none;margin-top:18px}
+ .home:hover{color:var(--ink)}
+ @media(max-width:560px){ .fig{padding:15px 13px 12px} }
+</style></head>
+<body>
+<main>
+  <div class="wrap">
+    <div class="hero">
+      <p class="kick">A data essay · five charts, one argument</p>
+      <h1>Never&nbsp;Enough</h1>
+      <p class="sub">Why getting richer delivers so little — and what money actually buys.</p>
+      <p class="lede">We spend our lives chasing more, and the economy obliges: the average American family is about <span class="m">a quarter richer</span>, in real terms, than it was in 1972. By rights we should be more satisfied with our money than our grandparents were. <b>We are not.</b> To see why, you have to stop asking how much people <span class="m">have</span> and start asking where they <span class="r">stand</span>.</p>
+      <p class="meta" id="meta"></p>
+    </div>
+  </div>
+
+  <section class="act"><div class="wrap">
+    <p class="actnum">Act one</p>
+    <h2>The treadmill</h2>
+    <p>Run the numbers and the promise fails to arrive. Adjusted for inflation, average family income rose about <span class="m">25 percent</span> from the early 1970s to today. Over the same half-century, the share of Americans <span class="r">"pretty well satisfied"</span> with their finances did not rise to meet it — it slipped, from <b>32 percent to 28</b>. The line that should have climbed with the money drifted the other way. Economists call it the satisfaction treadmill: you walk faster and stay in place.</p>
+    <figure class="fig">
+      <h3>Money climbed. Satisfaction didn't.</h3>
+      <div class="cap">Real average US family income vs. the share "pretty well satisfied" with their finances, 1972–2024 · GSS, weighted</div>
+      <div id="c1"></div>
+      <figcaption>Average family income in constant 2000 dollars (GSS <code>coninc</code>). The income line is a 3-survey moving average; satisfaction is the weighted share answering "pretty well satisfied."</figcaption>
+    </figure>
+    <p>So more money for the average American bought no more peace about money. That is strange enough to demand an explanation. If it isn't the dollars, what is it?</p>
+  </div></section>
+
+  <section class="act"><div class="wrap">
+    <p class="actnum">Act two</p>
+    <h2>It was never the money. It was the standing.</h2>
+    <p>Ask people not what they earn but where they think they sit — <span class="r">"far below average," "average," "above average"</span> — and the fog lifts. Financial satisfaction climbs almost a full point up that ladder of relative position. And when you put dollars and rank in the same model, the dollars nearly vanish: <b>adding relative position collapses the effect of real income by 60 percent.</b> What money was buying, all along, was a place in line.</p>
+    <figure class="fig">
+      <h3>Where you stand beats what you earn</h3>
+      <div class="cap">Left: financial satisfaction by self-placed relative position. Right: the standardized effect of real income on satisfaction, before and after adding relative position · GSS, weighted</div>
+      <div id="c2"></div>
+      <figcaption>N≈60,000 with both items. Effects are standardized (per SD); "income alone" and "income + rank" come from the same weighted regression family.</figcaption>
+    </figure>
+    <p>And the standing matters <i>more</i> than it used to. The financial-satisfaction gap between the richest and poorest quarter of Americans has widened — from <span class="r">0.48</span> points in the 1970s to <span class="r">0.70</span> today — even as the average held flat. The race didn't end. The track got steeper.</p>
+  </div></section>
+
+  <section class="act"><div class="wrap">
+    <p class="actnum">Act three</p>
+    <h2>Your yardstick is your neighbors</h2>
+    <p>Relative to whom? Not some abstract national mean — the people you can see. Take two Americans on the <b>identical paycheck</b> and drop one into a richer county. Holding income, age, education, race and year all fixed, the one surrounded by wealthier neighbors rates his life lower. The effect is modest but real: doubling a county's median income costs about <span class="warn">seven-hundredths of a ladder point</span>. And it bites the middle — not the poorest, for whom a richer county, with its services and spillovers, slightly helps.</p>
+    <figure class="fig">
+      <h3>Same income, richer county, lower ladder</h3>
+      <div class="cap">Average life-rating (0–10) by your own income, split by whether your county is among the poorest, middle, or richest third · Gallup US Daily 2008–2017, unweighted, N≈350k with full controls</div>
+      <div id="c3"></div>
+      <figcaption>Each line holds an income bracket fixed and moves across county wealth. For all but the lowest bracket, richer surroundings shift the ladder down — the reference-group effect, invisible until you control for own income.</figcaption>
+    </figure>
+    <p class="pull">Money satisfies relative to a line — and the line is drawn by the people next door.</p>
+  </div></section>
+
+  <section class="act"><div class="wrap">
+    <p class="actnum">Act four</p>
+    <h2>A human universal — and what outranks it</h2>
+    <p>Is this an American neurosis or a human one? Across <b>108 countries and 40 years</b> of the World Values Survey, your income rank within your own country predicts your life satisfaction everywhere — a touch more strongly, if anything, in poorer places. But run the real contest — rank against the things money is supposed to deliver — and a different winner emerges. Once you account for how financially secure people <i>feel</i> and how much <span class="r">freedom</span> they sense over their own lives, raw income rank all but disappears. <b>Perceived freedom out-predicts it roughly seven to one.</b></p>
+    <figure class="fig">
+      <h3>What actually moves a life rating</h3>
+      <div class="cap">Standardized within-country effect on life satisfaction, all entered together · World Values Survey 1981–2022, weighted, 108 countries, country fixed effects</div>
+      <div id="c4"></div>
+      <figcaption>Each bar is the partial effect (per SD) with the others held fixed. Money's grip runs through <i>felt</i> financial standing; once that and freedom are in the model, raw rank adds almost nothing.</figcaption>
+    </figure>
+    <p>Money's pull on a life runs through feeling — and feeling answers to more than money.</p>
+  </div></section>
+
+  <section class="act"><div class="wrap">
+    <p class="actnum">Act five</p>
+    <h2>The honest ledger</h2>
+    <p>So set the evidence side by side. A higher income rank lifts how people <span class="m">rate</span> their lives the most. It does move the <span class="r">day</span>, a little, in both directions — a bit more joy, a bit less worry — but the rating gains about half again as much, and even there, freedom rivals or beats it. The ledger reads plainly: money buys you a better <b>position</b>, a higher number when you stop to take stock, and a measure of calm. On its own it does not buy a better <b>day</b>.</p>
+    <figure class="fig">
+      <h3>What a step up the income ladder buys</h3>
+      <div class="cap">Standardized within-country effect of income rank on each measure, with perceived freedom shown for scale · Gallup World Poll &amp; World Values Survey, weighted</div>
+      <div id="c5"></div>
+      <figcaption>Evaluative (the life rating) vs. experiential (how the day felt). Income rank moves the rating more than the day; perceived freedom — which money cannot buy — moves the rating more than income does.</figcaption>
+    </figure>
+    <p>The richest society in history is still on the treadmill, and now we can say why. The line we measure ourselves against — our neighbors, our era, our own rising expectations — keeps moving with us. And the things that would actually lift the day, a sense of freedom and someone to count on, were never for sale. We will always have more. It will never be enough, because enough was never a quantity. It was a place in line.</p>
+  </div></section>
+
+  <footer><div class="wrap">
+    <h4>Notes &amp; data</h4>
+    <p id="notes"></p>
+    <p><b>Method.</b> Effects are standardized (per standard deviation). Cross-country models (World Values Survey) use country (and wave) fixed effects — each person compared within their own society — and the S017 design weight; never a population-weighted world average. GSS uses <code>wtssps</code>; the Gallup US Daily extract carries no survey weight, so those estimates are unweighted and describe patterns, not population levels. <b>Evaluative</b> measures (the ladder, life satisfaction, financial satisfaction) are kept distinct from <b>experiential</b> ones (yesterday's worry and joy). Effects here are real but modest — the honest size of well-being effects.</p>
+    <p>Prior art this builds on and departs from: Easterlin (1974) on growth and happiness; Kahneman &amp; Deaton (2010) and Killingsworth-Kahneman-Mellers (2023) on income and the two measures; Luttmer (2005) on neighbors' earnings; Stevenson &amp; Wolfers (2008). Every figure is computed by a reproducible script and traced to a per-claim provenance file.</p>
+    <a class="home" href="https://well-being-atlas.vercel.app/">← The Well-Being Atlas</a>
+  </div></footer>
+</main>
+
+<script type="module">
+import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+const DATA = {"meta":{"title":"Never Enough","subtitle":"Why getting richer delivers so little \u2014 and what money actually buys","datasets":"GSS 1972-2024 (wtssps) \u00b7 Gallup US Daily 2008-2017 (unweighted) \u00b7 EVS-WVS Values Surveys 1981-2022 (S017) \u00b7 Gallup World Poll","construct":"evaluative (satisfaction/ladder) vs experiential (Gallup 'yesterday' affect) \u2014 never conflated"},"act1":{"by_year":[{"year":1972,"pct_sat":0.3313,"satfin":2.1121,"med_inc":33333,"mean_inc":41051},{"year":1973,"pct_sat":0.3144,"satfin":2.0816,"med_inc":44643,"mean_inc":43408},{"year":1974,"pct_sat":0.3043,"satfin":2.0672,"med_inc":42215,"mean_inc":43422},{"year":1975,"pct_sat":0.3114,"satfin":2.0531,"med_inc":38414,"mean_inc":41803},{"year":1976,"pct_sat":0.3055,"satfin":2.0679,"med_inc":35471,"mean_inc":39813},{"year":1977,"pct_sat":0.3469,"satfin":2.1396,"med_inc":36903,"mean_inc":46707},{"year":1978,"pct_sat":0.3485,"satfin":2.1043,"med_inc":34487,"mean_inc":43293},{"year":1980,"pct_sat":0.2685,"satfin":1.9857,"med_inc":35291,"mean_inc":45535},{"year":1982,"pct_sat":0.279,"satfin":2.0186,"med_inc":28214,"mean_inc":40315},{"year":1983,"pct_sat":0.2828,"satfin":1.9942,"med_inc":27764,"mean_inc":43439},{"year":1984,"pct_sat":0.2861,"satfin":2.0354,"med_inc":26657,"mean_inc":41873},{"year":1985,"pct_sat":0.2906,"satfin":2.0238,"med_inc":29574,"mean_inc":43954},{"year":1986,"pct_sat":0.3138,"satfin":2.0571,"med_inc":32438,"mean_inc":44247},{"year":1987,"pct_sat":0.2938,"satfin":2.0791,"med_inc":31854,"mean_inc":45857},{"year":1988,"pct_sat":0.3059,"satfin":2.0772,"med_inc":34430,"mean_inc":45766},{"year":1989,"pct_sat":0.2978,"satfin":2.0379,"med_inc":38467,"mean_inc":47679},{"year":1990,"pct_sat":0.2989,"satfin":2.0274,"med_inc":36883,"mean_inc":49707},{"year":1991,"pct_sat":0.2823,"satfin":2.034,"med_inc":35135,"mean_inc":42401},{"year":1993,"pct_sat":0.2623,"satfin":1.9755,"med_inc":39095,"mean_inc":47140},{"year":1994,"pct_sat":0.28,"satfin":2.0247,"med_inc":38141,"mean_inc":46496},{"year":1996,"pct_sat":0.2799,"satfin":2.0068,"med_inc":36472,"mean_inc":48925},{"year":1998,"pct_sat":0.3026,"satfin":2.0503,"med_inc":34774,"mean_inc":49203},{"year":2000,"pct_sat":0.3101,"satfin":2.0809,"med_inc":38752,"mean_inc":53012},{"year":2002,"pct_sat":0.3039,"satfin":2.0306,"med_inc":36482,"mean_inc":55492},{"year":2004,"pct_sat":0.3299,"satfin":2.0855,"med_inc":42127,"mean_inc":52727},{"year":2006,"pct_sat":0.3026,"satfin":2.059,"med_inc":39695,"mean_inc":54834},{"year":2008,"pct_sat":0.286,"satfin":1.9868,"med_inc":37372,"mean_inc":55561},{"year":2010,"pct_sat":0.2303,"satfin":1.9173,"med_inc":36135,"mean_inc":48598},{"year":2012,"pct_sat":0.2725,"satfin":1.9956,"med_inc":34470,"mean_inc":54749},{"year":2014,"pct_sat":0.2735,"satfin":2.0095,"med_inc":33255,"mean_inc":52792},{"year":2016,"pct_sat":0.2864,"satfin":2.0187,"med_inc":39930,"mean_inc":52827},{"year":2018,"pct_sat":0.3325,"satfin":2.1184,"med_inc":38555,"mean_inc":53749},{"year":2021,"pct_sat":0.27,"satfin":2.0047,"med_inc":45360,"mean_inc":52187},{"year":2022,"pct_sat":0.2669,"satfin":1.9653,"med_inc":34815,"mean_inc":56498},{"year":2024,"pct_sat":0.2264,"satfin":1.9171,"med_inc":null,"mean_inc":null}],"income_growth_pct":25.0,"mean_income_early":43097,"mean_income_late":53768,"pct_satisfied_early":0.3152,"pct_satisfied_late":0.2829},"act2":{"decomp":{"income_alone":0.291,"rank_alone":0.414,"both_income":0.115,"both_rank":0.358,"collapse_pct":60.0,"n":60621},"by_finrela":[{"finrela":1,"label":"Far below average","satfin":1.413,"n":4247},{"finrela":2,"label":"Below average","satfin":1.625,"n":17347},{"finrela":3,"label":"Average","satfin":2.104,"n":33617},{"finrela":4,"label":"Above average","satfin":2.445,"n":13590},{"finrela":5,"label":"Far above average","satfin":2.441,"n":1627}],"gradient_by_era":[{"era":"1972-80","q":[1.855,1.95,2.097,2.329],"gap":0.474},{"era":"1981-95","q":[1.765,1.898,2.03,2.318],"gap":0.553},{"era":"1996-2010","q":[1.722,1.855,2.054,2.358],"gap":0.636},{"era":"2011-24","q":[1.687,1.862,2.052,2.389],"gap":0.702}]},"act3":{"beta_log_cty":-0.098,"per_double":-0.068,"per_25pct":-0.022,"n":350513,"controls":"own income brackets, age, education, race, year","ladder_by_own_x_county":[{"income":"<$23k","cty1":6.179,"cty2":6.244,"cty3":6.245},{"income":"$24-36k","cty1":6.655,"cty2":6.643,"cty3":6.613},{"income":"$36-48k","cty1":6.922,"cty2":6.871,"cty3":6.848},{"income":"$48-60k","cty1":7.133,"cty2":7.066,"cty3":7.014},{"income":"$60-90k","cty1":7.316,"cty2":7.259,"cty3":7.205},{"income":"$90k+","cty1":7.575,"cty2":7.579,"cty3":7.557}],"county_terciles":"counties split into poorest/middle/richest third by median household income"},"act4":{"rank_beta":0.208,"rank_by_development":{"High income":{"beta":0.202,"n":132234},"Low income":{"beta":0.247,"n":16932},"Lower middle income":{"beta":0.229,"n":90781},"Upper middle income":{"beta":0.204,"n":157180}},"lifesat_by_development":[{"group":"Low income","life_sat":5.564,"n":18709},{"group":"Upper middle income","life_sat":6.565,"n":209151},{"group":"Lower middle income","life_sat":6.281,"n":107286},{"group":"High income","life_sat":7.25,"n":319098}],"horse_race":{"income_rank":0.027,"freedom":0.207,"financial_sat":0.402,"health":0.138,"n":377557},"note":"within-country(-wave) standardized; country fixed effects; weight S017"},"act5":{"ledger":[{"k":"How you RATE your life","sub":"evaluative \u00b7 the ladder","beta":0.157,"note":"income rank lifts the rating most"},{"k":"How your day FEELS \u2014 less worry","sub":"experiential \u00b7 negative affect","beta":0.115,"note":"a smaller dividend than the rating"},{"k":"How your day FEELS \u2014 more joy","sub":"experiential \u00b7 positive affect","beta":0.108,"note":"about the same modest size as calm"}],"freedom_vs_money":{"freedom":0.207,"income_rank_in_horserace":0.027,"health":0.138},"interpretation":"Income rank lifts how you RATE life (0.16) about 50% more than how your day FEELS (joy 0.11, calm 0.12, which move together). And in a head-to-head, perceived freedom (0.21) beats income rank (0.03) even on the rating \u2014 money's pull runs through felt financial standing, not the day."}};
+const M={money:"#d8a657",rank:"#5cab9d",warn:"#cd6b54",dim:"#aba491",faint:"#776f5e",ink:"#f1ece1",edge:"#2f2c24",edge2:"#403c31",panel:"#1b1a15"};
+const fmtPct=d=>d3.format(".0%")(d), fmt2=d=>d3.format("+.2f")(d);
+function svg(sel,w,h){return d3.select(sel).append("svg").attr("viewBox",`0 0 ${w} ${h}`).attr("role","img");}
+
+// ---------- C1: treadmill ----------
+(function(){
+  const W=660,H=300,m={t:14,r:54,b:30,l:48};
+  const s=svg("#c1",W,H);
+  const ys=DATA.act1.by_year.filter(d=>d.mean_inc&&d.pct_sat);
+  const x=d3.scaleLinear().domain(d3.extent(ys,d=>d.year)).range([m.l,W-m.r]);
+  // smooth income (3-pt moving avg)
+  const inc=ys.map((d,i)=>{const w=ys.slice(Math.max(0,i-1),i+2);return{year:d.year,v:d3.mean(w,e=>e.mean_inc)};});
+  const yL=d3.scaleLinear().domain([30000,60000]).range([H-m.b,m.t]);
+  const yR=d3.scaleLinear().domain([0.20,0.36]).range([H-m.b,m.t]);
+  s.append("g").attr("transform",`translate(0,${H-m.b})`).attr("class","axis").call(d3.axisBottom(x).ticks(7).tickFormat(d3.format("d")));
+  s.append("g").attr("transform",`translate(${m.l},0)`).attr("class","axis").call(d3.axisLeft(yL).ticks(4).tickFormat(d=>"$"+d/1000+"k"));
+  s.append("g").attr("transform",`translate(${W-m.r},0)`).attr("class","axis").call(d3.axisRight(yR).ticks(4).tickFormat(fmtPct));
+  s.append("path").datum(inc).attr("fill","none").attr("stroke",M.money).attr("stroke-width",3)
+    .attr("d",d3.line().x(d=>x(d.year)).y(d=>yL(d.v)).curve(d3.curveMonotoneX));
+  s.append("path").datum(ys).attr("fill","none").attr("stroke",M.rank).attr("stroke-width",3)
+    .attr("d",d3.line().x(d=>x(d.year)).y(d=>yR(d.pct_sat)).curve(d3.curveMonotoneX));
+  s.append("text").attr("x",x(2024)).attr("y",yL(inc.at(-1).v)-8).attr("text-anchor","end").attr("fill",M.money).attr("class","lab").style("font-weight",700).text("Real income ↑");
+  s.append("text").attr("x",x(2024)).attr("y",yR(ys.at(-1).pct_sat)+16).attr("text-anchor","end").attr("fill",M.rank).attr("class","lab").style("font-weight",700).text("Satisfied ↓");
+})();
+
+// ---------- C2: relative gradient + collapse ----------
+(function(){
+  const W=660,H=300,m={t:18,r:14,b:46,l:40};
+  const s=svg("#c2",W,H);
+  const split=410;
+  const g=DATA.act2.by_finrela;
+  const x=d3.scaleBand().domain(g.map(d=>d.finrela)).range([m.l,split]).padding(.22);
+  const y=d3.scaleLinear().domain([1,2.6]).range([H-m.b,m.t]);
+  s.append("g").attr("transform",`translate(${m.l},0)`).attr("class","axis").call(d3.axisLeft(y).ticks(4));
+  s.selectAll(".bar").data(g).join("rect").attr("x",d=>x(d.finrela)).attr("width",x.bandwidth())
+    .attr("y",d=>y(d.satfin)).attr("height",d=>y(1)-y(d.satfin)).attr("rx",3).attr("fill",M.rank).attr("opacity",d=>0.5+0.1*d.finrela);
+  s.selectAll(".bl").data(g).join("text").attr("x",d=>x(d.finrela)+x.bandwidth()/2).attr("y",H-m.b+14)
+    .attr("text-anchor","middle").attr("fill",M.faint).attr("class","lab").style("font-size","9.5px")
+    .text(d=>["Far\nbelow","Below","Average","Above","Far\nabove"][d.finrela-1].split("\n")[0]);
+  s.selectAll(".bl2").data(g).join("text").attr("x",d=>x(d.finrela)+x.bandwidth()/2).attr("y",H-m.b+25)
+    .attr("text-anchor","middle").attr("fill",M.faint).attr("class","lab").style("font-size","9.5px")
+    .text(d=>(["Far\nbelow","Below","Average","Above","Far\nabove"][d.finrela-1].split("\n")[1])||"");
+  s.append("text").attr("x",m.l).attr("y",m.t-4).attr("fill",M.dim).attr("class","lab").text("Financial satisfaction (1–3)");
+  s.append("text").attr("x",(m.l+split)/2).attr("y",H-6).attr("text-anchor","middle").attr("fill",M.faint).attr("class","lab").text("Where you place yourself");
+  // collapse panel
+  const cx=d3.scaleBand().domain(["alone","+rank"]).range([split+30,W-m.r]).padding(.35);
+  const cy=d3.scaleLinear().domain([0,0.32]).range([H-m.b,m.t]);
+  const dd=DATA.act2.decomp;
+  const cdata=[{k:"alone",v:dd.income_alone},{k:"+rank",v:dd.both_income}];
+  s.selectAll(".cb").data(cdata).join("rect").attr("x",d=>cx(d.k)).attr("width",cx.bandwidth())
+    .attr("y",d=>cy(d.v)).attr("height",d=>cy(0)-cy(d.v)).attr("rx",3).attr("fill",M.money).attr("opacity",(d,i)=>i?0.45:0.9);
+  s.selectAll(".cl").data(cdata).join("text").attr("x",d=>cx(d.k)+cx.bandwidth()/2).attr("y",d=>cy(d.v)-5)
+    .attr("text-anchor","middle").attr("fill",M.money).attr("class","lab").style("font-weight",700).text(d=>d.v.toFixed(2));
+  s.selectAll(".clx").data([["alone","income\nalone"],["+rank","with\nrank added"]]).join("text")
+    .attr("x",d=>cx(d[0])+cx.bandwidth()/2).attr("y",H-m.b+14).attr("text-anchor","middle").attr("fill",M.faint).attr("class","lab").style("font-size","10px")
+    .each(function(d){const t=d3.select(this);d[1].split("\n").forEach((ln,i)=>t.append("tspan").attr("x",cx(d[0])+cx.bandwidth()/2).attr("dy",i?11:0).text(ln));});
+  s.append("text").attr("x",(split+30+W-m.r)/2).attr("y",m.t-4).attr("text-anchor","middle").attr("fill",M.dim).attr("class","lab").text("Effect of income →");
+  s.append("text").attr("x",(split+30+W-m.r)/2).attr("y",cy(dd.both_income)-22).attr("text-anchor","middle").attr("fill",M.ink).attr("class","lab").style("font-weight",700).text("−60%");
+})();
+
+// ---------- C3: neighbors (slopes by income band) ----------
+(function(){
+  const rows=DATA.act3.ladder_by_own_x_county;
+  const W=660,H=300,m={t:16,r:140,b:28,l:14};
+  const s=svg("#c3",W,H);
+  const x=d3.scalePoint().domain(["cty1","cty2","cty3"]).range([m.l+96,W-m.r]).padding(.3);
+  const all=rows.flatMap(d=>[d.cty1,d.cty2,d.cty3]);
+  const y=d3.scaleLinear().domain([d3.min(all)-0.1,d3.max(all)+0.1]).range([H-m.b,m.t]);
+  s.append("g").attr("transform",`translate(0,${H-m.b})`).attr("class","axis")
+    .call(d3.axisBottom(x).tickFormat(d=>({cty1:"Poorest counties",cty2:"Middle",cty3:"Richest counties"}[d])));
+  const color=d3.scaleSequential(d3.interpolateYlOrBr).domain([-1,rows.length+1]);
+  rows.forEach((d,i)=>{
+    const pts=[["cty1",d.cty1],["cty2",d.cty2],["cty3",d.cty3]];
+    const col= i===0? M.rank : M.money;
+    s.append("path").attr("fill","none").attr("stroke",col).attr("stroke-width",2.4).attr("opacity",.92)
+      .attr("d",d3.line().x(p=>x(p[0])).y(p=>y(p[1]))(pts));
+    s.selectAll(null).data(pts).join("circle").attr("cx",p=>x(p[0])).attr("cy",p=>y(p[1])).attr("r",3.2).attr("fill",col);
+    s.append("text").attr("x",W-m.r+8).attr("y",y(d.cty3)+3).attr("fill",col).attr("class","lab").style("font-weight",600).text(d.income);
+  });
+  s.append("text").attr("x",m.l).attr("y",m.t-2).attr("fill",M.dim).attr("class","lab").text("Life rating (0–10), by own income →");
+})();
+
+// ---------- C4: horse race ----------
+(function(){
+  const hr=DATA.act4.horse_race;
+  const data=[{k:"Felt financial standing",v:hr.financial_sat,c:M.money},
+    {k:"Sense of freedom",v:hr.freedom,c:M.rank},
+    {k:"Health",v:hr.health,c:M.dim},
+    {k:"Raw income rank",v:hr.income_rank,c:M.warn}].sort((a,b)=>b.v-a.v);
+  const W=660,rowH=46,H=data.length*rowH+30,m={t:10,r:60,b:20,l:175};
+  const s=svg("#c4",W,H);
+  const x=d3.scaleLinear().domain([0,0.45]).range([m.l,W-m.r]);
+  const y=d3.scaleBand().domain(data.map(d=>d.k)).range([m.t,H-m.b]).padding(.32);
+  s.selectAll(".bar").data(data).join("rect").attr("x",m.l).attr("y",d=>y(d.k)).attr("height",y.bandwidth())
+    .attr("width",d=>x(d.v)-m.l).attr("rx",4).attr("fill",d=>d.c);
+  s.selectAll(".kl").data(data).join("text").attr("x",m.l-10).attr("y",d=>y(d.k)+y.bandwidth()/2+4)
+    .attr("text-anchor","end").attr("fill",M.ink).attr("class","lab").style("font-size","13px").text(d=>d.k);
+  s.selectAll(".vl").data(data).join("text").attr("x",d=>x(d.v)+7).attr("y",d=>y(d.k)+y.bandwidth()/2+4)
+    .attr("fill",d=>d.c).attr("class","lab").style("font-weight",700).text(d=>d.v.toFixed(2));
+})();
+
+// ---------- C5: the ledger ----------
+(function(){
+  const L=DATA.act5.ledger, fr=DATA.act5.freedom_vs_money;
+  const data=[
+    {k:"Rate your life (the ladder)",v:L[0].beta,c:M.money,g:"What money buys"},
+    {k:"Less worry (calm)",v:L[1].beta,c:M.money,g:"What money buys"},
+    {k:"More joy",v:L[2].beta,c:M.money,g:"What money buys"},
+    {k:"…vs. a sense of freedom",v:fr.freedom,c:M.rank,g:"For scale"},
+  ];
+  const W=660,rowH=46,H=data.length*rowH+30,m={t:10,r:54,b:20,l:200};
+  const s=svg("#c5",W,H);
+  const x=d3.scaleLinear().domain([0,0.24]).range([m.l,W-m.r]);
+  const y=d3.scaleBand().domain(data.map(d=>d.k)).range([m.t,H-m.b]).padding(.32);
+  s.selectAll(".bar").data(data).join("rect").attr("x",m.l).attr("y",d=>y(d.k)).attr("height",y.bandwidth())
+    .attr("width",d=>x(d.v)-m.l).attr("rx",4).attr("fill",d=>d.c).attr("opacity",d=>d.c===M.rank?.95:.9);
+  s.selectAll(".kl").data(data).join("text").attr("x",m.l-10).attr("y",d=>y(d.k)+y.bandwidth()/2+4)
+    .attr("text-anchor","end").attr("fill",M.ink).attr("class","lab").style("font-size","12.5px").text(d=>d.k);
+  s.selectAll(".vl").data(data).join("text").attr("x",d=>x(d.v)+7).attr("y",d=>y(d.k)+y.bandwidth()/2+4)
+    .attr("fill",d=>d.c).attr("class","lab").style("font-weight",700).text(d=>d.v.toFixed(2));
+  s.append("line").attr("x1",x(L[0].beta)).attr("x2",x(L[0].beta)).attr("y1",m.t).attr("y2",H-m.b).attr("stroke",M.money).attr("stroke-dasharray","3 3").attr("opacity",.4);
+})();
+
+document.getElementById("meta").textContent = DATA.meta.datasets;
+document.getElementById("notes").textContent = "Sources: " + DATA.meta.datasets + ". " + DATA.meta.construct + ".";
+</script>
+</body></html>
